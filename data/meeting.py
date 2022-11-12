@@ -26,3 +26,11 @@ class Meeting:
         if not meetings:
             return False
         return any(self.is_crash_with_meeting(meeting) for meeting in meetings)
+
+    @staticmethod
+    def format_string_time_to_struct_time(time_str):
+        """
+        :param time_str: time in format "HH:MM" for example: "13:00"
+        :return: struct_time
+        """
+        return time.strptime(time_str, "%H:%M")
