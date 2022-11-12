@@ -1,6 +1,6 @@
 
 
 class User:
-    def __init__(self):
-        self.username = None
-        self.password = None
+    def __init__(self, username: str, password: str):
+        self.username = username
+        self.password = password
