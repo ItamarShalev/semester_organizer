@@ -1,10 +1,13 @@
-import activity
+from data.activity import Activity
+from data.type import Type
 
 
-class AcademicActivity(activity.Activity):
-    def __init__(self):
-        super().__init__()
-        self.lecturer_name = None
-        self.course_number = None
-        self.parent_course_number = None
-        self.location = None
+class AcademicActivity(Activity):
+
+    def __init__(self, name: str, activity_type: Type, is_must: bool,
+                 lecturer_name: str, course_number: int, parent_course_number: int, location: str):
+        super().__init__(name, activity_type, is_must)
+        self.lecturer_name = lecturer_name
+        self.course_number = course_number
+        self.parent_course_number = parent_course_number
+        self.location = location
