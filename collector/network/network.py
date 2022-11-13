@@ -9,8 +9,16 @@ def check_username_and_password(user: User) -> bool:
     pass
 
 
-def extract_academic_activities_data(user: User, parents_numbers: List[int]) -> List[AcademicActivity]:
-    pass
+def fill_academic_activities_data(user: User, campus_name: str, academic_activities: List[AcademicActivity]) \
+        -> List[str]:
+    """
+    The function fills the academic activities data.
+    The function will connect to the server and will extract the data from the server by the parent course number.
+    :param user: the usernae and password
+    :param campus_name: the campus name
+    :param academic_activities: all the academic activities
+    :return: list of all the courses names that don't have activities
+    """
 
 
 def extract_all_courses(user: User) -> List[Course]:
