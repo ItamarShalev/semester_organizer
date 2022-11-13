@@ -44,3 +44,6 @@ class Activity:
             for meeting in meetings:
                 is_equals = is_equals and meeting in other.days[day]
         return is_equals
+
+    def __str__(self):
+        return f"{self.name} {self.type} {self.is_must} {self.days}"
