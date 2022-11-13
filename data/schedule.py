@@ -10,3 +10,9 @@ class Schedule:
         self.file_name = file_name
         self.description = description
         self.activities = activities
+
+    def __eq__(self, other):
+        is_equals = len(self.activities) == len(other.activities)
+        for activity in self.activities:
+            is_equals = is_equals and activity in other.activities
+        return is_equals

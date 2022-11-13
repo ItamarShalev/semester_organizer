@@ -36,3 +36,11 @@ class Activity:
                 if meeting.is_crash_with_meetings(all_meetings):
                     return True
         return False
+
+    def __eq__(self, other):
+        is_equals = self.name == other.name and self.type == other.type and self.is_must == other.is_must
+        for day, meetings in self.days.items():
+            is_equals = is_equals and len(meetings) == len(other.days[day])
+            for meeting in meetings:
+                is_equals = is_equals and meeting in other.days[day]
+        return is_equals
