@@ -419,6 +419,7 @@ disable=raw-checker-failed,
         assignment-from-no-return,
         useless-suppression,
         deprecated-pragma,
+        no-name-in-module,
         missing-module-docstring,
         missing-function-docstring
 
