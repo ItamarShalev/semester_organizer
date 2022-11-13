@@ -19,3 +19,6 @@ class Schedule:
 
     def __contains__(self, activity):
         return activity in self.activities
+
+    def contains(self, activities):
+        return all(activity in self for activity in activities)
