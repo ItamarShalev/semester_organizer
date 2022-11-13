@@ -20,6 +20,18 @@ def load_courses_data() -> List[Course]:
     pass
 
 
+def clear_courses_data():
+    pass
+
+
+def clear_academic_activities_data():
+    pass
+
+
+def clear_campus_names():
+    pass
+
+
 def check_if_courses_data_exists(courses: List[Course]) -> bool:
     pass
 
