@@ -28,6 +28,8 @@ class Activity:
         return any(self.is_crash_with_activity(activity) for activity in activities)
 
     def is_crash_with_activity(self, activity):
+        if not self.is_must or not activity.is_must:
+            return False
         for day in Day:
             all_meetings = [meeting for meetings in self.days.values() for meeting in meetings]
             for meeting in activity.days[day]:
