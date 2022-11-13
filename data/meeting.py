@@ -1,6 +1,5 @@
-from time import struct_time, time
-
-from day import Day
+from time import struct_time, time, strptime
+from data.day import Day
 
 
 class Meeting:
@@ -34,9 +33,9 @@ class Meeting:
         return is_equals
 
     @staticmethod
-    def format_string_time_to_struct_time(time_str):
+    def str_to_time(time_str):
         """
         :param time_str: time in format "HH:MM" for example: "13:00"
         :return: struct_time
         """
-        return time.strptime(time_str, "%H:%M")
+        return strptime(time_str, "%H:%M")
