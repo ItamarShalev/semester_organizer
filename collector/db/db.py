@@ -30,7 +30,3 @@ def load_academic_activities_data(courses: List[Course]) -> List[AcademicActivit
 
 def load_campus_names() -> List[str]:
     pass
-
-
-def open_notification_windows(message: str):
-    pass
