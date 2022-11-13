@@ -21,3 +21,16 @@ class Activity:
     def add_slots(self, meetings):
         for meeting in meetings:
             self.add_slot(meeting)
+
+    def is_crash_with_activities(self, activities):
+        if not activities:
+            return False
+        return any(self.is_crash_with_activity(activity) for activity in activities)
+
+    def is_crash_with_activity(self, activity):
+        for day in Day:
+            all_meetings = [meeting for meetings in self.days.values() for meeting in meetings]
+            for meeting in activity.days[day]:
+                if meeting.is_crash_with_meetings(all_meetings):
+                    return True
+        return False
