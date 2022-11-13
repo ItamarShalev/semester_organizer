@@ -1,9 +1,12 @@
+import os
+
 import pytest
 
 from collector.db import db
 from data.academic_activity import AcademicActivity
 from data.course import Course
 from data.type import Type
+from data.user import User
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
@@ -65,3 +68,16 @@ def test_academic_activities():
 
     db.clear_academic_activities_data()
     assert db.load_academic_activities_data(courses) == []
+
+
+def test_load_hard_coded_user_data():
+    user = User("username", "password")
+    print(db.USER_NAME_FILE_PATH)
+    with open(db.USER_NAME_FILE_PATH, "w+") as file:
+        file.write(f"{user.username}\n{user.password}")
+
+    loaded_user = db.load_hard_coded_user_data()
+    assert user == loaded_user
+
+    os.remove(db.USER_NAME_FILE_PATH)
+    assert db.load_hard_coded_user_data() is None
