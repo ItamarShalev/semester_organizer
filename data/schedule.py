@@ -16,3 +16,6 @@ class Schedule:
         for activity in self.activities:
             is_equals = is_equals and activity in other.activities
         return is_equals
+
+    def __contains__(self, activity):
+        return activity in self.activities
