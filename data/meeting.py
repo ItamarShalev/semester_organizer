@@ -27,6 +27,12 @@ class Meeting:
             return False
         return any(self.is_crash_with_meeting(meeting) for meeting in meetings)
 
+    def __eq__(self, other):
+        is_equals = self.day == other.day
+        is_equals = is_equals and self.start_time == other.start_time
+        is_equals = is_equals and self.end_time == other.end_time
+        return is_equals
+
     @staticmethod
     def format_string_time_to_struct_time(time_str):
         """
