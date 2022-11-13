@@ -420,6 +420,7 @@ disable=raw-checker-failed,
         useless-suppression,
         deprecated-pragma,
         no-name-in-module,
+        unspecified-encoding,
         missing-module-docstring,
         missing-function-docstring
 
