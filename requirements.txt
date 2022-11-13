@@ -1,1 +1,2 @@
 python_constraint==1.4.0
+pytest~=7.2.0
