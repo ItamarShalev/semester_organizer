@@ -23,3 +23,6 @@ class AcademicActivity(Activity):
         is_equals = is_equals and self.parent_course_number == other.parent_course_number
         is_equals = is_equals and self.location == other.location
         return is_equals
+
+    def __str__(self):
+        return f"{super().__str__()} {self.name} {self.lecturer_name}"
