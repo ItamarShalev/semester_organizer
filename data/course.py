@@ -12,3 +12,6 @@ class Course:
         is_equals = is_equals and self.course_number == other.course_number
         is_equals = is_equals and self.parent_course_number == other.parent_course_number
         return is_equals
+
+    def __str__(self):
+        return f"{self.name} {self.course_number} {self.parent_course_number}"
