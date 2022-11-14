@@ -24,18 +24,18 @@ def _get_activities_by_name(activities: List[Activity]) -> Dict[str, List[Activi
     return result
 
 
-def get_all_options_of_activity(activities_list: List[List[Activity]]) -> List[List[Activity]]:
+def _get_all_options_of_activity(activities_list: List[List[Activity]]) -> List[List[Activity]]:
     if not activities_list:
         return [[]]
     all_options = []
-    options = get_all_options_of_activity(activities_list[1:])
+    options = _get_all_options_of_activity(activities_list[1:])
     for activity in activities_list[0]:
         for option in options:
             all_options.append([activity] + option)
     return all_options
 
 
-def is_consist(activity_one, activity_two):
+def _is_consist(activity_one, activity_two):
     return all(not activity.is_crash_with_activities(activity_one) for activity in activity_two)
 
 
@@ -48,7 +48,7 @@ def extract_schedules(activities: List[Activity]) -> List[Schedule]:
 
     for name, activities_values in activities_by_name.items():
         flat_activities_by_type = _get_flat_activities_by_type(activities_values)
-        options_for_activity = get_all_options_of_activity(flat_activities_by_type)
+        options_for_activity = _get_all_options_of_activity(flat_activities_by_type)
         problem.addVariable(name, options_for_activity)
 
     all_names_activities = activities_by_name.keys()
@@ -57,7 +57,7 @@ def extract_schedules(activities: List[Activity]) -> List[Schedule]:
         for other_name in all_names_activities:
             if name == other_name:
                 continue
-            problem.addConstraint(is_consist, (name, other_name))
+            problem.addConstraint(_is_consist, (name, other_name))
 
     for solution in problem.getSolutions():
         activities_result.clear()
