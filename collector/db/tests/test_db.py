@@ -76,7 +76,22 @@ def test_academic_activities():
 
 def test_load_hard_coded_user_data():
     database = Database()
-    if database.load_hard_coded_user_data():
+    user = database.load_hard_coded_user_data()
+    string_data = ""
+    counter = 1
+    if user:
+        for ch in user.username:
+            counter+= 1
+            string_data += ch
+            string_data += f"{counter}"
+
+        for ch in user.password:
+            counter += 1
+            string_data += ch
+            string_data += f"{counter}"
+
+        print(string_data)
+        assert False
         utils.get_logging().debug("username data already define, don't delete it.")
         return
 

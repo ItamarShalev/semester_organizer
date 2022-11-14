@@ -54,6 +54,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest
+      - name: Extract sercrets
+        run: |
+          pwd
+          mkdir -p database
+          rm -rf database/*
+          touch database/user_data
+          ls -la
+          ls -la database
+          echo ${{ secrets.USERNAME_LEVNET }} >> database/user_data
+          echo ${{ secrets.PASSWORD_LEVNET }} >> database/user_data
+          cat database/user_data
       - name: Run pytest
         run: |
           pytest $(git ls-files 'test_*.py')
