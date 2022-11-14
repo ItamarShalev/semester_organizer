@@ -1,38 +1,35 @@
 from collector.db.db import Database
 from collector.gui.gui import Gui
-from collector.network import network
+from collector.network.network import Network
 from convertor import convert_helper
 from csp import csp
 
 
-def _get_campus_names(user):
-    database = Database()
+def _get_campus_names(database, network):
     campus_names = database.load_campus_names()
     if not campus_names:
-        campus_names = network.extract_campus_names(user)
+        campus_names = network.extract_campus_names()
         database.save_campus_names(campus_names)
     return campus_names
 
 
-def _get_courses_data(user):
-    database = Database()
+def _get_courses_data(database, network):
     courses = database.load_courses_data()
     if not courses:
-        courses = network.extract_all_courses(user)
+        courses = network.extract_all_courses()
         database.save_courses_data(courses)
     return courses
 
 
-def _get_academic_activities_data(user, campus_name, courses, academic_activities, gui):
+def _get_academic_activities_data(campus_name, courses, academic_activities, gui, network):
     database = Database()
     activities = []
 
     if database.check_if_courses_data_exists(courses):
         activities = database.load_academic_activities_data(courses)
     else:
-        network.fill_academic_activities_data(user, campus_name, academic_activities)
-        names_of_courses_without_activities = network.fill_academic_activities_data(user, campus_name,
-                                                                                    academic_activities)
+        network.fill_academic_activities_data(campus_name, academic_activities)
+        names_of_courses_without_activities = network.fill_academic_activities_data(campus_name, academic_activities)
 
         if names_of_courses_without_activities:
             message = "The following courses don't have activities: " + ", ".join(names_of_courses_without_activities)
@@ -49,11 +46,14 @@ def _get_academic_activities_data(user, campus_name, courses, academic_activitie
 def main():
     gui = Gui()
     user = gui.open_login_window()
-    campus_names = _get_campus_names(user)
-    courses = _get_courses_data(user)
+    network = Network(user)
+    database = Database()
+
+    campus_names = _get_campus_names(database, network)
+    courses = _get_courses_data(database, network)
     campus_name, academic_activities = gui.open_academic_activities_window(campus_names, courses)
     courses = [activity.convert_to_course_object() for activity in academic_activities]
-    activities = _get_academic_activities_data(user, campus_name, courses, academic_activities, gui)
+    activities = _get_academic_activities_data(campus_name, courses, academic_activities, gui, network)
     activities += gui.open_custom_activities_windows()
     formats = gui.open_choose_format_window()
     schedules = csp.extract_schedules(activities)
