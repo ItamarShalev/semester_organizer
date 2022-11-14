@@ -2,7 +2,7 @@ import pytest
 
 from collector.db.db import Database
 from collector.network.network import Network
-from convertor import convert_helper
+from convertor.convertor import Convertor
 from csp import csp
 from data.academic_activity import AcademicActivity
 from data.course import Course
@@ -13,6 +13,7 @@ from data.type import Type
 @pytest.mark.skip(reason="Not implemented yet.")
 def test_flow_without_gui_without_database():
     database = Database()
+    convertor = Convertor()
     user = database.load_hard_coded_user_data()
     network = Network(user)
     assert user, "Don't have user data to check."
@@ -39,12 +40,13 @@ def test_flow_without_gui_without_database():
     formats = list(OutputFormat)
     schedules = csp.extract_schedules(academic_activities)
     assert schedules, "At least one schedule should be extracted."
-    convert_helper.convert_activities(schedules, "results", formats)
+    convertor.convert_activities(schedules, "results", formats)
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
 def test_flow_without_gui_with_database():
     database = Database()
+    convertor = Convertor()
     user = database.load_hard_coded_user_data()
     network = Network(user)
     assert user, "Don't have user data to check."
@@ -78,6 +80,6 @@ def test_flow_without_gui_with_database():
     formats = list(OutputFormat)
     schedules = csp.extract_schedules(academic_activities)
     assert schedules, "At least one schedule should be extracted."
-    convert_helper.convert_activities(schedules, "results", formats)
+    convertor.convert_activities(schedules, "results", formats)
     assert campus_names, "Don't have campus names to check."
     assert "מכון לב" in campus_names, "Some campus names are missing."

@@ -1,7 +1,7 @@
 from collector.db.db import Database
 from collector.gui.gui import Gui
 from collector.network.network import Network
-from convertor import convert_helper
+from convertor.convertor import Convertor
 from csp import csp
 
 
@@ -11,6 +11,7 @@ class Controller:
         self.database = Database()
         self.network = Network()
         self.gui = Gui()
+        self.convertor = Convertor()
 
     def _get_campus_names(self):
         campus_names = self.database.load_campus_names()
@@ -61,6 +62,6 @@ class Controller:
         if not schedules:
             self.gui.open_notification_windows("No schedules were found")
         else:
-            convert_helper.convert_activities(schedules, "results", formats)
+            self.convertor.convert_activities(schedules, "results", formats)
 
         self.gui.open_notification_windows("The schedules were saved in the 'results' folder")
