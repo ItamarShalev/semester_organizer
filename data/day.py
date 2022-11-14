@@ -2,7 +2,7 @@ from enum import Enum, auto
 
 
 class Day(Enum):
-    SUNDAY = 0
+    SUNDAY = auto()
     MONDAY = auto()
     TUESDAY = auto()
     WEDNESDAY = auto()
