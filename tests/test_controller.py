@@ -1,7 +1,7 @@
 import pytest
 
 from collector.db.db import Database
-from collector.network import network
+from collector.network.network import Network
 from convertor import convert_helper
 from csp import csp
 from data.academic_activity import AcademicActivity
@@ -14,22 +14,23 @@ from data.type import Type
 def test_flow_without_gui_without_database():
     database = Database()
     user = database.load_hard_coded_user_data()
+    network = Network(user)
     assert user, "Don't have user data to check."
-    assert network.check_username_and_password(user), "Can't connect to the server."
+    assert network.check_username_and_password(), "Can't connect to the server."
 
-    campus_names = network.extract_campus_names(user)
+    campus_names = network.extract_campus_names()
     assert campus_names, "Can't extract campus names from the server."
     assert "מכון לב" in campus_names, "Some campus names are missing."
     database.save_campus_names(campus_names)
 
-    courses = network.extract_all_courses(user)
+    courses = network.extract_all_courses()
     assert courses, "Can't extract courses from the server."
     course = Course("חשבון אינפני' להנדסה 1", 120131, 318)
     assert course in courses, "Some courses are missing."
     database.save_courses_data(courses)
 
     academic_activities = [AcademicActivity("חשבון אינפני' להנדסה 1", Type.LECTURE, True, "", 120131, 318, "")]
-    network.fill_academic_activities_data(user, "מכון לב", academic_activities)
+    network.fill_academic_activities_data("מכון לב", academic_activities)
     meetings_values = academic_activities[0].days.values()
 
     assert any(meetings for meetings in meetings_values), "Can't extract academic activities from the server."
@@ -45,12 +46,13 @@ def test_flow_without_gui_without_database():
 def test_flow_without_gui_with_database():
     database = Database()
     user = database.load_hard_coded_user_data()
+    network = Network(user)
     assert user, "Don't have user data to check."
-    assert network.check_username_and_password(user), "Can't connect to the server."
+    assert network.check_username_and_password(), "Can't connect to the server."
 
     campus_names = database.load_campus_names()
     if not campus_names:
-        campus_names = network.extract_campus_names(user)
+        campus_names = network.extract_campus_names()
         assert campus_names, "Can't extract campus names from the server."
         assert "מכון לב" in campus_names, "Some campus names are missing."
         database.save_campus_names(campus_names)
@@ -58,7 +60,7 @@ def test_flow_without_gui_with_database():
     courses = database.load_courses_data()
     course = Course("חשבון אינפני' להנדסה 1", 120131, 318)
     if not courses:
-        courses = network.extract_all_courses(user)
+        courses = network.extract_all_courses()
         assert courses, "Can't extract courses from the server."
         assert course in courses, "Some courses are missing."
         database.save_courses_data(courses)
@@ -66,7 +68,7 @@ def test_flow_without_gui_with_database():
     academic_activities = database.load_academic_activities_data([course])
     if not academic_activities:
         academic_activities = [AcademicActivity("חשבון אינפני' להנדסה 1", Type.LECTURE, True, "", 120131, 318, "")]
-        network.fill_academic_activities_data(user, "מכון לב", academic_activities)
+        network.fill_academic_activities_data("מכון לב", academic_activities)
 
     meetings_values = academic_activities[0].days.values()
 
