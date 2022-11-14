@@ -15,3 +15,6 @@ class Course:
 
     def __str__(self):
         return f"{self.name} {self.course_number} {self.parent_course_number}"
+
+    def __repr__(self):
+        return str(self)

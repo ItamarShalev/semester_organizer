@@ -47,3 +47,6 @@ class Activity:
 
     def __str__(self):
         return f"{self.name} {self.type} {self.is_must} {self.days}"
+
+    def __repr__(self):
+        return str(self)

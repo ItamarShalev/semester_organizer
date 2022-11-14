@@ -11,6 +11,12 @@ class Schedule:
         self.description = description
         self.activities = activities
 
+    def __str__(self):
+        return f"{self.name} {self.description}"
+
+    def __repr__(self):
+        return str(self)
+
     def __eq__(self, other):
         is_equals = len(self.activities) == len(other.activities)
         for activity in self.activities:
