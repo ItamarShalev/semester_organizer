@@ -32,10 +32,9 @@ def test_flow_without_gui_without_database():
 
     academic_activities = [AcademicActivity("חשבון אינפני' להנדסה 1", Type.LECTURE, True, "", 120131, 318, "")]
     network.fill_academic_activities_data("מכון לב", academic_activities)
-    meetings_values = academic_activities[0].days.values()
+    activities_filled = all(activity.no_meetings() for activity in academic_activities)
 
-    assert any(meetings for meetings in meetings_values), "Can't extract academic activities from the server."
-    assert academic_activities, "Can't extract academic activities from the server."
+    assert activities_filled, "Can't extract academic activities from the server."
 
     formats = list(OutputFormat)
     schedules = csp.extract_schedules(academic_activities)
@@ -72,10 +71,9 @@ def test_flow_without_gui_with_database():
         academic_activities = [AcademicActivity("חשבון אינפני' להנדסה 1", Type.LECTURE, True, "", 120131, 318, "")]
         network.fill_academic_activities_data("מכון לב", academic_activities)
 
-    meetings_values = academic_activities[0].days.values()
+    activities_filled = all(activity.no_meetings() for activity in academic_activities)
 
-    assert any(meetings for meetings in meetings_values), "Can't extract academic activities from the server."
-    assert academic_activities, "Can't extract academic activities from the server."
+    assert activities_filled, "Can't extract academic activities from the server."
 
     formats = list(OutputFormat)
     schedules = csp.extract_schedules(academic_activities)

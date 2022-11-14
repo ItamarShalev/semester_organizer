@@ -37,6 +37,9 @@ class Activity:
                     return True
         return False
 
+    def no_meetings(self):
+        return not any(meetings for meetings in self.days.values())
+
     def __eq__(self, other):
         is_equals = self.name == other.name and self.type == other.type and self.is_must == other.is_must
         for day, meetings in self.days.items():
