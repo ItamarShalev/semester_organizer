@@ -1,5 +1,5 @@
 from collector.db.db import Database
-from collector.gui import gui
+from collector.gui.gui import Gui
 from collector.network import network
 from convertor import convert_helper
 from csp import csp
@@ -23,7 +23,7 @@ def _get_courses_data(user):
     return courses
 
 
-def _get_academic_activities_data(user, campus_name, courses, academic_activities):
+def _get_academic_activities_data(user, campus_name, courses, academic_activities, gui):
     database = Database()
     activities = []
 
@@ -47,12 +47,13 @@ def _get_academic_activities_data(user, campus_name, courses, academic_activitie
 
 
 def main():
+    gui = Gui()
     user = gui.open_login_window()
     campus_names = _get_campus_names(user)
     courses = _get_courses_data(user)
     campus_name, academic_activities = gui.open_academic_activities_window(campus_names, courses)
     courses = [activity.convert_to_course_object() for activity in academic_activities]
-    activities = _get_academic_activities_data(user, campus_name, courses, academic_activities)
+    activities = _get_academic_activities_data(user, campus_name, courses, academic_activities, gui)
     activities += gui.open_custom_activities_windows()
     formats = gui.open_choose_format_window()
     schedules = csp.extract_schedules(activities)
