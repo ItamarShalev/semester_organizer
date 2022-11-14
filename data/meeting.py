@@ -14,6 +14,9 @@ class Meeting:
         end_time_str = time.strftime("%H:%M", self.end_time)
         return f"{start_time_str} - {end_time_str}"
 
+    def __repr__(self):
+        return str(self)
+
     def is_crash_with_meeting(self, meeting):
         if self.day != meeting.day:
             return False

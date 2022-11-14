@@ -26,3 +26,6 @@ class AcademicActivity(Activity):
 
     def __str__(self):
         return f"{super().__str__()} {self.name} {self.lecturer_name}"
+
+    def __repr__(self):
+        return str(self)
