@@ -1,8 +1,8 @@
 import os
 
 import pytest
-import utils
 
+import utils
 from collector.db.db import Database
 from data.academic_activity import AcademicActivity
 from data.course import Course
@@ -77,15 +77,15 @@ def test_academic_activities():
 def test_load_hard_coded_user_data():
     database = Database()
     if database.load_hard_coded_user_data():
-        utils.get_logging().debug("username data already define, don't delete it.")
+        utils.get_logging().debug("user data already defined, don't overwrite it.")
         return
 
     user = User("username", "password")
-    with open(database.USER_NAME_FILE_PATH, "w+") as file:
+    with open(Database.USER_NAME_FILE_PATH, "w+") as file:
         file.write(f"{user.username}\n{user.password}")
 
     loaded_user = database.load_hard_coded_user_data()
     assert user == loaded_user
 
-    os.remove(database.USER_NAME_FILE_PATH)
+    os.remove(Database.USER_NAME_FILE_PATH)
     assert database.load_hard_coded_user_data() is None

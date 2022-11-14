@@ -8,7 +8,7 @@ from data.user import User
 
 
 class Database:
-    USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data")
+    USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
 
     def save_courses_data(self, courses: List[Course]):
         pass
