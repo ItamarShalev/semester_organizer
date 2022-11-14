@@ -1,6 +1,7 @@
 import os
 
 import pytest
+import utils
 
 from collector.db import db
 from data.academic_activity import AcademicActivity
@@ -71,8 +72,11 @@ def test_academic_activities():
 
 
 def test_load_hard_coded_user_data():
+    if db.load_hard_coded_user_data():
+        utils.get_logging().debug("username data already define, don't delete it.")
+        return
+
     user = User("username", "password")
-    print(db.USER_NAME_FILE_PATH)
     with open(db.USER_NAME_FILE_PATH, "w+") as file:
         file.write(f"{user.username}\n{user.password}")
 
