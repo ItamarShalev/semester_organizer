@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from data.academic_activity import AcademicActivity
 from data.course import Course
@@ -7,7 +7,7 @@ from data.user import User
 
 class Network:
 
-    def __init__(self, user: User):
+    def __init__(self, user: Optional[User] = None):
         self.user = user
 
     def check_username_and_password(self) -> bool:
@@ -29,3 +29,6 @@ class Network:
 
     def extract_campus_names(self) -> List[str]:
         pass
+
+    def set_user(self, user: User):
+        self.user = user
