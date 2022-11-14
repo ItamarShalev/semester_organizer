@@ -1,4 +1,4 @@
-from collector.db import db
+from collector.db.db import Database
 from collector.gui import gui
 from collector.network import network
 from convertor import convert_helper
@@ -6,26 +6,29 @@ from csp import csp
 
 
 def _get_campus_names(user):
-    campus_names = db.load_campus_names()
+    database = Database()
+    campus_names = database.load_campus_names()
     if not campus_names:
         campus_names = network.extract_campus_names(user)
-        db.save_campus_names(campus_names)
+        database.save_campus_names(campus_names)
     return campus_names
 
 
 def _get_courses_data(user):
-    courses = db.load_courses_data()
+    database = Database()
+    courses = database.load_courses_data()
     if not courses:
         courses = network.extract_all_courses(user)
-        db.save_courses_data(courses)
+        database.save_courses_data(courses)
     return courses
 
 
 def _get_academic_activities_data(user, campus_name, courses, academic_activities):
+    database = Database()
     activities = []
 
-    if db.check_if_courses_data_exists(courses):
-        activities = db.load_academic_activities_data(courses)
+    if database.check_if_courses_data_exists(courses):
+        activities = database.load_academic_activities_data(courses)
     else:
         network.fill_academic_activities_data(user, campus_name, academic_activities)
         names_of_courses_without_activities = network.fill_academic_activities_data(user, campus_name,
@@ -39,7 +42,7 @@ def _get_academic_activities_data(user, campus_name, courses, academic_activitie
         else:
             activities = academic_activities
 
-        db.save_academic_activities_data(activities)
+        database.save_academic_activities_data(activities)
     return activities
 
 

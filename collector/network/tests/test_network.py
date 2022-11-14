@@ -1,6 +1,6 @@
 import pytest
 
-from collector.db import db
+from collector.db.db import Database
 from collector.network import network
 from data.academic_activity import AcademicActivity
 from data.type import Type
@@ -8,14 +8,14 @@ from data.type import Type
 
 @pytest.mark.skip(reason="Not implemented yet.")
 def test_check_username_and_password():
-    user = db.load_hard_coded_user_data()
+    user = Database().load_hard_coded_user_data()
     assert user, "Don't have user data to check."
     assert network.check_username_and_password(user), "Can't connect to the server."
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
 def test_extract_all_courses():
-    user = db.load_hard_coded_user_data()
+    user = Database().load_hard_coded_user_data()
     assert user, "Don't have user data to check."
     assert network.check_username_and_password(user), "Can't connect to the server."
 
@@ -25,7 +25,7 @@ def test_extract_all_courses():
 
 @pytest.mark.skip(reason="Not implemented yet.")
 def test_extract_campus_names():
-    user = db.load_hard_coded_user_data()
+    user = Database().load_hard_coded_user_data()
     assert user, "Don't have user data to check."
     assert network.check_username_and_password(user), "Can't connect to the server."
 
@@ -36,7 +36,7 @@ def test_extract_campus_names():
 
 @pytest.mark.skip(reason="Not implemented yet.")
 def test_fill_academic_activities_data():
-    user = db.load_hard_coded_user_data()
+    user = Database().load_hard_coded_user_data()
     assert user, "Don't have user data to check."
     assert network.check_username_and_password(user), "Can't connect to the server."
 
