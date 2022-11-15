@@ -7,16 +7,18 @@ from data.type import Type
 
 class AcademicActivity(Activity):
 
-    def __init__(self, name: str, activity_type: Type, is_must: bool, lecturer_name: str, course_number: int,
-                 parent_course_number: int, location: str):
-        super().__init__(name, activity_type, is_must)
+    def __init__(self, name: str = None, activity_type: Type = None, attendance_required: bool = None,
+                 lecturer_name: str = None, course_number: int = None, parent_course_number: int = None,
+                 location: str = None, activity_id: str = None):
+        super().__init__(name, activity_type, attendance_required)
         self.lecturer_name = lecturer_name
         self.course_number = course_number
         self.parent_course_number = parent_course_number
         self.location = location
+        self.activity_id = activity_id
 
     def convert_to_course_object(self):
-        course = Course(self.name, self.course_number, self.parent_course_number)
+        course = Course(self.name, self.course_number, self.parent_course_number, activity_id=self.activity_id)
         course.set_attendance_required(self.type, self.attendance_required)
         return course
 
@@ -46,4 +48,5 @@ class AcademicActivity(Activity):
             for course in courses:
                 if activity.same_as_course(course):
                     activity.attendance_required = course.attendance_required[activity.type]
+                    activity.activity_id = course.activity_id
                     break
