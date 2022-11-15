@@ -10,9 +10,7 @@ class Meeting:
         self.end_time = end_time
 
     def __str__(self):
-        start_time_str = time.strftime("%H:%M", self.start_time)
-        end_time_str = time.strftime("%H:%M", self.end_time)
-        return f"{start_time_str} - {end_time_str}"
+        return f"{self.get_string_start_time()} - {self.get_string_end_time()}"
 
     def __repr__(self):
         return str(self)
@@ -28,6 +26,12 @@ class Meeting:
         if not meetings:
             return False
         return any(self.is_crash_with_meeting(meeting) for meeting in meetings)
+
+    def get_string_start_time(self):
+        return time.strftime("%H:%M", self.start_time)
+
+    def get_string_end_time(self):
+        return time.strftime("%H:%M", self.end_time)
 
     def __eq__(self, other):
         is_equals = self.day == other.day
