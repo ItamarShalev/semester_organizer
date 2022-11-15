@@ -5,6 +5,7 @@ from collector.db.db import Database
 from collector.network.network import Network
 
 
+@pytest.mark.network()
 def test_connect():
     user = Database().load_hard_coded_user_data()
     network = Network(user)
@@ -13,6 +14,7 @@ def test_connect():
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
+@pytest.mark.network()
 def test_extract_all_courses():
     user = Database().load_hard_coded_user_data()
     network = Network(user)
@@ -24,6 +26,7 @@ def test_extract_all_courses():
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
+@pytest.mark.network()
 def test_extract_campus_names():
     database = Database()
     user = database.load_hard_coded_user_data()
@@ -38,6 +41,7 @@ def test_extract_campus_names():
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
+@pytest.mark.network()
 def test_fill_academic_activities_data():
     user = Database().load_hard_coded_user_data()
     network = Network(user)
