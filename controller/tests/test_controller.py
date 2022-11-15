@@ -1,10 +1,10 @@
 import pytest
+import utils
 
 from collector.db.db import Database
 from collector.network.network import Network
 from convertor.convertor import Convertor
 from csp import csp
-from data.course import Course
 from data.output_format import OutputFormat
 
 
@@ -12,7 +12,7 @@ from data.output_format import OutputFormat
 def test_flow_without_gui_without_database():
     database = Database()
     convertor = Convertor()
-    campus_name = "מכון לב"
+    campus_name = utils.get_campus_name_test()
     user = database.load_hard_coded_user_data()
     network = Network(user)
     assert user, "Don't have user data to check."
@@ -20,12 +20,12 @@ def test_flow_without_gui_without_database():
 
     campus_names = network.extract_campus_names()
     assert campus_names, "Can't extract campus names from the server."
-    assert "מכון לב" in campus_names, "Some campus names are missing."
+    assert campus_name in campus_names, "Some campus names are missing."
     database.save_campus_names(campus_names)
 
     courses = network.extract_all_courses()
     assert courses, "Can't extract courses from the server."
-    course = Course("חשבון אינפני' להנדסה 1", 120131, 318)
+    course = utils.get_course_data_test()
     assert course in courses, "Some courses are missing."
     database.save_courses_data(courses)
 
@@ -59,7 +59,8 @@ def test_flow_without_gui_with_database():
         database.save_campus_names(campus_names)
 
     courses = database.load_courses_data()
-    course = Course("חשבון אינפני' להנדסה 1", 120131, 318)
+    course = utils.get_course_data_test()
+    campus_name = utils.get_campus_name_test()
     if not courses:
         courses = network.extract_all_courses()
         assert courses, "Can't extract courses from the server."
@@ -80,4 +81,4 @@ def test_flow_without_gui_with_database():
     assert schedules, "At least one schedule should be extracted."
     convertor.convert_activities(schedules, "results", formats)
     assert campus_names, "Don't have campus names to check."
-    assert "מכון לב" in campus_names, "Some campus names are missing."
+    assert campus_name in campus_names, "Some campus names are missing."
