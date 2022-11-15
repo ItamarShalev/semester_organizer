@@ -62,7 +62,7 @@ class Activity:
         return is_equals
 
     def __str__(self):
-        return f"{self.name} {self.type} {self.attendance_required} {self.days}"
+        return self.name
 
     def __repr__(self):
         return str(self)
