@@ -3,6 +3,7 @@ from collector.db.db import Database
 from collector.gui.gui import Gui
 from collector.network.network import Network
 from convertor.convertor import Convertor
+from data.academic_activity import AcademicActivity
 from csp import csp
 
 
@@ -50,9 +51,9 @@ class Controller:
 
         campus_names = self._get_campus_names()
         courses = self._get_courses_data()
-        campus_name, activities = self.gui.open_academic_activities_window(campus_names, courses)
-        courses = [activity.convert_to_course_object() for activity in activities]
+        campus_name, courses = self.gui.open_academic_activities_window(campus_names, courses)
         activities = self._get_academic_activities_data(campus_name, courses)
+        AcademicActivity.union_attendance_required(activities, courses)
         activities += self.gui.open_custom_activities_windows()
         formats = self.gui.open_choose_format_window()
         schedules = csp.extract_schedules(activities)
