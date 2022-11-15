@@ -16,7 +16,7 @@ def test_flow_without_gui_without_database():
     user = database.load_hard_coded_user_data()
     network = Network(user)
     assert user, "Don't have user data to check."
-    assert network.check_username_and_password(), "Can't connect to the server."
+    assert network.connect(), "Can't connect to the server."
 
     campus_names = network.extract_campus_names()
     assert campus_names, "Can't extract campus names from the server."
@@ -49,7 +49,7 @@ def test_flow_without_gui_with_database():
     user = database.load_hard_coded_user_data()
     network = Network(user)
     assert user, "Don't have user data to check."
-    assert network.check_username_and_password(), "Can't connect to the server."
+    assert network.connect(), "Can't connect to the server."
 
     campus_names = database.load_campus_names()
     if not campus_names:

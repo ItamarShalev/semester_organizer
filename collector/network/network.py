@@ -24,7 +24,7 @@ class Network:
                         'sec-ch-ua-platform': '"Windows"', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors',
                         'Sec-Fetch-Dest': 'empty', 'host': 'levnet.jct.ac.il', }
 
-    def check_username_and_password(self) -> bool:
+    def connect(self) -> bool:
         if self.user is None:
             raise ValueError("The user is not set.")
 
