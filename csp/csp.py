@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List
 
 from constraint import Problem
 
@@ -12,16 +12,6 @@ def _get_flat_activities_by_type(activities: List[Activity]) -> List[List[Activi
     for activity in activities:
         result[activity.type].append(activity)
     return [item for item in result.values() if item]
-
-
-def _get_activities_by_name(activities: List[Activity]) -> Dict[str, List[Activity]]:
-    result = {}
-    for activity in activities:
-        if activity.name not in result:
-            result[activity.name] = [activity]
-        else:
-            result[activity.name].append(activity)
-    return result
 
 
 def _get_all_options_of_activity(activities_list: List[List[Activity]]) -> List[List[Activity]]:
@@ -44,7 +34,7 @@ def extract_schedules(activities: List[Activity]) -> List[Schedule]:
     activities_result = []
     schedule_result = []
     option_counter = 1
-    activities_by_name = _get_activities_by_name(activities)
+    activities_by_name = Activity.get_activities_by_name(activities)
 
     for name, activities_values in activities_by_name.items():
         flat_activities_by_type = _get_flat_activities_by_type(activities_values)

@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 from data.type import Type
 from data.day import Day
 
@@ -39,6 +41,16 @@ class Activity:
 
     def no_meetings(self):
         return not any(meetings for meetings in self.days.values())
+
+    @staticmethod
+    def get_activities_by_name(activities) -> Dict[str, List]:
+        result = {}
+        for activity in activities:
+            if activity.name not in result:
+                result[activity.name] = [activity]
+            else:
+                result[activity.name].append(activity)
+        return result
 
     def __eq__(self, other):
         is_equals = self.name == other.name and self.type == other.type
