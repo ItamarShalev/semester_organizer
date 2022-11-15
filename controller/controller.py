@@ -33,7 +33,7 @@ class Controller:
     def _get_academic_activities_data(self, campus_name, courses):
         activities = []
 
-        if self.database.check_if_courses_data_exists(courses):
+        if self.database.check_if_courses_data_exists(campus_name, courses):
             activities = self.database.load_academic_activities_data(campus_name, courses)
         else:
             activities, names_missing_activities = self.network.extract_academic_activities_data(campus_name, courses)

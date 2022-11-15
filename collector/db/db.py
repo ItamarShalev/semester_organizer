@@ -55,7 +55,7 @@ class Database:
         if os.path.exists(Database.CAMPUS_NAMES_FILE_PATH):
             os.remove(Database.CAMPUS_NAMES_FILE_PATH)
 
-    def check_if_courses_data_exists(self, courses: List[Course]) -> bool:
+    def check_if_courses_data_exists(self, campus_name: str, courses: List[Course]) -> bool:
         pass
 
     def load_academic_activities_data(self, campus_name: str, courses: List[Course]) -> List[AcademicActivity]:
