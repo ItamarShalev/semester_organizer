@@ -6,7 +6,7 @@ from data.day import Day
 
 class Activity:
 
-    def __init__(self, name: str, activity_type: Type, attendance_required: bool):
+    def __init__(self, name: str = None, activity_type: Type = None, attendance_required: bool = None):
         self.name = name
         self.type = activity_type
         self.attendance_required = attendance_required
