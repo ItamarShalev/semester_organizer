@@ -31,7 +31,7 @@ class AcademicActivity(Activity):
         return is_equals
 
     def __str__(self):
-        return f"{super().__str__()} {self.name} {self.lecturer_name}"
+        return self.name
 
     def __repr__(self):
         return str(self)
