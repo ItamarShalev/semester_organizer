@@ -14,7 +14,9 @@ class AcademicActivity(Activity):
         self.location = location
 
     def convert_to_course_object(self):
-        return Course(self.name, self.course_number, self.parent_course_number)
+        course = Course(self.name, self.course_number, self.parent_course_number)
+        course.set_attendance_required(self.type, self.attendance_required)
+        return course
 
     def __eq__(self, other):
         is_equals = super().__eq__(other)
