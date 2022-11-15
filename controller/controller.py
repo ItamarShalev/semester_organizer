@@ -62,3 +62,41 @@ class Controller:
             self.convertor.convert_activities(schedules, "results", formats)
 
         self.gui.open_notification_windows("The schedules were saved in the 'results' folder")
+
+    def run_update_levnet_data_flow(self):
+        self.logger.info("Start updating the levnet data")
+        user = self.database.load_hard_coded_user_data()
+        assert user, "There is no user data, can't access the levnet website."
+        self.logger.info("User data was loaded successfully")
+
+        self.network.set_user(user)
+        self.network.check_username_and_password()
+        self.logger.info("The username and password are valid")
+
+        self.database.clear_all_data()
+        self.logger.info("The database was cleared successfully")
+
+        campus_names = self.network.extract_campus_names()
+        self.logger.info("The campus names were extracted successfully")
+        self.logger.info("The campus names are: %s", ", ".join(campus_names))
+
+        self.database.save_campus_names(campus_names)
+
+        courses = self.network.extract_all_courses()
+        self.logger.info("The courses were extracted successfully")
+        self.logger.info("The courses are: %s", ", ".join([course.name for course in courses]))
+
+        self.database.save_courses_data(courses)
+
+        common_campuses_names = self.database.get_common_campuses_names()
+
+        for campus_name in common_campuses_names:
+            self.logger.info("Start extracting the academic activities data for the campus: %s", campus_name)
+            activities, missings = self.network.extract_academic_activities_data(campus_name, courses)
+            if activities and not missings:
+                self.logger.info("The academic activities data were extracted successfully")
+            else:
+                self.logger.info("The academic activities data were extracted with errors")
+                self.logger.info("The missing courses are: %s", ', '.join(missings))
+
+            self.database.save_academic_activities_data(campus_name, activities)
