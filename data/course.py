@@ -28,7 +28,7 @@ class Course:
         self.attendance_required[course_type] = required
 
     def __str__(self):
-        return f"{self.name} {self.course_number} {self.parent_course_number}"
+        return self.name
 
     def __repr__(self):
         return str(self)
