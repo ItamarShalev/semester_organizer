@@ -42,36 +42,37 @@ def test_campus_names():
 def test_academic_activities():
     database = Database()
     academic_activities = []
+    campus_name = utils.get_campus_name_test()
     for i in range(10):
         academic_activities.append(AcademicActivity(f"Course {i}", Type.LECTURE, True, f"A {i}", i, i + 1000, ""))
 
     courses = [activity.convert_to_course_object() for activity in academic_activities]
 
     database.clear_academic_activities_data()
-    database.save_academic_activities_data(academic_activities)
+    database.save_academic_activities_data(campus_name, academic_activities)
     assert database.check_if_courses_data_exists(courses)
 
-    loaded_academic_activities = database.load_academic_activities_data(courses)
+    loaded_academic_activities = database.load_academic_activities_data(campus_name, courses)
     assert academic_activities == loaded_academic_activities
 
     database.clear_campus_names()
     assert database.load_campus_names() == []
 
-    database.save_academic_activities_data(academic_activities)
+    database.save_academic_activities_data(campus_name, academic_activities)
     academic_activities[0].type = Type.LAB
     academic_activities.append(AcademicActivity(f"Course {30}", Type.LECTURE, True, f"A {30}", 30, 30 + 1000, ""))
-    database.save_academic_activities_data(academic_activities)
+    database.save_academic_activities_data(campus_name, academic_activities)
 
     courses.clear()
     courses.append(Course(f"Course {30}", 30, 30 + 1000))
     courses.append(Course(f"Course {0}", 0, 0 + 1000))
     assert database.check_if_courses_data_exists(courses)
 
-    loaded_academic_activities = database.load_academic_activities_data(courses)
+    loaded_academic_activities = database.load_academic_activities_data(campus_name, courses)
     assert all(activity in academic_activities for activity in loaded_academic_activities)
 
     database.clear_academic_activities_data()
-    assert database.load_academic_activities_data(courses) == []
+    assert database.load_academic_activities_data(campus_name, courses) == []
 
 
 def test_load_hard_coded_user_data():

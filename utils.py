@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from data.course import Course
 
 
 def get_root_path():
@@ -24,3 +25,11 @@ def get_logging():
 
 def get_custom_software_name():
     return "semester_organizer_lev"
+
+
+def get_campus_name_test():
+    return "מכון לב"
+
+
+def get_course_data_test():
+    return Course("חשבון אינפני' להנדסה 1", 120131, 318)

@@ -1,9 +1,8 @@
 import pytest
+import utils
 
 from collector.db.db import Database
 from collector.network.network import Network
-from data.academic_activity import AcademicActivity
-from data.type import Type
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
@@ -27,14 +26,16 @@ def test_extract_all_courses():
 
 @pytest.mark.skip(reason="Not implemented yet.")
 def test_extract_campus_names():
-    user = Database().load_hard_coded_user_data()
+    database = Database()
+    user = database.load_hard_coded_user_data()
     network = Network(user)
+    campus_name = utils.get_campus_name_test()
     assert user, "Don't have user data to check."
     assert network.check_username_and_password(), "Can't connect to the server."
 
     campus_names = network.extract_campus_names()
     assert campus_names, "Can't extract campus names from the server."
-    assert "מכון לב" in campus_names, "Some campus names are missing."
+    assert all(campus_name for campus_name in database.get_common_campuses_names()), "Some campuses names are missing."
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
@@ -47,9 +48,11 @@ def test_fill_academic_activities_data():
     campus_names = network.extract_campus_names()
     assert campus_names, "Can't extract campus names from the server."
 
-    academic_activities = [AcademicActivity("חשבון אינפני' להנדסה 1", Type.LECTURE, True, "", 120131, 318, "")]
-    network.fill_academic_activities_data("מכון לב", academic_activities)
-    meetings_values = academic_activities[0].days.values()
+    course = utils.get_course_data_test()
+    campus_name = utils.get_campus_name_test()
 
-    assert any(meetings for meetings in meetings_values), "Can't extract academic activities from the server."
-    assert academic_activities, "Can't extract academic activities from the server."
+    academic_activities, missings = network.extract_academic_activities_data(campus_name, [course])
+    missing_meetings_data = any(activity.no_meetings() for activity in academic_activities)
+
+    assert not missings, "The following courses don't have activities: " + ", ".join(missings)
+    assert not missing_meetings_data and academic_activities, "Can't extract academic activities from the server."
