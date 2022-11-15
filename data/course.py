@@ -15,6 +15,9 @@ class Course:
         is_equals = is_equals and self.parent_course_number == other.parent_course_number
         return is_equals
 
+    def __hash__(self):
+        return hash((self.name, self.course_number, self.parent_course_number))
+
     def set_attendance_required(self, course_type: Type, required: bool):
         self.attendance_required[course_type] = required
 
