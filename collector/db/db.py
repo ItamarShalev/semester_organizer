@@ -10,9 +10,14 @@ from data.user import User
 class Database:
     USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
     CAMPUS_NAMES_FILE_PATH = os.path.join(utils.get_database_path(), "campus_names.txt")
+    COURSES_DATA_FILE_PATH = os.path.join(utils.get_database_path(), "courses_data.txt")
 
     def save_courses_data(self, courses: List[Course]):
-        pass
+        courses_set = set(courses)
+        courses_set.update(set(self.load_courses_data()))
+        with open(Database.COURSES_DATA_FILE_PATH, "w") as file:
+            for course in courses_set:
+                file.write(f"{course.name};{course.course_number};{course.parent_course_number}\n")
 
     def save_academic_activities_data(self, campus_name: str, academic_activities: List[AcademicActivity]):
         pass
@@ -22,10 +27,22 @@ class Database:
             file.write("\n".join(names))
 
     def load_courses_data(self) -> List[Course]:
-        pass
+        if not os.path.isfile(Database.COURSES_DATA_FILE_PATH):
+            return []
+        with open(Database.COURSES_DATA_FILE_PATH, "r") as file:
+            courses = []
+            for line in file:
+                line = line.strip()
+                if line == "":
+                    continue
+                course_name, course_number, parent_course_number = line.split(";")
+                course = Course(course_name, int(course_number), int(parent_course_number))
+                courses.append(course)
+            return courses
 
     def clear_courses_data(self):
-        pass
+        if os.path.exists(Database.COURSES_DATA_FILE_PATH):
+            os.remove(Database.COURSES_DATA_FILE_PATH)
 
     def clear_academic_activities_data(self, campus_name: Optional[str] = None):
         """

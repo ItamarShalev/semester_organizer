@@ -10,7 +10,6 @@ from data.type import Type
 from data.user import User
 
 
-@pytest.mark.skip(reason="Not implemented yet.")
 def test_courses_data():
     database = Database()
     courses = [Course(f"Course {i}", i, i + 1000) for i in range(10)]
@@ -18,10 +17,10 @@ def test_courses_data():
     database.clear_courses_data()
     database.save_courses_data(courses)
     loaded_courses = database.load_courses_data()
-    assert courses == loaded_courses
+    assert set(courses) == set(loaded_courses)
 
     database.clear_courses_data()
-    assert database.load_courses_data() == []
+    assert not database.load_courses_data()
 
 
 def test_campus_names():
@@ -34,7 +33,7 @@ def test_campus_names():
     assert campus_names == loaded_campus_names
 
     database.clear_campus_names()
-    assert database.load_campus_names() == []
+    assert not database.load_campus_names()
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
