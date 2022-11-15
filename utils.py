@@ -20,6 +20,10 @@ def get_database_path():
     return os.path.join(get_root_path(), "database")
 
 
+def get_results_path():
+    return os.path.join(get_root_path(), "results")
+
+
 def config_logging_level(level=logging.DEBUG):
     format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
     logging.basicConfig(stream=sys.stdout, datefmt="%H:%M:%S", level=level, format=format_logging)
