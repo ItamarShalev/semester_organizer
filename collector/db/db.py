@@ -57,3 +57,8 @@ class Database:
             user_name = file.readline().strip()
             password = file.readline().strip()
             return User(user_name, password)
+
+    def clear_all_data(self):
+        self.clear_courses_data()
+        self.clear_academic_activities_data()
+        self.clear_campus_names()
