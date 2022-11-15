@@ -4,6 +4,11 @@ import sys
 from data.course import Course
 
 
+def init_project():
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+    logging.getLogger("requests").setLevel(logging.WARNING)
+
+
 def set_logging_to_file(level=logging.DEBUG):
     format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
     logging.basicConfig(filemode="a", filename=os.path.join(get_root_path(), "log.txt"), datefmt="%H:%M:%S",

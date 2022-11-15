@@ -5,7 +5,6 @@ from collector.db.db import Database
 from collector.network.network import Network
 
 
-@pytest.mark.skip(reason="Not implemented yet.")
 def test_check_username_and_password():
     user = Database().load_hard_coded_user_data()
     network = Network(user)
