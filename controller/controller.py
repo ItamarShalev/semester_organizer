@@ -44,7 +44,7 @@ class Controller:
             self.database.save_academic_activities_data(campus_name, activities)
         return activities
 
-    def main_gui_flow(self):
+    def run_main_gui_flow(self):
         user = self.gui.open_login_window()
         self.network.set_user(user)
 
