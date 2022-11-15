@@ -1,3 +1,5 @@
+from typing import List
+
 from data.activity import Activity
 from data.course import Course
 from data.type import Type
@@ -31,3 +33,17 @@ class AcademicActivity(Activity):
 
     def __repr__(self):
         return str(self)
+
+    def same_as_course(self, course: Course):
+        is_same = self.name == course.name
+        is_same = is_same and self.course_number == course.course_number
+        is_same = is_same and self.parent_course_number == course.parent_course_number
+        return is_same
+
+    @staticmethod
+    def union_attendance_required(academic_activities, courses: List[Course]):
+        for activity in academic_activities:
+            for course in courses:
+                if activity.same_as_course(course):
+                    activity.attendance_required = course.attendance_required[activity.type]
+                    break
