@@ -48,7 +48,7 @@ def test_academic_activities():
 
     database.clear_academic_activities_data()
     database.save_academic_activities_data(campus_name, academic_activities)
-    assert database.check_if_courses_data_exists(courses)
+    assert database.check_if_courses_data_exists(campus_name, courses)
 
     loaded_academic_activities = database.load_academic_activities_data(campus_name, courses)
     assert academic_activities == loaded_academic_activities
@@ -64,7 +64,7 @@ def test_academic_activities():
     courses.clear()
     courses.append(Course(f"Course {30}", 30, 30 + 1000))
     courses.append(Course(f"Course {0}", 0, 0 + 1000))
-    assert database.check_if_courses_data_exists(courses)
+    assert database.check_if_courses_data_exists(campus_name, courses)
 
     loaded_academic_activities = database.load_academic_activities_data(campus_name, courses)
     assert all(activity in academic_activities for activity in loaded_academic_activities)
