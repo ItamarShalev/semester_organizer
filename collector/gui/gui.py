@@ -1,6 +1,5 @@
 from typing import List, Tuple
 
-from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.course import Course
 from data.output_format import OutputFormat
@@ -12,10 +11,9 @@ class Gui:
     def open_login_window(self) -> User:
         pass
 
-    def open_academic_activities_window(self, campuses: List[str], courses: List[Course]) -> \
-            Tuple[str, List[AcademicActivity]]:
+    def open_academic_activities_window(self, campuses: List[str], courses: List[Course]) -> Tuple[str, List[Course]]:
         """
-        :return: campus name and academic activities
+        :return: campus names and courses
         """
 
     def open_custom_activities_windows(self) -> List[Activity]:
