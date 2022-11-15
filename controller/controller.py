@@ -71,7 +71,7 @@ class Controller:
         self.logger.info("User data was loaded successfully")
 
         self.network.set_user(user)
-        self.network.check_username_and_password()
+        self.network.connect()
         self.logger.info("The username and password are valid")
 
         self.database.clear_all_data()
