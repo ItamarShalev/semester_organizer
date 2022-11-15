@@ -13,7 +13,7 @@ class Database:
     def save_courses_data(self, courses: List[Course]):
         pass
 
-    def save_academic_activities_data(self, academic_activities: List[AcademicActivity]):
+    def save_academic_activities_data(self, campus_name: str, academic_activities: List[AcademicActivity]):
         pass
 
     def save_campus_names(self, names: List[str]):
@@ -25,8 +25,12 @@ class Database:
     def clear_courses_data(self):
         pass
 
-    def clear_academic_activities_data(self):
-        pass
+    def clear_academic_activities_data(self, campus_name: Optional[str] = None):
+        """
+        The function clears the academic activities data.
+        :param campus_name: if None, the function will clear all the academic activities data.
+        :return:
+        """
 
     def clear_campus_names(self):
         pass
@@ -34,7 +38,7 @@ class Database:
     def check_if_courses_data_exists(self, courses: List[Course]) -> bool:
         pass
 
-    def load_academic_activities_data(self, courses: List[Course]) -> List[AcademicActivity]:
+    def load_academic_activities_data(self, campus_name: str, courses: List[Course]) -> List[AcademicActivity]:
         pass
 
     def load_campus_names(self) -> List[str]:
@@ -62,3 +66,12 @@ class Database:
         self.clear_courses_data()
         self.clear_academic_activities_data()
         self.clear_campus_names()
+
+    def get_common_campuses_names(self) -> List[str]:
+        campus_names = []
+        campus_names.append("מכון לב")
+        campus_names.append("מכון טל")
+        campus_names.append("מכון לוסטיג")
+        campus_names.append("""מח"ר-טל תבונה""")
+        campus_names.append("""מבח"ר בנים""")
+        return campus_names

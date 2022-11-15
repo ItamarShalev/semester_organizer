@@ -4,16 +4,15 @@ from collector.db.db import Database
 from collector.network.network import Network
 from convertor.convertor import Convertor
 from csp import csp
-from data.academic_activity import AcademicActivity
 from data.course import Course
 from data.output_format import OutputFormat
-from data.type import Type
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
 def test_flow_without_gui_without_database():
     database = Database()
     convertor = Convertor()
+    campus_name = "מכון לב"
     user = database.load_hard_coded_user_data()
     network = Network(user)
     assert user, "Don't have user data to check."
@@ -30,11 +29,11 @@ def test_flow_without_gui_without_database():
     assert course in courses, "Some courses are missing."
     database.save_courses_data(courses)
 
-    academic_activities = [AcademicActivity("חשבון אינפני' להנדסה 1", Type.LECTURE, True, "", 120131, 318, "")]
-    network.fill_academic_activities_data("מכון לב", academic_activities)
-    activities_filled = all(activity.no_meetings() for activity in academic_activities)
+    academic_activities, missing_courses_names = network.extract_academic_activities_data(campus_name, [course])
+    missing_meetings_data = any(activity.no_meetings() for activity in academic_activities)
 
-    assert activities_filled, "Can't extract academic activities from the server."
+    assert not missing_courses_names, "The following courses don't have activities: " + ", ".join(missing_courses_names)
+    assert missing_meetings_data, "Can't extract academic activities from the server."
 
     formats = list(OutputFormat)
     schedules = csp.extract_schedules(academic_activities)
@@ -46,6 +45,7 @@ def test_flow_without_gui_without_database():
 def test_flow_without_gui_with_database():
     database = Database()
     convertor = Convertor()
+    campus_name = "מכון לב"
     user = database.load_hard_coded_user_data()
     network = Network(user)
     assert user, "Don't have user data to check."
@@ -55,7 +55,7 @@ def test_flow_without_gui_with_database():
     if not campus_names:
         campus_names = network.extract_campus_names()
         assert campus_names, "Can't extract campus names from the server."
-        assert "מכון לב" in campus_names, "Some campus names are missing."
+        assert campus_name in campus_names, "Some campus names are missing."
         database.save_campus_names(campus_names)
 
     courses = database.load_courses_data()
@@ -66,14 +66,14 @@ def test_flow_without_gui_with_database():
         assert course in courses, "Some courses are missing."
         database.save_courses_data(courses)
 
-    academic_activities = database.load_academic_activities_data([course])
+    academic_activities = database.load_academic_activities_data(campus_name, [course])
     if not academic_activities:
-        academic_activities = [AcademicActivity("חשבון אינפני' להנדסה 1", Type.LECTURE, True, "", 120131, 318, "")]
-        network.fill_academic_activities_data("מכון לב", academic_activities)
+        academic_activities, missings = network.extract_academic_activities_data(campus_name, [course])
+        assert not missings, "The following courses don't have activities: " + ", ".join(missings)
 
-    activities_filled = all(activity.no_meetings() for activity in academic_activities)
+    missing_meetings_data = any(activity.no_meetings() for activity in academic_activities)
 
-    assert activities_filled, "Can't extract academic activities from the server."
+    assert not missing_meetings_data, "Can't extract academic activities from the server."
 
     formats = list(OutputFormat)
     schedules = csp.extract_schedules(academic_activities)

@@ -1,3 +1,4 @@
+import utils
 from collector.db.db import Database
 from collector.gui.gui import Gui
 from collector.network.network import Network
@@ -12,6 +13,7 @@ class Controller:
         self.network = Network()
         self.gui = Gui()
         self.convertor = Convertor()
+        self.logger = utils.get_logging()
 
     def _get_campus_names(self):
         campus_names = self.database.load_campus_names()
@@ -27,24 +29,19 @@ class Controller:
             self.database.save_courses_data(courses)
         return courses
 
-    def _get_academic_activities_data(self, campus_name, courses, academic_activities, gui, network):
-        database = Database()
+    def _get_academic_activities_data(self, campus_name, courses):
         activities = []
 
-        if database.check_if_courses_data_exists(courses):
-            activities = database.load_academic_activities_data(courses)
+        if self.database.check_if_courses_data_exists(courses):
+            activities = self.database.load_academic_activities_data(campus_name, courses)
         else:
-            network.fill_academic_activities_data(campus_name, academic_activities)
-            names_missing_activities = network.fill_academic_activities_data(campus_name, academic_activities)
+            activities, names_missing_activities = self.network.extract_academic_activities_data(campus_name, courses)
 
             if names_missing_activities:
                 message = "The following courses don't have activities: " + ", ".join(names_missing_activities)
-                gui.open_notification_windows(message)
-                activities = [activity for activity in activities if activity.name not in names_missing_activities]
-            else:
-                activities = academic_activities
+                self.gui.open_notification_windows(message)
 
-            database.save_academic_activities_data(activities)
+            self.database.save_academic_activities_data(campus_name, activities)
         return activities
 
     def main_gui_flow(self):
@@ -55,7 +52,7 @@ class Controller:
         courses = self._get_courses_data()
         campus_name, activities = self.gui.open_academic_activities_window(campus_names, courses)
         courses = [activity.convert_to_course_object() for activity in activities]
-        activities = self._get_academic_activities_data(campus_name, courses, activities, self.gui, self.network)
+        activities = self._get_academic_activities_data(campus_name, courses)
         activities += self.gui.open_custom_activities_windows()
         formats = self.gui.open_choose_format_window()
         schedules = csp.extract_schedules(activities)
