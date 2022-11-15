@@ -42,6 +42,9 @@ class Activity:
     def no_meetings(self):
         return not any(meetings for meetings in self.days.values())
 
+    def get_meetings(self):
+        return [meeting for meetings in self.days.values() for meeting in meetings]
+
     @staticmethod
     def get_activities_by_name(activities) -> Dict[str, List]:
         result = {}
