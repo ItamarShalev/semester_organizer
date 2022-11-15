@@ -4,8 +4,10 @@ import sys
 from data.course import Course
 
 
-def set_logging_to_file():
-    get_logging().setFileHandler(logging.FileHandler(os.path.join(get_root_path(), "log.txt")))
+def set_logging_to_file(level=logging.DEBUG):
+    format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
+    logging.basicConfig(filemode="a", filename=os.path.join(get_root_path(), "log.txt"), datefmt="%H:%M:%S",
+                        level=level, format=format_logging)
 
 
 def get_root_path():
