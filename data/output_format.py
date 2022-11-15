@@ -1,7 +1,7 @@
-from enum import Enum, auto
+from enum import Enum
 
 
 class OutputFormat(Enum):
-    CSV = auto()
-    EXCEL = auto()
-    IMAGE = auto()
+    CSV = "csv"
+    EXCEL = "xlsx"
+    IMAGE = "png"
