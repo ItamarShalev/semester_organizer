@@ -4,6 +4,10 @@ import sys
 from data.course import Course
 
 
+def set_logging_to_file():
+    get_logging().setFileHandler(logging.FileHandler(os.path.join(get_root_path(), "log.txt")))
+
+
 def get_root_path():
     return os.path.dirname(os.path.abspath(__file__))
 
