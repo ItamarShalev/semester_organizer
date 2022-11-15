@@ -9,6 +9,7 @@ from data.output_format import OutputFormat
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
+@pytest.mark.network()
 def test_flow_without_gui_without_database():
     database = Database()
     convertor = Convertor()
@@ -42,6 +43,7 @@ def test_flow_without_gui_without_database():
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
+@pytest.mark.network()
 def test_flow_without_gui_with_database():
     database = Database()
     convertor = Convertor()

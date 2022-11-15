@@ -63,4 +63,4 @@ jobs:
           echo ${{ secrets.PASSWORD_LEVNET }} >> database/user_data.txt
       - name: Run pytest
         run: |
-          pytest $(git ls-files 'test_*.py')
+          pytest $(git ls-files 'test_*.py') -v -m "not network"
