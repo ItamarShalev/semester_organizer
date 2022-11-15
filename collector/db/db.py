@@ -9,6 +9,7 @@ from data.user import User
 
 class Database:
     USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
+    CAMPUS_NAMES_FILE_PATH = os.path.join(utils.get_database_path(), "campus_names.txt")
 
     def save_courses_data(self, courses: List[Course]):
         pass
@@ -17,7 +18,8 @@ class Database:
         pass
 
     def save_campus_names(self, names: List[str]):
-        pass
+        with open(Database.CAMPUS_NAMES_FILE_PATH, "w") as file:
+            file.write("\n".join(names))
 
     def load_courses_data(self) -> List[Course]:
         pass
@@ -33,7 +35,8 @@ class Database:
         """
 
     def clear_campus_names(self):
-        pass
+        if os.path.exists(Database.CAMPUS_NAMES_FILE_PATH):
+            os.remove(Database.CAMPUS_NAMES_FILE_PATH)
 
     def check_if_courses_data_exists(self, courses: List[Course]) -> bool:
         pass
@@ -42,7 +45,10 @@ class Database:
         pass
 
     def load_campus_names(self) -> List[str]:
-        pass
+        if not os.path.exists(Database.CAMPUS_NAMES_FILE_PATH):
+            return []
+        with open(Database.CAMPUS_NAMES_FILE_PATH, "r") as file:
+            return file.read().splitlines()
 
     def load_hard_coded_user_data(self) -> Optional[User]:
         """
