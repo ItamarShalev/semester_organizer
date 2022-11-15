@@ -24,7 +24,6 @@ def test_courses_data():
     assert database.load_courses_data() == []
 
 
-@pytest.mark.skip(reason="Not implemented yet.")
 def test_campus_names():
     database = Database()
     campus_names = [f"Course {i}" for i in range(10)]
