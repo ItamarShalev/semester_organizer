@@ -1,7 +1,5 @@
 import os
 
-import pytest
-
 import utils
 from collector.db.db import Database
 from data.academic_activity import AcademicActivity
@@ -36,29 +34,30 @@ def test_campus_names():
     assert not database.load_campus_names()
 
 
-@pytest.mark.skip(reason="Not implemented yet.")
 def test_academic_activities():
     database = Database()
     academic_activities = []
     campus_name = utils.get_campus_name_test()
     for i in range(10):
-        academic_activities.append(AcademicActivity(f"Course {i}", Type.LECTURE, True, f"A {i}", i, i + 1000, ""))
+        academic_activities.append(AcademicActivity(f"Course {i}", Type.LECTURE, True, f"A {i}", i, i + 1000, "",
+                                                    activity_id=f"{i}"))
 
-    courses = [activity.convert_to_course_object() for activity in academic_activities]
+    courses = AcademicActivity.extract_courses_data(academic_activities)
 
     database.clear_academic_activities_data()
     database.save_academic_activities_data(campus_name, academic_activities)
     assert database.check_if_courses_data_exists(campus_name, courses)
 
     loaded_academic_activities = database.load_academic_activities_data(campus_name, courses)
-    assert academic_activities == loaded_academic_activities
+    assert set(academic_activities) == set(loaded_academic_activities)
 
     database.clear_campus_names()
-    assert database.load_campus_names() == []
+    assert not database.load_campus_names()
 
     database.save_academic_activities_data(campus_name, academic_activities)
     academic_activities[0].type = Type.LAB
-    academic_activities.append(AcademicActivity(f"Course {30}", Type.LECTURE, True, f"A {30}", 30, 30 + 1000, ""))
+    academic_activities.append(AcademicActivity(f"Course {30}", Type.LECTURE, True, f"A {30}", 30, 30 + 1000, "",
+                                                activity_id=f"{30}"))
     database.save_academic_activities_data(campus_name, academic_activities)
 
     courses.clear()
@@ -67,10 +66,10 @@ def test_academic_activities():
     assert database.check_if_courses_data_exists(campus_name, courses)
 
     loaded_academic_activities = database.load_academic_activities_data(campus_name, courses)
-    assert all(activity in academic_activities for activity in loaded_academic_activities)
+    assert set(loaded_academic_activities).issubset(set(academic_activities))
 
     database.clear_academic_activities_data()
-    assert database.load_academic_activities_data(campus_name, courses) == []
+    assert not database.load_academic_activities_data(campus_name, courses)
 
 
 def test_load_hard_coded_user_data():
