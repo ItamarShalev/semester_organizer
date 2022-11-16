@@ -24,7 +24,7 @@ def test_flow_without_gui_without_database():
     assert campus_name in campus_names, "Some campus names are missing."
     database.save_campus_names(campus_names)
 
-    courses = network.extract_all_courses()
+    courses = network.extract_all_courses(campus_name)
     assert courses, "Can't extract courses from the server."
     course = utils.get_course_data_test()
     assert course in courses, "Some courses are missing."
@@ -64,7 +64,7 @@ def test_flow_without_gui_with_database():
     course = utils.get_course_data_test()
     campus_name = utils.get_campus_name_test()
     if not courses:
-        courses = network.extract_all_courses()
+        courses = network.extract_all_courses(campus_name)
         assert courses, "Can't extract courses from the server."
         assert course in courses, "Some courses are missing."
         database.save_courses_data(courses)
