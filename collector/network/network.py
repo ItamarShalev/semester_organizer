@@ -60,7 +60,7 @@ class Network:
         :return: list of all academic activities by the courses, list of all the courses names that missing data
         """
 
-    def extract_all_courses(self) -> List[Course]:
+    def extract_all_courses(self, campus_name: str) -> List[Course]:
         pass
 
     def extract_campus_names(self) -> List[str]:

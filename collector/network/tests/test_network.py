@@ -18,10 +18,11 @@ def test_connect():
 def test_extract_all_courses():
     user = Database().load_hard_coded_user_data()
     network = Network(user)
+    campus_name = utils.get_campus_name_test()
     assert user, "Don't have user data to check."
     assert network.connect(), "Can't connect to the server."
 
-    courses = network.extract_all_courses()
+    courses = network.extract_all_courses(campus_name)
     assert courses, "Can't extract courses from the server."
 
 

@@ -26,7 +26,7 @@ class Controller:
     def _get_courses_data(self):
         courses = self.database.load_courses_data()
         if not courses:
-            courses = self.network.extract_all_courses()
+            courses = self.network.extract_all_courses(utils.get_campus_name_test())
             self.database.save_courses_data(courses)
         return courses
 
@@ -83,7 +83,7 @@ class Controller:
 
         self.database.save_campus_names(campus_names)
 
-        courses = self.network.extract_all_courses()
+        courses = self.network.extract_all_courses(utils.get_campus_name_test())
         self.logger.debug("The courses were extracted successfully")
         self.logger.debug("The courses are: %s", ", ".join([course.name for course in courses]))
 
