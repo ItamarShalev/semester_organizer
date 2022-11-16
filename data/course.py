@@ -3,7 +3,8 @@ from data.type import Type
 
 class Course:
 
-    def __init__(self, name: str, course_number: int, parent_course_number: int, activity_id: str = None):
+    def __init__(self, name: str, course_number: int, parent_course_number: int, activity_id: str = None,
+                 actual_course_number: int = None):
         """
         :param activity_id: can be None if the course is not an active activity
         """
@@ -12,6 +13,7 @@ class Course:
         self.parent_course_number = parent_course_number
         self.attendance_required = {type: True for type in [Type.LECTURE, Type.PRACTICE, Type.LAB]}
         self.activity_id = activity_id
+        self.actual_course_number = actual_course_number
 
     def __eq__(self, other):
         if self.activity_id and other.activity_id:
