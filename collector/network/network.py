@@ -15,18 +15,13 @@ class Network:
 
     def __init__(self, user: Optional[User] = None):
         self.user = user
-        self.cookies = None
         self.logger = utils.get_logging()
-        self.headers = {'sec-ch-ua': '"Microsoft Edge";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
-                        'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json;charset=UTF-8',
-                        'DNT': '1', 'sec-ch-ua-mobile': '?0',
-                        'User-Agent': 'Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.42',
-                        'sec-ch-ua-platform': '"Windows"', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors',
-                        'Sec-Fetch-Dest': 'empty', 'host': 'levnet.jct.ac.il', }
 
-    def connect(self) -> bool:
-        if self.user is None:
-            raise ValueError("The user is not set.")
+    def set_user(self, user: User):
+        self.user = user
+
+    def check_connection(self) -> bool:
+        assert self.user, "ERROR: The user is not set."
 
         response = None
 
@@ -34,20 +29,26 @@ class Network:
         dictionary = {"username": self.user.username, "password": self.user.password, "defaultLanguage": 1}
         payload = str(json.dumps(dictionary, indent=4))
 
+        headers = {'sec-ch-ua': '"Microsoft Edge";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+                   'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json;charset=UTF-8',
+                   'DNT': '1', 'sec-ch-ua-mobile': '?0',
+                   'User-Agent': 'Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.42',
+                   'sec-ch-ua-platform': '"Windows"', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors',
+                   'Sec-Fetch-Dest': 'empty', 'host': 'levnet.jct.ac.il', }
+
         try:
-            response = requests.request("POST", url, headers=self.headers, data=payload, timeout=self.TIMEOUT)
+            response = requests.request("POST", url, headers=headers, data=payload, timeout=self.TIMEOUT)
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as error:
             self.logger.error("Connection error: %s", str(error))
             return False
 
-        if response.status_code == Network.HTTP_OK:
-            data = response.json()
-            success = data["success"]
-            if success:
-                self.cookies = response.cookies
-            return success
+        self.logger.debug("Response: %s", response.text)
+        self.logger.debug("Status code: %s", response.status_code)
 
-        return False
+        return response.status_code == Network.HTTP_OK and response.json()["success"]
+
+    def connect(self):
+        pass
 
     def extract_academic_activities_data(self, campus_name: str, courses: List[int]) -> \
             Tuple[List[AcademicActivity], List[str]]:
@@ -65,6 +66,3 @@ class Network:
 
     def extract_campus_names(self) -> List[str]:
         pass
-
-    def set_user(self, user: User):
-        self.user = user

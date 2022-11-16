@@ -71,7 +71,7 @@ class Controller:
         self.logger.debug("User data was loaded successfully")
 
         self.network.set_user(user)
-        assert self.network.connect(), "ERROR: Can't connect to the levnet website"
+        assert self.network.check_connection(), "ERROR: Can't connect to the levnet website"
         self.logger.debug("The username and password are valid")
 
         self.database.clear_all_data()
