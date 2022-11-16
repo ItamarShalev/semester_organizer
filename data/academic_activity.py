@@ -47,7 +47,7 @@ class AcademicActivity(Activity):
         return [activity.convert_to_course_object() for activity in academic_activities]
 
     @staticmethod
-    def union_attendance_required(academic_activities, courses: List[Course]):
+    def union_courses(academic_activities, courses: List[Course]):
         for activity in academic_activities:
             for course in courses:
                 if activity.same_as_course(course):
