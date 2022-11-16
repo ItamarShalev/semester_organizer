@@ -49,14 +49,14 @@ class Network:
 
         return False
 
-    def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \
+    def extract_academic_activities_data(self, campus_name: str, courses: List[int]) -> \
             Tuple[List[AcademicActivity], List[str]]:
         """
         The function fills the academic activities' data.
         The function will connect to the server and will extract the data from the server by the parent course number.
         :param user: the username and password
         :param campus_name: the campus name
-        :param courses: all the courses to get
+        :param courses: all parent courses to extract
         :return: list of all academic activities by the courses, list of all the courses names that missing data
         """
 
