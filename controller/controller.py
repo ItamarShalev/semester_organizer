@@ -53,7 +53,7 @@ class Controller:
         courses = self._get_courses_data()
         campus_name, courses = self.gui.open_academic_activities_window(campus_names, courses)
         activities = self._get_academic_activities_data(campus_name, courses)
-        AcademicActivity.union_attendance_required(activities, courses)
+        AcademicActivity.union_courses(activities, courses)
         activities += self.gui.open_custom_activities_windows()
         formats = self.gui.open_choose_format_window()
         schedules = csp.extract_schedules(activities)
