@@ -13,11 +13,10 @@ from data.day import Day
 from data.schedule import Schedule
 
 
-def _create_scduale(file_name: str):
+def _create_schedule(file_name: str):
     activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 100, "a")
-    activity.add_slot(Meeting(Day.MONDAY, "10:00", "12:00"))
-    scduale = Schedule("a", file_name, None, [activity])
-    return scduale
+    activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("12:00")))
+    return Schedule("a", file_name, "", [activity])
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
@@ -28,7 +27,7 @@ def test_convert_pdf(file_type: OutputFormat):
     extension = file_type.value
     schedules = []
     for i in range(1, 10):
-        schedules.append(_create_scduale(f"option_{i}"))
+        schedules.append(_create_schedule(f"option_{i}"))
 
     convertor.convert_activities(schedules, path, [file_type])
     for i in range(1, 10):
@@ -46,7 +45,7 @@ def test_convert_all_types():
     path = os.path.join(utils.get_results_path(), "test_results")
     schedules = []
     for i in range(1, 10):
-        schedules.append(_create_scduale(f"option_{i}"))
+        schedules.append(_create_schedule(f"option_{i}"))
 
     convertor.convert_activities(schedules, path, list(OutputFormat))
 
