@@ -36,6 +36,9 @@ class AcademicActivity(Activity):
     def __repr__(self):
         return str(self)
 
+    def __hash__(self):
+        return hash((self.name, self.course_number, self.parent_course_number, self.activity_id))
+
     def same_as_course(self, course: Course):
         is_same = self.name == course.name
         is_same = is_same and self.course_number == course.course_number
