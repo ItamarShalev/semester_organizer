@@ -48,7 +48,9 @@ class Network:
         return response.status_code == Network.HTTP_OK and response.json()["success"]
 
     def connect(self):
-        pass
+        """
+        The function connects the user to the server.
+        """
 
     def extract_academic_activities_data(self, campus_name: str, courses: List[int]) -> \
             Tuple[List[AcademicActivity], List[str]]:
@@ -66,3 +68,8 @@ class Network:
 
     def extract_campus_names(self) -> List[str]:
         pass
+
+    def disconnect(self):
+        """
+        The function disconnects the user from the server.
+        """
