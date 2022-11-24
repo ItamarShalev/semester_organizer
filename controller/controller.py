@@ -65,6 +65,8 @@ class Controller:
         self.gui.open_notification_windows("The schedules were saved in the 'results' folder")
 
     def run_update_levnet_data_flow(self):
+        self.network = Network(run_in_background=True)
+
         self.logger.debug("Start updating the levnet data")
         user = self.database.load_hard_coded_user_data()
         assert user, "There is no user data, can't access the levnet website."
