@@ -1,3 +1,5 @@
-pytest==7.2.0
-python_constraint==1.4.0
-requests==2.28.1
+pytest>=7.2.0
+python_constraint>=1.4.0
+requests>=2.28.1
+selenium>=4.6.0
+webdriver-manager>=3.8.5

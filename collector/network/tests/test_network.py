@@ -1,12 +1,20 @@
 import pytest
 import utils
-
 from collector.db.db import Database
 from collector.network.network import Network
 
 
+@pytest.mark.skip()
 @pytest.mark.network()
 def test_connect():
+    user = Database().load_hard_coded_user_data()
+    network = Network(user)
+    assert user, "Don't have user data to check."
+    network.connect()
+
+
+@pytest.mark.network()
+def test_check_connection():
     user = Database().load_hard_coded_user_data()
     network = Network(user)
     assert user, "Don't have user data to check."
