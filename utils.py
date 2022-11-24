@@ -7,6 +7,9 @@ from data.course import Course
 def init_project():
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("requests").setLevel(logging.WARNING)
+    logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
+    logging.getLogger("charset_normalizer").setLevel(logging.WARNING)
+    logging.getLogger("WDM").setLevel(logging.WARNING)
 
 
 def set_logging_to_file(level=logging.DEBUG):
