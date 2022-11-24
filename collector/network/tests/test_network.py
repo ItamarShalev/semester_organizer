@@ -7,22 +7,23 @@ from collector.network.network import Network
 @pytest.mark.network()
 def test_check_connection():
     user = Database().load_hard_coded_user_data()
-    network = Network(user)
+    network = Network(user, run_in_background=True)
     assert network.check_connection(), "Can't connect to the server."
 
 
 @pytest.mark.network()
 def test_connect():
     user = Database().load_hard_coded_user_data()
-    network = Network(user)
+    network = Network(user, run_in_background=True)
     assert network.check_connection(), "Can't connect to the server."
     network.connect()
 
 
+@pytest.mark.skip(reason="Not implemented yet.")
 @pytest.mark.network()
 def test_extract_all_courses():
     user = Database().load_hard_coded_user_data()
-    network = Network(user)
+    network = Network(user, run_in_background=True)
     campus_name = utils.get_campus_name_test()
     assert network.check_connection(), "Can't connect to the server."
 
@@ -34,7 +35,7 @@ def test_extract_all_courses():
 def test_extract_campus_names():
     database = Database()
     user = database.load_hard_coded_user_data()
-    network = Network(user)
+    network = Network(user, run_in_background=True)
     campus_name = utils.get_campus_name_test()
 
     campus_names = network.extract_campus_names()
@@ -46,7 +47,7 @@ def test_extract_campus_names():
 @pytest.mark.network()
 def test_fill_academic_activities_data():
     user = Database().load_hard_coded_user_data()
-    network = Network(user)
+    network = Network(user, run_in_background=True)
     assert network.check_connection(), "Can't connect to the server."
 
     campus_names = network.extract_campus_names()
