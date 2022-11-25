@@ -4,10 +4,9 @@ from data.activity import Activity
 from data.day import Day
 from data.meeting import Meeting
 from data.type import Type
-from conftest import TestClass
 
 
-class TestCsp(TestClass):
+class TestCsp:
 
     def test_one_from_one_option(self):
         activities = []

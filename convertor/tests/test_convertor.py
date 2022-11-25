@@ -2,7 +2,6 @@ import os
 import shutil
 import pytest
 import utils
-from conftest import TestClass
 
 from convertor.convertor import Convertor
 from data.output_format import OutputFormat
@@ -14,7 +13,7 @@ from data.schedule import Schedule
 
 
 @pytest.mark.skip(reason="Not implemented yet.")
-class TestConvertor(TestClass):
+class TestConvertor:
 
     def _create_schedule(self, file_name: str):
         activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 100, "a")
@@ -22,7 +21,7 @@ class TestConvertor(TestClass):
         return Schedule("a", file_name, "", [activity])
 
     @pytest.mark.parametrize("file_type", list(OutputFormat))
-    def test_convert_pdf(self, file_type: OutputFormat):
+    def test_convert_type(self, file_type: OutputFormat):
         convertor = Convertor()
         path = os.path.join(utils.get_results_path(), "test_results")
         extension = file_type.value
