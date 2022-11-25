@@ -12,13 +12,15 @@ from data.output_format import OutputFormat
 @pytest.mark.skip(reason="Not implemented yet.")
 class TestController:
 
+    run_in_background = True
+
     def test_flow_without_gui_without_database(self):
 
         database = Database()
         convertor = Convertor()
         campus_name = utils.get_campus_name_test()
         user = database.load_hard_coded_user_data()
-        network = Network(user)
+        network = Network(user, run_in_background=TestController.run_in_background)
         assert user, "Don't have user data to check."
 
         assert network.check_connection(), "Can't connect to the server."
@@ -53,7 +55,7 @@ class TestController:
         convertor = Convertor()
         campus_name = "מכון לב"
         user = database.load_hard_coded_user_data()
-        network = Network(user)
+        network = Network(user, run_in_background=TestController.run_in_background)
         assert user, "Don't have user data to check."
 
         assert network.check_connection(), "Can't connect to the server."
