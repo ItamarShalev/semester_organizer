@@ -57,9 +57,7 @@ class Network:
         self._driver = None
 
     def __del__(self):
-        if self._driver:
-            self._driver.quit()
-            self._driver = None
+        self.disconnect()
 
     def _create_driver(self):
         """
@@ -195,6 +193,7 @@ class Network:
 
     def extract_campus_names(self) -> List[str]:
 
+        self.logger.debug("Extracting campus names...")
         self._get_url_after_connect('https://levnet.jct.ac.il/Course/ActualCourses.aspx')
 
         # Wait for the campus names to load
@@ -207,9 +206,26 @@ class Network:
         soup = BeautifulSoup(self.driver.page_source, "html.parser")
         campuses_html = soup.find("select", {"ng-model": "query.selectedExtension"}).findAll("option")
         campuses = [campus.text.strip() for campus in campuses_html if campus.text.strip() != "הכל"]
+        self.logger.debug("Campuses found: %s", campuses)
         return campuses
 
     def disconnect(self):
         """
         The function disconnects the user from the server.
         """
+        self.logger.debug("Inside disconnect function")
+        if self._driver is not None:
+            if self._check_connection_to_server():
+                self.logger.debug("Disconnecting from the server...")
+                self.driver.get('https://levnet.jct.ac.il/Student/Default.aspx')
+                # Wait for the logout button
+                try:
+                    logout_button = WebDriverWait(self.driver, Network.TIMEOUT).until(
+                        expected_conditions.element_to_be_clickable(
+                            (By.XPATH, '//*[@id="mainForm"]/header/section[2]/ul[1]/li[4]/a')))
+                    logout_button.click()
+                except TimeoutException:
+                    self.logger.debug("Logout button not found")
+            self.logger.debug("Closing the driver...")
+            self.driver.quit()
+            self._driver = None

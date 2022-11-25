@@ -17,9 +17,10 @@ class TestNetwork(TestClass):
         network = Network(cls.user, run_in_background=True)
         assert network.check_connection(), "Can't connect to the server."
 
-    def test_connect(self):
+    def test_connect_disconnect(self):
         network = Network(TestNetwork.user, run_in_background=True)
-        assert network.check_connection(), "Can't connect to the server."  # network.connect()
+        network.connect()
+        network.disconnect()
 
     @pytest.mark.skip(reason="Not implemented yet.")
     def test_extract_all_courses(self):
