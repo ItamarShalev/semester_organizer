@@ -2,50 +2,51 @@ import pytest
 import utils
 from collector.db.db import Database
 from collector.network.network import Network
-from conftest import TestClass
 
 
 @pytest.mark.network
-class TestNetwork(TestClass):
+class TestNetwork:
+
+    DEPENDENCIES = ["test_check_setup"]
+    run_in_background = True
     user = None
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.user = Database().load_hard_coded_user_data()
-        assert cls.user, "Can't load user data."
-        network = Network(cls.user, run_in_background=True)
+    def test_check_setup(self):
+        user = Database().load_hard_coded_user_data()
+        assert user, "Can't load user data."
+        network = Network(user, run_in_background=TestNetwork.run_in_background)
         assert network.check_connection(), "Can't connect to the server."
+        TestNetwork.user = user
 
+    @pytest.mark.skipif("not TestNetwork.user", reason="There is no user data to check.")
     def test_connect_disconnect(self):
-        network = Network(TestNetwork.user, run_in_background=True)
+        network = Network(TestNetwork.user, run_in_background=TestNetwork.run_in_background)
         network.connect()
         network.disconnect()
 
     @pytest.mark.skip(reason="Not implemented yet.")
+    @pytest.mark.skipif("not TestNetwork.user", reason="There is no user data to check.")
     def test_extract_all_courses(self):
-        network = Network(TestNetwork.user, run_in_background=True)
+        network = Network(TestNetwork.user, run_in_background=TestNetwork.run_in_background)
         campus_name = utils.get_campus_name_test()
         assert network.check_connection(), "Can't connect to the server."
 
         courses = network.extract_all_courses(campus_name)
         assert courses, "Can't extract courses from the server."
 
+    @pytest.mark.skipif("not TestNetwork.user", reason="There is no user data to check.")
     def test_extract_campus_names(self):
         database = Database()
-        network = Network(TestNetwork.user, run_in_background=True)
+        network = Network(TestNetwork.user, run_in_background=TestNetwork.run_in_background)
         campus_names = network.extract_campus_names()
         assert campus_names, "Can't extract campus names from the server."
         assert all(
             campus_name for campus_name in database.get_common_campuses_names()), "Some campuses names are missing."
 
     @pytest.mark.skip(reason="Not implemented yet.")
+    @pytest.mark.skipif("not TestNetwork.user", reason="There is no user data to check.")
     def test_fill_academic_activities_data(self):
-        network = Network(TestNetwork.user, run_in_background=True)
-        assert network.check_connection(), "Can't connect to the server."
-
-        campus_names = network.extract_campus_names()
-        assert campus_names, "Can't extract campus names from the server."
+        network = Network(TestNetwork.user, run_in_background=TestNetwork.run_in_background)
 
         course = utils.get_course_data_test()
         campus_name = utils.get_campus_name_test()

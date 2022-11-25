@@ -3,7 +3,6 @@ import utils
 
 from collector.db.db import Database
 from collector.network.network import Network
-from conftest import TestClass
 from convertor.convertor import Convertor
 from csp import csp
 from data.output_format import OutputFormat
@@ -11,7 +10,7 @@ from data.output_format import OutputFormat
 
 @pytest.mark.network()
 @pytest.mark.skip(reason="Not implemented yet.")
-class TestController(TestClass):
+class TestController:
 
     def test_flow_without_gui_without_database(self):
 

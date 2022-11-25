@@ -1,15 +1,16 @@
 import os
 
+import pytest
+
 import utils
 from collector.db.db import Database
-from conftest import TestClass
 from data.academic_activity import AcademicActivity
 from data.course import Course
 from data.type import Type
 from data.user import User
 
 
-class TestDatabase(TestClass):
+class TestDatabase:
 
     def test_courses_data(self):
         database = Database()
@@ -69,11 +70,9 @@ class TestDatabase(TestClass):
         database.clear_academic_activities_data()
         assert not database.load_academic_activities_data(campus_name, courses)
 
+    @pytest.mark.skipif("Database().load_hard_coded_user_data()", reason="User data already defined.")
     def test_load_hard_coded_user_data(self):
         database = Database()
-        if database.load_hard_coded_user_data():
-            utils.get_logging().debug("user data already defined, don't overwrite it.")
-            return
         user = User("username", "password")
         with open(Database.USER_NAME_FILE_PATH, "w+") as file:
             file.write(f"{user.username}\n{user.password}")
