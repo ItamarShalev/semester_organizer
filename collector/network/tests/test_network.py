@@ -7,7 +7,6 @@ from collector.network.network import Network
 @pytest.mark.network
 class TestNetwork:
 
-    DEPENDENCIES = ["test_check_setup"]
     run_in_background = True
     user = None
 
