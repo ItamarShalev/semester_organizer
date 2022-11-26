@@ -1,12 +1,17 @@
 from typing import List, Optional, Tuple
 
 from enum import Enum
+from contextlib import suppress
+from abc import ABC, abstractmethod
 import json
 import requests
 
 from bs4 import BeautifulSoup
-from selenium import webdriver
 
+
+from requests.exceptions import Timeout
+
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
@@ -46,18 +51,193 @@ class WeakNetworkConnection(Exception):
         super().__init__("ERROR: Weak network connection, please try to refresh or change your network and again later")
 
 
-class Network:
+class Network(ABC):
     HTTP_OK = 200
     TIMEOUT = 10
 
-    def __init__(self, user: Optional[User] = None, run_in_background: bool = False):
+    def __init__(self, user: Optional[User] = None):
         self._user = user
         self.logger = utils.get_logging()
-        self.run_in_background = run_in_background
-        self._driver = None
 
     def __del__(self):
         self.disconnect()
+
+    def set_user(self, user: User):
+        self._user = user
+
+    @abstractmethod
+    def check_connection(self) -> bool:
+        pass
+
+    @abstractmethod
+    def connect(self):
+        pass
+
+    @abstractmethod
+    def disconnect(self):
+        pass
+
+    @abstractmethod
+    def extract_campus_names(self) -> List[str]:
+        pass
+
+    @abstractmethod
+    def extract_all_courses(self, campus_name: str) -> List[Course]:
+        pass
+
+    @abstractmethod
+    def extract_academic_activities_data(self, campus_name: str, courses: List[int]) -> \
+            Tuple[List[AcademicActivity], List[str]]:
+        """
+        The function fills the academic activities' data.
+        The function will connect to the server and will extract the data from the server by the parent course number.
+        :param user: the username and password
+        :param campus_name: the campus name
+        :param courses: all parent courses to extract
+        :return: list of all academic activities by the courses, list of all the courses names that missing data
+        """
+
+
+class NetworkHttp(Network):
+
+    def __init__(self, user: Optional[User] = None):
+        super().__init__(user)
+        self._session = None
+        self._campuess = None
+
+    @property
+    def session(self):
+        if self._session is None:
+            self._session = requests.Session()
+            headers = {'sec-ch-ua': '"Microsoft Edge";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+                       'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json;charset=UTF-8',
+                       'DNT': '1', 'sec-ch-ua-mobile': '?0',
+                       'User-Agent': 'Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.42',
+                       'sec-ch-ua-platform': '"Windows"', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-Mode': 'cors',
+                       'Sec-Fetch-Dest': 'empty', 'host': 'levnet.jct.ac.il', }
+            self._session.headers = headers
+        return self._session
+
+    def is_connected(self):
+        return self._session and self._session.cookies
+
+    def check_connection(self) -> bool:
+        url = "https://levnet.jct.ac.il/api/home/login.ashx?action=TryLogin"
+        data = {"username": self._user.username, "password": self._user.password}
+        response = None
+        try:
+            response = self.session.post(url, data=json.dumps(data), timeout=Network.TIMEOUT)
+        except Timeout as error:
+            self.logger.error("Connection error: %s", str(error))
+            return False
+
+        self.logger.debug("Response: %s", response.text)
+        self.logger.debug("Status code: %s", response.status_code)
+
+        return response.status_code == Network.HTTP_OK and response.json()["success"]
+
+    def connect(self):
+        connected_successed = False
+        try:
+            connected_successed = self.check_connection()
+        except Exception as error:
+            self.logger.error("Connection error: %s", str(error))
+            raise RuntimeError("Failed to connect") from error
+        if not connected_successed:
+            raise RuntimeError("Failed to connect")
+
+    def disconnect(self):
+        if not self._session:
+            url = "https://levnet.jct.ac.il/api/common/account.ashx?action=Logout"
+            with suppress(Exception):
+                self.session.post(url, timeout=Network.TIMEOUT)
+            self._session.close()
+            self._session = None
+
+    def extract_campus_names(self) -> List[str]:
+        if not self.is_connected():
+            self.connect()
+
+        url = "https://levnet.jct.ac.il/api/common/parentCourses.ashx?action=LoadParentCourse&ParentCourseID=318"
+        response = None
+        try:
+            response = self.session.post(url, timeout=Network.TIMEOUT)
+        except Timeout as error:
+            self.logger.error("Connection error: %s", str(error))
+            raise WeakNetworkConnection() from error
+
+        json_data = response.json()
+        if not json_data["success"]:
+            raise RuntimeError("Failed to extract campus names")
+        self._campuess = {campus["name"]: campus["id"] for campus in json_data["extensions"]}
+        return list(self._campuess.keys())
+
+    def extract_academic_activities_data(self, campus_name: str, courses: List[int]) -> \
+            Tuple[List[AcademicActivity], List[str]]:
+        """
+        The function fills the academic activities' data.
+        The function will connect to the server and will extract the data from the server by the parent course number.
+        :param user: the username and password
+        :param campus_name: the campus name
+        :param courses: all parent courses to extract
+        :return: list of all academic activities by the courses, list of all the courses names that missing data
+        """
+
+    @property
+    def campuess(self):
+        if self._campuess is None:
+            self.extract_campus_names()
+        return self._campuess
+
+    def extract_all_courses(self, campus_name: str) -> List[Course]:
+        if not self.is_connected():
+            self.connect()
+
+        if campus_name not in self.campuess.keys():
+            raise RuntimeError("Failed to extract courses")
+
+        url = "https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?action=LoadPlannedMultiYearPrograms"
+
+        payload = {"selectedAcademicYear": utils.get_current_hebrew_year(),
+                   "selectedExtension": self.campuess[campus_name], "selectedDepartment": 20, "current": 1}
+        response = self.session.post(url, data=json.dumps(payload), timeout=Network.TIMEOUT)
+        if response.status_code != Network.HTTP_OK or not response.json()["success"]:
+            raise RuntimeError("Failed to extract courses")
+        classes_names = ["מדעי המחשב", "הנדסת תוכנה"]
+
+        def is_relvant_program(item):
+            is_relvant = item["credits"] and item["coursesCount"] > 0
+            is_relvant = is_relvant and any((name in item["trackName"] for name in classes_names))
+            return is_relvant
+
+        relvants_programs = [item for item in response.json()["items"] if is_relvant_program(item)]
+        courses = set()
+
+        for program in relvants_programs:
+            program_id = program["id"]
+            url = f"https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?" \
+                  f"action=GetMultiYearPlannedProgramMembersWithFilters&InitialProgramID={program_id}"
+            response = self.session.post(url, data=payload)
+            if not response.json()["success"]:
+                raise RuntimeError("Failed to extract courses")
+            semesters = [semster_program["members"] for semster_program in response.json()["allMembers"]]
+            for semester in semesters:
+                for course in semester:
+                    name = course["parentCourseName"].strip()
+                    parent_course_id = course["parentCourseID"]
+                    course_number = course["parentCourseNumber"]
+                    course_data = Course(name, course_number, parent_course_id)
+                    courses.add(course_data)
+
+        return list(courses)
+
+
+class NetworkDriver(Network):
+
+    def __init__(self, user: Optional[User] = None, run_in_background: bool = False):
+        super().__init__(user)
+        self.run_in_background = run_in_background
+        self._driver = None
 
     def _create_driver(self):
         """
@@ -110,9 +290,6 @@ class Network:
     def user(self) -> User:
         assert self._user, "User is not set"
         return self._user
-
-    def set_user(self, user: User):
-        self.user = user
 
     def check_connection(self) -> bool:
 
@@ -189,7 +366,11 @@ class Network:
         """
 
     def extract_all_courses(self, campus_name: str) -> List[Course]:
-        pass
+        """
+        For now, extract only courses related to the campus and computer department.
+        :param campus_name: the campus name
+        :return: list of courses
+        """
 
     def extract_campus_names(self) -> List[str]:
 

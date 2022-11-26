@@ -2,7 +2,7 @@ import pytest
 import utils
 
 from collector.db.db import Database
-from collector.network.network import Network
+from collector.network.network import NetworkHttp
 from convertor.convertor import Convertor
 from csp import csp
 from data.output_format import OutputFormat
@@ -20,7 +20,7 @@ class TestController:
         convertor = Convertor()
         campus_name = utils.get_campus_name_test()
         user = database.load_hard_coded_user_data()
-        network = Network(user, run_in_background=TestController.run_in_background)
+        network = NetworkHttp(user)
         assert user, "Don't have user data to check."
 
         assert network.check_connection(), "Can't connect to the server."
@@ -55,7 +55,7 @@ class TestController:
         convertor = Convertor()
         campus_name = "מכון לב"
         user = database.load_hard_coded_user_data()
-        network = Network(user, run_in_background=TestController.run_in_background)
+        network = NetworkHttp(user)
         assert user, "Don't have user data to check."
 
         assert network.check_connection(), "Can't connect to the server."

@@ -1,7 +1,7 @@
 import utils
 from collector.db.db import Database
 from collector.gui.gui import Gui
-from collector.network.network import Network
+from collector.network.network import NetworkHttp
 from convertor.convertor import Convertor
 from data.academic_activity import AcademicActivity
 from csp import csp
@@ -11,7 +11,7 @@ class Controller:
 
     def __init__(self):
         self.database = Database()
-        self.network = Network()
+        self.network = NetworkHttp()
         self.gui = Gui()
         self.convertor = Convertor()
         self.logger = utils.get_logging()
@@ -65,7 +65,7 @@ class Controller:
         self.gui.open_notification_windows("The schedules were saved in the 'results' folder")
 
     def run_update_levnet_data_flow(self):
-        self.network = Network(run_in_background=True)
+        self.network = NetworkHttp()
 
         self.logger.debug("Start updating the levnet data")
         user = self.database.load_hard_coded_user_data()
