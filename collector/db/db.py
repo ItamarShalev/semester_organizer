@@ -20,7 +20,7 @@ class Database:
     def save_courses_data(self, courses: List[Course]):
         courses_set = set(courses)
         courses_set.update(set(self.load_courses_data()))
-        with open(Database.COURSES_DATA_FILE_PATH, "w") as file:
+        with open(Database.COURSES_DATA_FILE_PATH, "w", encoding="utf-8") as file:
             for course in courses_set:
                 file.write(f"{course.name};{course.course_number};{course.parent_course_number}\n")
 
@@ -55,13 +55,13 @@ class Database:
             cursor.close()
 
     def save_campus_names(self, names: List[str]):
-        with open(Database.CAMPUS_NAMES_FILE_PATH, "w") as file:
+        with open(Database.CAMPUS_NAMES_FILE_PATH, "w", encoding="utf-8") as file:
             file.write("\n".join(names))
 
     def load_courses_data(self) -> List[Course]:
         if not os.path.isfile(Database.COURSES_DATA_FILE_PATH):
             return []
-        with open(Database.COURSES_DATA_FILE_PATH, "r") as file:
+        with open(Database.COURSES_DATA_FILE_PATH, "r", encoding="utf-8") as file:
             courses = []
             for line in file:
                 line = line.strip()
@@ -152,7 +152,7 @@ class Database:
     def load_campus_names(self) -> List[str]:
         if not os.path.exists(Database.CAMPUS_NAMES_FILE_PATH):
             return []
-        with open(Database.CAMPUS_NAMES_FILE_PATH, "r") as file:
+        with open(Database.CAMPUS_NAMES_FILE_PATH, "r", encoding="utf-8") as file:
             return file.read().splitlines()
 
     def load_hard_coded_user_data(self) -> Optional[User]:
