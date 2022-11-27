@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 from data.course import Course
+from data.semester import Semester
 
 
 def init_project():
@@ -34,6 +35,10 @@ def get_database_path():
 
 def get_results_path():
     return os.path.join(get_root_path(), "results")
+
+
+def get_current_semester():
+    return Semester.FALL
 
 
 def config_logging_level(level=logging.DEBUG):
