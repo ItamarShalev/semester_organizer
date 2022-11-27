@@ -27,32 +27,32 @@ class Database:
     def save_academic_activities_data(self, campus_name: str, academic_activities: List[AcademicActivity]):
         activities_names = {activity.name: activity for activity in academic_activities}
         was_exists = os.path.exists(Database.ACTIVITIES_DATA_DATABASE_PATH)
-        connection = database.connect(Database.ACTIVITIES_DATA_DATABASE_PATH)
-        cur = connection.cursor()
-        # Create the table if not exists.
-        if not was_exists:
-            cur.execute("CREATE TABLE activities (activity_id TEXT PRIMARY KEY, campus_name TEXT, activity_name TEXT, "
-                        "type INTEGER ,course_number INTEGER, lecturer TEXT, parent_course_number INTEGER, "
-                        "location TEXT);")
-            cur.execute("CREATE TABLE meetings (day INTEGER, start_time TEXT, end_time TEXT, activity_id TEXT, "
-                        "FOREIGN KEY(activity_id) REFERENCES activities(activity_id) ON DELETE CASCADE);")
+        with database.connect(Database.ACTIVITIES_DATA_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            # Create the table if not exists.
+            if not was_exists:
+                cursor.execute("CREATE TABLE activities (activity_id TEXT PRIMARY KEY, campus_name TEXT, "
+                               "activity_name TEXT, type INTEGER ,course_number INTEGER, lecturer TEXT, "
+                               "parent_course_number INTEGER, location TEXT);")
+                cursor.execute("CREATE TABLE meetings (day INTEGER, start_time TEXT, end_time TEXT, activity_id TEXT, "
+                               "FOREIGN KEY(activity_id) REFERENCES activities(activity_id) ON DELETE CASCADE);")
 
-        # Delete all the activities that inside with the same name, to avoid old data.
-        for activity_name in activities_names:
-            cur.execute("DELETE FROM activities WHERE campus_name = (?) AND activity_name = (?);",
-                        (campus_name, activity_name))
+            # Delete all the activities that inside with the same name, to avoid old data.
+            for activity_name in activities_names:
+                cursor.execute("DELETE FROM activities WHERE campus_name = (?) AND activity_name = (?);",
+                               (campus_name, activity_name))
 
-        # Insert the new data.
-        for activity in academic_activities:
-            cur.execute("INSERT INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?);", (
-                activity.activity_id, campus_name, activity.name, activity.type.value, activity.course_number,
-                activity.lecturer_name, activity.parent_course_number, activity.location))
-            for meeting in activity.get_meetings():
-                cur.execute("INSERT INTO meetings VALUES (?, ?, ?, ?);", (
-                    meeting.day.value, meeting.get_string_start_time(), meeting.get_string_end_time(),
-                    activity.activity_id))
-
-        connection.commit()
+            # Insert the new data.
+            for activity in academic_activities:
+                cursor.execute("INSERT INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?);", (
+                    activity.activity_id, campus_name, activity.name, activity.type.value, activity.course_number,
+                    activity.lecturer_name, activity.parent_course_number, activity.location))
+                for meeting in activity.get_meetings():
+                    cursor.execute("INSERT INTO meetings VALUES (?, ?, ?, ?);", (
+                        meeting.day.value, meeting.get_string_start_time(), meeting.get_string_end_time(),
+                        activity.activity_id))
+            connection.commit()
+            cursor.close()
 
     def save_campus_names(self, names: List[str]):
         with open(Database.CAMPUS_NAMES_FILE_PATH, "w") as file:
@@ -83,20 +83,21 @@ class Database:
         :return:
         """
         # If the database not exists, there is nothing to clear.
-        if not os.path.exists(Database.ACTIVITIES_DATA_DATABASE_PATH):
+        if not os.path.isfile(Database.ACTIVITIES_DATA_DATABASE_PATH):
             return
         if campus_name is None:
-            os.remove(Database.ACTIVITIES_DATA_DATABASE_PATH)
+            with database.connect(Database.ACTIVITIES_DATA_DATABASE_PATH) as connection:
+                cursor = connection.cursor()
+                cursor.execute("DELETE FROM meetings;")
+                cursor.execute("DELETE FROM activities;")
+                connection.commit()
+                cursor.close()
         else:
-            connection = database.connect(Database.ACTIVITIES_DATA_DATABASE_PATH)
-            cur = connection.cursor()
-            cur.execute("DELETE FROM activities WHERE campus_name = (?);", (campus_name,))
-            cur.execute("SELECT COUNT(*) FROM activities;")
-            count = cur.fetchone()[0]
-            connection.commit()
-            # If there is no activities left, delete the database.
-            if not count:
-                os.remove(Database.ACTIVITIES_DATA_DATABASE_PATH)
+            with database.connect(Database.ACTIVITIES_DATA_DATABASE_PATH) as connection:
+                cursor = connection.cursor()
+                cursor.execute("DELETE FROM activities WHERE campus_name = (?);", (campus_name,))
+                connection.commit()
+                cursor.close()
 
     def clear_campus_names(self):
         if os.path.exists(Database.CAMPUS_NAMES_FILE_PATH):
@@ -116,34 +117,36 @@ class Database:
         # If the database does not exist, return an empty list.
         if not os.path.exists(Database.ACTIVITIES_DATA_DATABASE_PATH):
             return []
-        connection = database.connect(Database.ACTIVITIES_DATA_DATABASE_PATH)
-        cur = connection.cursor()
-        # If courses is empty, return all the academic activities data by campus name.
-        if not courses:
-            cur.execute("SELECT * FROM activities WHERE campus_name = (?);", campus_name)
-        else:
-            # Else, return the academic activities data by the campus name and the courses' names.
-            courses_names = [course.name for course in courses]
-            sql = f"SELECT * FROM activities WHERE campus_name = (?) AND activity_name IN " \
-                  f"({','.join(['?'] * len(courses_names))});"
-            cur.execute(sql, (campus_name, *courses_names))
-
-        # Parse the data.
-        activities_data = cur.fetchall()
         activities = []
-        for activity_data in activities_data:
-            activity_id, __, name, activity_type, course_number, lecturer, p_course_number, location = activity_data
-            activity = AcademicActivity(name, Type(activity_type), True, lecturer, course_number, p_course_number,
-                                        location, activity_id)
-            cur.execute("SELECT * FROM meetings WHERE activity_id = (?);", (activity_id,))
-            meetings_data = cur.fetchall()
-            # Parse the meetings data.
-            for meeting_data in meetings_data:
-                day, start_time, end_time, activity_id = meeting_data
-                if activity_id == activity.activity_id:
-                    meeting = Meeting(Day(day), Meeting.str_to_time(start_time), Meeting.str_to_time(end_time))
-                    activity.add_slot(meeting)
-            activities.append(activity)
+        with database.connect(Database.ACTIVITIES_DATA_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            # If courses is empty, return all the academic activities data by campus name.
+            if not courses:
+                cursor.execute("SELECT * FROM activities WHERE campus_name = (?);", campus_name)
+            else:
+                # Else, return the academic activities data by the campus name and the courses' names.
+                courses_names = [course.name for course in courses]
+                sql = f"SELECT * FROM activities WHERE campus_name = (?) AND activity_name IN " \
+                      f"({','.join(['?'] * len(courses_names))});"
+                cursor.execute(sql, (campus_name, *courses_names))
+
+            # Parse the data.
+            activities_data = cursor.fetchall()
+
+            for activity_data in activities_data:
+                activity_id, __, name, activity_type, course_number, lecturer, p_course_number, location = activity_data
+                activity = AcademicActivity(name, Type(activity_type), True, lecturer, course_number, p_course_number,
+                                            location, activity_id)
+                cursor.execute("SELECT * FROM meetings WHERE activity_id = (?);", (activity_id,))
+                meetings_data = cursor.fetchall()
+                # Parse the meetings data.
+                for meeting_data in meetings_data:
+                    day, start_time, end_time, activity_id = meeting_data
+                    if activity_id == activity.activity_id:
+                        meeting = Meeting(Day(day), Meeting.str_to_time(start_time), Meeting.str_to_time(end_time))
+                        activity.add_slot(meeting)
+                activities.append(activity)
+            cursor.close()
         return activities
 
     def load_campus_names(self) -> List[str]:
