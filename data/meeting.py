@@ -1,4 +1,5 @@
-from time import struct_time, time, strptime
+from time import struct_time, strptime
+import time
 from data.day import Day
 
 

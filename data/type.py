@@ -6,3 +6,4 @@ class Type(Enum):
     LECTURE = auto()
     LAB = auto()
     PRACTICE = auto()
+    SEMINAR = auto()
