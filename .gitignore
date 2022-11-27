@@ -1,6 +1,7 @@
 # Custom
 user_data*
 database/
+log.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
