@@ -41,6 +41,19 @@ class TestNetworkHttp:
         courses = network.extract_all_courses(campus_name)
         assert courses, "Can't extract courses from the server."
 
+    @pytest.mark.skipif("not TestNetworkHttp.user", reason="There is no user data to check.")
+    def test_extract_academic_activities_data(self):
+        network = NetworkHttp(TestNetworkHttp.user)
+
+        course = utils.get_course_data_test()
+        campus_name = utils.get_campus_name_test()
+
+        academic_activities, missings = network.extract_academic_activities_data(campus_name, [course])
+        missing_meetings_data = any(activity.no_meetings() for activity in academic_activities)
+
+        assert not missings, "The following courses don't have activities: " + ", ".join(missings)
+        assert not missing_meetings_data and academic_activities, "Can't extract academic activities from the server."
+
 
 @pytest.mark.network
 @pytest.mark.network_driver
@@ -82,7 +95,7 @@ class TestNetworkDriver:
 
     @pytest.mark.skip(reason="Not implemented yet.")
     @pytest.mark.skipif("not TestNetworkDriver.user", reason="There is no user data to check.")
-    def test_fill_academic_activities_data(self):
+    def test_extract_academic_activities_data(self):
         network = NetworkDriver(TestNetworkDriver.user, run_in_background=TestNetworkDriver.run_in_background)
 
         course = utils.get_course_data_test()

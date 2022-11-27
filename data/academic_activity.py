@@ -9,13 +9,14 @@ class AcademicActivity(Activity):
 
     def __init__(self, name: str = None, activity_type: Type = None, attendance_required: bool = None,
                  lecturer_name: str = None, course_number: int = None, parent_course_number: int = None,
-                 location: str = None, activity_id: str = None):
+                 location: str = None, activity_id: str = None, description: str = None):
         super().__init__(name, activity_type, attendance_required)
         self.lecturer_name = lecturer_name
         self.course_number = course_number
         self.parent_course_number = parent_course_number
         self.location = location
         self.activity_id = activity_id
+        self.description = None
 
     def convert_to_course_object(self):
         course = Course(self.name, self.course_number, self.parent_course_number, activity_id=self.activity_id)

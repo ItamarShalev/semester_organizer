@@ -29,7 +29,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from data.academic_activity import AcademicActivity
 from data.course import Course
+from data.meeting import Meeting
 from data.user import User
+from data.type import Type
+from data.day import Day
 import utils
 
 
@@ -86,7 +89,7 @@ class Network(ABC):
         pass
 
     @abstractmethod
-    def extract_academic_activities_data(self, campus_name: str, courses: List[int]) -> \
+    def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \
             Tuple[List[AcademicActivity], List[str]]:
         """
         The function fills the academic activities' data.
@@ -172,7 +175,7 @@ class NetworkHttp(Network):
         self._campuess = {campus["name"]: campus["id"] for campus in json_data["extensions"]}
         return list(self._campuess.keys())
 
-    def extract_academic_activities_data(self, campus_name: str, courses: List[int]) -> \
+    def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \
             Tuple[List[AcademicActivity], List[str]]:
         """
         The function fills the academic activities' data.
@@ -182,6 +185,78 @@ class NetworkHttp(Network):
         :param courses: all parent courses to extract
         :return: list of all academic activities by the courses, list of all the courses names that missing data
         """
+        not_found_courses = []
+        academic_activities = []
+        response = None
+        type_converter = {
+            "שעור": Type.LECTURE,
+            "תרגיל": Type.PRACTICE,
+            "מעבדה": Type.LAB
+        }
+
+        def convert_day(day):
+            return Day(ord(day) - ord('א') + 1)
+
+        for course in courses:
+            url = f"https://levnet.jct.ac.il/api/common/parentCourses.ashx?" \
+                  f"action=LoadActualCourses&ParentCourseID={course.parent_course_number}"
+            data = {
+                "selectedAcademicYear": utils.get_current_hebrew_year(),
+                "selectedSemester": utils.get_current_semester().value,
+                "selectedExtension": self.campuess[campus_name],
+                "current": 1
+            }
+            try:
+                response = self.session.post(url, data=json.dumps(data), timeout=Network.TIMEOUT)
+            except Timeout as error:
+                self.logger.error("Connection error: %s", str(error))
+                raise WeakNetworkConnection() from error
+            response_json = response.json()
+            if not response_json["success"]:
+                return [], [course.name for course in courses]
+            if not response_json["totalItems"]:
+                not_found_courses.append(course.name)
+                continue
+            actual_courses = [item["id"] for item in response_json["items"]]
+            academic_activities_course = []
+            for actual_course in actual_courses:
+                url = f"https://levnet.jct.ac.il/api/common/actualCourses.ashx?" \
+                      f"action=LoadActualCourse&ActualCourseID={actual_course}"
+                try:
+                    response = self.session.post(url, timeout=Network.TIMEOUT)
+                except Timeout as error:
+                    self.logger.error("Connection error: %s", str(error))
+                    raise WeakNetworkConnection() from error
+                response_json = response.json()
+                if not response_json["success"]:
+                    continue
+                for group in response_json["groups"]:
+                    full_course_data = group["groupFullNumber"]
+                    type_course = type_converter[group["groupTypeName"].strip()]
+                    lecturer = group["courseGroupLecturers"].strip()
+                    if lecturer == "רשימת המתנה אין לשבץ":
+                        continue
+                    group_meetings = group["courseGroupMeetings"].strip()
+                    comment = group["groupComment"].strip()
+                    meetings_list = []
+                    location = ""
+                    for meeting in group_meetings.split("\r\n"):
+                        meeting = meeting.strip()
+                        day = meeting[len("כל השבועות - יום ")]
+                        length = len("כל השבועות - יום א: ")
+                        start, end = meeting[length:length + len("00:00-00:00")].split("-")
+                        location = meeting[len("כל השבועות - יום א: 18:10-19:40, "):].strip()
+                        meetings_list.append(Meeting(convert_day(day), Meeting.str_to_time(start),
+                                                     Meeting.str_to_time(end)))
+                    activity = AcademicActivity(course.name, type_course, True, lecturer, course.course_number,
+                                                course.parent_course_number, location, full_course_data, comment)
+                    activity.add_slots(meetings_list)
+                    academic_activities_course.append(activity)
+            if not academic_activities_course:
+                not_found_courses.append(course.name)
+                continue
+            academic_activities.extend(academic_activities_course)
+        return academic_activities, not_found_courses
 
     @property
     def campuess(self):
@@ -354,7 +429,7 @@ class NetworkDriver(Network):
         except TimeoutException as error:
             raise WeakNetworkConnection() from error
 
-    def extract_academic_activities_data(self, campus_name: str, courses: List[int]) -> \
+    def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \
             Tuple[List[AcademicActivity], List[str]]:
         """
         The function fills the academic activities' data.
