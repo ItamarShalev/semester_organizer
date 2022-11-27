@@ -191,7 +191,10 @@ class NetworkHttp(Network):
         type_converter = {
             "שעור": Type.LECTURE,
             "תרגיל": Type.PRACTICE,
-            "מעבדה": Type.LAB
+            "מעבדה": Type.LAB,
+            """פרוייקט-במ"מ""": Type.LAB,
+            "פרויקט": Type.LAB,
+            "סמינר": Type.SEMINAR
         }
 
         def convert_day(day):
@@ -240,6 +243,8 @@ class NetworkHttp(Network):
                     comment = group["groupComment"].strip()
                     meetings_list = []
                     location = ""
+                    if not group_meetings:
+                        continue
                     for meeting in group_meetings.split("\r\n"):
                         meeting = meeting.strip()
                         day = meeting[len("כל השבועות - יום ")]
