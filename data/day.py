@@ -8,4 +8,3 @@ class Day(Enum):
     WEDNESDAY = auto()
     THURSDAY = auto()
     FRIDAY = auto()
-    SATURDAY = auto()
