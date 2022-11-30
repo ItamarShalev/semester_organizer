@@ -1,7 +1,7 @@
+from collections import defaultdict
 from typing import Dict, List
 
 from data.type import Type
-from data.day import Day
 
 
 class Activity:
@@ -10,15 +10,15 @@ class Activity:
         self.name = name
         self.type = activity_type
         self.attendance_required = attendance_required
-        self.days = {day: [] for day in Day}
+        self.meetings = []
 
     def add_slot(self, meeting):
-        if meeting.is_crash_with_meetings(self.days[meeting.day]):
+        if meeting.is_crash_with_meetings(self.meetings):
             raise Exception("Meeting is crash with other meeting")
-        self.days[meeting.day].append(meeting)
+        self.meetings.append(meeting)
 
     def is_free_slot(self, meeting):
-        return not meeting.is_crash_with_meetings(self.days[meeting.day])
+        return not meeting.is_crash_with_meetings(self.meetings)
 
     def add_slots(self, meetings):
         for meeting in meetings:
@@ -32,36 +32,24 @@ class Activity:
     def is_crash_with_activity(self, activity):
         if not self.attendance_required or not activity.attendance_required:
             return False
-        for day in Day:
-            all_meetings = [meeting for meetings in self.days.values() for meeting in meetings]
-            for meeting in activity.days[day]:
-                if meeting.is_crash_with_meetings(all_meetings):
-                    return True
-        return False
+        return any(meeting.is_crash_with_meetings(activity.meetings) for meeting in self.meetings)
 
     def no_meetings(self):
-        return not any(meetings for meetings in self.days.values())
-
-    def get_meetings(self):
-        return [meeting for meetings in self.days.values() for meeting in meetings]
+        return not self.meetings
 
     @staticmethod
     def get_activities_by_name(activities) -> Dict[str, List]:
-        result = {}
+        result = defaultdict(list)
         for activity in activities:
-            if activity.name not in result:
-                result[activity.name] = [activity]
-            else:
-                result[activity.name].append(activity)
-        return result
+            result[activity.name].append(activity)
+        return dict(result)
 
     def __eq__(self, other):
         is_equals = self.name == other.name and self.type == other.type
         is_equals = is_equals and self.attendance_required == other.attendance_required
-        for day, meetings in self.days.items():
-            is_equals = is_equals and len(meetings) == len(other.days[day])
-            for meeting in meetings:
-                is_equals = is_equals and meeting in other.days[day]
+        is_equals = is_equals and len(self.meetings) == len(other.meetings)
+        for meeting in self.meetings:
+            is_equals = is_equals and meeting in other.meetings
         return is_equals
 
     def __str__(self):

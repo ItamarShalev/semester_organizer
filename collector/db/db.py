@@ -47,7 +47,7 @@ class Database:
                 cursor.execute("INSERT INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?);", (
                     activity.activity_id, campus_name, activity.name, activity.type.value, activity.course_number,
                     activity.lecturer_name, activity.parent_course_number, activity.location))
-                for meeting in activity.get_meetings():
+                for meeting in activity.meetings:
                     cursor.execute("INSERT INTO meetings VALUES (?, ?, ?, ?);", (
                         meeting.day.value, meeting.get_string_start_time(), meeting.get_string_end_time(),
                         activity.activity_id))
