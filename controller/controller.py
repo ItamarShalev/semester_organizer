@@ -40,29 +40,30 @@ class Controller:
 
             if names_missing_activities:
                 message = "The following courses don't have activities: " + ", ".join(names_missing_activities)
-                self.gui.open_notification_windows(message)
+                self.gui.open_notification_window(message)
 
             self.database.save_academic_activities_data(campus_name, activities)
         return activities
 
     def run_main_gui_flow(self):
+        # To complete : suit the function to the new gui
         user = self.gui.open_login_window()
         self.network.set_user(user)
 
         campus_names = self._get_campus_names()
         courses = self._get_courses_data()
-        campus_name, courses = self.gui.open_academic_activities_window(campus_names, courses)
+        campus_name, courses = self.gui.open_academic_activities_window(campus_names, courses, None)
         activities = self._get_academic_activities_data(campus_name, courses)
         AcademicActivity.union_courses(activities, courses)
-        activities += self.gui.open_custom_activities_windows()
-        formats = self.gui.open_choose_format_window()
+        activities += self.gui.open_custom_activities_window()
+        formats = []
         schedules = csp.extract_schedules(activities)
         if not schedules:
-            self.gui.open_notification_windows("No schedules were found")
+            self.gui.open_notification_window("No schedules were found")
         else:
             self.convertor.convert_activities(schedules, "results", formats)
 
-        self.gui.open_notification_windows("The schedules were saved in the 'results' folder")
+        self.gui.open_notification_window("The schedules were saved in the 'results' folder")
 
     def run_update_levnet_data_flow(self):
         self.network = NetworkHttp()
