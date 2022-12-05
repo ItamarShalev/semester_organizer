@@ -2,7 +2,6 @@ from typing import List, Optional, Tuple
 
 from enum import Enum
 from contextlib import suppress
-from abc import ABC, abstractmethod
 import json
 import requests
 
@@ -54,12 +53,15 @@ class WeakNetworkConnection(Exception):
         super().__init__("ERROR: Weak network connection, please try to refresh or change your network and again later")
 
 
-class Network(ABC):
+class NetworkHttp:
+
     HTTP_OK = 200
     TIMEOUT = 10
 
     def __init__(self, user: Optional[User] = None):
         self._user = user
+        self._session = None
+        self._campuses = None
         self.logger = utils.get_logging()
 
     def __del__(self):
@@ -67,46 +69,6 @@ class Network(ABC):
 
     def set_user(self, user: User):
         self._user = user
-
-    @abstractmethod
-    def check_connection(self) -> bool:
-        pass
-
-    @abstractmethod
-    def connect(self):
-        pass
-
-    @abstractmethod
-    def disconnect(self):
-        pass
-
-    @abstractmethod
-    def extract_campus_names(self) -> List[str]:
-        pass
-
-    @abstractmethod
-    def extract_all_courses(self, campus_name: str) -> List[Course]:
-        pass
-
-    @abstractmethod
-    def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \
-            Tuple[List[AcademicActivity], List[str]]:
-        """
-        The function fills the academic activities' data.
-        The function will connect to the server and will extract the data from the server by the parent course number.
-        :param user: the username and password
-        :param campus_name: the campus name
-        :param courses: all parent courses to extract
-        :return: list of all academic activities by the courses, list of all the courses names that missing data
-        """
-
-
-class NetworkHttp(Network):
-
-    def __init__(self, user: Optional[User] = None):
-        super().__init__(user)
-        self._session = None
-        self._campuess = None
 
     @property
     def session(self):
@@ -127,9 +89,8 @@ class NetworkHttp(Network):
     def check_connection(self) -> bool:
         url = "https://levnet.jct.ac.il/api/home/login.ashx?action=TryLogin"
         data = {"username": self._user.username, "password": self._user.password}
-        response = None
         try:
-            response = self.session.post(url, data=json.dumps(data), timeout=Network.TIMEOUT)
+            response = self.session.post(url, data=json.dumps(data), timeout=NetworkHttp.TIMEOUT)
         except Timeout as error:
             self.logger.error("Connection error: %s", str(error))
             return False
@@ -137,23 +98,22 @@ class NetworkHttp(Network):
         self.logger.debug("Response: %s", response.text)
         self.logger.debug("Status code: %s", response.status_code)
 
-        return response.status_code == Network.HTTP_OK and response.json()["success"]
+        return response.status_code == NetworkHttp.HTTP_OK and response.json()["success"]
 
     def connect(self):
-        connected_successed = False
         try:
-            connected_successed = self.check_connection()
+            connected_succeeded = self.check_connection()
         except Exception as error:
             self.logger.error("Connection error: %s", str(error))
             raise RuntimeError("Failed to connect") from error
-        if not connected_successed:
+        if not connected_succeeded:
             raise RuntimeError("Failed to connect")
 
     def disconnect(self):
         if not self._session:
             url = "https://levnet.jct.ac.il/api/common/account.ashx?action=Logout"
             with suppress(Exception):
-                self.session.post(url, timeout=Network.TIMEOUT)
+                self.session.post(url, timeout=NetworkHttp.TIMEOUT)
             self._session.close()
             self._session = None
 
@@ -162,9 +122,8 @@ class NetworkHttp(Network):
             self.connect()
 
         url = "https://levnet.jct.ac.il/api/common/parentCourses.ashx?action=LoadParentCourse&ParentCourseID=318"
-        response = None
         try:
-            response = self.session.post(url, timeout=Network.TIMEOUT)
+            response = self.session.post(url, timeout=NetworkHttp.TIMEOUT)
         except Timeout as error:
             self.logger.error("Connection error: %s", str(error))
             raise WeakNetworkConnection() from error
@@ -172,22 +131,20 @@ class NetworkHttp(Network):
         json_data = response.json()
         if not json_data["success"]:
             raise RuntimeError("Failed to extract campus names")
-        self._campuess = {campus["name"]: campus["id"] for campus in json_data["extensions"]}
-        return list(self._campuess.keys())
+        self._campuses = {campus["name"]: campus["id"] for campus in json_data["extensions"]}
+        return list(self._campuses.keys())
 
     def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \
             Tuple[List[AcademicActivity], List[str]]:
         """
         The function fills the academic activities' data.
         The function will connect to the server and will extract the data from the server by the parent course number.
-        :param user: the username and password
-        :param campus_name: the campus name
-        :param courses: all parent courses to extract
+        :param: campus_name: the campus name
+        :param: courses: all parent courses to extract
         :return: list of all academic activities by the courses, list of all the courses names that missing data
         """
         not_found_courses = []
         academic_activities = []
-        response = None
         type_converter = {
             "שעור": Type.LECTURE,
             "תרגיל": Type.PRACTICE,
@@ -197,8 +154,8 @@ class NetworkHttp(Network):
             "סמינר": Type.SEMINAR
         }
 
-        def convert_day(day):
-            return Day(ord(day) - ord('א') + 1)
+        def convert_day(day_letter):
+            return Day(ord(day_letter) - ord('א') + 1)
 
         for course in courses:
             url = f"https://levnet.jct.ac.il/api/common/parentCourses.ashx?" \
@@ -206,11 +163,11 @@ class NetworkHttp(Network):
             data = {
                 "selectedAcademicYear": utils.get_current_hebrew_year(),
                 "selectedSemester": utils.get_current_semester().value,
-                "selectedExtension": self.campuess[campus_name],
+                "selectedExtension": self.campuses[campus_name],
                 "current": 1
             }
             try:
-                response = self.session.post(url, data=json.dumps(data), timeout=Network.TIMEOUT)
+                response = self.session.post(url, data=json.dumps(data), timeout=NetworkHttp.TIMEOUT)
             except Timeout as error:
                 self.logger.error("Connection error: %s", str(error))
                 raise WeakNetworkConnection() from error
@@ -226,7 +183,7 @@ class NetworkHttp(Network):
                 url = f"https://levnet.jct.ac.il/api/common/actualCourses.ashx?" \
                       f"action=LoadActualCourse&ActualCourseID={actual_course}"
                 try:
-                    response = self.session.post(url, timeout=Network.TIMEOUT)
+                    response = self.session.post(url, timeout=NetworkHttp.TIMEOUT)
                 except Timeout as error:
                     self.logger.error("Connection error: %s", str(error))
                     raise WeakNetworkConnection() from error
@@ -264,43 +221,44 @@ class NetworkHttp(Network):
         return academic_activities, not_found_courses
 
     @property
-    def campuess(self):
-        if self._campuess is None:
+    def campuses(self):
+        if self._campuses is None:
             self.extract_campus_names()
-        return self._campuess
+        return self._campuses
 
     def extract_all_courses(self, campus_name: str) -> List[Course]:
         if not self.is_connected():
             self.connect()
 
-        if campus_name not in self.campuess.keys():
+        if campus_name not in self.campuses.keys():
             raise RuntimeError("Failed to extract courses")
 
         url = "https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?action=LoadPlannedMultiYearPrograms"
 
         payload = {"selectedAcademicYear": utils.get_current_hebrew_year(),
-                   "selectedExtension": self.campuess[campus_name], "selectedDepartment": 20, "current": 1}
-        response = self.session.post(url, data=json.dumps(payload), timeout=Network.TIMEOUT)
-        if response.status_code != Network.HTTP_OK or not response.json()["success"]:
+                   "selectedExtension": self.campuses[campus_name], "selectedDepartment": 20, "current": 1}
+        response = self.session.post(url, data=json.dumps(payload), timeout=NetworkHttp.TIMEOUT)
+        if response.status_code != NetworkHttp.HTTP_OK or not response.json()["success"]:
             raise RuntimeError("Failed to extract courses")
-        classes_names = ["מדעי המחשב", "הנדסת תוכנה"]
+        classes_names = ["מדעי "
+                         "המחשב", "הנדסת תוכנה"]
 
-        def is_relvant_program(item):
-            is_relvant = item["credits"] and item["coursesCount"] > 0
-            is_relvant = is_relvant and any((name in item["trackName"] for name in classes_names))
-            return is_relvant
+        def is_relevant_program(item):
+            is_relevant = item["credits"] and item["coursesCount"] > 0
+            is_relevant = is_relevant and any((class_name in item["trackName"] for class_name in classes_names))
+            return is_relevant
 
-        relvants_programs = [item for item in response.json()["items"] if is_relvant_program(item)]
+        relevance_programs = [item for item in response.json()["items"] if is_relevant_program(item)]
         courses = set()
 
-        for program in relvants_programs:
+        for program in relevance_programs:
             program_id = program["id"]
             url = f"https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?" \
                   f"action=GetMultiYearPlannedProgramMembersWithFilters&InitialProgramID={program_id}"
             response = self.session.post(url, data=payload)
             if not response.json()["success"]:
                 raise RuntimeError("Failed to extract courses")
-            semesters = [semster_program["members"] for semster_program in response.json()["allMembers"]]
+            semesters = [semester_program["members"] for semester_program in response.json()["allMembers"]]
             for semester in semesters:
                 for course in semester:
                     name = course["parentCourseName"].strip()
@@ -312,12 +270,21 @@ class NetworkHttp(Network):
         return list(courses)
 
 
-class NetworkDriver(Network):
+class NetworkDriver:
+    HTTP_OK = 200
+    TIMEOUT = 10
 
     def __init__(self, user: Optional[User] = None, run_in_background: bool = False):
-        super().__init__(user)
+        self._user = user
         self.run_in_background = run_in_background
         self._driver = None
+        self.logger = utils.get_logging()
+
+    def __del__(self):
+        self.disconnect()
+
+    def set_user(self, user: User):
+        self._user = user
 
     def _create_driver(self):
         """
@@ -354,7 +321,7 @@ class NetworkDriver(Network):
     def _get_url_after_connect(self, url: str):
         """
         The function goes to the url after the user is connected to the server.
-        :param url: the url to go to
+        :param: url: the url to go to
         """
         if not self._check_connection_to_server():
             self.connect()
@@ -374,7 +341,6 @@ class NetworkDriver(Network):
     def check_connection(self) -> bool:
 
         self.logger.debug("Checking connection to the server...")
-        response = None
 
         url = "https://levnet.jct.ac.il/api/home/login.ashx?action=TryLogin"
         dictionary = {"username": self.user.username, "password": self.user.password, "defaultLanguage": 1}
@@ -397,7 +363,7 @@ class NetworkDriver(Network):
         self.logger.debug("Response: %s", response.text)
         self.logger.debug("Status code: %s", response.status_code)
 
-        return response.status_code == Network.HTTP_OK and response.json()["success"]
+        return response.status_code == NetworkDriver.HTTP_OK and response.json()["success"]
 
     def connect(self):
         """
@@ -408,10 +374,10 @@ class NetworkDriver(Network):
             self.logger.debug("Starting connection to the server...")
             self.driver.get('https://levnet.jct.ac.il/Login/Login.aspx')
             # Find the username bar
-            username_bar = WebDriverWait(self.driver, Network.TIMEOUT).until(
+            username_bar = WebDriverWait(self.driver, NetworkDriver.TIMEOUT).until(
                 expected_conditions.element_to_be_clickable((By.ID, "username")))
             # Find the password bar
-            password_bar = WebDriverWait(self.driver, Network.TIMEOUT).until(
+            password_bar = WebDriverWait(self.driver, NetworkDriver.TIMEOUT).until(
                 expected_conditions.element_to_be_clickable((By.ID, "password")))
 
             # Enter username and password
@@ -419,7 +385,7 @@ class NetworkDriver(Network):
             password_bar.send_keys(self.user.password)
 
             # Wait for the login button
-            login_button = WebDriverWait(self.driver, Network.TIMEOUT).until(
+            login_button = WebDriverWait(self.driver, NetworkDriver.TIMEOUT).until(
                 expected_conditions.element_to_be_clickable(
                     (By.XPATH, '//*[@id="mainForm"]/section[2]/div/div[1]/div/div/div[5]/button')))
 
@@ -428,7 +394,7 @@ class NetworkDriver(Network):
             login_button.click()
 
             # Wait for the homepage to load
-            WebDriverWait(self.driver, Network.TIMEOUT).until(
+            WebDriverWait(self.driver, NetworkDriver.TIMEOUT).until(
                 expected_conditions.presence_of_element_located((By.XPATH, '//*[@id="mainForm"]/aside/ul/li[35]/a')))
             self.logger.debug("Connection to the server succeeded.")
         except TimeoutException as error:
@@ -439,16 +405,15 @@ class NetworkDriver(Network):
         """
         The function fills the academic activities' data.
         The function will connect to the server and will extract the data from the server by the parent course number.
-        :param user: the username and password
-        :param campus_name: the campus name
-        :param courses: all parent courses to extract
+        :param: campus_name: the campus name
+        :param: courses: all parent courses to extract
         :return: list of all academic activities by the courses, list of all the courses names that missing data
         """
 
     def extract_all_courses(self, campus_name: str) -> List[Course]:
         """
         For now, extract only courses related to the campus and computer department.
-        :param campus_name: the campus name
+        :param: campus_name: the campus name
         :return: list of courses
         """
 
@@ -459,7 +424,7 @@ class NetworkDriver(Network):
 
         # Wait for the campus names to load
         try:
-            WebDriverWait(self.driver, Network.TIMEOUT).until(
+            WebDriverWait(self.driver, NetworkDriver.TIMEOUT).until(
                 expected_conditions.presence_of_element_located((By.XPATH, '//*[@id="selectedExtension"]')))
         except TimeoutException as error:
             raise WeakNetworkConnection() from error
@@ -481,7 +446,7 @@ class NetworkDriver(Network):
                 self.driver.get('https://levnet.jct.ac.il/Student/Default.aspx')
                 # Wait for the logout button
                 try:
-                    logout_button = WebDriverWait(self.driver, Network.TIMEOUT).until(
+                    logout_button = WebDriverWait(self.driver, NetworkDriver.TIMEOUT).until(
                         expected_conditions.element_to_be_clickable(
                             (By.XPATH, '//*[@id="mainForm"]/header/section[2]/ul[1]/li[4]/a')))
                     logout_button.click()
