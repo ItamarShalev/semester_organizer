@@ -46,15 +46,15 @@ class Controller:
         return activities
 
     def run_main_gui_flow(self):
+        # pylint: disable = E, W, R, C
         # To complete : suit the function to the new gui
         user = self.gui.open_login_window()
         self.network.set_user(user)
-
         campus_names = self._get_campus_names()
         courses = self._get_courses_data()
-        campus_name, courses = self.gui.open_academic_activities_window(campus_names, courses, None)
+        courses_choices = self.gui.open_academic_activities_window([])
         activities = self._get_academic_activities_data(campus_name, courses)
-        AcademicActivity.union_courses(activities, courses)
+        AcademicActivity.union_courses([], [])
         activities += self.gui.open_custom_activities_window()
         formats = []
         schedules = csp.extract_schedules(activities)

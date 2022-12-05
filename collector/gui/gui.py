@@ -1,8 +1,8 @@
 from enum import Enum, auto
-from typing import List, Tuple, Dict, Optional
+from typing import List, Dict, Optional
 
 from data.activity import Activity
-from data.course import Course
+from data.course_choice import CourseChoice
 from data.user import User
 from data.settings import Settings
 
@@ -32,16 +32,13 @@ class Gui:
         This function will close the login window.
         """
 
-    def open_academic_activities_window(self, campuses: List[str], courses: List[Course],
-                                        available_teachers: Dict[int, List[str]]) -> \
-            Tuple[List[Course], Dict[int, List[str]]]:
+    def open_academic_activities_window(self, ask_attendance_required: bool, course_choice: List[CourseChoice]) -> \
+            List[CourseChoice]:
         """
         This function will open the academic activities window.
-        :param campuses: all the campus names that the user can choose from.
-        :param courses: all the courses that the user can choose from.
-        :param available_teachers: dict that will contain the available teachers for each course
-               the key is the parent_course_number.
-        :return: tuple of courses and available teachers for each course by the parent_course_number.
+        :param: ask_attendance_required: if the user should choose if the activity is attendance required.
+        :param: course_choice: the courses that the user can choose from.
+        :return: the courses that the user chose.
         :raises: UserClickExitException if the user clicked exit button.
         """
 
@@ -56,16 +53,16 @@ class Gui:
                                  buttons: List[str] = None) -> Optional[str]:
         """
         This function will open a notification window.
-        :param message: the message that will be shown in the window.
-        :param message_type: the type of the message. it will be shown in the window.
-        :param buttons: the buttons that will be shown in the window.
+        :param: message: the message that will be shown in the window.
+        :param: message_type: the type of the message. it will be shown in the window.
+        :param: buttons: the buttons that will be shown in the window.
         :return: Which button was clicked. None if no button was clicked or the exit button was clicked.
         """
 
     def open_loading_window(self, message: str):
         """
         This function will open a loading window.
-        :param message: the message that will be shown in the window.
+        :param: message: the message that will be shown in the window.
         """
 
     def open_settings_window(self, settings: Settings, campuses: List[str], years: Dict[str, int]) -> Settings:
@@ -75,8 +72,8 @@ class Gui:
         years will be dict that will contain the years in format [hebrew_year: value_of_year]
         for example: {"תשפ"ג"
         : 5783}
-        :param settings: the settings that will be shown in the window. the function will return the new settings.
-        :param campuses: all the campus names that the user can choose from.
-        :param years: all the years that the user can choose from.
+        :param: settings: the settings that will be shown in the window. the function will return the new settings.
+        :param: campuses: all the campus names that the user can choose from.
+        :param: years: all the years that the user can choose from.
         :return: new object of Settings, if the user click exit button, it will return the old settings.
         """
