@@ -7,7 +7,6 @@ import requests
 
 from bs4 import BeautifulSoup
 
-
 from requests.exceptions import Timeout
 
 from selenium import webdriver
@@ -53,8 +52,12 @@ class WeakNetworkConnection(Exception):
         super().__init__("ERROR: Weak network connection, please try to refresh or change your network and again later")
 
 
-class NetworkHttp:
+class InvalidServerRequestException(Exception):
+    def __init__(self):
+        super().__init__("ERROR: Invalid server request, please try again later")
 
+
+class NetworkHttp:
     HTTP_OK = 200
     TIMEOUT = 10
 
@@ -100,6 +103,22 @@ class NetworkHttp:
 
         return response.status_code == NetworkHttp.HTTP_OK and response.json()["success"]
 
+    def request(self, url: str, data: Optional[dict] = None) -> dict:
+        try:
+            if not self.is_connected():
+                self.connect()
+            if data:
+                data = json.dumps(data)
+            response = self.session.post(url, data=data, timeout=NetworkHttp.TIMEOUT)
+        except Timeout as error:
+            self.logger.error("Connection error: %s", str(error))
+            raise WeakNetworkConnection() from error
+
+        json_data = response.json()
+        if not json_data["success"]:
+            raise InvalidServerRequestException()
+        return json_data
+
     def connect(self):
         try:
             connected_succeeded = self.check_connection()
@@ -113,26 +132,81 @@ class NetworkHttp:
         if not self._session:
             url = "https://levnet.jct.ac.il/api/common/account.ashx?action=Logout"
             with suppress(Exception):
-                self.session.post(url, timeout=NetworkHttp.TIMEOUT)
+                self.request(url)
             self._session.close()
             self._session = None
 
     def extract_campus_names(self) -> List[str]:
-        if not self.is_connected():
-            self.connect()
-
         url = "https://levnet.jct.ac.il/api/common/parentCourses.ashx?action=LoadParentCourse&ParentCourseID=318"
-        try:
-            response = self.session.post(url, timeout=NetworkHttp.TIMEOUT)
-        except Timeout as error:
-            self.logger.error("Connection error: %s", str(error))
-            raise WeakNetworkConnection() from error
-
-        json_data = response.json()
-        if not json_data["success"]:
-            raise RuntimeError("Failed to extract campus names")
+        json_data = self.request(url)
         self._campuses = {campus["name"]: campus["id"] for campus in json_data["extensions"]}
         return list(self._campuses.keys())
+
+    def _extract_academic_activity_course(self, campus_name: str, course: Course) -> List[AcademicActivity]:
+        """
+        The function will extract all the academic activities from the given campus and parent course number
+        :param campus_name: The name of the campus
+        :param course: The course to extract the academic activities from
+        :return: A list of AcademicActivity
+        """
+
+        url = f"https://levnet.jct.ac.il/api/common/parentCourses.ashx?" \
+              f"action=LoadActualCourses&ParentCourseID={course.parent_course_number}"
+        data = {
+            "selectedAcademicYear": utils.get_current_hebrew_year(),
+            "selectedSemester": utils.get_current_semester().value,
+            "selectedExtension": self.campuses[campus_name],
+            "current": 1
+        }
+
+        type_converter = {
+            "שעור": Type.LECTURE,
+            "תרגיל": Type.PRACTICE,
+            "מעבדה": Type.LAB,
+            """פרוייקט-במ"מ""": Type.LAB,
+            "פרויקט": Type.LAB,
+            "סמינר": Type.SEMINAR
+        }
+        activities = []
+
+        def convert_day(day_letter):
+            return Day(ord(day_letter) - ord('א') + 1)
+
+        response_json = self.request(url, data)
+        if not response_json["totalItems"]:
+            return []
+
+        actual_courses = [item["id"] for item in response_json["items"]]
+        for actual_course in actual_courses:
+            url = f"https://levnet.jct.ac.il/api/common/actualCourses.ashx?" \
+                  f"action=LoadActualCourse&ActualCourseID={actual_course}"
+            response_json = self.request(url)
+
+            for group in response_json["groups"]:
+                full_course_data = group["groupFullNumber"]
+                type_course = type_converter[group["groupTypeName"].strip()]
+                lecturer = group["courseGroupLecturers"].strip()
+                if lecturer == "רשימת המתנה אין לשבץ":
+                    continue
+                group_meetings = group["courseGroupMeetings"].strip()
+                comment = group["groupComment"].strip()
+                meetings_list = []
+                location = ""
+                if not group_meetings:
+                    continue
+                for meeting in group_meetings.split("\r\n"):
+                    meeting = meeting.strip()
+                    day = meeting[len("כל השבועות - יום ")]
+                    length = len("כל השבועות - יום א: ")
+                    start, end = meeting[length:length + len("00:00-00:00")].split("-")
+                    location = meeting[len("כל השבועות - יום א: 18:10-19:40, "):].strip()
+                    meetings_list.append(Meeting(convert_day(day), Meeting.str_to_time(start),
+                                                 Meeting.str_to_time(end)))
+                activity = AcademicActivity(course.name, type_course, True, lecturer, course.course_number,
+                                            course.parent_course_number, location, full_course_data, comment)
+                activity.add_slots(meetings_list)
+                activities.append(activity)
+        return activities
 
     def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \
             Tuple[List[AcademicActivity], List[str]]:
@@ -145,79 +219,13 @@ class NetworkHttp:
         """
         not_found_courses = []
         academic_activities = []
-        type_converter = {
-            "שעור": Type.LECTURE,
-            "תרגיל": Type.PRACTICE,
-            "מעבדה": Type.LAB,
-            """פרוייקט-במ"מ""": Type.LAB,
-            "פרויקט": Type.LAB,
-            "סמינר": Type.SEMINAR
-        }
-
-        def convert_day(day_letter):
-            return Day(ord(day_letter) - ord('א') + 1)
 
         for course in courses:
-            url = f"https://levnet.jct.ac.il/api/common/parentCourses.ashx?" \
-                  f"action=LoadActualCourses&ParentCourseID={course.parent_course_number}"
-            data = {
-                "selectedAcademicYear": utils.get_current_hebrew_year(),
-                "selectedSemester": utils.get_current_semester().value,
-                "selectedExtension": self.campuses[campus_name],
-                "current": 1
-            }
-            try:
-                response = self.session.post(url, data=json.dumps(data), timeout=NetworkHttp.TIMEOUT)
-            except Timeout as error:
-                self.logger.error("Connection error: %s", str(error))
-                raise WeakNetworkConnection() from error
-            response_json = response.json()
-            if not response_json["success"]:
-                return [], [course.name for course in courses]
-            if not response_json["totalItems"]:
+            activities = self._extract_academic_activity_course(campus_name, course)
+            if not activities:
                 not_found_courses.append(course.name)
-                continue
-            actual_courses = [item["id"] for item in response_json["items"]]
-            academic_activities_course = []
-            for actual_course in actual_courses:
-                url = f"https://levnet.jct.ac.il/api/common/actualCourses.ashx?" \
-                      f"action=LoadActualCourse&ActualCourseID={actual_course}"
-                try:
-                    response = self.session.post(url, timeout=NetworkHttp.TIMEOUT)
-                except Timeout as error:
-                    self.logger.error("Connection error: %s", str(error))
-                    raise WeakNetworkConnection() from error
-                response_json = response.json()
-                if not response_json["success"]:
-                    continue
-                for group in response_json["groups"]:
-                    full_course_data = group["groupFullNumber"]
-                    type_course = type_converter[group["groupTypeName"].strip()]
-                    lecturer = group["courseGroupLecturers"].strip()
-                    if lecturer == "רשימת המתנה אין לשבץ":
-                        continue
-                    group_meetings = group["courseGroupMeetings"].strip()
-                    comment = group["groupComment"].strip()
-                    meetings_list = []
-                    location = ""
-                    if not group_meetings:
-                        continue
-                    for meeting in group_meetings.split("\r\n"):
-                        meeting = meeting.strip()
-                        day = meeting[len("כל השבועות - יום ")]
-                        length = len("כל השבועות - יום א: ")
-                        start, end = meeting[length:length + len("00:00-00:00")].split("-")
-                        location = meeting[len("כל השבועות - יום א: 18:10-19:40, "):].strip()
-                        meetings_list.append(Meeting(convert_day(day), Meeting.str_to_time(start),
-                                                     Meeting.str_to_time(end)))
-                    activity = AcademicActivity(course.name, type_course, True, lecturer, course.course_number,
-                                                course.parent_course_number, location, full_course_data, comment)
-                    activity.add_slots(meetings_list)
-                    academic_activities_course.append(activity)
-            if not academic_activities_course:
-                not_found_courses.append(course.name)
-                continue
-            academic_activities.extend(academic_activities_course)
+            else:
+                academic_activities.extend(activities)
         return academic_activities, not_found_courses
 
     @property
@@ -227,19 +235,17 @@ class NetworkHttp:
         return self._campuses
 
     def extract_all_courses(self, campus_name: str) -> List[Course]:
-        if not self.is_connected():
-            self.connect()
 
         if campus_name not in self.campuses.keys():
-            raise RuntimeError("Failed to extract courses")
+            raise RuntimeError(f"ERROR: {campus_name} is not a valid campus name")
 
         url = "https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?action=LoadPlannedMultiYearPrograms"
 
         payload = {"selectedAcademicYear": utils.get_current_hebrew_year(),
-                   "selectedExtension": self.campuses[campus_name], "selectedDepartment": 20, "current": 1}
-        response = self.session.post(url, data=json.dumps(payload), timeout=NetworkHttp.TIMEOUT)
-        if response.status_code != NetworkHttp.HTTP_OK or not response.json()["success"]:
-            raise RuntimeError("Failed to extract courses")
+                   "selectedExtension": self.campuses[campus_name],
+                   "selectedDepartment": 20, "current": 1}
+        response_json = self.request(url, payload)
+
         classes_names = ["מדעי "
                          "המחשב", "הנדסת תוכנה"]
 
@@ -248,17 +254,15 @@ class NetworkHttp:
             is_relevant = is_relevant and any((class_name in item["trackName"] for class_name in classes_names))
             return is_relevant
 
-        relevance_programs = [item for item in response.json()["items"] if is_relevant_program(item)]
+        relevance_programs = [item for item in response_json["items"] if is_relevant_program(item)]
         courses = set()
 
         for program in relevance_programs:
             program_id = program["id"]
             url = f"https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?" \
                   f"action=GetMultiYearPlannedProgramMembersWithFilters&InitialProgramID={program_id}"
-            response = self.session.post(url, data=payload)
-            if not response.json()["success"]:
-                raise RuntimeError("Failed to extract courses")
-            semesters = [semester_program["members"] for semester_program in response.json()["allMembers"]]
+            response_json = self.request(url, payload)
+            semesters = [semester_program["members"] for semester_program in response_json["allMembers"]]
             for semester in semesters:
                 for course in semester:
                     name = course["parentCourseName"].strip()
