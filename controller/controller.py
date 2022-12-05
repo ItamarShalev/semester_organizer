@@ -62,6 +62,8 @@ class Controller:
             self.gui.close_login_window()
             self.network.set_user(user)
 
+            self.database.clear_data_old_than(days=1)
+
             settings = self.database.load_settings() or Settings()
 
             campus_names = self.network.extract_campus_names()

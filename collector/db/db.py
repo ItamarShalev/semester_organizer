@@ -1,5 +1,6 @@
 import os
 import sqlite3 as database
+import time
 from typing import List, Optional
 
 import utils
@@ -18,6 +19,7 @@ class Database:
     CAMPUS_NAMES_FILE_PATH = os.path.join(utils.get_database_path(), "campus_names.txt")
     COURSES_DATA_FILE_PATH = os.path.join(utils.get_database_path(), "courses_data.txt")
     ACTIVITIES_DATA_DATABASE_PATH = os.path.join(utils.get_database_path(), "activities_data.db")
+    DEFAULT_DAYS_TO_CLEAR = 1
 
     def save_courses_data(self, courses: List[Course]):
         courses_set = set(courses)
@@ -190,9 +192,23 @@ class Database:
             # pylint: disable=no-member
             return Settings.from_json(file.read())
 
+    def _get_last_modified_by_days(self, file_path: str) -> int:
+        if not os.path.exists(file_path):
+            return 0
+        last_modified = os.path.getmtime(file_path)
+        return int((time.time() - last_modified) / 60 / 60 / 24)
+
     def clear_settings(self):
         if os.path.exists(Database.SETTINGS_FILE_PATH):
             os.remove(Database.SETTINGS_FILE_PATH)
+
+    def clear_data_old_than(self, days: int = DEFAULT_DAYS_TO_CLEAR):
+        if self._get_last_modified_by_days(Database.CAMPUS_NAMES_FILE_PATH) >= days:
+            self.clear_campus_names()
+        if self._get_last_modified_by_days(Database.COURSES_DATA_FILE_PATH) >= days:
+            self.clear_courses_data()
+        if self._get_last_modified_by_days(Database.ACTIVITIES_DATA_DATABASE_PATH) >= days:
+            self.clear_academic_activities_data()
 
     def get_common_campuses_names(self) -> List[str]:
         campus_names = []
