@@ -1,6 +1,7 @@
 from enum import Enum, auto
 from typing import List, Dict, Optional
 
+import utils
 from data.activity import Activity
 from data.course_choice import CourseChoice
 from data.user import User
@@ -15,10 +16,13 @@ class MessageType(Enum):
 
 class UserClickExitException(Exception):
     def __init__(self):
-        super().__init__("User clicked exit button in the GUI.")
+        super().__init__("ERROR: Can't click exit button without choose from the options.")
 
 
 class Gui:
+
+    def __init__(self):
+        self.logger = utils.get_logging()
 
     def open_login_window(self) -> User:
         """
@@ -42,7 +46,7 @@ class Gui:
         :raises: UserClickExitException if the user clicked exit button.
         """
 
-    def open_custom_activities_window(self) -> List[Activity]:
+    def open_personal_activities_window(self) -> List[Activity]:
         """
         This function will open a window to ask the user for his custom activities.
         for example, job, army, etc.
@@ -60,6 +64,12 @@ class Gui:
         """
 
     def open_loading_window(self, message: str):
+        """
+        This function will open a loading window.
+        :param: message: the message that will be shown in the window.
+        """
+
+    def close_loading_window(self):
         """
         This function will open a loading window.
         :param: message: the message that will be shown in the window.
