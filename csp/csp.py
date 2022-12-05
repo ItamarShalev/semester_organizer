@@ -1,9 +1,10 @@
-from typing import List
+from typing import List, Optional
 
 from constraint import Problem
 
 from data.activity import Activity
 from data.schedule import Schedule
+from data.course_choice import CourseChoice
 from data.type import Type
 
 
@@ -29,7 +30,8 @@ def _is_consist(activity_one, activity_two):
     return all(not activity.is_crash_with_activities(activity_one) for activity in activity_two)
 
 
-def extract_schedules(activities: List[Activity]) -> List[Schedule]:
+def extract_schedules(activities: List[Activity], courses_choices: Optional[List[CourseChoice]] = None) -> \
+        List[Schedule]:
     problem = Problem()
     activities_result = []
     schedule_result = []
