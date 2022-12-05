@@ -5,6 +5,7 @@ from typing import List, Optional
 import utils
 from data.academic_activity import AcademicActivity
 from data.course import Course
+from data.settings import Settings
 from data.user import User
 from data.type import Type
 from data.day import Day
@@ -12,6 +13,7 @@ from data.meeting import Meeting
 
 
 class Database:
+    SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.txt")
     USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
     CAMPUS_NAMES_FILE_PATH = os.path.join(utils.get_database_path(), "campus_names.txt")
     COURSES_DATA_FILE_PATH = os.path.join(utils.get_database_path(), "courses_data.txt")
@@ -168,15 +170,29 @@ class Database:
         """
         if not os.path.exists(Database.USER_NAME_FILE_PATH):
             return None
-        with open(Database.USER_NAME_FILE_PATH, "r") as file:
-            user_name = file.readline().strip()
-            password = file.readline().strip()
-            return User(user_name, password)
+        with open(Database.USER_NAME_FILE_PATH, "r", encoding="utf-8") as file:
+            return User(file.readline().strip(), file.readline().strip())
 
     def clear_all_data(self):
         self.clear_courses_data()
         self.clear_academic_activities_data()
         self.clear_campus_names()
+        self.clear_settings()
+
+    def save_settings(self, settings: Settings):
+        with open(Database.SETTINGS_FILE_PATH, "w", encoding="utf-8") as file:
+            file.write(settings.to_json())
+
+    def load_settings(self) -> Optional[Settings]:
+        if not os.path.exists(Database.SETTINGS_FILE_PATH):
+            return None
+        with open(Database.SETTINGS_FILE_PATH, "r", encoding="utf-8") as file:
+            # pylint: disable=no-member
+            return Settings.from_json(file.read())
+
+    def clear_settings(self):
+        if os.path.exists(Database.SETTINGS_FILE_PATH):
+            os.remove(Database.SETTINGS_FILE_PATH)
 
     def get_common_campuses_names(self) -> List[str]:
         campus_names = []

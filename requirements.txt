@@ -4,3 +4,4 @@ requests>=2.28.1
 selenium>=4.6.0
 webdriver-manager>=3.8.5
 beautifulsoup4>=4.11.1
+dataclasses_json>=0.5.7

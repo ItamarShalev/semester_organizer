@@ -6,8 +6,10 @@ import utils
 from collector.db.db import Database
 from data.academic_activity import AcademicActivity
 from data.course import Course
+from data.settings import Settings
 from data.type import Type
 from data.user import User
+from data.output_format import OutputFormat
 
 
 class TestDatabase:
@@ -81,3 +83,18 @@ class TestDatabase:
 
         os.remove(Database.USER_NAME_FILE_PATH)
         assert database.load_hard_coded_user_data() is None
+
+    def test_settings(self):
+        database = Database()
+        database.clear_settings()
+        assert database.load_settings() is None
+
+        settings = Settings()
+        settings.campus_name = "בדיקה"
+        settings.year = 2020
+        settings.output_formats = [OutputFormat.EXCEL]
+        database.save_settings(settings)
+        assert database.load_settings() == settings
+
+        database.clear_settings()
+        assert database.load_settings() is None
