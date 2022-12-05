@@ -46,7 +46,7 @@ class NoDriverFoundException(Exception):
         super().__init__("ERROR: No driver found for this platform")
 
 
-class WeakNetworkConnection(Exception):
+class WeakNetworkConnectionException(Exception):
 
     def __init__(self):
         super().__init__("ERROR: Weak network connection, please try to refresh or change your network and again later")
@@ -58,6 +58,10 @@ class InvalidServerRequestException(Exception):
 
 
 class NetworkHttp:
+    """
+    :raises: InvalidServerRequestException if the server request is invalid.
+             WeakNetworkConnection if the network is weak
+    """
     HTTP_OK = 200
     TIMEOUT = 10
 
@@ -112,7 +116,7 @@ class NetworkHttp:
             response = self.session.post(url, data=data, timeout=NetworkHttp.TIMEOUT)
         except Timeout as error:
             self.logger.error("Connection error: %s", str(error))
-            raise WeakNetworkConnection() from error
+            raise WeakNetworkConnectionException() from error
 
         json_data = response.json()
         if not json_data["success"]:
@@ -402,7 +406,7 @@ class NetworkDriver:
                 expected_conditions.presence_of_element_located((By.XPATH, '//*[@id="mainForm"]/aside/ul/li[35]/a')))
             self.logger.debug("Connection to the server succeeded.")
         except TimeoutException as error:
-            raise WeakNetworkConnection() from error
+            raise WeakNetworkConnectionException() from error
 
     def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \
             Tuple[List[AcademicActivity], List[str]]:
@@ -431,7 +435,7 @@ class NetworkDriver:
             WebDriverWait(self.driver, NetworkDriver.TIMEOUT).until(
                 expected_conditions.presence_of_element_located((By.XPATH, '//*[@id="selectedExtension"]')))
         except TimeoutException as error:
-            raise WeakNetworkConnection() from error
+            raise WeakNetworkConnectionException() from error
 
         soup = BeautifulSoup(self.driver.page_source, "html.parser")
         campuses_html = soup.find("select", {"ng-model": "query.selectedExtension"}).findAll("option")
