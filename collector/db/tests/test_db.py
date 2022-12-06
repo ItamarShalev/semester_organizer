@@ -76,7 +76,7 @@ class TestDatabase:
     def test_load_hard_coded_user_data(self):
         database = Database()
         user = User("username", "password")
-        with open(Database.USER_NAME_FILE_PATH, "w+") as file:
+        with open(Database.USER_NAME_FILE_PATH, "w+", encoding=utils.ENCODING) as file:
             file.write(f"{user.username}\n{user.password}")
         loaded_user = database.load_hard_coded_user_data()
         assert user == loaded_user
