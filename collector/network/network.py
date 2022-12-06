@@ -133,7 +133,7 @@ class NetworkHttp:
             raise RuntimeError("Failed to connect")
 
     def disconnect(self):
-        if not self._session:
+        if self._session:
             url = "https://levnet.jct.ac.il/api/common/account.ashx?action=Logout"
             with suppress(Exception):
                 self.request(url)
