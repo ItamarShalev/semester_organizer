@@ -102,10 +102,10 @@ class NetworkHttp:
             self.logger.error("Connection error: %s", str(error))
             return False
 
-        self.logger.debug("Response: %s", response.text)
-        self.logger.debug("Status code: %s", response.status_code)
+        connected_succeeded = response.status_code == NetworkHttp.HTTP_OK and response.json()["success"]
+        self.logger.debug("Status code: %s, connected_succeeded = %s", response.status_code, str(connected_succeeded))
 
-        return response.status_code == NetworkHttp.HTTP_OK and response.json()["success"]
+        return connected_succeeded
 
     def request(self, url: str, data: Optional[dict] = None) -> dict:
         try:
@@ -121,6 +121,7 @@ class NetworkHttp:
         json_data = response.json()
         if not json_data["success"]:
             raise InvalidServerRequestException()
+        self.logger.debug("\n\n*************Status code: %s, json_data = %s", response.status_code, str(json_data))
         return json_data
 
     def connect(self):
