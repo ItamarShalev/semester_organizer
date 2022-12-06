@@ -1,10 +1,10 @@
 import logging
 import os
-import sys
 from data.course import Course
 from data.semester import Semester
 
 ENCODING = "utf-8"
+LOG_FILE_HANDLER = logging.FileHandler(filename="log.txt", encoding=ENCODING, mode='w')
 
 
 def init_project():
@@ -17,9 +17,8 @@ def init_project():
 
 def set_logging_to_file(level=logging.DEBUG):
     format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
-    log_file_handler = logging.FileHandler(filename="log.txt", encoding=ENCODING, mode='w')
 
-    logging.basicConfig(handlers=[log_file_handler, logging.StreamHandler()],
+    logging.basicConfig(handlers=[LOG_FILE_HANDLER, logging.StreamHandler()],
                         datefmt="%H:%M:%S", level=level, format=format_logging)
 
 
@@ -51,7 +50,10 @@ def get_current_semester():
 
 def config_logging_level(level=logging.DEBUG):
     format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
-    logging.basicConfig(stream=sys.stdout, datefmt="%H:%M:%S", level=level, format=format_logging)
+    handlers = [logging.StreamHandler()]
+    if level == logging.DEBUG:
+        handlers.append(LOG_FILE_HANDLER)
+    logging.basicConfig(handlers=handlers, datefmt="%H:%M:%S", level=level, format=format_logging)
 
 
 def get_logging():
