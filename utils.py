@@ -15,8 +15,10 @@ def init_project():
 
 def set_logging_to_file(level=logging.DEBUG):
     format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
-    logging.basicConfig(filemode="a", filename=os.path.join(get_root_path(), "log.txt"), datefmt="%H:%M:%S",
-                        level=level, format=format_logging)
+    log_file_handler = logging.FileHandler(filename="log.txt", encoding='utf-8', mode='a')
+
+    logging.basicConfig(handlers=[log_file_handler, logging.StreamHandler()],
+                        datefmt="%H:%M:%S", level=level, format=format_logging)
 
 
 def get_root_path():
