@@ -4,6 +4,8 @@ import sys
 from data.course import Course
 from data.semester import Semester
 
+ENCODING = "utf-8"
+
 
 def init_project():
     logging.getLogger("urllib3").setLevel(logging.WARNING)
@@ -15,7 +17,7 @@ def init_project():
 
 def set_logging_to_file(level=logging.DEBUG):
     format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
-    log_file_handler = logging.FileHandler(filename="log.txt", encoding='utf-8', mode='w')
+    log_file_handler = logging.FileHandler(filename="log.txt", encoding=ENCODING, mode='w')
 
     logging.basicConfig(handlers=[log_file_handler, logging.StreamHandler()],
                         datefmt="%H:%M:%S", level=level, format=format_logging)
