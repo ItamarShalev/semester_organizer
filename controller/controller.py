@@ -113,7 +113,7 @@ class Controller:
 
             activities += self.gui.open_personal_activities_window()
 
-            schedules = csp.extract_schedules(activities, courses_choices)
+            schedules = csp.extract_schedules(activities, courses_choices, settings)
 
             if not schedules:
                 self.gui.open_notification_window("No schedules were found")
