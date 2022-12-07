@@ -122,6 +122,55 @@ class Gui:
         :param: buttons: the buttons that will be shown in the window.
         :return: Which button was clicked. None if no button was clicked or the exit button was clicked.
         """
+        assert message, "Message can't be empty."
+        assert not buttons or len(buttons) <= 3, "Can't have more than 3 buttons."
+
+        default_button = "OK"
+        button_text_selected = None
+        text_color = "white"
+
+        app = customtkinter.CTk()
+        app.title(f"{message_type.name.capitalize()} notification")
+        app.geometry("550x240")
+
+        def button_clicked(text_button):
+            nonlocal button_text_selected
+            button_text_selected = text_button
+            app.destroy()
+
+        def exit_button_clicked():
+            self.logger.debug("Exit button clicked.")
+            app.destroy()
+
+        if message_type is MessageType.ERROR:
+            text_color = "red"
+        elif message_type is MessageType.WARNING:
+            text_color = "orange"
+        elif message_type is MessageType.INFO:
+            text_color = "white"
+
+        container = customtkinter.CTkFrame(master=app)
+        container.pack(pady=20, padx=20, fill="both", expand=True)
+
+        text_view = customtkinter.CTkLabel(master=container, justify=tkinter.CENTER, text=message,
+                                           text_color=text_color)
+        text_view.pack(pady=12, padx=10)
+        buttons_frame = customtkinter.CTkFrame(master=container)
+        buttons_frame.pack(pady=30, padx=10)
+
+        if not buttons:
+            button = customtkinter.CTkButton(master=buttons_frame, command=exit_button_clicked, text=default_button)
+            button.pack(padx=5, pady=5)
+        else:
+            for button_text in buttons:
+
+                button = customtkinter.CTkButton(master=buttons_frame, text=button_text,
+                                                 command=lambda value=button_text: button_clicked(value))
+                button.pack(side=tkinter.LEFT, pady=5, padx=5)
+
+        app.mainloop()
+
+        return button_text_selected
 
     def open_settings_window(self, settings: Settings, campuses: List[str], years: Dict[str, int]) -> Settings:
         """
