@@ -5,3 +5,5 @@ selenium>=4.6.0
 webdriver-manager>=3.8.5
 beautifulsoup4>=4.11.1
 dataclasses_json>=0.5.7
+customtkinter>=5.0.2
+tk>=0.1.0

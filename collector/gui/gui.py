@@ -1,6 +1,15 @@
 from enum import Enum, auto
 from typing import List, Dict, Optional, Callable
 
+import sys
+try:
+    import tkinter
+except ImportError:
+    print("You need to install tkinter to run this program.")
+    sys.exit(-1)
+import customtkinter
+
+
 import utils
 from data.activity import Activity
 from data.course_choice import CourseChoice
@@ -23,13 +32,69 @@ class Gui:
 
     def __init__(self):
         self.logger = utils.get_logging()
+        customtkinter.set_appearance_mode("dark")
+        customtkinter.set_default_color_theme("blue")
 
     def open_login_window(self, is_valid_user_function: Callable) -> User:
         """
         This function will open the login window.
+        :param: is_valid_user_function: a function that will get a user and return if the user is valid.
         :return: the user that was logged in.
         :raises: UserClickExitException if the user clicked exit button.
         """
+        user_result = User()
+        app = customtkinter.CTk()
+        app.geometry("500x300")
+        app.title("Login window")
+        user_clicked_exit = False
+
+        def button_clicked():
+            nonlocal user_result
+            self.logger.info("Login button clicked - checking if user is valid...")
+            user = User(username_input.get(), password_input.get())
+            if not user:
+                message = "Username or password is missing, please fill all the fields."
+                message_view.configure(text=message)
+                self.logger.warning(message)
+            elif not is_valid_user_function(user):
+                message = "Username or password is invalid, please check your input."
+                message_view.configure(text=message)
+                self.logger.warning(message)
+            else:
+                user_result = user
+                app.destroy()
+
+        def exit_button_clicked():
+            nonlocal user_clicked_exit
+            user_clicked_exit = True
+            self.logger.debug("Exit button clicked.")
+            app.destroy()
+
+        container = customtkinter.CTkFrame(master=app)
+        container.pack(pady=20, padx=20, fill="both", expand=True)
+
+        title_view = customtkinter.CTkLabel(master=container, justify=tkinter.LEFT, text="Login", text_color="white")
+        title_view.pack(pady=12, padx=10)
+
+        username_input = customtkinter.CTkEntry(master=container, placeholder_text="Username")
+        username_input.pack(pady=12, padx=10)
+
+        password_input = customtkinter.CTkEntry(master=container, placeholder_text="Password", show="*")
+        password_input.pack(pady=12, padx=10)
+
+        login_button = customtkinter.CTkButton(master=container, command=button_clicked, text="Login")
+        login_button.pack(pady=12, padx=10)
+
+        message_view = customtkinter.CTkLabel(master=container, justify=tkinter.LEFT, text="", text_color="orange")
+        message_view.pack(pady=12, padx=10)
+
+        app.protocol("WM_DELETE_WINDOW", exit_button_clicked)
+        app.mainloop()
+
+        if user_clicked_exit:
+            raise UserClickExitException()
+
+        return user_result
 
     def open_academic_activities_window(self, ask_attendance_required: bool, course_choice: List[CourseChoice]) -> \
             List[CourseChoice]:
