@@ -127,7 +127,12 @@ class NetworkHttp:
             self.logger.error("Connection error: %s", str(error))
             raise WeakNetworkConnectionException() from error
 
-        json_data = response.json()
+        try:
+            json_data = response.json()
+        except json.JSONDecodeError as error:
+            self.logger.error("Invalid server response")
+            raise InvalidServerRequestException() from error
+
         if not json_data["success"]:
             raise InvalidServerRequestException()
         self.logger.debug("\n\n*************Status code: %s, json_data = %s", response.status_code, str(json_data))
