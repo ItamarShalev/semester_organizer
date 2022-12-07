@@ -1,0 +1,15 @@
+[report]
+exclude_lines =
+    def __repr__
+    def __str__
+    def __init__
+    raise AssertionError
+    raise NotImplementedError
+    def test_
+    def _create_schedule
+    if not was_exists:
+    except Timeout as error
+    except json.JSONDecodeError
+    if not json_data["success"]:
+    except Exception
+    raise InvalidServerRequestException
