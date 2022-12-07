@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Callable
 
 import utils
 from data.activity import Activity
@@ -24,16 +24,11 @@ class Gui:
     def __init__(self):
         self.logger = utils.get_logging()
 
-    def open_login_window(self) -> User:
+    def open_login_window(self, is_valid_user_function: Callable) -> User:
         """
         This function will open the login window.
         :return: the user that was logged in.
         :raises: UserClickExitException if the user clicked exit button.
-        """
-
-    def close_login_window(self):
-        """
-        This function will close the login window.
         """
 
     def open_academic_activities_window(self, ask_attendance_required: bool, course_choice: List[CourseChoice]) -> \
@@ -61,18 +56,6 @@ class Gui:
         :param: message_type: the type of the message. it will be shown in the window.
         :param: buttons: the buttons that will be shown in the window.
         :return: Which button was clicked. None if no button was clicked or the exit button was clicked.
-        """
-
-    def open_loading_window(self, message: str):
-        """
-        This function will open a loading window.
-        :param: message: the message that will be shown in the window.
-        """
-
-    def close_loading_window(self):
-        """
-        This function will open a loading window.
-        :param: message: the message that will be shown in the window.
         """
 
     def open_settings_window(self, settings: Settings, campuses: List[str], years: Dict[str, int]) -> Settings:

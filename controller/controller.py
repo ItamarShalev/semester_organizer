@@ -1,6 +1,5 @@
 from typing import List
 from collections import defaultdict
-import time
 
 import utils
 from collector.db.db import Database
@@ -15,7 +14,6 @@ from csp import csp
 
 
 class Controller:
-    SLEEP_TIME_AFTER_ERROR = 10
 
     def __init__(self):
         self.database = Database()
@@ -54,12 +52,8 @@ class Controller:
 
     def run_main_gui_flow(self):
         try:
-            user = None
-            while not user:
-                user = self.gui.open_login_window()
-                if not user:
-                    self.gui.open_notification_window("The username or password is incorrect.")
-            self.gui.close_login_window()
+            self.logger.info("Start the main gui flow")
+            user = self.gui.open_login_window(self.network.check_connection)
             self.network.set_user(user)
 
             self.database.clear_data_old_than(days=1)
@@ -77,20 +71,16 @@ class Controller:
 
             ask_attendance = not settings.attendance_required_all_courses
 
-            self.gui.open_loading_window("Loading courses data...")
+            self.logger.info("Loading courses data...")
 
             courses = self.database.load_courses_data() or self.network.extract_all_courses(settings.campus_name)
 
             if not courses:
-                self.gui.close_loading_window()
                 message = "There are no courses in the system, please try again with another campus or year."
                 self.gui.open_notification_window(message, MessageType.ERROR)
-                time.sleep(Controller.SLEEP_TIME_AFTER_ERROR)
                 return
 
             all_academic_activities, _ = self.network.extract_academic_activities_data(settings.campus_name, courses)
-
-            self.gui.close_loading_window()
 
             courses_choices = self._get_courses_choices(all_academic_activities)
 
@@ -115,18 +105,18 @@ class Controller:
 
             schedules = csp.extract_schedules(activities, courses_choices, settings)
 
+            results_dir = utils.get_results_path()
+
             if not schedules:
                 self.gui.open_notification_window("No schedules were found")
             else:
-                self.convertor.convert_activities(schedules, "results", settings.output_formats)
-
-            self.gui.open_notification_window("The schedules were saved in the 'results' folder")
+                self.convertor.convert_activities(schedules, results_dir, settings.output_formats)
+                self.gui.open_notification_window(f"The schedules were saved in the {results_dir} folder")
 
         except (WeakNetworkConnectionException, UserClickExitException) as error:
             message = str(error)
-            self.gui.open_notification_window(message, MessageType.ERROR)
             self.logger.error(message)
-            time.sleep(Controller.SLEEP_TIME_AFTER_ERROR)
+            self.gui.open_notification_window(message, MessageType.ERROR)
 
     def run_update_levnet_data_flow(self):
         self.network = NetworkHttp()
