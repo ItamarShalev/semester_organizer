@@ -93,9 +93,18 @@ class NetworkHttp:
     def is_connected(self):
         return self._session and self._session.cookies
 
-    def check_connection(self) -> bool:
+    def check_connection(self, user: Optional[User] = None) -> bool:
+        """
+        Check if the user is connected to the server, if no user given, check if the current user is connected
+        :raises: InvalidServerRequestException if the server request is invalid.
+        :param: user: the user to check the connection for
+        :return: True if the user is connected, False otherwise
+        """
+        assert user or self._user, "No user was provided"
+        if not user:
+            user = self._user
         url = "https://levnet.jct.ac.il/api/home/login.ashx?action=TryLogin"
-        data = {"username": self._user.username, "password": self._user.password}
+        data = {"username": user.username, "password": user.password}
         try:
             response = self.session.post(url, data=json.dumps(data), timeout=NetworkHttp.TIMEOUT)
         except Timeout as error:
