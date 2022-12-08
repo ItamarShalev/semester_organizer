@@ -13,3 +13,4 @@ exclude_lines =
     if not json_data["success"]:
     except Exception
     raise InvalidServerRequestException
+    class Gui
