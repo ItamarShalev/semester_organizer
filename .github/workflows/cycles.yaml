@@ -67,4 +67,4 @@ jobs:
           coverage run -m pytest $(git ls-files 'test_*.py') -v -m "not network"
       - name: Run coverage
         run: |
-          coverage report -m
+          coverage report -m --omit="./collector/network/network.py"
