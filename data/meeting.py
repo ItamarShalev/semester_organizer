@@ -5,10 +5,20 @@ from data.day import Day
 
 class Meeting:
 
-    def __init__(self, day: Day, start_time: struct_time, end_time: struct_time):
+    def __init__(self, day: Day, start_time: struct_time | str, end_time: struct_time | str):
         self.day = day
-        self.start_time = start_time
-        self.end_time = end_time
+        if isinstance(start_time, str):
+            self.start_time = Meeting.str_to_time(start_time)
+        else:
+            self.start_time = start_time
+
+        if isinstance(end_time, str):
+            self.end_time = Meeting.str_to_time(end_time)
+        else:
+            self.end_time = end_time
+
+        if self.start_time >= self.end_time:
+            raise Exception("Start time is after end time")
 
     def __str__(self):
         return f"{self.get_string_start_time()} - {self.get_string_end_time()}"

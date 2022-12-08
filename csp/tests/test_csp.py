@@ -4,6 +4,7 @@ from data.activity import Activity
 from data.day import Day
 from data.meeting import Meeting
 from data.type import Type
+from data.schedule import Schedule
 
 
 class TestCsp:
@@ -22,9 +23,12 @@ class TestCsp:
         activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("12:00"), Meeting.str_to_time("14:30")))
         activities.append(activity)
 
+        schdule = Schedule("Option 0", "option_0", "", activities)
+
         schedules = csp.extract_schedules(activities)
         assert len(schedules) == 1
         assert any(schedule.contains(activities) for schedule in schedules)
+        assert schdule in schedules
 
     def test_two_from_two_options(self):
         activities_option_1 = []

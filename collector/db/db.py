@@ -39,7 +39,8 @@ class Database:
                                "activity_name TEXT, type INTEGER ,course_number INTEGER, lecturer TEXT, "
                                "parent_course_number INTEGER, location TEXT);")
                 cursor.execute("CREATE TABLE meetings (day INTEGER, start_time TEXT, end_time TEXT, activity_id TEXT, "
-                               "FOREIGN KEY(activity_id) REFERENCES activities(activity_id) ON DELETE CASCADE);")
+                               "FOREIGN KEY(activity_id) REFERENCES activities(activity_id) ON DELETE CASCADE "
+                               "UNIQUE(day, start_time, end_time, activity_id) ON CONFLICT IGNORE);")
 
             # Delete all the activities that inside with the same name, to avoid old data.
             for activity_name in activities_names:
@@ -48,6 +49,7 @@ class Database:
 
             # Insert the new data.
             for activity in academic_activities:
+                assert activity.activity_id, "The activity id is empty."
                 cursor.execute("INSERT INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?);", (
                     activity.activity_id, campus_name, activity.name, activity.type.value, activity.course_number,
                     activity.lecturer_name, activity.parent_course_number, activity.location))
@@ -69,8 +71,6 @@ class Database:
             courses = []
             for line in file:
                 line = line.strip()
-                if line == "":
-                    continue
                 course_name, course_number, parent_course_number = line.split(";")
                 course = Course(course_name, int(course_number), int(parent_course_number))
                 courses.append(course)
@@ -87,7 +87,7 @@ class Database:
         :return:
         """
         # If the database not exists, there is nothing to clear.
-        if not os.path.isfile(Database.ACTIVITIES_DATA_DATABASE_PATH):
+        if not os.path.exists(Database.ACTIVITIES_DATA_DATABASE_PATH):
             return
         if campus_name is None:
             with database.connect(Database.ACTIVITIES_DATA_DATABASE_PATH) as connection:
@@ -126,7 +126,7 @@ class Database:
             cursor = connection.cursor()
             # If courses is empty, return all the academic activities data by campus name.
             if not courses:
-                cursor.execute("SELECT * FROM activities WHERE campus_name = (?);", campus_name)
+                cursor.execute("SELECT * FROM activities WHERE campus_name = (?);", (campus_name,))
             else:
                 # Else, return the academic activities data by the campus name and the courses' names.
                 courses_names = [course.name for course in courses]
