@@ -3,6 +3,7 @@ import utils
 from collector.db.db import Database
 from collector.network.network import NetworkDriver
 from collector.network.network import NetworkHttp
+from data.user import User
 
 
 @pytest.mark.network
@@ -10,10 +11,16 @@ from collector.network.network import NetworkHttp
 class TestNetworkHttp:
     user = None
 
+    def test_fail_connection(self):
+        network = NetworkHttp(User("123456789", "123456789"))
+        with pytest.raises(RuntimeError):
+            network.connect()
+
     def test_check_setup(self):
         user = Database().load_hard_coded_user_data()
         assert user, "Can't load user data."
-        network = NetworkHttp(user)
+        network = NetworkHttp()
+        network.set_user(user)
         assert network.check_connection(), "Can't connect to the server."
         TestNetworkHttp.user = user
 
