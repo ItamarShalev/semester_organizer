@@ -1,3 +1,4 @@
+from typing import Union
 from time import struct_time, strptime
 import time
 from data.day import Day
@@ -5,7 +6,7 @@ from data.day import Day
 
 class Meeting:
 
-    def __init__(self, day: Day, start_time: struct_time | str, end_time: struct_time | str):
+    def __init__(self, day: Day, start_time: Union[struct_time, str], end_time: Union[struct_time, str]):
         self.day = day
         if isinstance(start_time, str):
             self.start_time = Meeting.str_to_time(start_time)
