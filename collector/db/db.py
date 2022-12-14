@@ -218,3 +218,8 @@ class Database:
         campus_names.append("""מח"ר-טל תבונה""")
         campus_names.append("""מבח"ר בנים""")
         return campus_names
+
+    def save_hard_coded_user_data(self, user_data: User):
+        if user_data:
+            with open(Database.USER_NAME_FILE_PATH, "w", encoding=utils.ENCODING) as file:
+                file.write(f"{user_data.username}\n{user_data.password}")
