@@ -1,6 +1,7 @@
 from csp.csp import CSP
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
+from data.course_choice import CourseChoice
 from data.day import Day
 from data.meeting import Meeting
 from data.schedule import Schedule
@@ -99,3 +100,51 @@ class TestCsp:
 
         schedules = CSP().extract_schedules(activities)
         assert len(schedules) == 0
+
+    def test_one_option_favorite_one_teacher(self):
+        activities_option = []
+
+        activities = []
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("11:00")))
+        activities.append(academic_activity)
+
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "Mike", 2, 2, "a")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, Meeting.str_to_time("15:00"), Meeting.str_to_time("17:30")))
+        activities.append(academic_activity)
+        activities_option.append(academic_activity)
+
+        activity = Activity("c", Type.PERSONAL, True)
+        activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("12:00"), Meeting.str_to_time("14:30")))
+        activities.append(activity)
+        activities_option.append(activity)
+
+        course_choice = CourseChoice("a", available_teachers_for_lecture=["Mike"], available_teachers_for_practice=[])
+
+        schedules = CSP().extract_schedules(activities, course_choice)
+        assert len(schedules) == 1
+        assert schedules[0].contains(activities_option)
+
+    def test_one_option_no_options_for_favorite_teacher(self):
+        activities_option = []
+
+        activities = []
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
+        activities.append(academic_activity)
+        activities_option.append(academic_activity)
+
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "Mike", 2, 2, "a")
+        academic_activity.add_slot(Meeting(Day.MONDAY, "12:00", "14:30"))
+        activities.append(academic_activity)
+
+        activity = Activity("c", Type.PERSONAL, True)
+        activity.add_slot(Meeting(Day.MONDAY, "12:00", "14:30"))
+        activities.append(activity)
+        activities_option.append(activity)
+
+        course_choice = CourseChoice("a", available_teachers_for_lecture=["Mike"], available_teachers_for_practice=[])
+
+        schedules = CSP().extract_schedules(activities, course_choice)
+        assert len(schedules) == 1
+        assert schedules[0].contains(activities_option)
