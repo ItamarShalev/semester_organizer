@@ -8,7 +8,6 @@ from collector.network.network import NetworkHttp, WeakNetworkConnectionExceptio
 from convertor.convertor import Convertor
 from data.academic_activity import AcademicActivity
 from data.settings import Settings
-from data.type import Type
 from data.course_choice import CourseChoice
 from csp.csp import CSP
 
@@ -26,7 +25,7 @@ class Controller:
         # key = course name, first value list of lectures, second value list of exercises
         dict_data = defaultdict(lambda: (set(), set()))
         for activity in all_academic_activities:
-            index = 1 if activity.type in [Type.LECTURE, Type.SEMINAR] else 0
+            index = 1 if activity.type.is_lecture() else 0
             dict_data[activity.name][index].add(activity.lecturer_name)
 
         courses_choices = []

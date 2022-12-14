@@ -28,9 +28,9 @@ class Course:
         return hash((self.name, self.course_number, self.parent_course_number))
 
     def set_attendance_required(self, course_type: Type, required: bool):
-        if course_type in [Type.LECTURE, Type.SEMINAR]:
+        if course_type.is_lecture():
             self.attendance_required_for_lecture = required
-        elif course_type in [Type.LAB, Type.PRACTICE]:
+        elif course_type.is_exercise():
             self.attendance_required_for_practice = required
 
     def __str__(self):
@@ -42,10 +42,10 @@ class Course:
     def is_attendance_required(self, course_type: Type):
         attendance_required = True
 
-        if course_type in [Type.LECTURE, Type.SEMINAR]:
+        if course_type.is_lecture():
             attendance_required = self.attendance_required_for_lecture
 
-        elif course_type in [Type.LAB, Type.PRACTICE]:
+        elif course_type.is_exercise():
             attendance_required = self.attendance_required_for_practice
 
         return attendance_required
