@@ -1,10 +1,13 @@
 import logging
 import os
+
 from data.course import Course
 from data.semester import Semester
 
+
 ENCODING = "utf-8"
-LOG_FILE_HANDLER = logging.FileHandler(filename="log.txt", encoding=ENCODING, mode='w')
+ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+LOG_FILE_HANDLER = logging.FileHandler(filename=os.path.join(ROOT_PATH, "log.txt"), encoding=ENCODING, mode='w')
 
 
 def init_project():
@@ -22,10 +25,6 @@ def set_logging_to_file(level=logging.DEBUG):
                         datefmt="%H:%M:%S", level=level, format=format_logging)
 
 
-def get_root_path():
-    return os.path.dirname(os.path.abspath(__file__))
-
-
 def get_current_hebrew_year():
     return 5783
 
@@ -35,13 +34,13 @@ def get_years_list():
 
 
 def get_database_path():
-    if not os.path.exists(os.path.join(get_root_path(), "database")):
-        os.makedirs(os.path.join(get_root_path(), "database"))
-    return os.path.join(get_root_path(), "database")
+    if not os.path.exists(os.path.join(ROOT_PATH, "database")):
+        os.makedirs(os.path.join(ROOT_PATH, "database"))
+    return os.path.join(ROOT_PATH, "database")
 
 
 def get_results_path():
-    return os.path.join(get_root_path(), "results")
+    return os.path.join(ROOT_PATH, "results")
 
 
 def get_current_semester():
