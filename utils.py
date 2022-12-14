@@ -18,13 +18,6 @@ def init_project():
     logging.getLogger("WDM").setLevel(logging.WARNING)
 
 
-def set_logging_to_file(level=logging.DEBUG):
-    format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
-
-    logging.basicConfig(handlers=[LOG_FILE_HANDLER, logging.StreamHandler()],
-                        datefmt="%H:%M:%S", level=level, format=format_logging)
-
-
 def get_current_hebrew_year():
     return 5783
 
