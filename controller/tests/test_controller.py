@@ -3,7 +3,7 @@ import utils
 
 from collector.db.db import Database
 from collector.network.network import NetworkHttp
-from csp import csp
+from csp.csp import CSP
 
 
 @pytest.mark.network()
@@ -13,7 +13,7 @@ class TestController:
     run_in_background = True
 
     def test_flow_without_gui_without_database(self):
-
+        csp = CSP()
         campus_name = utils.get_campus_name_test()
         user = Database().load_hard_coded_user_data()
         network = NetworkHttp(user)
@@ -42,7 +42,7 @@ class TestController:
         assert schedules, "At least one schedule should be extracted."
 
     def test_flow_without_gui_with_database(self):
-
+        csp = CSP()
         database = Database()
         campus_name = "מכון לב"
         user = database.load_hard_coded_user_data()

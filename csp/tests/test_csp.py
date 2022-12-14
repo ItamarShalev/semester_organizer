@@ -1,10 +1,10 @@
-from csp import csp
+from csp.csp import CSP
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.day import Day
 from data.meeting import Meeting
-from data.type import Type
 from data.schedule import Schedule
+from data.type import Type
 
 
 class TestCsp:
@@ -25,7 +25,7 @@ class TestCsp:
 
         schdule = Schedule("Option 0", "option_0", "", activities)
 
-        schedules = csp.extract_schedules(activities)
+        schedules = CSP().extract_schedules(activities)
         assert len(schedules) == 1
         assert any(schedule.contains(activities) for schedule in schedules)
         assert schdule in schedules
@@ -51,7 +51,7 @@ class TestCsp:
         activities_option_1.append(activity)
         activities_option_2.append(activity)
 
-        schedules = csp.extract_schedules(activities)
+        schedules = CSP().extract_schedules(activities)
         assert len(schedules) == 2
         assert any(schedule.contains(activities_option_1) for schedule in schedules)
         assert any(schedule.contains(activities_option_2) for schedule in schedules)
@@ -79,7 +79,7 @@ class TestCsp:
         activities.append(activity)
         activities_option_1.append(activity)
 
-        schedules = csp.extract_schedules(activities)
+        schedules = CSP().extract_schedules(activities)
         assert len(schedules) == 1
         assert any(schedule.contains(activities_option_1) for schedule in schedules)
 
@@ -97,5 +97,5 @@ class TestCsp:
         activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("12:00"), Meeting.str_to_time("14:30")))
         activities.append(activity)
 
-        schedules = csp.extract_schedules(activities)
+        schedules = CSP().extract_schedules(activities)
         assert len(schedules) == 0

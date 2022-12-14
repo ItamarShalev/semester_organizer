@@ -10,7 +10,7 @@ from data.academic_activity import AcademicActivity
 from data.settings import Settings
 from data.type import Type
 from data.course_choice import CourseChoice
-from csp import csp
+from csp.csp import CSP
 
 
 class Controller:
@@ -53,6 +53,7 @@ class Controller:
     def run_main_gui_flow(self):
         try:
             self.logger.info("Start the main gui flow")
+            csp = CSP()
             user = self.gui.open_login_window(self.network.check_connection)
             self.network.set_user(user)
 
