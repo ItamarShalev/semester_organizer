@@ -1,9 +1,18 @@
-from enum import Enum, auto
+from enum import IntEnum, auto
 
 
-class Type(Enum):
+class Type(IntEnum):
     PERSONAL = auto()
     LECTURE = auto()
     LAB = auto()
     PRACTICE = auto()
     SEMINAR = auto()
+
+    def is_lecture(self):
+        return self in [Type.LECTURE, Type.SEMINAR]
+
+    def is_exercise(self):
+        return self in [Type.LAB, Type.PRACTICE]
+
+    def is_personal(self):
+        return self == Type.PERSONAL

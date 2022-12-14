@@ -45,9 +45,9 @@ class CSP:
         if not self.courses_choices or not isinstance(activity, AcademicActivity):
             return True
         names_list = []
-        if activity.type in [Type.LECTURE, Type.SEMINAR]:
+        if activity.type.is_lecture():
             names_list = self.courses_choices.available_teachers_for_lecture
-        elif activity.type == [Type.PRACTICE, Type.LAB]:
+        elif activity.type.is_exercise():
             names_list = self.courses_choices.available_teachers_for_practice
         if not names_list:
             return True

@@ -55,7 +55,7 @@ class TestData:
         assert activity1.no_meetings()
 
     def test_academic_activity(self):
-        activity = AcademicActivity("name", course_number=10, parent_course_number=20)
+        activity = AcademicActivity("name", activity_type=Type.LAB, course_number=10, parent_course_number=20)
         course = Course("name", 10, 20, "0.0.1", None)
         assert activity.same_as_course(course)
         activities = [activity]
