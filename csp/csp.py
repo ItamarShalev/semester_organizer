@@ -14,6 +14,7 @@ class CSP:
 
     def __init__(self):
         self.courses_choices = None
+        self.consisnt_one_favorite_teacher = False
 
     def _get_flat_activities_by_type(self, activities: List[Activity]) -> List[List[Activity]]:
         result = {activity_type: [] for activity_type in Type}
@@ -37,21 +38,29 @@ class CSP:
     def _is_consist_favorite_teachers(self, activities: List[Activity]):
         """
         Check if the activities consist the favorite teachers
-        :param activities: list of activities that contains only one activity
+        :param activities: list of activities
         :param activities: List[Activity]
         :return: bool
         """
-        activity = activities[0]
-        if not self.courses_choices or not isinstance(activity, AcademicActivity):
+        if not self.courses_choices:
             return True
         names_list = []
-        if activity.type.is_lecture():
-            names_list = self.courses_choices.available_teachers_for_lecture
-        elif activity.type.is_exercise():
-            names_list = self.courses_choices.available_teachers_for_practice
-        if not names_list:
-            return True
-        return activity.lecturer_name in names_list
+        is_consinst = True
+        for activity in activities:
+            if activity.type.is_lecture():
+                names_list = self.courses_choices.available_teachers_for_lecture
+            elif activity.type.is_exercise():
+                names_list = self.courses_choices.available_teachers_for_practice
+            elif not isinstance(activity, AcademicActivity):
+                break
+            if self.consisnt_one_favorite_teacher:
+                is_consinst = is_consinst and activity.lecturer_name in names_list
+            else:
+                is_consinst = is_consinst and (not names_list or activity.lecturer_name in names_list)
+            if self.consisnt_one_favorite_teacher and is_consinst:
+                break
+
+        return is_consinst
 
     def extract_schedules(self, activities: List[Activity], courses_choices: Optional[List[CourseChoice]] = None,
                           settings: Settings = None) -> List[Schedule]:
@@ -84,7 +93,14 @@ class CSP:
             schedule_result.append(schedule)
             option_counter += 1
 
-        if not schedule_result and courses_choices:
+        if not schedule_result and courses_choices and not self.consisnt_one_favorite_teacher:
             # If there are no schedules, try to find schedules without favorite teachers
+            self.consisnt_one_favorite_teacher = True
+            return self.extract_schedules(activities, courses_choices, settings)
+
+        if not schedule_result and courses_choices and self.consisnt_one_favorite_teacher:
+            # If there are no schedules, try to find schedules without favorite teachers
+            self.consisnt_one_favorite_teacher = False
             return self.extract_schedules(activities, None, settings)
+
         return schedule_result
