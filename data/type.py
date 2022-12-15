@@ -16,3 +16,6 @@ class Type(IntEnum):
 
     def is_personal(self):
         return self == Type.PERSONAL
+
+    def __str__(self):
+        return self.name.capitalize()
