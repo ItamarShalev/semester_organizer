@@ -6,6 +6,7 @@ from data.meeting import Meeting
 from data.course import Course
 from data.day import Day
 from data.type import Type
+from data.course_choice import CourseChoice
 
 
 class TestData:
@@ -62,3 +63,19 @@ class TestData:
 
         AcademicActivity.union_courses(activities, [course])
         assert activity.activity_id == course.activity_id
+
+    def test_type(self):
+        typ = Type.LAB
+        assert typ == Type.LAB
+        assert typ.is_exercise()
+        assert repr(typ) == "Lab"
+        assert str(typ) == "Lab"
+
+        typ = Type.PERSONAL
+        assert typ == Type.PERSONAL
+        assert typ.is_personal()
+
+    def test_course_choices(self):
+        course_choice = CourseChoice("A", [], [])
+        assert course_choice.name == "A"
+        assert hash(course_choice) == hash("A")
