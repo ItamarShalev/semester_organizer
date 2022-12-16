@@ -62,7 +62,12 @@ class Controller:
 
             campus_names = self.network.extract_campus_names()
 
-            settings = self.gui.open_settings_window(settings, campus_names, utils.get_years_list())
+            years = self.database.load_years()
+            if not years:
+                years = self.network.extract_years()
+                self.database.save_years(years)
+
+            settings = self.gui.open_settings_window(settings, campus_names, years)
 
             if settings.force_update_data:
                 self.database.clear_all_data()
