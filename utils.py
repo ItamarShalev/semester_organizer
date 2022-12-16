@@ -22,10 +22,6 @@ def get_current_hebrew_year():
     return 5783
 
 
-def get_years_list():
-    return [get_current_hebrew_year(), get_current_hebrew_year()]
-
-
 def get_database_path():
     if not os.path.exists(os.path.join(ROOT_PATH, "database")):
         os.makedirs(os.path.join(ROOT_PATH, "database"))

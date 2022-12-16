@@ -31,6 +31,7 @@ from data.meeting import Meeting
 from data.user import User
 from data.type import Type
 from data.day import Day
+from data.settings import Settings
 import utils
 
 
@@ -69,10 +70,14 @@ class NetworkHttp:
         self._user = user
         self._session = None
         self._campuses = None
+        self.settings = Settings()
         self.logger = utils.get_logging()
 
     def __del__(self):
         self.disconnect()
+
+    def set_settings(self, settings: Settings):
+        self.settings = settings
 
     def set_user(self, user: User):
         self._user = user
@@ -178,8 +183,8 @@ class NetworkHttp:
         url = f"https://levnet.jct.ac.il/api/common/parentCourses.ashx?" \
               f"action=LoadActualCourses&ParentCourseID={course.parent_course_number}"
         data = {
-            "selectedAcademicYear": utils.get_current_hebrew_year(),
-            "selectedSemester": utils.get_current_semester().value,
+            "selectedAcademicYear": self.settings.year,
+            "selectedSemester": self.settings.semester.value,
             "selectedExtension": self.campuses[campus_name],
             "current": 1
         }
@@ -271,7 +276,7 @@ class NetworkHttp:
 
         url = "https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?action=LoadPlannedMultiYearPrograms"
 
-        payload = {"selectedAcademicYear": utils.get_current_hebrew_year(),
+        payload = {"selectedAcademicYear": self.settings.year,
                    "selectedExtension": self.campuses[campus_name],
                    "selectedDepartment": 20, "current": 1}
         response_json = self.request(url, payload)
