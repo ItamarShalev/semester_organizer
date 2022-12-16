@@ -172,13 +172,12 @@ class Gui:
 
         return button_text_selected
 
-    def open_settings_window(self, settings: Settings, campuses: List[str], years: Dict[str, int]) -> Settings:
+    def open_settings_window(self, settings: Settings, campuses: List[str], years: Dict[int, str]) -> Settings:
         """
         This function will open the settings window.
         it will show all the campus names that the user can choose from.
         years will be dict that will contain the years in format [hebrew_year: value_of_year]
-        for example: {"תשפ"ג"
-        : 5783}
+        for example: { 5783: "תשפ"ג"}
         :param: settings: the settings that will be shown in the window. the function will return the new settings.
         :param: campuses: all the campus names that the user can choose from.
         :param: years: all the years that the user can choose from.
