@@ -140,7 +140,8 @@ class NetworkHttp:
 
         if not json_data["success"]:
             raise InvalidServerRequestException()
-        self.logger.debug("\n\n*************Status code: %s, json_data = %s", response.status_code, str(json_data))
+        self.logger.debug("\n\n*************Status code: %s, json_data = %s", response.status_code,
+                          str(json_data).encode(utils.ENCODING))
         return json_data
 
     def connect(self):
