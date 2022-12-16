@@ -1,7 +1,8 @@
+import json
 import os
 import sqlite3 as database
 import time
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 import utils
 from data.academic_activity import AcademicActivity
@@ -14,6 +15,7 @@ from data.meeting import Meeting
 
 
 class Database:
+    YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "years_data.txt")
     SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.txt")
     USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
     CAMPUS_NAMES_FILE_PATH = os.path.join(utils.get_database_path(), "campus_names.txt")
@@ -180,6 +182,7 @@ class Database:
         self.clear_academic_activities_data()
         self.clear_campus_names()
         self.clear_settings()
+        self.clear_years()
 
     def save_settings(self, settings: Settings):
         with open(Database.SETTINGS_FILE_PATH, "w", encoding=utils.ENCODING) as file:
@@ -209,6 +212,8 @@ class Database:
             self.clear_courses_data()
         if self._get_last_modified_by_days(Database.ACTIVITIES_DATA_DATABASE_PATH) >= days:
             self.clear_academic_activities_data()
+        if self._get_last_modified_by_days(Database.YEARS_FILE_PATH) >= days:
+            self.clear_years()
 
     def get_common_campuses_names(self) -> List[str]:
         campus_names = []
@@ -218,6 +223,21 @@ class Database:
         campus_names.append("""מח"ר-טל תבונה""")
         campus_names.append("""מבח"ר בנים""")
         return campus_names
+
+    def save_years(self, years: Dict[int, str]):
+        with open(Database.YEARS_FILE_PATH, "w", encoding=utils.ENCODING) as file:
+            file.write(json.dumps(years))
+
+    def load_years(self):
+        if not os.path.exists(Database.YEARS_FILE_PATH):
+            return {}
+        with open(Database.YEARS_FILE_PATH, "r", encoding=utils.ENCODING) as file:
+            data = json.loads(file.read())
+            return {int(key): value for key, value in data.items()}
+
+    def clear_years(self):
+        if os.path.exists(Database.YEARS_FILE_PATH):
+            os.remove(Database.YEARS_FILE_PATH)
 
     def save_hard_coded_user_data(self, user_data: User):
         if user_data:

@@ -113,3 +113,16 @@ class TestDatabase:
 
         database.clear_settings()
         assert database.load_settings() is None
+
+    def test_years(self):
+        database = Database()
+        database.clear_years()
+        assert not database.load_years()
+
+        years = {30: "אאא"}
+        database.save_years(years)
+
+        assert years == database.load_years()
+
+        database.clear_years()
+        assert not database.load_years()
