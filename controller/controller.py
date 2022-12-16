@@ -69,6 +69,8 @@ class Controller:
 
             settings = self.gui.open_settings_window(settings, campus_names, years)
 
+            self.network.set_settings(settings)
+
             if settings.force_update_data:
                 self.database.clear_all_data()
 
