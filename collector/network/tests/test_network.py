@@ -40,6 +40,14 @@ class TestNetworkHttp:
             campus_name for campus_name in database.get_common_campuses_names()), "Some campuses names are missing."
 
     @pytest.mark.skipif("not TestNetworkHttp.user", reason="There is no user data to check.")
+    def test_extract_years(self):
+        network = NetworkHttp(TestNetworkHttp.user)
+        years = network.extract_years()
+        assert years, "Can't extract years from the server."
+        assert len(years) == 7, "The number of years is not 10."
+        assert (5783, 'תשפ"ג') in years.items(), "The year 5783 is missing."
+
+    @pytest.mark.skipif("not TestNetworkHttp.user", reason="There is no user data to check.")
     def test_extract_all_courses(self):
         network = NetworkHttp(TestNetworkHttp.user)
         campus_name = utils.get_campus_name_test()

@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict
 
 from enum import Enum
 from contextlib import suppress
@@ -160,6 +160,12 @@ class NetworkHttp:
         json_data = self.request(url)
         self._campuses = {campus["name"]: campus["id"] for campus in json_data["extensions"]}
         return list(self._campuses.keys())
+
+    def extract_years(self) -> Dict[int, str]:
+        url = "https://levnet.jct.ac.il/api/common/parentCourses.ashx?action=LoadParentCourse&ParentCourseID=318"
+        json_data = self.request(url)
+        years = {campus["id"]: campus["name"] for campus in json_data["academicYears"][1:8]}
+        return years
 
     def _extract_academic_activity_course(self, campus_name: str, course: Course) -> List[AcademicActivity]:
         """
