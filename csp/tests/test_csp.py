@@ -5,6 +5,7 @@ from data.course_choice import CourseChoice
 from data.day import Day
 from data.meeting import Meeting
 from data.schedule import Schedule
+from data.settings import Settings
 from data.type import Type
 
 
@@ -175,5 +176,37 @@ class TestCsp:
         course_choice = CourseChoice("a", available_teachers_for_lecture=[], available_teachers_for_practice=["Mike"])
 
         schedules = CSP().extract_schedules(activities, course_choice)
+        assert len(schedules) == 1
+        assert schedules[0].contains(activities_option)
+
+    def test_one_option_capacity_consinst(self):
+        activities_option = []
+
+        activities = []
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
+        activities.append(academic_activity)
+        activities_option.append(academic_activity)
+
+        academic_activity = AcademicActivity("a", Type.PRACTICE, True, "a", 2, 2, "a")
+        academic_activity.set_capacity(13, 30)
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "12:00", "14:30"))
+        activities.append(academic_activity)
+        activities_option.append(academic_activity)
+
+        academic_activity = AcademicActivity("a", Type.PRACTICE, True, "a", 2, 2, "a")
+        academic_activity.set_capacity(10, 10)
+        academic_activity.add_slot(Meeting(Day.MONDAY, "18:00", "20:30"))
+        activities.append(academic_activity)
+
+        activity = Activity("c", Type.PERSONAL, True)
+        activity.add_slot(Meeting(Day.MONDAY, "12:00", "14:30"))
+        activities.append(activity)
+        activities_option.append(activity)
+
+        settings = Settings()
+        settings.show_only_courses_with_free_places = True
+
+        schedules = CSP().extract_schedules(activities, settings=settings)
         assert len(schedules) == 1
         assert schedules[0].contains(activities_option)

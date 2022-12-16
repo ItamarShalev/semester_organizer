@@ -35,6 +35,15 @@ class CSP:
     def _is_consist_activity(self, activity_one, activity_two):
         return all(not activity.is_crash_with_activities(activity_one) for activity in activity_two)
 
+    def _is_consist_capacity(self, activities: List[Activity]):
+        """
+        Check if the activities consist the capacity
+        :param activities: list of activities
+        :param activities: List[Activity]
+        :return: bool
+        """
+        return all(activity.type.is_personal() or activity.is_have_free_places() for activity in activities)
+
     def _is_consist_favorite_teachers(self, activities: List[Activity]):
         """
         Check if the activities consist the favorite teachers
@@ -80,6 +89,7 @@ class CSP:
 
         for name in all_names_activities:
             problem.addConstraint(self._is_consist_favorite_teachers, (name,))
+            problem.addConstraint(self._is_consist_capacity, (name,))
             for other_name in all_names_activities:
                 if name == other_name:
                     continue
