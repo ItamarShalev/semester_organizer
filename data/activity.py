@@ -48,8 +48,7 @@ class Activity:
         is_equals = self.name == other.name and self.type == other.type
         is_equals = is_equals and self.attendance_required == other.attendance_required
         is_equals = is_equals and len(self.meetings) == len(other.meetings)
-        for meeting in self.meetings:
-            is_equals = is_equals and meeting in other.meetings
+        is_equals = is_equals and all(meeting in other.meetings for meeting in self.meetings)
         return is_equals
 
     def __str__(self):
