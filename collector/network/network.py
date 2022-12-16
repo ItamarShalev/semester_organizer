@@ -217,6 +217,9 @@ class NetworkHttp:
                 comment = group["groupComment"].strip()
                 meetings_list = []
                 location = ""
+                current_capacity, max_capacity = group["courseRelativeQuota"].split("/")
+                current_capacity = int(current_capacity)
+                max_capacity = int(max_capacity) if max_capacity != "--" else AcademicActivity.UNLIMITED_CAPACITY
                 if not group_meetings:
                     continue
                 for meeting in group_meetings.split("\r\n"):
@@ -229,6 +232,8 @@ class NetworkHttp:
                                                  Meeting.str_to_time(end)))
                 activity = AcademicActivity(course.name, type_course, True, lecturer, course.course_number,
                                             course.parent_course_number, location, full_course_data, comment)
+                activity.set_capacity(current_capacity, max_capacity)
+
                 activity.add_slots(meetings_list)
                 activities.append(activity)
         return activities
