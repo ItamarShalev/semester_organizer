@@ -19,9 +19,7 @@ class Schedule:
 
     def __eq__(self, other):
         is_equals = len(self.activities) == len(other.activities)
-        for activity in self.activities:
-            is_equals = is_equals and activity in other.activities
-        return is_equals
+        return is_equals and all(activity in other.activities for activity in self.activities)
 
     def __contains__(self, activity):
         return activity in self.activities
