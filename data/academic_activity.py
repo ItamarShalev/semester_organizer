@@ -7,6 +7,8 @@ from data.type import Type
 
 class AcademicActivity(Activity):
 
+    UNLIMITED_CAPACITY = 10000000
+
     def __init__(self, name: str = None, activity_type: Type = None, attendance_required: bool = None,
                  lecturer_name: str = None, course_number: int = None, parent_course_number: int = None,
                  location: str = None, activity_id: str = None, description: str = None):
@@ -17,6 +19,20 @@ class AcademicActivity(Activity):
         self.location = location
         self.activity_id = activity_id
         self.description = None
+        self.current_capacity = 0
+        self.max_capacity = AcademicActivity.UNLIMITED_CAPACITY
+
+    def set_capacity(self, current_capacity: int, max_capacity: int):
+        """
+        :param current_capacity: the current number of students registered to the course
+        :param max_capacity: the maximum number of students allowed to register to the course
+        :param current_capacity:
+        """
+        self.current_capacity = current_capacity
+        self.max_capacity = max_capacity
+
+    def is_have_free_places(self) -> bool:
+        return self.current_capacity < self.max_capacity
 
     def convert_to_course_object(self):
         course = Course(self.name, self.course_number, self.parent_course_number, activity_id=self.activity_id)
