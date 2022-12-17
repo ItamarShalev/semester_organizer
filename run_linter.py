@@ -75,8 +75,16 @@ def get_user_data(argument_args):
     return user_data
 
 
-def run_linter_and_tests(arguments):
-    pylint_cmd = "coverage run -m pytest".split(" ") if arguments.coverage else ["pytest"]
+def _build_pytest_command(arguments):
+    coveragerc_ci_cd = os.path.join(utils.ROOT_PATH, ".coveragerc_ci_cd")
+    if arguments.coverage:
+        if arguments.network:
+            pytest_cmd = "coverage run -m pytest".split(" ")
+        else:
+            pytest_cmd = f"coverage run --rcfile={coveragerc_ci_cd} -m pytest".split(" ")
+    else:
+        pytest_cmd = ["pytest"]
+
     pytest_arguments = ['-m', 'not network']
     if arguments.all:
         pytest_arguments = ['--reruns', '2', '--reruns-delay', '5']
@@ -85,12 +93,31 @@ def run_linter_and_tests(arguments):
     if arguments.verbose:
         pytest_arguments += ['-v']
 
+    return pytest_cmd, pytest_arguments
+
+
+def _build_coverage_command(arguments):
+    if arguments.network:
+        coverage_cmd = "coverage report -m --fail-under=95"
+    else:
+        coveragerc_ci_cd = os.path.join(utils.ROOT_PATH, ".coveragerc_ci_cd")
+        network_path = os.path.join(utils.ROOT_PATH, "collector", "network", "network.py")
+        coverage_cmd = f"coverage report --rcfile={coveragerc_ci_cd} -m --omit={network_path} --fail-under=95"
+
+    return coverage_cmd.split(" ")
+
+
+def run_linter_and_tests(arguments):
+    pytest_cmd, pytest_arguments = _build_pytest_command(arguments)
+
     return_code = subprocess.call(["pycodestyle", *get_all_python_files()])
-    return_code += subprocess.call([*pylint_cmd, *get_all_python_files(True), *pytest_arguments])
+
+    return_code += subprocess.call(["pylint", *get_all_python_files()])
+
+    return_code += subprocess.call([*pytest_cmd, *get_all_python_files(test_files=True), *pytest_arguments])
 
     if arguments.coverage:
-        network_path = os.path.join(utils.ROOT_PATH, "collector", "network", "network.py")
-        coverage_cmd = f"coverage report -m --omit={network_path} --fail-under=95".split(" ")
+        coverage_cmd = _build_coverage_command(arguments)
         return_code += subprocess.call([*coverage_cmd])
     assert return_code == 0, "ERROR: Linter failed, check the log file"
 

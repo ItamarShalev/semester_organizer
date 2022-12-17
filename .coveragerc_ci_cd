@@ -11,5 +11,10 @@ exclude_lines =
     raise InvalidServerRequestException
     class Gui
     throw NotImplementedError
+    @pytest.mark.network
     @pytest.mark.skip
+    if os.name == 'nt':
+    if not os.path.exists
     except ImportError
+    class TestController
+    class Controller

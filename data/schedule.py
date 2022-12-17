@@ -12,7 +12,7 @@ class Schedule:
         self.activities = activities
 
     def __str__(self):
-        return f"{self.name} {self.description}"
+        return f"{self.name}"
 
     def __repr__(self):
         return str(self)
