@@ -5,6 +5,7 @@ from data.activity import Activity
 from data.meeting import Meeting
 from data.course import Course
 from data.day import Day
+from data.schedule import Schedule
 from data.type import Type
 from data.course_choice import CourseChoice
 
@@ -30,6 +31,8 @@ class TestData:
         with pytest.raises(Exception):
             Meeting(Day.MONDAY, "11:00", "11:00")
 
+        assert repr(meeting) == "09:00 - 11:00"
+
     def test_course(self):
         course = Course("", 0, 0, "0.0.1", None)
         course2 = Course("", 1, 2, "0.0.1", None)
@@ -39,6 +42,9 @@ class TestData:
         course.set_attendance_required(Type.LECTURE, False)
         assert course.is_attendance_required(Type.LAB)
         assert not course.is_attendance_required(Type.LECTURE)
+
+        course.name = "name"
+        assert repr(course) == "name"
 
     def test_activity(self):
         activity = Activity("", Type.LAB, False)
@@ -55,6 +61,9 @@ class TestData:
 
         assert activity1.no_meetings()
 
+        activity.name = "name"
+        assert repr(activity) == "name"
+
     def test_academic_activity(self):
         activity = AcademicActivity("name", activity_type=Type.LAB, course_number=10, parent_course_number=20)
         course = Course("name", 10, 20, "0.0.1", None)
@@ -63,6 +72,8 @@ class TestData:
 
         AcademicActivity.union_courses(activities, [course])
         assert activity.activity_id == course.activity_id
+
+        assert repr(activity) == "name"
 
     def test_type(self):
         typ = Type.LAB
@@ -79,3 +90,7 @@ class TestData:
         course_choice = CourseChoice("A", [], [])
         assert course_choice.name == "A"
         assert hash(course_choice) == hash("A")
+
+    def test_schedule(self):
+        schedule = Schedule("name", "file_name", "description", [])
+        assert repr(schedule) == "name"

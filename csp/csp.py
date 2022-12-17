@@ -2,7 +2,6 @@ from typing import List, Optional, Dict
 
 from constraint import Problem
 
-from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.course_choice import CourseChoice
 from data.schedule import Schedule
@@ -51,6 +50,7 @@ class CSP:
         :param activities: List[Activity]
         :return: bool
         """
+        # If there are no courses choices, return True or if it's a personal activity return True
         if not self.courses_choices or activities[0].name not in self.courses_choices.keys():
             return True
         names_list = []
@@ -61,8 +61,6 @@ class CSP:
                 names_list = course_choice.available_teachers_for_lecture
             elif activity.type.is_exercise():
                 names_list = course_choice.available_teachers_for_practice
-            elif not isinstance(activity, AcademicActivity):
-                break
             if self.consisnt_one_favorite_teacher:
                 is_consinst = is_consinst and activity.lecturer_name in names_list
             else:
