@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 from collections import defaultdict
 
 import utils
@@ -21,17 +21,17 @@ class Controller:
         self.convertor = Convertor()
         self.logger = utils.get_logging()
 
-    def _get_courses_choices(self, all_academic_activities: List[AcademicActivity]) -> List[CourseChoice]:
+    def _get_courses_choices(self, all_academic_activities: List[AcademicActivity]) -> Dict[str, CourseChoice]:
         # key = course name, first value list of lectures, second value list of exercises
         dict_data = defaultdict(lambda: (set(), set()))
         for activity in all_academic_activities:
             index = 1 if activity.type.is_lecture() else 0
             dict_data[activity.name][index].add(activity.lecturer_name)
 
-        courses_choices = []
+        courses_choices = {}
         for course_name, (lecturers, exercises) in dict_data.items():
-            courses_choices.append(CourseChoice(course_name, available_teachers_for_lecture=list(lecturers),
-                                                available_teachers_for_practice=list(exercises)))
+            courses_choices[course_name] = CourseChoice(course_name, available_teachers_for_lecture=list(lecturers),
+                                                        available_teachers_for_practice=list(exercises))
         return courses_choices
 
     def _get_academic_activities_data(self, campus_name, courses):
@@ -93,18 +93,17 @@ class Controller:
 
             courses_choices = self.gui.open_academic_activities_window(ask_attendance, courses_choices)
 
-            courses_names = [course.name for course in courses_choices]
             user_courses = []
 
             for course in courses:
-                if course.name in courses_names:
-                    course_choise = courses_choices[courses_names.index(course.name)]
+                if course.name in courses_choices.keys():
+                    course_choise = courses_choices[course.name]
                     if ask_attendance:
                         course.attendance_required_for_lecture = course_choise.attendance_required_for_lecture
                         course.attendance_required_for_exercise = course_choise.attendance_required_for_exercise
                     user_courses.append(course)
 
-            activities = list(filter(lambda activity: activity.name in courses_names, all_academic_activities))
+            activities = list(filter(lambda activity: activity.name in courses_choices.keys(), all_academic_activities))
 
             AcademicActivity.union_courses(activities, user_courses)
 
