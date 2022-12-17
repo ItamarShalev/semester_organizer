@@ -122,7 +122,7 @@ class TestCsp:
 
         course_choice = CourseChoice("a", available_teachers_for_lecture=["Mike"], available_teachers_for_practice=[])
 
-        schedules = CSP().extract_schedules(activities, course_choice)
+        schedules = CSP().extract_schedules(activities, {"a": course_choice})
         assert len(schedules) == 1
         assert schedules[0].contains(activities_option)
 
@@ -146,7 +146,7 @@ class TestCsp:
 
         course_choice = CourseChoice("a", available_teachers_for_lecture=["Mike"], available_teachers_for_practice=[])
 
-        schedules = CSP().extract_schedules(activities, course_choice)
+        schedules = CSP().extract_schedules(activities, {"a": course_choice})
         assert len(schedules) == 1
         assert schedules[0].contains(activities_option)
 
@@ -175,7 +175,7 @@ class TestCsp:
 
         course_choice = CourseChoice("a", available_teachers_for_lecture=[], available_teachers_for_practice=["Mike"])
 
-        schedules = CSP().extract_schedules(activities, course_choice)
+        schedules = CSP().extract_schedules(activities, {"a": course_choice})
         assert len(schedules) == 1
         assert schedules[0].contains(activities_option)
 

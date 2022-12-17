@@ -96,12 +96,12 @@ class Gui:
 
         return user_result
 
-    def open_academic_activities_window(self, ask_attendance_required: bool, course_choice: List[CourseChoice]) -> \
-            List[CourseChoice]:
+    def open_academic_activities_window(self, ask_attendance_required: bool,
+                                        course_choices: Dict[str, CourseChoice]) -> Dict[str, CourseChoice]:
         """
         This function will open the academic activities window.
         :param: ask_attendance_required: if the user should choose if the activity is attendance required.
-        :param: course_choice: the courses that the user can choose from.
+        :param: course_choices: the courses that the user can choose from.
         :return: the courses that the user chose.
         :raises: UserClickExitException if the user clicked exit button.
         """

@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 from constraint import Problem
 
@@ -51,15 +51,16 @@ class CSP:
         :param activities: List[Activity]
         :return: bool
         """
-        if not self.courses_choices:
+        if not self.courses_choices or activities[0].name not in self.courses_choices.keys():
             return True
         names_list = []
         is_consinst = True
+        course_choice = self.courses_choices[activities[0].name]
         for activity in activities:
             if activity.type.is_lecture():
-                names_list = self.courses_choices.available_teachers_for_lecture
+                names_list = course_choice.available_teachers_for_lecture
             elif activity.type.is_exercise():
-                names_list = self.courses_choices.available_teachers_for_practice
+                names_list = course_choice.available_teachers_for_practice
             elif not isinstance(activity, AcademicActivity):
                 break
             if self.consisnt_one_favorite_teacher:
@@ -71,12 +72,12 @@ class CSP:
 
         return is_consinst
 
-    def extract_schedules(self, activities: List[Activity], courses_choices: Optional[List[CourseChoice]] = None,
+    def extract_schedules(self, activities: List[Activity], courses_choices: Optional[Dict[str, CourseChoice]] = None,
                           settings: Settings = None) -> List[Schedule]:
         problem = Problem()
         activities_result = []
         schedule_result = []
-        self.courses_choices = courses_choices or []
+        self.courses_choices = courses_choices or {}
         option_counter = 1
         activities_by_name = Activity.get_activities_by_name(activities)
 
