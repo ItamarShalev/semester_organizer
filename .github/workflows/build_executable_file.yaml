@@ -1,0 +1,33 @@
+name: Build executable file
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  Build:
+    strategy:
+      fail-fast: false
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+      - name: Build executable file
+        shell: bash
+        run: |
+          customtkinter_path=$(python -c "import customtkinter; import os; print(os.path.abspath(os.path.dirname(customtkinter.__file__)))")
+          echo "customtkinter_path = $customtkinter_path"
+          pyinstaller --onefile --noconfirm --windowed --name=SemesterOrganizer.exe --add-data "${customtkinter_path};customtkinter/" __main__.py
+      - name: Upload executable file
+        uses: actions/upload-artifact@v2
+        with:
+          name: SemesterOrganizer Executable File for Windows
+          path: dist/SemesterOrganizer.exe
