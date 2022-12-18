@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 
 from data.course import Course
 from data.semester import Semester
@@ -11,6 +12,9 @@ LOG_FILE_HANDLER = logging.FileHandler(filename=os.path.join(ROOT_PATH, "log.txt
 
 
 def init_project():
+    if sys.version_info < (3, 7):
+        raise Exception("To run this program you should have Python 3.7 or a more recent version.")
+
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("requests").setLevel(logging.WARNING)
     logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
