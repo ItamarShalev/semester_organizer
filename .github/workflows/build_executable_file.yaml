@@ -12,9 +12,9 @@ jobs:
             os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.2.0
       - name: Set up Python 3.11
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4.3.1
         with:
           python-version: "3.11"
           cache: pip
@@ -33,7 +33,7 @@ jobs:
           echo "path=${path}" >> $GITHUB_ENV
           python release.py --build
       - name: Upload executable file
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: ${{ env.title }}
           path: ${{ env.path }}
