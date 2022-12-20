@@ -3,13 +3,11 @@ name: Update data cycle
 on:
   workflow_dispatch:
 
-
 jobs:
-
   Update:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3.2.0
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
@@ -24,7 +22,7 @@ jobs:
         touch log.txt
     - name: Run python update script flow
       run: |
-        python update_levnet_data.py
+        python development/update_levnet_data.py
     - name: Commit changes
       run: |
         git config --local user.email "itamar1111111@gmail.com"

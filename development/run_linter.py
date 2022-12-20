@@ -76,7 +76,7 @@ def get_user_data(argument_args):
 
 
 def _build_pytest_command(arguments):
-    coveragerc_ci_cd = os.path.join(utils.ROOT_PATH, ".coveragerc_ci_cd")
+    coveragerc_ci_cd = os.path.join(utils.get_development_path(), ".coveragerc_ci_cd")
     if arguments.coverage:
         if arguments.network:
             pytest_cmd = "coverage run -m pytest".split(" ")
@@ -100,8 +100,8 @@ def _build_coverage_command(arguments):
     if arguments.network:
         coverage_cmd = "coverage report -m --fail-under=95"
     else:
-        coveragerc_ci_cd = os.path.join(utils.ROOT_PATH, ".coveragerc_ci_cd")
-        network_path = os.path.join(utils.ROOT_PATH, "collector", "network", "network.py")
+        coveragerc_ci_cd = os.path.join(utils.get_development_path(), ".coveragerc_ci_cd")
+        network_path = os.path.join(utils.get_development_path(), "../collector", "network", "network.py")
         coverage_cmd = f"coverage report --rcfile={coveragerc_ci_cd} -m --omit={network_path} --fail-under=95"
 
     return coverage_cmd.split(" ")
