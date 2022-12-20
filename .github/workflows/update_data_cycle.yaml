@@ -23,7 +23,7 @@ jobs:
         touch log.txt
     - name: Run python update script flow
       run: |
-        python development/update_levnet_data.py
+        python update_levnet_data.py
     - name: Commit changes
       run: |
         git config --local user.email "itamar1111111@gmail.com"

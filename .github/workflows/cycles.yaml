@@ -67,7 +67,7 @@ jobs:
           echo ${{ secrets.PASSWORD_LEVNET }} >> database/user_data.txt
       - name: Run pytest
         run: |
-          coverage run --rcfile="development/.coveragerc_ci_cd" -m pytest $(git ls-files 'test_*.py') -v -m "not network"
+          coverage run --rcfile=".coveragerc_ci_cd" -m pytest $(git ls-files 'test_*.py') -v -m "not network"
       - name: Run coverage
         run: |
-          coverage report --rcfile="development/.coveragerc_ci_cd" -m --omit="./collector/network/network.py" --fail-under=95
+          coverage report --rcfile=".coveragerc_ci_cd" -m --omit="./collector/network/network.py" --fail-under=95
