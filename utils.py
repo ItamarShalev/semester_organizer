@@ -36,10 +36,6 @@ def get_results_path():
     return os.path.join(ROOT_PATH, "results")
 
 
-def get_development_path():
-    return os.path.join(ROOT_PATH, "development")
-
-
 def get_current_semester():
     return Semester.FALL
 
