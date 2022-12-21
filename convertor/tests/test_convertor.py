@@ -13,7 +13,6 @@ from data.schedule import Schedule
 from data.type import Type
 
 
-@pytest.mark.skip(reason="Not implemented yet.")
 class TestConvertor:
 
     @staticmethod
@@ -22,7 +21,7 @@ class TestConvertor:
         activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("12:00")))
         return Schedule("a", file_name, "", [activity])
 
-    @pytest.mark.parametrize("file_type", list(OutputFormat))
+    @pytest.mark.parametrize("file_type", [OutputFormat.CSV])
     def test_convert_type(self, file_type: OutputFormat):
         convertor = Convertor()
         path = os.path.join(utils.get_results_path(), "test_results")
@@ -40,6 +39,7 @@ class TestConvertor:
 
         shutil.rmtree(path)
 
+    @pytest.mark.skip(reason="Not implemented yet.")
     def test_convert_all_types(self):
         convertor = Convertor()
         path = os.path.join(utils.get_results_path(), "test_results")
