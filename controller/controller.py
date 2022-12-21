@@ -119,9 +119,17 @@ class Controller:
                 self.convertor.convert_activities(schedules, results_dir, settings.output_formats)
                 self.gui.open_notification_window(f"The schedules were saved in the {results_dir} folder")
 
-        except (WeakNetworkConnectionException, UserClickExitException) as error:
+        except UserClickExitException:
+            self.logger.info("User clicked exit button")
+
+        except WeakNetworkConnectionException as error:
             message = str(error)
             self.logger.error(message)
+            self.gui.open_notification_window(message, MessageType.ERROR)
+
+        except Exception as error:
+            message = "The system encountered an error, please contanct the engeniers."
+            self.logger.error("The system encountered an error: %s", str(error))
             self.gui.open_notification_window(message, MessageType.ERROR)
 
     def run_update_levnet_data_flow(self):
