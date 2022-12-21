@@ -2,3 +2,4 @@
 pylint>=2.15.8
 pyinstaller>=5.7.0
 pycodestyle>=2.10.0
+coverage>=6.5.0
