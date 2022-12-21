@@ -60,9 +60,8 @@ def install_requirements():
     pip_install("-r", "requirements.txt")
 
 
-def install_linters():
-    pip_install("pycodestyle")
-    pip_install("pylint")
+def install_development_requirements():
+    pip_install("-r", "development_requirements.txt")
 
 
 def get_user_data(argument_args):
@@ -132,7 +131,7 @@ if __name__ == '__main__':
     if args.install:
         update_pip()
         install_requirements()
-        install_linters()
+        install_development_requirements()
     utils.config_logging_level(logging.DEBUG if args.verbose else logging.INFO)
     user = get_user_data(args)
     run_linter_and_tests(args)
