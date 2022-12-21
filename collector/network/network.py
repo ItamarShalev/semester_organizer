@@ -212,6 +212,7 @@ class NetworkHttp:
             url = f"https://levnet.jct.ac.il/api/common/actualCourses.ashx?" \
                   f"action=LoadActualCourse&ActualCourseID={actual_course}"
             response_json = self.request(url)
+            details = response_json["details"]
 
             for group in response_json["groups"]:
                 full_course_data = group["groupFullNumber"]
@@ -239,9 +240,10 @@ class NetworkHttp:
                 activity = AcademicActivity(course.name, type_course, True, lecturer, course.course_number,
                                             course.parent_course_number, location, full_course_data, comment)
                 activity.set_capacity(current_capacity, max_capacity)
-
+                activity.actual_course_number = details["id"]
                 activity.add_slots(meetings_list)
                 activities.append(activity)
+
         return activities
 
     def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \

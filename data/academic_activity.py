@@ -8,6 +8,7 @@ from data.type import Type
 class AcademicActivity(Activity):
 
     UNLIMITED_CAPACITY = 10000000
+    DEFAULT_ACTUAL_COURSE_NUMBER = -1
 
     def __init__(self, name: str = None, activity_type: Type = None, attendance_required: bool = None,
                  lecturer_name: str = None, course_number: int = None, parent_course_number: int = None,
@@ -21,6 +22,7 @@ class AcademicActivity(Activity):
         self.description = None
         self.current_capacity = 0
         self.max_capacity = AcademicActivity.UNLIMITED_CAPACITY
+        self.actual_course_number = AcademicActivity.DEFAULT_ACTUAL_COURSE_NUMBER
 
     def set_capacity(self, current_capacity: int, max_capacity: int):
         """

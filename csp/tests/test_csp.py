@@ -210,3 +210,46 @@ class TestCsp:
         schedules = CSP().extract_schedules(activities, settings=settings)
         assert len(schedules) == 1
         assert schedules[0].contains(activities_option)
+
+    def test_two_options_by_actual_course_number(self):
+        activities_option_1 = []
+        activities_option_2 = []
+        activities = []
+
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
+        academic_activity.actual_course_number = 1
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
+        activities.append(academic_activity)
+        activities_option_1.append(academic_activity)
+
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
+        academic_activity.actual_course_number = 2
+        academic_activity.add_slot(Meeting(Day.FRIDAY, "10:00", "11:00"))
+        activities.append(academic_activity)
+        activities_option_2.append(academic_activity)
+
+        academic_activity = AcademicActivity("a", Type.PRACTICE, True, "a", 2, 2, "a")
+        academic_activity.actual_course_number = 1
+        academic_activity.add_slot(Meeting(Day.MONDAY, "12:00", "14:30"))
+        activities.append(academic_activity)
+        activities_option_1.append(academic_activity)
+
+        academic_activity = AcademicActivity("a", Type.PRACTICE, True, "a", 2, 2, "a")
+        academic_activity.actual_course_number = 2
+        academic_activity.add_slot(Meeting(Day.MONDAY, "18:00", "20:30"))
+        activities.append(academic_activity)
+        activities_option_2.append(academic_activity)
+
+        activity = Activity("c", Type.PERSONAL, True)
+        activity.add_slot(Meeting(Day.THURSDAY, "12:00", "14:30"))
+        activities.append(activity)
+        activities_option_1.append(activity)
+        activities_option_2.append(academic_activity)
+
+        settings = Settings()
+        settings.show_only_courses_with_the_same_actual_number = True
+
+        schedules = CSP().extract_schedules(activities, settings=settings)
+        assert len(schedules) == 2
+        assert any(schedule.contains(activities_option_1) for schedule in schedules)
+        assert any(schedule.contains(activities_option_2) for schedule in schedules)
