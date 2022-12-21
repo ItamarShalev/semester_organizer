@@ -53,17 +53,13 @@ class TestController:
 
     def test_run_main_gui_flow(self):
         gui_mock = TestController._get_gui_mock()
-        convertor_mock = MagicMock()
-        convertor_mock.convert_activities = MagicMock()
         controller = Controller()
         controller.gui = gui_mock
-        controller.convertor = convertor_mock
         controller.run_main_gui_flow()
         results_dir = utils.get_results_path()
         assert results_dir, "Can't get results path."
         result_success_message = f"The schedules were saved in the {results_dir} folder"
         controller.gui.open_notification_window.assert_called_with(result_success_message)
-        controller.convertor.convert_activities.assert_called_once()
 
     def test_flow_without_gui_without_database(self):
         csp = CSP()
