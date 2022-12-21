@@ -73,6 +73,7 @@ class CSP:
     def extract_schedules(self, activities: List[Activity], courses_choices: Optional[Dict[str, CourseChoice]] = None,
                           settings: Settings = None) -> List[Schedule]:
         problem = Problem()
+        settings = settings or Settings()
         activities_result = []
         schedule_result = []
         self.courses_choices = courses_choices or {}
@@ -88,7 +89,8 @@ class CSP:
 
         for name in all_names_activities:
             problem.addConstraint(self._is_consist_favorite_teachers, (name,))
-            problem.addConstraint(self._is_consist_capacity, (name,))
+            if settings.show_only_courses_with_free_places:
+                problem.addConstraint(self._is_consist_capacity, (name,))
             for other_name in all_names_activities:
                 if name == other_name:
                     continue
