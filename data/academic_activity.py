@@ -74,5 +74,5 @@ class AcademicActivity(Activity):
             for course in courses:
                 if activity.same_as_course(course):
                     activity.attendance_required = course.is_attendance_required(activity.type)
-                    activity.activity_id = course.activity_id
+                    activity.activity_id = activity.activity_id or course.activity_id
                     break
