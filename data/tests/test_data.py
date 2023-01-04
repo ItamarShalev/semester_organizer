@@ -94,3 +94,13 @@ class TestData:
     def test_schedule(self):
         schedule = Schedule("name", "file_name", "description", [])
         assert repr(schedule) == "name"
+
+    def test_sort_meeting(self):
+        meeting = Meeting(Day.MONDAY, "09:00", "11:00")
+        meeting2 = Meeting(Day.MONDAY, "18:00", "20:00")
+        meeting3 = Meeting(Day.MONDAY, "11:10", "12:00")
+        meeting4 = Meeting(Day.FRIDAY, "09:10", "20:00")
+        meeting5 = Meeting(Day.SUNDAY, "11:00", "20:00")
+        meetings = [meeting, meeting2, meeting3, meeting4, meeting5]
+        meetings.sort()
+        assert meetings == [meeting5, meeting, meeting3, meeting2, meeting4]

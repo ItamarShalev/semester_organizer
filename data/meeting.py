@@ -1,9 +1,11 @@
 from typing import Union
 from time import struct_time, strptime
 import time
+import functools
 from data.day import Day
 
 
+@functools.total_ordering
 class Meeting:
 
     def __init__(self, day: Day, start_time: Union[struct_time, str], end_time: Union[struct_time, str]):
@@ -50,6 +52,9 @@ class Meeting:
         is_equals = is_equals and self.start_time == other.start_time
         is_equals = is_equals and self.end_time == other.end_time
         return is_equals
+
+    def __lt__(self, other):
+        return self.day < other.day or (self.day == other.day and self.end_time < other.start_time)
 
     @staticmethod
     def str_to_time(time_str):
