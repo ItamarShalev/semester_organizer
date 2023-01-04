@@ -2,6 +2,7 @@ from enum import Enum, auto
 from typing import List, Dict, Optional, Callable
 
 import sys
+
 try:
     import tkinter
 except ImportError:
@@ -11,6 +12,7 @@ import customtkinter
 
 
 import utils
+from data.language import Language
 from data.activity import Activity
 from data.course_choice import CourseChoice
 from data.user import User
@@ -30,10 +32,14 @@ class UserClickExitException(Exception):
 
 class Gui:
 
-    def __init__(self):
+    def __init__(self, language: Language = Language.ENGLISH):
+        self.language = language
         self.logger = utils.get_logging()
         customtkinter.set_appearance_mode("dark")
         customtkinter.set_default_color_theme("blue")
+
+    def set_language(self, language: Language):
+        self.language = language
 
     def open_login_window(self, is_valid_user_function: Callable) -> User:
         """

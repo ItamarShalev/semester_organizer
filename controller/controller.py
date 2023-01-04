@@ -17,7 +17,7 @@ class Controller:
     def __init__(self):
         self.database = Database()
         self.network = NetworkHttp()
-        self.gui = Gui()
+        self.gui = Gui(self.database.get_language())
         self.convertor = Convertor()
         self.logger = utils.get_logging()
 

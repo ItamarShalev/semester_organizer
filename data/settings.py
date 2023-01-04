@@ -4,6 +4,7 @@ from dataclasses_json import dataclass_json
 
 from data.output_format import OutputFormat
 from data.semester import Semester
+from data.language import Language
 import utils
 
 
@@ -19,4 +20,5 @@ class Settings:
     show_only_courses_active_classes: bool = True
     show_only_courses_with_the_same_actual_number: bool = True
     output_formats: List[OutputFormat] = field(default_factory=lambda: list(OutputFormat))
+    language: Language = Language.ENGLISH
     force_update_data: bool = True
