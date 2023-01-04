@@ -1,6 +1,8 @@
-from typing import List
-
+from typing import List, Set
+import time
 from data.activity import Activity
+from data.day import Day
+from data.meeting import Meeting
 
 
 class Schedule:
@@ -26,3 +28,33 @@ class Schedule:
 
     def contains(self, activities):
         return all(activity in self for activity in activities)
+
+    def get_learning_days(self) -> Set[Day]:
+        return {meeting.day for activity in self.activities for meeting in activity.meetings}
+
+    def get_all_academic_meetings(self) -> List[Meeting]:
+        return [meeting for activity in self.activities for meeting in activity.meetings
+                if not activity.type.is_personal()]
+
+    def get_standby_in_minutes(self) -> float:
+        """
+        Get standby hours for all academic activities in schedule in minutes.
+        """
+        result = 0
+        meetings = self.get_all_academic_meetings()
+        meetings.sort()
+
+        def to_minutes(struct_time: time.struct_time):
+            return struct_time.tm_hour * 60 + struct_time.tm_min
+
+        for i in range(len(meetings) - 1):
+            if meetings[i].day != meetings[i + 1].day:
+                continue
+            delta_time = to_minutes(meetings[i + 1].start_time) - to_minutes(meetings[i].end_time)
+            # Don't calculate standby minutes for the break between classes
+            if delta_time > 15:
+                result += delta_time
+        return result
+
+    def get_all_meetings_by_day(self, day: Day) -> Set[Meeting]:
+        return {meeting for meeting in self.get_all_academic_meetings() if meeting.day is day}

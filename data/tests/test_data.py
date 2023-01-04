@@ -92,7 +92,31 @@ class TestData:
         assert hash(course_choice) == hash("A")
 
     def test_schedule(self):
-        schedule = Schedule("name", "file_name", "description", [])
+        standby_time_in_minutes = 0
+
+        meeting = Meeting(Day.MONDAY, "09:00", "11:00")
+        meeting3 = Meeting(Day.MONDAY, "11:10", "12:00")
+        meeting2 = Meeting(Day.MONDAY, "18:00", "20:00")
+        standby_time_in_minutes += 6 * 60
+        meeting4 = Meeting(Day.FRIDAY, "09:10", "20:00")
+        meeting5 = Meeting(Day.SUNDAY, "11:00", "20:00")
+        meeting7 = Meeting(Day.THURSDAY, "19:00", "20:20")
+        meetings = [meeting, meeting2, meeting3, meeting4, meeting5, meeting7]
+        activity = Activity("name", Type.LAB, False)
+        activity.add_slots(meetings)
+
+        activity2 = Activity("name2", Type.LAB, False)
+        meeting6 = Meeting(Day.THURSDAY, "21:00", "22:00")
+        standby_time_in_minutes += 40
+        activity2.add_slot(meeting6)
+        meetings.append(meeting6)
+
+        schedule = Schedule("name", "file_name", "description", [activity, activity2])
+
+        assert schedule.get_all_academic_meetings() == meetings
+        assert schedule.get_all_meetings_by_day(Day.MONDAY) == {meeting, meeting3, meeting2}
+        assert schedule.get_learning_days() == {Day.SUNDAY, Day.MONDAY, Day.THURSDAY, Day.FRIDAY}
+        assert schedule.get_standby_in_minutes() == standby_time_in_minutes
         assert repr(schedule) == "name"
 
     def test_sort_meeting(self):
