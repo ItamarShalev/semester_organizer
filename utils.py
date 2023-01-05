@@ -2,24 +2,29 @@ import logging
 import os
 import sys
 
+from data import translation
 from data.course import Course
+from data.language import Language
 from data.semester import Semester
-
 
 ENCODING = "utf-8"
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 LOG_FILE_HANDLER = logging.FileHandler(filename=os.path.join(ROOT_PATH, "log.txt"), encoding=ENCODING, mode='w')
 
 
-def init_project():
-    if sys.version_info < (3, 7):
-        raise Exception("To run this program you should have Python 3.7 or a more recent version.")
-
+def disable_logger_third_party_warnings():
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("requests").setLevel(logging.WARNING)
     logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
     logging.getLogger("charset_normalizer").setLevel(logging.WARNING)
     logging.getLogger("WDM").setLevel(logging.WARNING)
+
+
+def init_project(language: Language = Language.ENGLISH):
+    if sys.version_info < (3, 7):
+        raise Exception("To run this program you should have Python 3.7 or a more recent version.")
+    disable_logger_third_party_warnings()
+    translation.config_language_text(language)
 
 
 def get_current_hebrew_year():

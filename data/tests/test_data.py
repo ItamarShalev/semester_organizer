@@ -2,12 +2,15 @@ import pytest
 
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
+from data.language import Language
 from data.meeting import Meeting
 from data.course import Course
 from data.day import Day
 from data.schedule import Schedule
 from data.type import Type
 from data.course_choice import CourseChoice
+from data import translation
+from data.translation import _
 
 
 class TestData:
@@ -128,3 +131,14 @@ class TestData:
         meetings = [meeting, meeting2, meeting3, meeting4, meeting5]
         meetings.sort()
         assert meetings == [meeting5, meeting, meeting3, meeting2, meeting4]
+
+    def test_language(self):
+        language = Language.ENGLISH
+        assert repr(language) == "english"
+        assert language.short_name() == "en"
+
+        translation.config_language_text(Language.ENGLISH)
+        assert _("Test") == "Test"
+
+        translation.config_language_text(Language.HEBREW)
+        assert _("Test") == "בדיקה"
