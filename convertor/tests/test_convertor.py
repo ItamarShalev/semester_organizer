@@ -23,10 +23,13 @@ class TestConvertor:
 
     @pytest.mark.parametrize("file_type", [OutputFormat.CSV])
     def test_convert_type(self, file_type: OutputFormat):
+
         convertor = Convertor()
         path = os.path.join(utils.get_results_path(), "test_results")
         extension = file_type.value
         schedules = []
+        shutil.rmtree(path, ignore_errors=True)
+
         for i in range(1, 10):
             schedules.append(TestConvertor._create_schedule(f"option_{i}"))
 
@@ -37,13 +40,13 @@ class TestConvertor:
             assert os.path.isfile(f"{file_path}"), f"{file_name} is not exist"
             assert os.path.getsize(f"{file_path}") > 0, f"{file_name} is empty"
 
-        shutil.rmtree(path)
-
     @pytest.mark.skip(reason="Not implemented yet.")
     def test_convert_all_types(self):
         convertor = Convertor()
         path = os.path.join(utils.get_results_path(), "test_results")
         schedules = []
+        shutil.rmtree(path, ignore_errors=True)
+
         for i in range(1, 10):
             schedules.append(TestConvertor._create_schedule(f"option_{i}"))
 
@@ -57,5 +60,3 @@ class TestConvertor:
                 file_path = os.path.join(folder_type_path, file_name)
                 assert os.path.isfile(f"{file_path}"), f"{file_name} is not exist"
                 assert os.path.getsize(f"{file_path}") > 0, f"{file_name} is empty"
-
-        shutil.rmtree(path)
