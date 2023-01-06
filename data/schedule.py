@@ -58,3 +58,6 @@ class Schedule:
 
     def get_all_meetings_by_day(self, day: Day) -> Set[Meeting]:
         return {meeting for meeting in self.get_all_academic_meetings() if meeting.day is day}
+
+    def __copy__(self):
+        return Schedule(self.name, self.file_name, self.description, self.activities.copy())

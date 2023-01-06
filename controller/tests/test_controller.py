@@ -57,11 +57,11 @@ class TestController:
         controller = Controller()
         convertor = Convertor()
         convertor_mock = MagicMock()
-        convertor_mock.convert_activities = MagicMock(convertor.convert_activities)
+        convertor_mock.convert_activities = MagicMock(side_effect=convertor.convert_activities)
         controller.gui = gui_mock
         controller.convertor = convertor_mock
         controller.run_main_gui_flow()
-        controller.convertor.convert_activities.assert_called_once()
+        controller.convertor.convert_activities.assert_called()
 
     def test_flow_without_gui_without_database(self):
         csp = CSP()

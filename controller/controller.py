@@ -1,5 +1,11 @@
+import os
+import shutil
+
 from typing import List, Dict
 from collections import defaultdict
+from operator import itemgetter
+from copy import copy
+
 
 import utils
 from collector.db.db import Database
@@ -12,6 +18,7 @@ from data.settings import Settings
 from data.course_choice import CourseChoice
 from data.translation import _
 from data.language import Language
+from data.schedule import Schedule
 from csp.csp import CSP
 
 
@@ -66,6 +73,57 @@ class Controller:
                     self.database.save_language(language)
                     self.gui.set_language(language)
                     self.convertor.set_language(language)
+
+    def _save_schedule(self, all_schedules: List[Schedule], settings: Settings):
+        # Save the most spread days and least spread days
+        most_spread_days = defaultdict(list)
+        least_spread_days = defaultdict(list)
+        schedules_by_learning_days = defaultdict(list)
+        schedules_by_standby_time = defaultdict(list)
+        results_path = utils.get_results_path()
+        output_formats = settings.output_formats
+
+        for schedule in all_schedules:
+            standby_in_minutes = schedule.get_standby_in_minutes()
+            learning_days = schedule.get_learning_days()
+            copied_schedule = copy(schedule)
+            copied_schedule.file_name = \
+                f"{schedule.file_name}_with_{len(learning_days)}_learning_days_and_{standby_in_minutes}_minutes_standby"
+            schedules_by_learning_days[len(learning_days)].append(copied_schedule)
+            schedules_by_standby_time[standby_in_minutes].append(copied_schedule)
+
+        schedules_by_learning_days = dict(sorted(schedules_by_learning_days.items(), key=itemgetter(0)))
+        schedules_by_standby_time = dict(sorted(schedules_by_standby_time.items(), key=itemgetter(0)))
+
+        if len(schedules_by_learning_days.keys()) > 1:
+            most_spread_days = schedules_by_learning_days[max(schedules_by_learning_days.keys())]
+            least_spread_days = schedules_by_learning_days[min(schedules_by_learning_days.keys())]
+
+        # Get the lowest standby time and the second lowest standby time
+        if len(schedules_by_standby_time.keys()) > 2:
+            lowest = schedules_by_standby_time[min(schedules_by_standby_time.keys())]
+            del schedules_by_standby_time[min(schedules_by_standby_time.keys())]
+            lowest += schedules_by_standby_time[min(schedules_by_standby_time.keys())]
+            schedules_by_standby_time = lowest
+        else:
+            schedules_by_standby_time = None
+
+        all_schedules_path = os.path.join(results_path, "all_schedules")
+        most_spread_days_path = os.path.join(results_path, "most_spread_days")
+        least_spread_days_path = os.path.join(results_path, "least_spread_days")
+        least_standby_time_path = os.path.join(results_path, "least_standby_time")
+
+        shutil.rmtree(results_path, ignore_errors=True)
+
+        self.convertor.convert_activities(all_schedules, all_schedules_path, output_formats)
+        if most_spread_days and least_spread_days:
+            self.convertor.convert_activities(most_spread_days, most_spread_days_path, output_formats)
+            self.convertor.convert_activities(least_spread_days, least_spread_days_path, output_formats)
+        if schedules_by_standby_time:
+            self.convertor.convert_activities(schedules_by_standby_time, least_standby_time_path, output_formats)
+
+        message = _("The schedules were saved in the directory: ") + results_path
+        self.gui.open_notification_window(message)
 
     def run_main_gui_flow(self):
         try:
@@ -139,14 +197,10 @@ class Controller:
 
             schedules = self.csp.extract_schedules(activities, courses_choices, settings)
 
-            results_dir = utils.get_results_path()
-
             if not schedules:
                 self.gui.open_notification_window(_("No schedule were found"))
             else:
-                self.convertor.convert_activities(schedules, results_dir, settings.output_formats)
-                message = _("The schedules were saved in the directory: ") + results_dir
-                self.gui.open_notification_window(message)
+                self._save_schedule(schedules, settings)
 
         except UserClickExitException:
             self.logger.info("User clicked exit button")
