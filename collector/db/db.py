@@ -2,7 +2,7 @@ import json
 import os
 import sqlite3 as database
 import time
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Tuple
 
 import utils
 from data.academic_activity import AcademicActivity
@@ -17,6 +17,7 @@ from data.meeting import Meeting
 
 class Database:
     YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "years_data.txt")
+    VERSIONS_PATH = os.path.join(utils.get_database_path(), "versions.txt")
     SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.txt")
     USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
     CAMPUS_NAMES_FILE_PATH = os.path.join(utils.get_database_path(), "campus_names.txt")
@@ -30,6 +31,17 @@ class Database:
         with open(Database.COURSES_DATA_FILE_PATH, "w", encoding=utils.ENCODING) as file:
             for course in courses_set:
                 file.write(f"{course.name};{course.course_number};{course.parent_course_number}\n")
+
+    def load_current_versions(self) -> Tuple[Optional[str], Optional[str]]:
+        if not os.path.isfile(Database.VERSIONS_PATH):
+            return None, None
+        with open(Database.VERSIONS_PATH, "r", encoding=utils.ENCODING) as file:
+            software_version, database_version = file.readlines()
+            return software_version.strip(), database_version.strip()
+
+    def save_current_versions(self, software_version: str, database_version: str):
+        with open(Database.VERSIONS_PATH, "w", encoding=utils.ENCODING) as file:
+            file.write(f"{software_version}\n{database_version}")
 
     def get_language(self) -> Optional[Language]:
         settings = self.load_settings()

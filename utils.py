@@ -7,6 +7,8 @@ from data.semester import Semester
 ENCODING = "utf-8"
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 LOG_FILE_HANDLER = logging.FileHandler(filename=os.path.join(ROOT_PATH, "log.txt"), encoding=ENCODING, mode='w')
+DATA_SOFTWARE_VERSION = "1.0"
+SOFTWARE_VERSION = "1.0"
 
 
 def disable_logger_third_party_warnings():

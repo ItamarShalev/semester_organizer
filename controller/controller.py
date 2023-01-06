@@ -126,9 +126,22 @@ class Controller:
         message = _("The schedules were saved in the directory: ") + results_path
         self.gui.open_notification_window(message)
 
+    def _delete_data_if_new_version(self):
+        language = self.database.get_language()
+        software_version, database_version = self.database.load_current_versions()
+        new_software_version, new_database_version = utils.SOFTWARE_VERSION, utils.DATA_SOFTWARE_VERSION
+        if software_version != new_software_version or database_version != new_database_version:
+            self.database.clear_all_data()
+            self.database.clear_settings()
+            if language:
+                self.database.save_language(language)
+            self.database.save_current_versions(new_software_version, new_database_version)
+
     def run_main_gui_flow(self):
         try:
             self.logger.info("Start the main gui flow")
+
+            self._delete_data_if_new_version()
 
             # Initialize the language for first time.
             self._initial_language_if_first_time()
