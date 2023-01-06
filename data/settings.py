@@ -15,7 +15,7 @@ class Settings:
     campus_name: str = utils.get_campus_name_test()
     year: int = utils.get_current_hebrew_year()
     semester: Semester = utils.get_current_semester()
-    show_hertzog: bool = False
+    show_hertzog_and_yeshiva: bool = False
     show_only_courses_with_free_places: bool = False
     show_only_courses_active_classes: bool = True
     show_only_courses_with_the_same_actual_number: bool = True

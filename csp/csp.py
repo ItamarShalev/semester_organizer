@@ -82,6 +82,14 @@ class CSP:
         # All academic activities must have the same actual course
         return len({activity.actual_course_number for activity in activities}) == 1
 
+    def _is_consist_hertzog_and_yeshiva(self, activities: List[Activity]):
+        if activities[0].type.is_personal():
+            return True
+        herzog = "הרצוג"
+        yeshiva = """יש"ת"""
+        descriptions = [activity.description for activity in activities if activity.description]
+        return not any(description for description in descriptions if herzog in description or yeshiva in description)
+
     def extract_schedules(self, activities: List[Activity], courses_choices: Optional[Dict[str, CourseChoice]] = None,
                           settings: Settings = None) -> List[Schedule]:
         problem = Problem()
@@ -105,6 +113,8 @@ class CSP:
                 problem.addConstraint(self._is_consist_capacity, (name,))
             if settings.show_only_courses_with_the_same_actual_number:
                 problem.addConstraint(self._is_consist_actual_course, (name,))
+            if not settings.show_hertzog_and_yeshiva:
+                problem.addConstraint(self._is_consist_hertzog_and_yeshiva, (name,))
             for other_name in all_names_activities:
                 if name == other_name:
                     continue
