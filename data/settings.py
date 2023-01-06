@@ -2,6 +2,7 @@ from typing import List
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
 
+from data.day import Day
 from data.output_format import OutputFormat
 from data.semester import Semester
 from data.language import Language
@@ -19,6 +20,7 @@ class Settings:
     show_only_courses_with_free_places: bool = False
     show_only_courses_active_classes: bool = True
     show_only_courses_with_the_same_actual_number: bool = True
+    show_only_classes_in_days: List[Day] = field(default_factory=lambda: list(Day))
     output_formats: List[OutputFormat] = field(default_factory=lambda: list(OutputFormat))
     language: Language = Language.HEBREW
     force_update_data: bool = True
