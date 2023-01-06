@@ -65,7 +65,20 @@ data = CaseInsensitiveDict({
     "most_spread_days": "הכי_הרבה_ימים",
     "least_spread_days": "הכי_פחות_ימים",
     "least_standby_time": "הכי_פחות_זמן_חלון",
-
+    "Yes": "כן",
+    "No": "לא",
+    "Select the campus by enter their index:": "בחר קמפוס על ידי הקלדת מספר המזהה שלו:",
+    "Enter the campus index: ": "הקלד את המספר המזהה של הקמפוס: ",
+    "Select the courses by enter their index:": "בחר קורסים על ידי הקלדת מספר המזהה שלהם:",
+    "Enter the courses indexes separated by comma (example: 1,2,20): ": "הקלד את מספרי המזהה של הקורסים מופרדים בפסיק (לדוגמא: 1,2,20): ",
+    "Do you want to select favorite lecturers?": "האם ברצונך לבחור מרצים מועדפים?",
+    "Enter the option index: ": "הקלד את מספר המזהה של האפשרות: ",
+    "Select the favorite teachers for lecture for the course: ": "בחר את המרצים המועדפים להרצאה בקורס: ",
+    "Select the favorite teachers for lab / exercise for the course: ": "בחר את המרצים המועדפים למעבדה או תרגול בקורס: ",
+    "Enter the teachers indexes separated by comma (example: 1,2,20) or 0 to select all: ": "הקלד את מספרי המזהה של המרצים מופרדים בפסיק (לדוגמא: 1,2,20) או 0 לבחירת כולם: ",
+    "Generating schedules...": "מייצר מערכות שעות...",
+    "Loading academic activities it may take few seconds...": "טוען פעילויות אקדמיות זה עשוי לקחת מספר שניות...",
+    "Done successfully !": "הפעולה הושלמה בהצלחה !",
 })
 
 _TRANSLATION_METHOD = None

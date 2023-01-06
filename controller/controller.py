@@ -1,25 +1,25 @@
 import os
 import shutil
-
-from typing import List, Dict
+import subprocess
+import time
 from collections import defaultdict
-from operator import itemgetter
 from copy import copy
-
+from operator import itemgetter
+from typing import List, Dict
 
 import utils
 from collector.db.db import Database
 from collector.gui.gui import Gui, MessageType, UserClickExitException
 from collector.network.network import NetworkHttp, WeakNetworkConnectionException
 from convertor.convertor import Convertor
+from csp.csp import CSP
 from data import translation
 from data.academic_activity import AcademicActivity
-from data.settings import Settings
 from data.course_choice import CourseChoice
-from data.translation import _
 from data.language import Language
 from data.schedule import Schedule
-from csp.csp import CSP
+from data.settings import Settings
+from data.translation import _
 
 
 class Controller:
@@ -74,13 +74,12 @@ class Controller:
                     self.gui.set_language(language)
                     self.convertor.set_language(language)
 
-    def _save_schedule(self, all_schedules: List[Schedule], settings: Settings):
+    def _save_schedule(self, all_schedules: List[Schedule], settings: Settings, results_path: str):
         # Save the most spread days and least spread days
         most_spread_days = defaultdict(list)
         least_spread_days = defaultdict(list)
         schedules_by_learning_days = defaultdict(list)
         schedules_by_standby_time = defaultdict(list)
-        results_path = utils.get_results_path()
         output_formats = settings.output_formats
 
         for schedule in all_schedules:
@@ -123,9 +122,6 @@ class Controller:
         if schedules_by_standby_time:
             self.convertor.convert_activities(schedules_by_standby_time, least_standby_time_path, output_formats)
 
-        message = _("The schedules were saved in the directory: ") + results_path
-        self.gui.open_notification_window(message)
-
     def _delete_data_if_new_version(self):
         language = self.database.get_language()
         software_version, database_version = self.database.load_current_versions()
@@ -136,6 +132,90 @@ class Controller:
             if language:
                 self.database.save_language(language)
             self.database.save_current_versions(new_software_version, new_database_version)
+
+    def _open_results_folder(self, results_path: str):
+        subprocess.call(f"explorer {results_path}", shell=True)
+
+    def run_console_flow(self):
+        """
+        Run the console flow of the program, only for academic activities.
+        Console flow will use the default settings.
+        and without database nor GUI.
+        """
+        # pylint: disable=too-many-branches
+        self.logger.info("Starting console flow")
+        self.network.set_user(self.database.load_hard_coded_user_data())
+        print(_("Select the campus by enter their index:"))
+        available_campuses = self.database.get_common_campuses_names()
+        for index, name in enumerate(available_campuses, 1):
+            print(f"{index}. {name}")
+        campus_index = int(input(_("Enter the campus index: ")))
+        campus_name = available_campuses[campus_index - 1]
+        print(_("Loading academic activities it may take few seconds..."))
+        courses = self.network.extract_all_courses(campus_name)
+        all_activities, _unused_missings = self.network.extract_academic_activities_data(campus_name, courses)
+        courses_choices = self._get_courses_choices(all_activities)
+
+        print(_("Select the courses by enter their index:"))
+        time.sleep(3)
+        for index, course_name in enumerate(courses_choices.keys(), 1):
+            print(f"{index}. {course_name}")
+        courses_indexes = input(_("Enter the courses indexes separated by comma (example: 1,2,20): "))
+        courses_indexes = [int(index) for index in courses_indexes.split(",")]
+        selected_courses_choices = {}
+        for index, (course_name, course_choice) in enumerate(courses_choices.items(), 1):
+            if index in courses_indexes:
+                selected_courses_choices[course_name] = course_choice
+
+        options = [_("Yes"), _("No")]
+        print(_("Do you want to select favorite lecturers?"))
+        for index, option in enumerate(options, 1):
+            print(f"{index}. {option}")
+        favorite_lecturers_option = int(input(_("Enter the option index: ")))
+        yes_no_option = options[favorite_lecturers_option - 1]
+        if yes_no_option == _("Yes"):
+            for course_name, (course_name, course_choice) in enumerate(selected_courses_choices.items(), 1):
+                lectures_lists = [course_choice.available_teachers_for_lecture,
+                                  course_choice.available_teachers_for_practice]
+                selected_teachers_lists = []
+                for lecture_type, lectures_list in zip(["lecture", "lab / exercise"], lectures_lists):
+                    if not lectures_list:
+                        selected_teachers_lists.append([])
+                        continue
+                    print(_(f"Select the favorite teachers for {lecture_type} for the course: ") + f"'{course_name}'")
+                    for index, teacher in enumerate(lectures_list, 1):
+                        print(f"{index}. {teacher}")
+                    teachers_indexes = input(
+                        _("Enter the teachers indexes separated by comma (example: 1,2,20) or 0 to select all: "))
+                    teachers_indexes = [int(index) for index in teachers_indexes.split(",")]
+                    selected_teachers = []
+                    if 0 in teachers_indexes:
+                        selected_teachers = lectures_list
+                        teachers_indexes = []
+                    for index, teacher in enumerate(lectures_lists, 1):
+                        if index in teachers_indexes:
+                            selected_teachers.append(teacher)
+                    selected_teachers_lists.append(selected_teachers)
+                course_choice.favorite_teachers_for_lecture = selected_teachers_lists[0]
+                course_choice.favorite_teachers_for_lab = selected_teachers_lists[1]
+
+        print(_("Generating schedules..."))
+
+        selected_activities = list(filter(lambda activity: activity.name in selected_courses_choices, all_activities))
+
+        settings = Settings()
+        settings.language = translation.get_current_language()
+
+        schedules = self.csp.extract_schedules(selected_activities, selected_courses_choices, settings)
+
+        if not schedules:
+            print(_("No schedules were found"))
+        else:
+            print(_("Done successfully !"))
+
+            results_path = utils.get_results_path()
+            self._save_schedule(schedules, settings, results_path)
+            self._open_results_folder(results_path)
 
     def run_main_gui_flow(self):
         try:
@@ -214,7 +294,11 @@ class Controller:
             if not schedules:
                 self.gui.open_notification_window(_("No schedule were found"))
             else:
-                self._save_schedule(schedules, settings)
+                results_path = utils.get_results_path()
+                self._save_schedule(schedules, settings, results_path)
+                message = _("The schedules were saved in the directory: ") + results_path
+                self.gui.open_notification_window(message)
+                self._open_results_folder(results_path)
 
         except UserClickExitException:
             self.logger.info("User clicked exit button")
@@ -230,6 +314,7 @@ class Controller:
             self.gui.open_notification_window(_(message), MessageType.ERROR)
 
     def run_update_levnet_data_flow(self):
+        translation.config_language_text(Language.ENGLISH)
         self.network = NetworkHttp()
 
         self.logger.debug("Start updating the levnet data")

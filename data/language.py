@@ -18,3 +18,10 @@ class Language(Enum):
     def contains(key):
         key = key.upper()
         return any(key.upper() == item.name for item in Language)
+
+    @classmethod
+    def from_str(cls, value):
+        if isinstance(value, str):
+            value = value.upper()
+            return cls[value]
+        return Language(int(value))
