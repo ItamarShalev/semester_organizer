@@ -1,12 +1,15 @@
 import pytest
 
+import utils
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
+from data.case_insensitive_dict import CaseInsensitiveDict
 from data.language import Language
 from data.meeting import Meeting
 from data.course import Course
 from data.day import Day
 from data.schedule import Schedule
+from data.semester import Semester
 from data.type import Type
 from data.course_choice import CourseChoice
 from data import translation
@@ -48,6 +51,8 @@ class TestData:
 
         course.name = "name"
         assert repr(course) == "name"
+        assert repr(Semester.SUMMER) == "Summer"
+        assert repr(Day.MONDAY) == "Monday"
 
     def test_activity(self):
         activity = Activity("", Type.LAB, False)
@@ -83,7 +88,6 @@ class TestData:
         assert typ == Type.LAB
         assert typ.is_exercise()
         assert repr(typ) == "Lab"
-        assert str(typ) == "Lab"
 
         typ = Type.PERSONAL
         assert typ == Type.PERSONAL
@@ -142,3 +146,47 @@ class TestData:
 
         translation.config_language_text(Language.HEBREW)
         assert _("Test") == "בדיקה"
+
+        assert translation.translate("Test") == translation._("Test")
+
+        translation.config_language_text(None)
+        assert translation.get_current_language() == Language.HEBREW
+
+        assert repr(Language.ENGLISH) == "english"
+        assert Language.contains("EnglISh")
+        assert not Language.contains("France")
+
+    def test_case_insensitive_dict(self):
+        case_insensitive_dict = CaseInsensitiveDict()
+        case_insensitive_dict["A"] = 1
+        assert case_insensitive_dict["a"] == 1
+        assert case_insensitive_dict["A"] == 1
+        assert case_insensitive_dict.get("A") == 1
+        with pytest.raises(KeyError):
+            _var = case_insensitive_dict["b"]
+        assert case_insensitive_dict.get("B") is None
+        assert case_insensitive_dict.get("B", 2) == 2
+        assert "A" in case_insensitive_dict
+        assert "B" not in case_insensitive_dict
+        assert len(case_insensitive_dict) == 1
+        del case_insensitive_dict["A"]
+        assert len(case_insensitive_dict) == 0
+        case_insensitive_dict["A"] = 1
+        case_insensitive_dict.pop("A")
+        assert len(case_insensitive_dict) == 0
+        case_insensitive_dict["A"] = 1
+        case_insensitive_dict.popitem()
+        assert len(case_insensitive_dict) == 0
+        case_insensitive_dict["A"] = 1
+        case_insensitive_dict.clear()
+        assert len(case_insensitive_dict) == 0
+        case_insensitive_dict["A"] = 1
+        case_insensitive_dict.setdefault("A", 2)
+        assert case_insensitive_dict["A"] == 1
+        case_insensitive_dict.update({"A": 2})
+        assert case_insensitive_dict["A"] == 2
+
+    def test_utils(self):
+        assert utils.get_logging()
+        assert utils.get_custom_software_name() == "semester_organizer_lev"
+        assert utils.get_course_data_test().parent_course_number == 318

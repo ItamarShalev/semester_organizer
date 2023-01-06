@@ -13,3 +13,8 @@ class Language(Enum):
 
     def short_name(self):
         return self.value
+
+    @staticmethod
+    def contains(key):
+        key = key.upper()
+        return any(key.upper() == item.name for item in Language)

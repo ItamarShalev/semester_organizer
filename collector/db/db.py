@@ -31,9 +31,14 @@ class Database:
             for course in courses_set:
                 file.write(f"{course.name};{course.course_number};{course.parent_course_number}\n")
 
-    def get_language(self) -> Language:
+    def get_language(self) -> Optional[Language]:
+        settings = self.load_settings()
+        return settings.language if settings else None
+
+    def save_language(self, language: Language):
         settings = self.load_settings() or Settings()
-        return settings.language
+        settings.language = language
+        self.save_settings(settings)
 
     def save_academic_activities_data(self, campus_name: str, academic_activities: List[AcademicActivity]):
         activities_names = {activity.name: activity for activity in academic_activities}

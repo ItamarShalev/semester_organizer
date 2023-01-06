@@ -6,9 +6,12 @@ from collector.db.db import Database
 from collector.gui.gui import Gui, MessageType, UserClickExitException
 from collector.network.network import NetworkHttp, WeakNetworkConnectionException
 from convertor.convertor import Convertor
+from data import translation
 from data.academic_activity import AcademicActivity
 from data.settings import Settings
 from data.course_choice import CourseChoice
+from data.translation import _
+from data.language import Language
 from csp.csp import CSP
 
 
@@ -17,8 +20,9 @@ class Controller:
     def __init__(self):
         self.database = Database()
         self.network = NetworkHttp()
-        self.gui = Gui(self.database.get_language())
+        self.gui = Gui()
         self.convertor = Convertor()
+        self.csp = CSP()
         self.logger = utils.get_logging()
 
     def _get_courses_choices(self, all_academic_activities: List[AcademicActivity]) -> Dict[str, CourseChoice]:
@@ -49,10 +53,27 @@ class Controller:
             self.database.save_academic_activities_data(campus_name, activities)
         return activities
 
+    def _initial_language_if_first_time(self):
+        settings = self.database.load_settings()
+        if not settings:
+            message = _("Welcome to the semester organizer!\nPlease choose a language\nThe current language is: ")
+            message += _(str(translation.get_current_language()))
+            language = self.gui.open_notification_window(message, MessageType.INFO, list(map(str, Language)))
+            if language and Language.contains(language):
+                translation.config_language_text(Language[language.upper()])
+                if self.database.get_language() != language:
+                    self.database.clear_all_data()
+                    self.database.save_language(language)
+                    self.gui.set_language(language)
+                    self.convertor.set_language(language)
+
     def run_main_gui_flow(self):
         try:
             self.logger.info("Start the main gui flow")
-            csp = CSP()
+
+            # Initialize the language for first time.
+            self._initial_language_if_first_time()
+
             user = self.gui.open_login_window(self.network.check_connection)
             self.network.set_user(user)
 
@@ -60,34 +81,41 @@ class Controller:
 
             settings = self.database.load_settings() or Settings()
 
-            campus_names = self.network.extract_campus_names()
+            campus_names = self.database.load_campus_names() or self.network.extract_campus_names()
+            self.database.save_campus_names(campus_names)
 
-            years = self.database.load_years()
-            if not years:
-                years = self.network.extract_years()
-                self.database.save_years(years)
+            years = self.database.load_years() or self.network.extract_years()
+            self.database.save_years(years)
 
             settings = self.gui.open_settings_window(settings, campus_names, years)
+
+            language = self.database.get_language()
 
             self.network.set_settings(settings)
 
             if settings.force_update_data:
                 self.database.clear_all_data()
 
+            if language and language != settings.language:
+                self.database.clear_all_data()
+                self.gui.set_language(settings.language)
+                self.convertor.set_language(settings.language)
+
             self.database.save_settings(settings)
+            campus_name = settings.campus_name
 
             ask_attendance = not settings.attendance_required_all_courses
 
             self.logger.info("Loading courses data...")
 
-            courses = self.database.load_courses_data() or self.network.extract_all_courses(settings.campus_name)
+            courses = self.database.load_courses_data() or self.network.extract_all_courses(campus_name)
 
             if not courses:
-                message = "There are no courses in the system, please try again with another campus or year."
+                message = _("There are no courses in the system, please try again with another campus or year.")
                 self.gui.open_notification_window(message, MessageType.ERROR)
                 return
 
-            all_academic_activities, _ = self.network.extract_academic_activities_data(settings.campus_name, courses)
+            all_academic_activities, _unused = self.network.extract_academic_activities_data(campus_name, courses)
 
             courses_choices = self._get_courses_choices(all_academic_activities)
 
@@ -109,15 +137,16 @@ class Controller:
 
             activities += self.gui.open_personal_activities_window()
 
-            schedules = csp.extract_schedules(activities, courses_choices, settings)
+            schedules = self.csp.extract_schedules(activities, courses_choices, settings)
 
             results_dir = utils.get_results_path()
 
             if not schedules:
-                self.gui.open_notification_window("No schedules were found")
+                self.gui.open_notification_window(_("No schedule were found"))
             else:
                 self.convertor.convert_activities(schedules, results_dir, settings.output_formats)
-                self.gui.open_notification_window(f"The schedules were saved in the {results_dir} folder")
+                message = _("The schedules were saved in the directory: ") + results_dir
+                self.gui.open_notification_window(message)
 
         except UserClickExitException:
             self.logger.info("User clicked exit button")
@@ -125,12 +154,12 @@ class Controller:
         except WeakNetworkConnectionException as error:
             message = str(error)
             self.logger.error(message)
-            self.gui.open_notification_window(message, MessageType.ERROR)
+            self.gui.open_notification_window(_(message), MessageType.ERROR)
 
         except Exception as error:
             message = "The system encountered an error, please contanct the engeniers."
             self.logger.error("The system encountered an error: %s", str(error))
-            self.gui.open_notification_window(message, MessageType.ERROR)
+            self.gui.open_notification_window(_(message), MessageType.ERROR)
 
     def run_update_levnet_data_flow(self):
         self.network = NetworkHttp()

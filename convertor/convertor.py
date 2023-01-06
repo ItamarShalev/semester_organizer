@@ -8,20 +8,30 @@ from data.academic_activity import AcademicActivity
 from data.output_format import OutputFormat
 from data.schedule import Schedule
 from data.type import Type
+from data.language import Language
+from data import translation
+from data.translation import _
 
 
 class Convertor:
 
+    def __init__(self):
+        self.language = translation.get_current_language()
+
+    def set_language(self, language: Language):
+        self.language = language
+
     def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: str):
         headers = [
-            "activity type",
-            "day",
-            "start time",
-            "end time",
-            "course name",
-            "course location",
-            "activity id",
-            "lecturer name"
+            _("activity type"),
+            _("day"),
+            _("start time"),
+            _("end time"),
+            _("course name"),
+            _("course location"),
+            _("activity id"),
+            _("lecturer name"),
+            _("course id")
         ]
         rows = []
         shutil.rmtree(folder_location, ignore_errors=True)
@@ -31,9 +41,10 @@ class Convertor:
             rows.append(headers)
             for activity in schedule.activities:
                 for meeting in activity.meetings:
-                    activity_type = activity.type.name
-                    activity_day = meeting.day.name
-                    activity_time = str(meeting)
+                    activity_type = _(str(activity.type))
+                    activity_day = _(str(meeting.day))
+                    start_time = meeting.get_string_start_time()
+                    end_time = meeting.get_string_end_time()
                     if activity.type is not Type.PERSONAL:
                         academic_activity = cast(AcademicActivity, activity)
                         course_name = academic_activity.name
@@ -42,12 +53,13 @@ class Convertor:
                         new_row = [
                             activity_type,
                             activity_day,
-                            activity_time,
+                            start_time,
+                            end_time,
                             course_name,
                             course_location,
-                            course_number,
                             academic_activity.activity_id,
-                            academic_activity.lecturer_name
+                            academic_activity.lecturer_name,
+                            course_number
                         ]
                         rows.append(new_row)
                     else:
@@ -55,8 +67,9 @@ class Convertor:
                         new_row = [
                             activity_type,
                             activity_day,
-                            activity_time,
-                            None, None, None, None, None]
+                            start_time,
+                            end_time]
+                        new_row += [None] * (len(headers) - len(new_row))
                         rows.append(new_row)
 
             file_location = os.path.join(folder_location, f"{schedule.file_name}.{OutputFormat.CSV.value}")

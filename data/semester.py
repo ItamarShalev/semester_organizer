@@ -8,3 +8,9 @@ class Semester(Enum):
     FALL = auto()
     "Semester ב"
     SPRING = auto()
+
+    def __str__(self):
+        return self.name.capitalize()
+
+    def __repr__(self):
+        return str(self)

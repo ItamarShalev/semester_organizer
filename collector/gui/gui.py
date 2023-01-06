@@ -1,7 +1,6 @@
+import sys
 from enum import Enum, auto
 from typing import List, Dict, Optional, Callable
-
-import sys
 
 try:
     import tkinter
@@ -10,13 +9,14 @@ except ImportError:
     sys.exit(-1)
 import customtkinter
 
-
 import utils
 from data.language import Language
 from data.activity import Activity
 from data.course_choice import CourseChoice
 from data.user import User
 from data.settings import Settings
+from data import translation
+from data.translation import _
 
 
 class MessageType(Enum):
@@ -24,16 +24,22 @@ class MessageType(Enum):
     WARNING = auto()
     INFO = auto()
 
+    def __str__(self):
+        return _(self.name.capitalize())
+
+    def __repr__(self):
+        return str(self)
+
 
 class UserClickExitException(Exception):
     def __init__(self):
-        super().__init__("ERROR: Can't click exit button without choose from the options.")
+        super().__init__(_("ERROR: Can't click exit button without choose from the options."))
 
 
 class Gui:
 
-    def __init__(self, language: Language = Language.ENGLISH):
-        self.language = language
+    def __init__(self):
+        self.language = translation.get_current_language()
         self.logger = utils.get_logging()
         customtkinter.set_appearance_mode("dark")
         customtkinter.set_default_color_theme("blue")
@@ -51,7 +57,7 @@ class Gui:
         user_result = User()
         app = customtkinter.CTk()
         app.geometry("500x300")
-        app.title("Login window")
+        app.title(_("Login window"))
         user_clicked_exit = False
 
         def button_clicked():
@@ -59,11 +65,11 @@ class Gui:
             self.logger.info("Login button clicked - checking if user is valid...")
             user = User(username_input.get(), password_input.get())
             if not user:
-                message = "Username or password is missing, please fill all the fields."
+                message = _("Username or password is missing, please fill all the fields.")
                 message_view.configure(text=message)
                 self.logger.warning(message)
             elif not is_valid_user_function(user):
-                message = "Username or password is invalid, please check your input."
+                message = _("Username or password is invalid, please check your input.")
                 message_view.configure(text=message)
                 self.logger.warning(message)
             else:
@@ -79,13 +85,13 @@ class Gui:
         container = customtkinter.CTkFrame(master=app)
         container.pack(pady=20, padx=20, fill="both", expand=True)
 
-        title_view = customtkinter.CTkLabel(master=container, justify=tkinter.LEFT, text="Login", text_color="white")
+        title_view = customtkinter.CTkLabel(master=container, justify=tkinter.LEFT, text=_("Login"), text_color="white")
         title_view.pack(pady=12, padx=10)
 
-        username_input = customtkinter.CTkEntry(master=container, placeholder_text="Username")
+        username_input = customtkinter.CTkEntry(master=container, placeholder_text=_("Username"))
         username_input.pack(pady=12, padx=10)
 
-        password_input = customtkinter.CTkEntry(master=container, placeholder_text="Password", show="*")
+        password_input = customtkinter.CTkEntry(master=container, placeholder_text=_("Password"), show="*")
         password_input.pack(pady=12, padx=10)
 
         login_button = customtkinter.CTkButton(master=container, command=button_clicked, text="Login")
@@ -131,12 +137,12 @@ class Gui:
         assert message, "Message can't be empty."
         assert not buttons or len(buttons) <= 3, "Can't have more than 3 buttons."
 
-        default_button = "OK"
+        default_button = _("OK")
         button_text_selected = None
         text_color = "white"
 
         app = customtkinter.CTk()
-        app.title(f"{message_type.name.capitalize()} notification")
+        app.title(f"{message_type} {_('notification')}")
         app.geometry("550x240")
 
         def button_clicked(text_button):
@@ -169,7 +175,6 @@ class Gui:
             button.pack(padx=5, pady=5)
         else:
             for button_text in buttons:
-
                 button = customtkinter.CTkButton(master=buttons_frame, text=button_text,
                                                  command=lambda value=button_text: button_clicked(value))
                 button.pack(side=tkinter.LEFT, pady=5, padx=5)

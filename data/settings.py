@@ -20,5 +20,5 @@ class Settings:
     show_only_courses_active_classes: bool = True
     show_only_courses_with_the_same_actual_number: bool = True
     output_formats: List[OutputFormat] = field(default_factory=lambda: list(OutputFormat))
-    language: Language = Language.ENGLISH
+    language: Language = Language.HEBREW
     force_update_data: bool = True

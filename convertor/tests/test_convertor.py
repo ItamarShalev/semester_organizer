@@ -17,9 +17,9 @@ class TestConvertor:
 
     @staticmethod
     def _create_schedule(file_name: str):
-        activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 100, "a")
+        activity = AcademicActivity("שם", Type.LECTURE, True, "שם המרצה", 1, 100, "מיקום")
         activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("12:00")))
-        return Schedule("a", file_name, "", [activity])
+        return Schedule("שם", file_name, "", [activity])
 
     @pytest.mark.parametrize("file_type", [OutputFormat.CSV])
     def test_convert_type(self, file_type: OutputFormat):

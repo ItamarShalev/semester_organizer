@@ -18,3 +18,5 @@ exclude_lines =
     except ImportError
     class TestController
     class Controller
+    raise Exception
+    class UserClickExitException

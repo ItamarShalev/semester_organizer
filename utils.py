@@ -1,10 +1,7 @@
 import logging
 import os
 import sys
-
-from data import translation
 from data.course import Course
-from data.language import Language
 from data.semester import Semester
 
 ENCODING = "utf-8"
@@ -20,11 +17,10 @@ def disable_logger_third_party_warnings():
     logging.getLogger("WDM").setLevel(logging.WARNING)
 
 
-def init_project(language: Language = Language.ENGLISH):
+def init_project():
     if sys.version_info < (3, 7):
         raise Exception("To run this program you should have Python 3.7 or a more recent version.")
     disable_logger_third_party_warnings()
-    translation.config_language_text(language)
 
 
 def get_current_hebrew_year():
