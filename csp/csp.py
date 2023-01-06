@@ -7,6 +7,7 @@ from data.course_choice import CourseChoice
 from data.schedule import Schedule
 from data.settings import Settings
 from data.type import Type
+from data.translation import _
 
 
 class CSP:
@@ -132,7 +133,9 @@ class CSP:
             activities_result.clear()
             for activities_solution in solution.values():
                 activities_result += activities_solution
-            schedule = Schedule(f"Option {option_counter}", f"option_{option_counter}", "", activities_result.copy())
+            name = f"{_('Option')} {option_counter}"
+            file_name = f"{_('option')}_{option_counter}"
+            schedule = Schedule(name, file_name, "", activities_result.copy())
             schedule_result.append(schedule)
             option_counter += 1
 

@@ -59,6 +59,13 @@ data = CaseInsensitiveDict({
     "course type": "סוג קורס",
     "course location": "מיקום הקורס",
     "Welcome to the semester organizer!\nPlease choose a language\nThe current language is: ": "ברוכים הבאים למארגן מערכת השעות\nאנא בחר שפה\nהשפה הנוכחית היא: ",
+    "option": "אפשרות_מספר",
+    "with_{}_learning_days_and_{}_minutes_study_time": "עם_{}_ימי_לימוד_ו{}_דקות_זמן_חלון",
+    "all_schedules": "כל_המערכות_שעות",
+    "most_spread_days": "הכי_הרבה_ימים",
+    "least_spread_days": "הכי_פחות_ימים",
+    "least_standby_time": "הכי_פחות_זמן_חלון",
+
 })
 
 _TRANSLATION_METHOD = None

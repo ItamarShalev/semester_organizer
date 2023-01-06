@@ -88,7 +88,8 @@ class Controller:
             learning_days = schedule.get_learning_days()
             copied_schedule = copy(schedule)
             copied_schedule.file_name = \
-                f"{schedule.file_name}_with_{len(learning_days)}_learning_days_and_{standby_in_minutes}_minutes_standby"
+                f"{schedule.file_name}_" + \
+                _("with_{}_learning_days_and_{}_minutes_study_time").format(len(learning_days), standby_in_minutes)
             schedules_by_learning_days[len(learning_days)].append(copied_schedule)
             schedules_by_standby_time[standby_in_minutes].append(copied_schedule)
 
@@ -108,10 +109,10 @@ class Controller:
         else:
             schedules_by_standby_time = None
 
-        all_schedules_path = os.path.join(results_path, "all_schedules")
-        most_spread_days_path = os.path.join(results_path, "most_spread_days")
-        least_spread_days_path = os.path.join(results_path, "least_spread_days")
-        least_standby_time_path = os.path.join(results_path, "least_standby_time")
+        all_schedules_path = os.path.join(results_path, _("all_schedules"))
+        most_spread_days_path = os.path.join(results_path, _("most_spread_days"))
+        least_spread_days_path = os.path.join(results_path, _("least_spread_days"))
+        least_standby_time_path = os.path.join(results_path, _("least_standby_time"))
 
         shutil.rmtree(results_path, ignore_errors=True)
 
