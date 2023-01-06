@@ -14,6 +14,7 @@ class CSP:
     def __init__(self):
         self.courses_choices = None
         self.consisnt_one_favorite_teacher = False
+        self.settings = None
 
     def _get_flat_activities_by_type(self, activities: List[Activity]) -> List[List[Activity]]:
         result = {activity_type: [] for activity_type in Type}
@@ -90,10 +91,16 @@ class CSP:
         descriptions = [activity.description for activity in activities if activity.description]
         return not any(description for description in descriptions if herzog in description or yeshiva in description)
 
+    def _is_consist_classes_in_days(self, activities: List[Activity]):
+        if activities[0].type.is_personal():
+            return True
+        return all(meeting.day in self.settings.show_only_classes_in_days
+                   for activity in activities for meeting in activity.meetings)
+
     def extract_schedules(self, activities: List[Activity], courses_choices: Optional[Dict[str, CourseChoice]] = None,
                           settings: Settings = None) -> List[Schedule]:
         problem = Problem()
-        settings = settings or Settings()
+        self.settings = settings or Settings()
         activities_result = []
         schedule_result = []
         self.courses_choices = courses_choices or {}
@@ -109,11 +116,12 @@ class CSP:
 
         for name in all_names_activities:
             problem.addConstraint(self._is_consist_favorite_teachers, (name,))
-            if settings.show_only_courses_with_free_places:
+            problem.addConstraint(self._is_consist_classes_in_days, (name,))
+            if self.settings.show_only_courses_with_free_places:
                 problem.addConstraint(self._is_consist_capacity, (name,))
-            if settings.show_only_courses_with_the_same_actual_number:
+            if self.settings.show_only_courses_with_the_same_actual_number:
                 problem.addConstraint(self._is_consist_actual_course, (name,))
-            if not settings.show_hertzog_and_yeshiva:
+            if not self.settings.show_hertzog_and_yeshiva:
                 problem.addConstraint(self._is_consist_hertzog_and_yeshiva, (name,))
             for other_name in all_names_activities:
                 if name == other_name:
@@ -131,11 +139,11 @@ class CSP:
         if not schedule_result and courses_choices and not self.consisnt_one_favorite_teacher:
             # If there are no schedules, try to find schedules without favorite teachers
             self.consisnt_one_favorite_teacher = True
-            return self.extract_schedules(activities, courses_choices, settings)
+            return self.extract_schedules(activities, courses_choices, self.settings)
 
         if not schedule_result and courses_choices and self.consisnt_one_favorite_teacher:
             # If there are no schedules, try to find schedules without favorite teachers
             self.consisnt_one_favorite_teacher = False
-            return self.extract_schedules(activities, None, settings)
+            return self.extract_schedules(activities, None, self.settings)
 
         return schedule_result
