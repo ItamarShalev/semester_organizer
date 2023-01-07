@@ -10,12 +10,10 @@ except ImportError:
 import customtkinter
 
 import utils
-from data.language import Language
 from data.activity import Activity
 from data.course_choice import CourseChoice
 from data.user import User
 from data.settings import Settings
-from data import translation
 from data.translation import _
 
 
@@ -28,7 +26,7 @@ class MessageType(Enum):
         return _(self.name.capitalize())
 
     def __repr__(self):
-        return str(self)
+        return self.name.capitalize()
 
 
 class UserClickExitException(Exception):
@@ -39,13 +37,9 @@ class UserClickExitException(Exception):
 class Gui:
 
     def __init__(self):
-        self.language = translation.get_current_language()
         self.logger = utils.get_logging()
         customtkinter.set_appearance_mode("dark")
         customtkinter.set_default_color_theme("blue")
-
-    def set_language(self, language: Language):
-        self.language = language
 
     def open_login_window(self, is_valid_user_function: Callable) -> User:
         """

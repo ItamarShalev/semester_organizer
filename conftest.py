@@ -1,6 +1,7 @@
 import logging
 import utils
 from data import translation
+from data.language import Language
 
 
 def pytest_configure(config):
@@ -11,4 +12,4 @@ def pytest_configure(config):
     """
     utils.init_project()
     utils.config_logging_level(logging.DEBUG)
-    translation.config_language_text(translation.get_default_language())
+    translation.config_language_text(Language.get_default())

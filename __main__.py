@@ -16,7 +16,7 @@ def get_args():
     parser.add_argument("-u", "--username", help="The username user in the server", default=None, type=str)
     parser.add_argument("-p", "--password", help="The password user in the server", default=None, type=str)
     parser.add_argument("-l", "--language", help="Set the language of the program", choices=list(Language),
-                        type=Language.from_str, default=translation.get_default_language())
+                        type=Language.from_str, default=Language.get_default())
     return parser.parse_args()
 
 

@@ -21,7 +21,30 @@ class Language(Enum):
 
     @classmethod
     def from_str(cls, value):
-        if isinstance(value, str):
-            value = value.upper()
-            return cls[value]
-        return Language(int(value))
+        try:
+            if isinstance(value, str):
+                if value.isdigit():
+                    return Language.ENGLISH
+                value = value.upper()
+                return cls[value]
+        except KeyError:
+            pass
+        raise ValueError(f"ERROR: got '{value}', value must be a string for enum Language keys or values options")
+
+    @staticmethod
+    def get_default():
+        return _DEFAULT_LANGUAGE
+
+    @staticmethod
+    def get_current():
+        return _CURRENT_LANGUAGE
+
+    @staticmethod
+    def set_current(language):
+        # pylint: disable=global-statement
+        global _CURRENT_LANGUAGE
+        _CURRENT_LANGUAGE = language
+
+
+_DEFAULT_LANGUAGE = Language.HEBREW
+_CURRENT_LANGUAGE = _DEFAULT_LANGUAGE

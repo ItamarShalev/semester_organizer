@@ -64,7 +64,7 @@ class Controller:
         settings = self.database.load_settings()
         if not settings:
             message = _("Welcome to the semester organizer!\nPlease choose a language\nThe current language is: ")
-            message += _(str(translation.get_current_language()))
+            message += _(str(Language.get_current()))
             language = self.gui.open_notification_window(message, MessageType.INFO, list(map(str, Language)))
             if language and Language.contains(language):
                 translation.config_language_text(Language[language.upper()])
@@ -204,7 +204,7 @@ class Controller:
         selected_activities = list(filter(lambda activity: activity.name in selected_courses_choices, all_activities))
 
         settings = Settings()
-        settings.language = translation.get_current_language()
+        settings.language = Language.get_current()
 
         schedules = self.csp.extract_schedules(selected_activities, selected_courses_choices, settings)
 
@@ -245,13 +245,8 @@ class Controller:
 
             self.network.set_settings(settings)
 
-            if settings.force_update_data:
+            if settings.force_update_data or (language and language != settings.language):
                 self.database.clear_all_data()
-
-            if language and language != settings.language:
-                self.database.clear_all_data()
-                self.gui.set_language(settings.language)
-                self.convertor.set_language(settings.language)
 
             self.database.save_settings(settings)
             campus_name = settings.campus_name

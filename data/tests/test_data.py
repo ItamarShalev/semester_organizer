@@ -150,7 +150,7 @@ class TestData:
         assert translation.translate("Test") == translation._("Test")
 
         translation.config_language_text(None)
-        assert translation.get_current_language() == Language.HEBREW
+        assert Language.get_current() == Language.HEBREW
 
         assert repr(Language.ENGLISH) == "english"
         assert Language.contains("EnglISh")

@@ -1,6 +1,5 @@
 from typing import Optional
 
-from collector.db.db import Database
 from data.case_insensitive_dict import CaseInsensitiveDict
 from data.language import Language
 
@@ -81,8 +80,6 @@ data = CaseInsensitiveDict({
     "Done successfully !": "הפעולה הושלמה בהצלחה !",
 })
 
-_TRANSLATION_METHOD = None
-
 
 def _(text: str):
     return _TRANSLATION_METHOD(text)
@@ -112,12 +109,7 @@ def config_language_text(language: Optional[Language] = None):
     elif language is Language.HEBREW:
         _TRANSLATION_METHOD = hebrew
 
-    Database().save_language(language)
+    Language.set_current(language)
 
 
-def get_default_language() -> Language:
-    return Language.HEBREW
-
-
-def get_current_language() -> Language:
-    return Database().get_language() or get_default_language()
+_TRANSLATION_METHOD = english

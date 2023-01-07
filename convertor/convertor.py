@@ -8,18 +8,10 @@ from data.academic_activity import AcademicActivity
 from data.output_format import OutputFormat
 from data.schedule import Schedule
 from data.type import Type
-from data.language import Language
-from data import translation
 from data.translation import _
 
 
 class Convertor:
-
-    def __init__(self):
-        self.language = translation.get_current_language()
-
-    def set_language(self, language: Language):
-        self.language = language
 
     def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: str):
         headers = [
