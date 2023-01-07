@@ -41,7 +41,7 @@ class TestData:
 
     def test_course(self):
         course = Course("", 0, 0, "0.0.1", None)
-        course2 = Course("", 1, 2, "0.0.1", None)
+        course2 = Course("", 1, 2, "0.0.1", None, semesters=Semester.SPRING)
         assert course == course2
 
         course.set_attendance_required(Type.LAB, True)
@@ -53,6 +53,10 @@ class TestData:
         assert repr(course) == "name"
         assert repr(Semester.SUMMER) == "Summer"
         assert repr(Day.MONDAY) == "Monday"
+
+        course.add_semesters({Semester.SUMMER})
+        course.add_semesters(Semester.ANNUAL)
+        assert course.semesters == {Semester.SUMMER, Semester.ANNUAL}
 
     def test_activity(self):
         activity = Activity("", Type.LAB, False)
