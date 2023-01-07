@@ -1,6 +1,9 @@
+from copy import copy
+
 import pytest
 
 import utils
+from collector.gui.gui import MessageType
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.case_insensitive_dict import CaseInsensitiveDict
@@ -130,6 +133,9 @@ class TestData:
         assert schedule.get_standby_in_minutes() == standby_time_in_minutes
         assert repr(schedule) == "name"
 
+        copied_schedule = copy(schedule)
+        assert copied_schedule == schedule
+
     def test_sort_meeting(self):
         meeting = Meeting(Day.MONDAY, "09:00", "11:00")
         meeting2 = Meeting(Day.MONDAY, "18:00", "20:00")
@@ -159,6 +165,11 @@ class TestData:
         assert repr(Language.ENGLISH) == "english"
         assert Language.contains("EnglISh")
         assert not Language.contains("France")
+
+        assert Language.from_str("engLISH") is Language.ENGLISH
+        assert Language.from_str("1") is Language.ENGLISH
+        with pytest.raises(ValueError):
+            Language.from_str("France")
 
     def test_case_insensitive_dict(self):
         case_insensitive_dict = CaseInsensitiveDict()
@@ -194,3 +205,8 @@ class TestData:
         assert utils.get_logging()
         assert utils.get_custom_software_name() == "semester_organizer_lev"
         assert utils.get_course_data_test().parent_course_number == 318
+
+    def test_others(self):
+        message = MessageType.ERROR
+        assert repr(message) == "Error"
+        assert str(message) == _("Error")
