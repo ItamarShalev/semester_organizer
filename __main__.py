@@ -17,6 +17,7 @@ def get_args():
     parser.add_argument("-p", "--password", help="The password user in the server", default=None, type=str)
     parser.add_argument("-l", "--language", help="Set the language of the program", choices=list(Language),
                         type=Language.from_str, default=Language.get_default())
+    parser.add_argument("--update", help="Update the data from the server", default=None, action="store_true")
     return parser.parse_args()
 
 
@@ -25,9 +26,11 @@ if __name__ == '__main__':
     utils.config_logging_level(logging.INFO)
     args = get_args()
     translation.config_language_text(args.language)
-    if args.console:
-        if args.username and args.password:
-            Database().save_hard_coded_user_data(User(args.username, args.password))
+    if args.username and args.password:
+        Database().save_hard_coded_user_data(User(args.username, args.password))
+    if args.update:
+        Controller().run_update_levnet_data_flow()
+    elif args.console:
         Controller().run_console_flow()
     else:
         Controller().run_main_gui_flow()
