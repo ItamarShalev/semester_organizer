@@ -13,6 +13,7 @@ from data.user import User
 from data.type import Type
 from data.day import Day
 from data.meeting import Meeting
+from data.translation import _
 
 
 class Database:
@@ -239,11 +240,11 @@ class Database:
 
     def get_common_campuses_names(self) -> List[str]:
         campus_names = []
-        campus_names.append("מכון לב")
-        campus_names.append("מכון טל")
-        campus_names.append("מכון לוסטיג")
-        campus_names.append("""מח"ר-טל תבונה""")
-        campus_names.append("""מבח"ר בנים""")
+        campus_names.append(_("Machon Lev"))
+        campus_names.append(_("Machon Tal"))
+        campus_names.append(_("Machon Lustig"))
+        campus_names.append(_("Mahar-Tal"))
+        campus_names.append(_("Mavchar- Men"))
         return campus_names
 
     def save_years(self, years: Dict[int, str]):

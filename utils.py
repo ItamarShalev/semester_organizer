@@ -6,6 +6,7 @@ import urllib3
 
 from data.course import Course
 from data.semester import Semester
+from data.translation import _
 
 ENCODING = "utf-8"
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -67,8 +68,8 @@ def get_custom_software_name():
 
 
 def get_campus_name_test():
-    return "מכון לב"
+    return _("Machon Lev")
 
 
 def get_course_data_test():
-    return Course("חשבון אינפני' להנדסה 1", 120131, 318)
+    return Course(_("Infinitesimal Calculus 1"), 120131, 318)
