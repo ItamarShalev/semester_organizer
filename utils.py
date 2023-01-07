@@ -1,6 +1,8 @@
 import logging
 import os
 import sys
+from contextlib import suppress
+
 from data.course import Course
 from data.semester import Semester
 
@@ -22,6 +24,9 @@ def disable_logger_third_party_warnings():
 def init_project():
     if sys.version_info < (3, 7):
         raise Exception("To run this program you should have Python 3.7 or a more recent version.")
+    with suppress(AttributeError):
+        if os.name == "nt":
+            sys.stdout.reconfigure(encoding="utf-8")
     disable_logger_third_party_warnings()
 
 
