@@ -23,16 +23,13 @@ HebrewName = str
 
 
 class Database:
+
     USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
 
     YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "years_data.txt")
     VERSIONS_PATH = os.path.join(utils.get_database_path(), "versions.txt")
     SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.txt")
-    CAMPUS_NAMES_FILE_PATH = os.path.join(utils.get_database_path(), "campus_names.txt")
-    COURSES_DATA_FILE_PATH = os.path.join(utils.get_database_path(), "courses_data.txt")
-    ACTIVITIES_DATA_DATABASE_PATH = os.path.join(utils.get_database_path(), "activities_data.db")
     DATABASE_PATH = os.path.join(utils.get_database_path(), "database.db")
-    DEFAULT_DAYS_TO_CLEAR = 1
 
     def __init__(self):
         self.logger = utils.get_logging()
@@ -374,30 +371,6 @@ class Database:
         settings.language = language
         self.save_settings(settings)
 
-    def save_academic_activities_data(self, campus_name: str, academic_activities: List[AcademicActivity]):
-        raise AttributeError("This function is deprecated.")
-
-    def save_campus_names(self, names: List[str]):
-        raise AttributeError("This function is deprecated.")
-
-    def load_courses_data(self) -> List[Course]:
-        raise AttributeError("This function is deprecated.")
-
-    def clear_courses_data(self):
-        raise AttributeError("This function is deprecated.")
-
-    def clear_academic_activities_data(self, campus_name: Optional[str] = None):
-        raise AttributeError("This function is deprecated.")
-
-    def clear_campus_names(self):
-        raise AttributeError("This function is deprecated.")
-
-    def check_if_courses_data_exists(self, campus_name: str, courses: List[Course]) -> bool:
-        raise AttributeError("This function is deprecated.")
-
-    def load_academic_activities_data(self, campus_name: str, courses: List[Course]) -> List[AcademicActivity]:
-        raise AttributeError("This function is deprecated.")
-
     def load_user_data(self) -> Optional[User]:
         """
         This function is used to load the user data from the hard coded file.
@@ -437,9 +410,6 @@ class Database:
     def clear_settings(self):
         if os.path.exists(Database.SETTINGS_FILE_PATH):
             os.remove(Database.SETTINGS_FILE_PATH)
-
-    def clear_data_old_than(self, days: int = DEFAULT_DAYS_TO_CLEAR):
-        raise AttributeError("This function is deprecated.")
 
     def get_common_campuses_names(self) -> List[str]:
         campus_names = []

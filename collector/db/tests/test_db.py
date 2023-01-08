@@ -21,19 +21,17 @@ class TestDatabase:
 
     @fixture
     def database(self):
+        Database.USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "test_user_data.txt")
         Database.YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "test_years_data.txt")
         Database.VERSIONS_PATH = os.path.join(utils.get_database_path(), "test_versions.txt")
         Database.SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "test_settings_data.txt")
-        Database.CAMPUS_NAMES_FILE_PATH = os.path.join(utils.get_database_path(), "test_campus_names.txt")
-        Database.COURSES_DATA_FILE_PATH = os.path.join(utils.get_database_path(), "test_courses_data.txt")
-        Database.ACTIVITIES_DATA_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_activities_data.db")
         Database.DATABASE_PATH = os.path.join(utils.get_database_path(), "test_database.db")
 
         with suppress(Exception):
             os.remove(Database.DATABASE_PATH)
 
         with suppress(Exception):
-            os.remove(Database.ACTIVITIES_DATA_DATABASE_PATH)
+            os.remove(Database.USER_NAME_FILE_PATH)
 
         database = Database()
         database.clear_all_data()

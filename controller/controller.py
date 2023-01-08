@@ -47,21 +47,6 @@ class Controller:
                                                         available_teachers_for_practice=list(exercises))
         return courses_choices
 
-    def _get_academic_activities_data(self, campus_name, courses):
-        activities = []
-
-        if self.database.check_if_courses_data_exists(campus_name, courses):
-            activities = self.database.load_academic_activities_data(campus_name, courses)
-        else:
-            activities, names_missing_activities = self.network.extract_academic_activities_data(campus_name, courses)
-
-            if names_missing_activities:
-                message = "The following courses don't have activities: " + ", ".join(names_missing_activities)
-                self.gui.open_notification_window(message)
-
-            self.database.save_academic_activities_data(campus_name, activities)
-        return activities
-
     def _initial_language_if_first_time(self):
         settings = self.database.load_settings()
         if not settings:
