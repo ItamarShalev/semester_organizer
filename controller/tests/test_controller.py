@@ -2,10 +2,13 @@ import os.path
 from typing import List, Dict, Tuple
 
 from unittest.mock import MagicMock
+
 import pytest
+from pytest import fixture
 
 import utils
 from collector.gui.gui import MessageType
+from collector.db.db import Database
 from controller.controller import Controller
 from convertor.convertor import Convertor
 from data.course_choice import CourseChoice
@@ -15,8 +18,6 @@ from data import translation
 from data.user import User
 
 
-@pytest.mark.network()
-@pytest.mark.network_http()
 class TestController:
 
     @staticmethod
@@ -24,7 +25,6 @@ class TestController:
         files = dirs = 0
 
         for _unused, dirs_name, files_names in os.walk(directory):
-            # ^ this idiom means "we won't be using this value"
             files += len(files_names)
             dirs += len(dirs_name)
         return files, dirs
@@ -61,8 +61,9 @@ class TestController:
         gui_mock.open_settings_window = MagicMock(side_effect=TestController._open_settings_window_mock)
         return gui_mock
 
-    def test_run_main_gui_flow(self):
-        translation.config_language_text(Language.HEBREW)
+    @fixture
+    def controller(self):
+        # pylint: disable=protected-access
         gui_mock = TestController._get_gui_mock()
         controller = Controller()
         convertor = Convertor()
@@ -70,12 +71,20 @@ class TestController:
         convertor_mock.convert_activities = MagicMock(side_effect=convertor.convert_activities)
         controller.gui = gui_mock
         controller.convertor = convertor_mock
+        controller._open_results_folder = MagicMock()
+        return controller
+
+    @pytest.mark.parametrize("language", list(Language))
+    def test_run_main_gui_flow(self, controller, language: Language):
+        translation.config_language_text(language)
+        Database().save_language(language)
         controller.run_main_gui_flow()
         controller.convertor.convert_activities.assert_called()
 
-    def test_flow_console(self):
-        translation.config_language_text(Language.ENGLISH)
-        controller = Controller()
+    @pytest.mark.parametrize("language", list(Language))
+    def test_flow_console(self, controller, language: Language):
+        translation.config_language_text(language)
+        Database().save_language(language)
         controller.run_console_flow(1, "2, 8, 11, 14, 15, 35", 1, 2, 3, 1, 1, 1)
         results = utils.get_results_path()
         # Check that the results file was created.
