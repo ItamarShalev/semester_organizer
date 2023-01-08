@@ -82,12 +82,6 @@ class Database:
                            "FOREIGN KEY(meeting_id) REFERENCES meetings(id), "
                            "PRIMARY KEY(activity_id, meeting_id, campus_id, language_value));")
 
-            cursor.execute("CREATE TABLE IF NOT EXISTS active_courses "
-                           "(course_number INTEGER, parent_course_number INTEGER, campus_id INTEGER, "
-                           "language_value CHARACTER(2), "
-                           "PRIMARY KEY(course_number, parent_course_number), "
-                           "FOREIGN KEY(campus_id) REFERENCES campuses(id));")
-
             cursor.execute("CREATE TABLE IF NOT EXISTS lecturers "
                            "(name TEXT PRIMARY KEY);")
 
@@ -138,17 +132,6 @@ class Database:
                     cursor.execute("INSERT OR IGNORE INTO meetings VALUES (?, ?, ?, ?);", (*meeting, ))
                     cursor.execute("INSERT OR IGNORE INTO personal_activities_meetings VALUES (?, ?);",
                                    (activity.activity_id, meeting.meeting_id))
-            connection.commit()
-            cursor.close()
-
-    def save_active_courses(self, courses: List[Course], campus_name: str, language: Language):
-        with database.connect(Database.DATABASE_PATH) as connection:
-            cursor = connection.cursor()
-            campus_id = self.load_campus_id(campus_name)
-            for course in courses:
-                cursor.execute("INSERT OR IGNORE INTO active_courses VALUES (?, ?, ?, ?);",
-                               (course.course_number, course.parent_course_number,
-                                campus_id, language.value))
             connection.commit()
             cursor.close()
 
@@ -231,13 +214,13 @@ class Database:
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
-            cursor.execute("SELECT name ,active_courses.course_number, active_courses.parent_course_number "
-                           "FROM active_courses "
-                           "JOIN courses "
-                           "ON active_courses.parent_course_number = courses.parent_course_number AND "
-                           "active_courses.language_value = courses.language_value AND "
-                           "active_courses.course_number = courses.course_number "
-                           "WHERE campus_id = ? AND active_courses.language_value = ?;", (campus_id, language.value))
+            cursor.execute("SELECT DISTINCT courses.* FROM courses "
+                           "INNER JOIN activities "
+                           "ON courses.parent_course_number = activities.parent_course_number "
+                           "AND courses.course_number = activities.course_number AND "
+                           "courses.language_value = activities.language_value "
+                           "WHERE activities.campus_id = ? AND courses.language_value = ?;",
+                           (campus_id, language.value))
             courses = [Course(*data_line) for data_line in cursor.fetchall()]
             cursor.close()
             return courses
@@ -490,7 +473,6 @@ class Database:
             cursor.execute("DROP TABLE IF EXISTS lecturers;")
             cursor.execute("DROP TABLE IF EXISTS courses_lecturers;")
             cursor.execute("DROP TABLE IF EXISTS semesters_courses;")
-            cursor.execute("DROP TABLE IF EXISTS active_courses;")
             cursor.execute("DROP TABLE IF EXISTS courses;")
             cursor.execute("DROP TABLE IF EXISTS semesters;")
 

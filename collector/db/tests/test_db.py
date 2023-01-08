@@ -90,22 +90,11 @@ class TestDatabase:
         loaded = database.load_academic_activities(campus_name, Language.ENGLISH, [Course("name", 12, 232)])
         assert loaded == [academic_activity]
 
-    def test_load_active_courses(self, database, campuses):
-        campus_name = "A"
-        active_courses = [Course(f"course {i}", i, i + 1000) for i in range(10)]
-        non_active_courses = [Course(f"course {i}", i, i + 1000) for i in range(20, 30)]
-        all_courses = active_courses + non_active_courses
-        database.save_courses(all_courses, Language.ENGLISH)
-        database.save_active_courses(active_courses, campus_name, Language.ENGLISH)
-
-        assert set(active_courses) == set(database.load_active_courses(campus_name, Language.ENGLISH))
-
     def test_course_choices(self, database, campuses):
         campus_name = "A"
         courses = [Course(f"Course {i}", i, i + 1000) for i in range(10)]
         database.save_courses(courses, Language.ENGLISH)
-        database.save_active_courses(courses, campus_name, Language.ENGLISH)
-        activities = [AcademicActivity(f"Course {i}", Type.LECTURE, True, "meir", i, i + 1000, "", "12.23", "", 0, 1, 0)
+        activities = [AcademicActivity(f"Course {i}", Type.LECTURE, True, "meir", i, i + 1000, "", f"3{i}", "", 0, 1, 0)
                       for i in range(10)]
         database.save_academic_activities(activities, campus_name, Language.ENGLISH)
         loaded_courses_choices = database.load_courses_choices(campus_name, Language.ENGLISH)
@@ -117,7 +106,6 @@ class TestDatabase:
         language = Language.ENGLISH
         courses = [Course(f"Cor {i}", i, i + 10) for i in range(10)]
         database.save_courses(courses, language)
-        database.save_active_courses(courses, campus_name, language)
 
         def create_activity(i):
             return AcademicActivity(f"Cor {i}", Type.LECTURE, True, f"meir{i}", i, i + 10, "", f"12.23{i}", "", 0, 1, 0)

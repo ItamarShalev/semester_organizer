@@ -378,9 +378,6 @@ class Controller:
                 else:
                     self.logger.debug("The academic activities data were extracted with errors")
                     self.logger.debug("The missing courses are: %s", ', '.join(missings))
-                actitve_courses = [course for course in courses if course.name not in missings]
-
-                self.database.save_active_courses(actitve_courses, campus_name, language)
 
                 self.database.save_academic_activities(activities, campus_name, language)
         end = timer()
