@@ -41,7 +41,7 @@ class TestController:
 
     @staticmethod
     def _get_gui_mock():
-        user = Database().load_hard_coded_user_data()
+        user = Database().load_user_data()
         assert user, "Don't have user data to check."
         gui_mock = MagicMock()
         gui_mock.open_login_window = MagicMock(return_value=user)
@@ -66,7 +66,7 @@ class TestController:
     def test_flow_without_gui_without_database(self):
         csp = CSP()
         campus_name = utils.get_campus_name_test()
-        user = Database().load_hard_coded_user_data()
+        user = Database().load_user_data()
         network = NetworkHttp(user)
         assert user, "Don't have user data to check."
 
@@ -96,7 +96,7 @@ class TestController:
         csp = CSP()
         database = Database()
         campus_name = "מכון לב"
-        user = database.load_hard_coded_user_data()
+        user = database.load_user_data()
         network = NetworkHttp(user)
         assert user, "Don't have user data to check."
 

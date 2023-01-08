@@ -144,7 +144,7 @@ class Controller:
         """
         # pylint: disable=too-many-branches
         self.logger.info("Starting console flow")
-        self.network.set_user(self.database.load_hard_coded_user_data())
+        self.network.set_user(self.database.load_user_data())
         print(_("Select the campus by enter their index:"))
         available_campuses = self.database.get_common_campuses_names()
         for index, name in enumerate(available_campuses, 1):
@@ -312,7 +312,7 @@ class Controller:
         self.network = NetworkHttp()
 
         self.logger.debug("Start updating the levnet data")
-        user = self.database.load_hard_coded_user_data()
+        user = self.database.load_user_data()
         assert user, "There is no user data, can't access the levnet website."
         self.logger.debug("User data was loaded successfully")
 

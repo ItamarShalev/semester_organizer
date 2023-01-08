@@ -118,16 +118,16 @@ class TestDatabase:
         assert not database.load_settings()
         assert not database.load_campus_names(Language.ENGLISH)
 
-    def test_load_hard_coded_user_data(self, database):
+    def test_user_data(self, database):
         user = User("username", "password")
 
-        database.save_hard_coded_user_data(user)
+        database.save_user_data(user)
 
-        loaded_user = database.load_hard_coded_user_data()
+        loaded_user = database.load_user_data()
         assert user == loaded_user
 
         os.remove(Database.USER_NAME_FILE_PATH)
-        assert database.load_hard_coded_user_data() is None
+        assert database.load_user_data() is None
 
     def test_settings(self, database):
         database.clear_settings()

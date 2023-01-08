@@ -27,7 +27,7 @@ if __name__ == '__main__':
     args = get_args()
     translation.config_language_text(args.language)
     if args.username and args.password:
-        Database().save_hard_coded_user_data(User(args.username, args.password))
+        Database().save_user_data(User(args.username, args.password))
     if args.update:
         Controller().run_update_levnet_data_flow()
     elif args.console:

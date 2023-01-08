@@ -374,12 +374,10 @@ class Database:
     def load_academic_activities_data(self, campus_name: str, courses: List[Course]) -> List[AcademicActivity]:
         raise AttributeError("This function is deprecated.")
 
-    def load_hard_coded_user_data(self) -> Optional[User]:
+    def load_user_data(self) -> Optional[User]:
         """
         This function is used to load the user data from the hard coded file.
-        The user data is for testing purposes only.
-        The user data will not save in the database.
-        It will read from username_data.txt file that locate in the above.
+        It will read from USER_NAME_FILE_PATH file that locate in the above.
         The format of the file is:
         username
         password
@@ -443,7 +441,7 @@ class Database:
         if os.path.exists(Database.YEARS_FILE_PATH):
             os.remove(Database.YEARS_FILE_PATH)
 
-    def save_hard_coded_user_data(self, user_data: User):
+    def save_user_data(self, user_data: User):
         if user_data:
             with open(Database.USER_NAME_FILE_PATH, "w", encoding=utils.ENCODING) as file:
                 file.write(f"{user_data.username}\n{user_data.password}")

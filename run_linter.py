@@ -70,10 +70,10 @@ def get_user_data(argument_args):
     # it will import everything only after installing the requirements
     from collector.db.db import Database
     if not args.username or not args.password:
-        user_data = Database().load_hard_coded_user_data()
+        user_data = Database().load_user_data()
     else:
         user_data = User(argument_args.username, argument_args.password)
-        Database().save_hard_coded_user_data(user_data)
+        Database().save_user_data(user_data)
     return user_data
 
 
