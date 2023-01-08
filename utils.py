@@ -44,7 +44,7 @@ def get_database_path():
 
 
 def get_results_path():
-    return os.path.join(ROOT_PATH, "results")
+    return os.path.abspath(os.path.join(os.path.expanduser("~"), "semester_organizer_results"))
 
 
 def get_current_semester():
