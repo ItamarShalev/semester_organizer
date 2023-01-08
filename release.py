@@ -6,7 +6,7 @@ import subprocess
 from enum import Enum
 from typing import Optional
 
-import run_linter
+import customtkinter
 import utils
 from collector.db.db import Database
 
@@ -25,7 +25,6 @@ def get_args():
     parser.add_argument("-b", "--build", help="Create executable file", default=False, action="store_true")
     parser.add_argument("-t", "--title", help="Print the title of this build", default=False, action="store_true")
     parser.add_argument("-p", "--path", help="Print the executable path result", default=False, action="store_true")
-    parser.add_argument("-i", "--install", help="Install all the needed packages", default=False, action="store_true")
     arguments = parser.parse_args()
     return arguments
 
@@ -45,8 +44,6 @@ def get_os_type() -> Optional[OS]:
 
 
 def build(os_build_type: OS):
-    # pylint: disable=import-outside-toplevel
-    import customtkinter
 
     customtkinter_path = os.path.abspath(os.path.dirname(customtkinter.__file__))
     database_file_path = os.path.join(utils.get_database_path(), Database.DATABASE_PATH)
@@ -74,15 +71,10 @@ if __name__ == "__main__":
     os_type = get_os_type()
     args = get_args()
     args_count = sum([args.build, args.title, args.path])
-    ERROR_MESSAGE = "Need exactly one argument from the following: build, title, path unless you just want to install."
+    ERROR_MESSAGE = "Need exactly one argument from the following: build, title, path."
 
-    assert args_count == 1 or (args_count == 0 and args.install), ERROR_MESSAGE
+    assert args_count == 1, ERROR_MESSAGE
     assert os_type, f"{os.name} OS is not supported."
-
-    if args.install:
-        run_linter.update_pip()
-        run_linter.pip_install("customtkinter>=5.0.2")
-        run_linter.pip_install("pyinstaller>=5.7.0")
 
     if args.title:
         print(f"Executable File for {os_type} OS")
