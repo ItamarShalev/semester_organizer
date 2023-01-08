@@ -29,6 +29,7 @@ if __name__ == '__main__':
     if args.username and args.password:
         Database().save_user_data(User(args.username, args.password))
     if args.update:
+        utils.config_logging_level(logging.DEBUG)
         Controller().run_update_levnet_data_flow()
     elif args.console:
         Controller().run_console_flow()

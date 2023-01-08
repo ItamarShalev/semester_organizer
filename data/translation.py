@@ -93,6 +93,7 @@ data = CaseInsensitiveDict({
     "Infinitesimal Calculus 1": "חשבון אינפני' להנדסה 1",
     "day (.+?)[ :]": "יום (.+?):",
     "Done successfully !": "הפעולה הושלמה בהצלחה !",
+    "No schedules were found": "לא נמצאו מערכות שעות אפשריות",
 })
 
 

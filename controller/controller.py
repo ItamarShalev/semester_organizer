@@ -6,6 +6,8 @@ from collections import defaultdict
 from copy import copy
 from operator import itemgetter
 from typing import List, Dict
+from timeit import default_timer as timer
+from datetime import timedelta
 
 import utils
 from collector.db.db import Database
@@ -136,32 +138,41 @@ class Controller:
     def _open_results_folder(self, results_path: str):
         subprocess.call(f"explorer {results_path}", shell=True)
 
-    def run_console_flow(self):
+    def _get_next(self, iterator):
+        try:
+            return next(iterator)
+        except StopIteration:
+            return None
+
+    def run_console_flow(self, *test_input):
         """
         Run the console flow of the program, only for academic activities.
         Console flow will use the default settings.
         and without database nor GUI.
         """
         # pylint: disable=too-many-branches
+        self.network = None
+        # For testing purposes
+        test_input = iter([str(item) for item in test_input])
         self.logger.info("Starting console flow")
-        self.network.set_user(self.database.load_user_data())
+        language = Language.get_current()
         print(_("Select the campus by enter their index:"))
         available_campuses = self.database.get_common_campuses_names()
         for index, name in enumerate(available_campuses, 1):
             print(f"{index}. {name}")
-        campus_index = int(input(_("Enter the campus index: ")))
-        campus_name = available_campuses[campus_index - 1]
+        campus_index = self._get_next(test_input) or input(_("Enter the campus index: "))
+        campus_name = available_campuses[int(campus_index) - 1]
         print(_("Loading academic activities it may take few seconds..."))
-        courses = self.network.extract_all_courses(campus_name)
-        all_activities, _unused_missings = self.network.extract_academic_activities_data(campus_name, courses)
-        courses_choices = self._get_courses_choices(all_activities)
+        courses_choices = self.database.load_courses_choices(campus_name, language)
+        courses_choices = dict(sorted(courses_choices.items(), key=itemgetter(0)))
 
         print(_("Select the courses by enter their index:"))
-        time.sleep(3)
+        time.sleep(2)
         for index, course_name in enumerate(courses_choices.keys(), 1):
             print(f"{index}. {course_name}")
-        courses_indexes = input(_("Enter the courses indexes separated by comma (example: 1,2,20): "))
-        courses_indexes = [int(index) for index in courses_indexes.split(",")]
+        input_help = _("Enter the courses indexes separated by comma (example: 1,2,20): ")
+        courses_indexes = self._get_next(test_input) or input(input_help)
+        courses_indexes = [int(index) for index in courses_indexes.strip().split(",")]
         selected_courses_choices = {}
         for index, (course_name, course_choice) in enumerate(courses_choices.items(), 1):
             if index in courses_indexes:
@@ -171,40 +182,45 @@ class Controller:
         print(_("Do you want to select favorite lecturers?"))
         for index, option in enumerate(options, 1):
             print(f"{index}. {option}")
-        favorite_lecturers_option = int(input(_("Enter the option index: ")))
-        yes_no_option = options[favorite_lecturers_option - 1]
+        favorite_lecturers_option = self._get_next(test_input) or input(_("Enter the option index: "))
+        yes_no_option = options[int(favorite_lecturers_option) - 1]
         if yes_no_option == _("Yes"):
             for course_name, (course_name, course_choice) in enumerate(selected_courses_choices.items(), 1):
                 lectures_lists = [course_choice.available_teachers_for_lecture,
                                   course_choice.available_teachers_for_practice]
                 selected_teachers_lists = []
+                lectures_lists = [sorted(lectures_list) for lectures_list in lectures_lists]
                 for lecture_type, lectures_list in zip(["lecture", "lab / exercise"], lectures_lists):
-                    if not lectures_list:
-                        selected_teachers_lists.append([])
+                    if len(lectures_list) <= 1:
+                        selected_teachers_lists.append(lectures_list)
                         continue
                     print(_(f"Select the favorite teachers for {lecture_type} for the course: ") + f"'{course_name}'")
                     for index, teacher in enumerate(lectures_list, 1):
                         print(f"{index}. {teacher}")
-                    teachers_indexes = input(
-                        _("Enter the teachers indexes separated by comma (example: 1,2,20) or 0 to select all: "))
-                    teachers_indexes = [int(index) for index in teachers_indexes.split(",")]
+                    input_help = \
+                        _("Enter the teachers indexes separated by comma (example: 1,2,20) or 0 to select all: ")
+
+                    teachers_indexes = self._get_next(test_input) or input(input_help)
+                    teachers_indexes = [int(index) for index in teachers_indexes.strip().split(",")]
                     selected_teachers = []
                     if 0 in teachers_indexes:
                         selected_teachers = lectures_list
                         teachers_indexes = []
-                    for index, teacher in enumerate(lectures_lists, 1):
+                    for index, teacher in enumerate(lectures_list, 1):
                         if index in teachers_indexes:
                             selected_teachers.append(teacher)
                     selected_teachers_lists.append(selected_teachers)
-                course_choice.favorite_teachers_for_lecture = selected_teachers_lists[0]
-                course_choice.favorite_teachers_for_lab = selected_teachers_lists[1]
+                course_choice.available_teachers_for_lecture = selected_teachers_lists[0]
+                course_choice.available_teachers_for_practice = selected_teachers_lists[1]
+                selected_courses_choices[course_name] = course_choice
 
         print(_("Generating schedules..."))
 
-        selected_activities = list(filter(lambda activity: activity.name in selected_courses_choices, all_activities))
+        selected_activities = self.database.load_activities_by_courses_choices(selected_courses_choices,
+                                                                               campus_name, language)
 
         settings = Settings()
-        settings.language = Language.get_current()
+        settings.language = language
 
         schedules = self.csp.extract_schedules(selected_activities, selected_courses_choices, settings)
 
@@ -309,6 +325,7 @@ class Controller:
             self.gui.open_notification_window(_(message), MessageType.ERROR)
 
     def run_update_levnet_data_flow(self):
+        start = timer()
         self.network = NetworkHttp()
 
         self.logger.debug("Start updating the levnet data")
@@ -332,12 +349,11 @@ class Controller:
         self.network.change_language(Language.HEBREW)
         hebrew_campuses = self.network.extract_campuses()
         self.logger.debug("The hebrew campus were extracted successfully")
-        self.logger.debug("The hebrew campus are: %s", ", ".join(english_campuses.values()))
+        self.logger.debug("The hebrew campus are: %s", ", ".join(hebrew_campuses.values()))
 
         campuses = {key: (english_campuses[key], hebrew_campuses[key]) for key in english_campuses.keys()}
 
         self.database.save_campuses(campuses)
-        campuses = self.database.load_campus_names()
 
         for language in list(Language):
             translation.config_language_text(language)
@@ -353,6 +369,8 @@ class Controller:
             common_campuses_names = self.database.get_common_campuses_names()
 
             for campus_name in common_campuses_names:
+
+                self.logger.debug("Extracting data for campus: %s in language %s", campus_name, language.name)
                 self.logger.debug("Start extracting the academic activities data for the campus: %s", campus_name)
                 activities, missings = self.network.extract_academic_activities_data(campus_name, courses)
                 if activities and not missings:
@@ -365,3 +383,5 @@ class Controller:
                 self.database.save_active_courses(actitve_courses, campus_name, language)
 
                 self.database.save_academic_activities(activities, campus_name, language)
+        end = timer()
+        print(f"The levnet data was updated successfully in {timedelta(seconds=end - start)} time")

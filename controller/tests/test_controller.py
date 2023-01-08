@@ -1,4 +1,5 @@
-from typing import List, Dict
+import os.path
+from typing import List, Dict, Tuple
 
 from unittest.mock import MagicMock
 import pytest
@@ -11,12 +12,24 @@ from controller.controller import Controller
 from convertor.convertor import Convertor
 from csp.csp import CSP
 from data.course_choice import CourseChoice
+from data.language import Language
 from data.settings import Settings
+from data import translation
 
 
 @pytest.mark.network()
 @pytest.mark.network_http()
 class TestController:
+
+    @staticmethod
+    def _get_count_files_and_directory(directory: str) -> Tuple[int, int]:
+        files = dirs = 0
+
+        for _unused, dirs_name, files_names in os.walk(directory):
+            # ^ this idiom means "we won't be using this value"
+            files += len(files_names)
+            dirs += len(dirs_name)
+        return files, dirs
 
     @staticmethod
     def _open_academic_activities_window_mock(ask_attendance_required: bool,
@@ -62,6 +75,17 @@ class TestController:
         controller.convertor = convertor_mock
         controller.run_main_gui_flow()
         controller.convertor.convert_activities.assert_called()
+
+    def test_flow_console(self):
+        translation.config_language_text(Language.ENGLISH)
+        controller = Controller()
+        controller.run_console_flow(1, "2, 8, 11, 14, 15, 35", 1, 2, 3, 1, 1, 1)
+        results = utils.get_results_path()
+        # Check that the results file was created.
+        # And contains only one file.
+        assert os.path.exists(results)
+        files_count, _dirs = TestController._get_count_files_and_directory(results)
+        assert files_count == 1
 
     def test_flow_without_gui_without_database(self):
         csp = CSP()
