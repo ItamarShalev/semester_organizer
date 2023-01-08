@@ -12,17 +12,18 @@ class AcademicActivity(Activity):
 
     def __init__(self, name: str = None, activity_type: Type = None, attendance_required: bool = None,
                  lecturer_name: str = None, course_number: int = None, parent_course_number: int = None,
-                 location: str = None, activity_id: str = None, description: str = None):
+                 location: str = None, activity_id: str = None, description: str = None, current_capacity: int = None,
+                 max_capacity: int = None, actual_course_number: int = None):
         super().__init__(name, activity_type, attendance_required)
         self.lecturer_name = lecturer_name
         self.course_number = course_number
         self.parent_course_number = parent_course_number
         self.location = location
         self.activity_id = activity_id
-        self.description = None
-        self.current_capacity = 0
-        self.max_capacity = AcademicActivity.UNLIMITED_CAPACITY
-        self.actual_course_number = AcademicActivity.DEFAULT_ACTUAL_COURSE_NUMBER
+        self.description = description or ""
+        self.current_capacity = current_capacity or 0
+        self.max_capacity = max_capacity or AcademicActivity.UNLIMITED_CAPACITY
+        self.actual_course_number = actual_course_number or AcademicActivity.DEFAULT_ACTUAL_COURSE_NUMBER
 
     def set_capacity(self, current_capacity: int, max_capacity: int):
         """
