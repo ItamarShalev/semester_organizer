@@ -240,12 +240,17 @@ class Database:
                 practices = course_choice.available_teachers_for_practice
                 hold_place_lectures = ",".join(["?"] * len(course_choice.available_teachers_for_lecture))
                 hold_place_practices = ",".join(["?"] * len(course_choice.available_teachers_for_practice))
+                is_not_null = "lecturer_name IS NOT NULL"
+
+                text_hold_place_lectures = f"lecturer_name in ({hold_place_lectures})" if lectures else is_not_null
+
+                text_hold_place_practices = f"lecturer_name in ({hold_place_practices})" if practices else is_not_null
 
                 cursor.execute("SELECT * FROM activities "
                                "WHERE name = ? AND language_value = ? AND campus_id = ? AND "
-                               f"((activity_type in (?, ?) AND lecturer_name in ({hold_place_lectures})) "
+                               f"((activity_type in (?, ?) AND {text_hold_place_lectures}) "
                                "OR "
-                               f"(activity_type in (?, ?) AND lecturer_name in ({hold_place_practices})));",
+                               f"(activity_type in (?, ?) AND {text_hold_place_practices}));",
                                (course_name, language.value, campus_id,
                                 *lecture_types, *lectures,
                                 *practice_types, *practices))
