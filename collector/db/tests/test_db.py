@@ -1,11 +1,16 @@
 import os
+from contextlib import suppress
 
-import pytest
+from pytest import fixture
 
 import utils
 from collector.db.db import Database
 from data.academic_activity import AcademicActivity
+from data.activity import Activity
 from data.course import Course
+from data.course_choice import CourseChoice
+from data.language import Language
+from data.semester import Semester
 from data.settings import Settings
 from data.type import Type
 from data.user import User
@@ -16,11 +21,105 @@ from data.output_format import OutputFormat
 
 class TestDatabase:
 
+    @fixture
+    def database(self):
+        Database.YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "test_years_data.txt")
+        Database.VERSIONS_PATH = os.path.join(utils.get_database_path(), "test_versions.txt")
+        Database.SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "test_settings_data.txt")
+        Database.CAMPUS_NAMES_FILE_PATH = os.path.join(utils.get_database_path(), "test_campus_names.txt")
+        Database.COURSES_DATA_FILE_PATH = os.path.join(utils.get_database_path(), "test_courses_data.txt")
+        Database.ACTIVITIES_DATA_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_activities_data.db")
+        Database.DATABASE_PATH = os.path.join(utils.get_database_path(), "test_database.db")
+
+        with suppress(Exception):
+            os.remove(Database.DATABASE_PATH)
+
+        with suppress(Exception):
+            os.remove(Database.ACTIVITIES_DATA_DATABASE_PATH)
+
+        database = Database()
+        database.clear_all_data()
+        database.init_database_tables()
+        return database
+
+    @fixture
+    def campuses(self, database):
+        campuses = {
+            1: ("A", "א"),
+            2: ("B", "ב"),
+            3: ("C", "ג"),
+        }
+        database.save_campuses(campuses)
+        return campuses
+
+    def test_campuses(self, database):
+
+        campuses = {
+            1: ("A", "א"),
+            2: ("B", "ב"),
+            3: ("C", "ג"),
+        }
+        database.save_campuses(campuses)
+        assert database.load_campus_names(Language.HEBREW) == ["א", "ב", "ג"]
+        assert database.load_campus_names(Language.ENGLISH) == ["A", "B", "C"]
+
+    def test_semesters(self, database):
+        semesters = list(Semester)
+        database.save_semesters(semesters)
+
+        assert set(semesters) == set(database.load_semesters())
+
+    def test_courses(self, database):
+        hebrew_courses = [Course(f"קורס {i}", i, i + 1000, semesters=Semester.ANNUAL) for i in range(10)]
+        database.save_courses(hebrew_courses, Language.HEBREW)
+
+        english_courses = [Course(f"course {i}", i, i + 1000) for i in range(10)]
+        database.save_courses(english_courses, Language.ENGLISH)
+
+        assert set(hebrew_courses) == set(database.load_courses(Language.HEBREW))
+        assert set(english_courses) == set(database.load_courses(Language.ENGLISH))
+
+    def test_personal_activities(self, database):
+        activity = Activity("my activity")
+        database.save_personal_activities([activity])
+        loaded = database.load_personal_activities()
+        assert loaded == [activity]
+
+    def test_activities(self, database, campuses):
+        campus_name = "A"
+        academic_activity = AcademicActivity("name", Type.LECTURE, True, "meir", 12, 232, "", "12.23", "", 0, 100, 1213)
+        database.save_academic_activities([academic_activity], campus_name, Language.ENGLISH)
+        loaded = database.load_academic_activities(campus_name, Language.ENGLISH, [Course("name", 12, 232)])
+        assert loaded == [academic_activity]
+
+    def test_load_active_courses(self, database, campuses):
+        campus_name = "A"
+        active_courses = [Course(f"course {i}", i, i + 1000) for i in range(10)]
+        non_active_courses = [Course(f"course {i}", i, i + 1000) for i in range(20, 30)]
+        all_courses = active_courses + non_active_courses
+        database.save_courses(all_courses, Language.ENGLISH)
+        database.save_active_courses(active_courses, campus_name, Language.ENGLISH)
+
+        assert set(active_courses) == set(database.load_active_courses(campus_name, Language.ENGLISH))
+
+    def test_course_choices(self, database, campuses):
+        campus_name = "A"
+        courses = [Course(f"Course {i}", i, i + 1000) for i in range(10)]
+        database.save_courses(courses, Language.ENGLISH)
+        database.save_active_courses(courses, campus_name, Language.ENGLISH)
+        activities = [AcademicActivity(f"Course {i}", Type.LECTURE, True, "meir", i, i + 1000, "", "12.23", "", 0, 1, 0)
+                      for i in range(10)]
+        database.save_academic_activities(activities, campus_name, Language.ENGLISH)
+        loaded_courses_choices = database.load_courses_choices(campus_name, Language.ENGLISH)
+        excepted_courses_choices = [CourseChoice(f"Course {i}", ["meir"], []) for i in range(10)]
+        assert set(loaded_courses_choices.values()) == set(excepted_courses_choices)
+
     def test_all(self):
         database = Database()
         database.clear_all_data()
+        database.init_database_tables()
         assert not database.load_settings()
-        assert not database.load_campus_names()
+        assert not database.load_campus_names(Language.ENGLISH)
         assert not database.load_courses_data()
         assert not database.load_academic_activities_data(utils.get_campus_name_test(), [])
 
@@ -34,17 +133,6 @@ class TestDatabase:
 
         database.clear_courses_data()
         assert not database.load_courses_data()
-
-    def test_campus_names(self):
-        database = Database()
-        campus_names = [f"Course {i}" for i in range(10)]
-        database.clear_campus_names()
-        database.save_campus_names(campus_names)
-        loaded_campus_names = database.load_campus_names()
-        assert campus_names == loaded_campus_names
-
-        database.clear_campus_names()
-        assert not database.load_campus_names()
 
     def test_academic_activities(self):
         database = Database()
@@ -87,12 +175,11 @@ class TestDatabase:
         database.clear_data_old_than(0)
         assert not database.load_academic_activities_data(campus_name, courses)
 
-    @pytest.mark.skipif("Database().load_hard_coded_user_data()", reason="User data already defined.")
-    def test_load_hard_coded_user_data(self):
-        database = Database()
+    def test_load_hard_coded_user_data(self, database):
         user = User("username", "password")
-        with open(Database.USER_NAME_FILE_PATH, "w+", encoding=utils.ENCODING) as file:
-            file.write(f"{user.username}\n{user.password}")
+
+        database.save_hard_coded_user_data(user)
+
         loaded_user = database.load_hard_coded_user_data()
         assert user == loaded_user
 
