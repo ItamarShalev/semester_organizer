@@ -1,7 +1,6 @@
 import os
 import shutil
 import subprocess
-import time
 from collections import defaultdict
 from copy import copy
 from operator import itemgetter
@@ -139,12 +138,12 @@ class Controller:
             print(f"{index}. {name}")
         campus_index = self._get_next(test_input) or input(_("Enter the campus index: "))
         campus_name = available_campuses[int(campus_index) - 1]
-        print(_("Loading academic activities it may take few seconds..."))
+        print("\n\n")
+
         courses_choices = self.database.load_courses_choices(campus_name, language)
         courses_choices = dict(sorted(courses_choices.items(), key=itemgetter(0)))
 
         print(_("Select the courses by enter their index:"))
-        time.sleep(2)
         for index, course_name in enumerate(courses_choices.keys(), 1):
             print(f"{index}. {course_name}")
         input_help = _("Enter the courses indexes separated by comma (example: 1,2,20): ")
@@ -155,6 +154,7 @@ class Controller:
             if index in courses_indexes:
                 selected_courses_choices[course_name] = course_choice
 
+        print("\n\n")
         options = [_("Yes"), _("No")]
         print(_("Do you want to select favorite lecturers?"))
         for index, option in enumerate(options, 1):
@@ -171,6 +171,7 @@ class Controller:
                     if len(lectures_list) <= 1:
                         selected_teachers_lists.append(lectures_list)
                         continue
+                    print("\n\n")
                     print(_(f"Select the favorite teachers for {lecture_type} for the course: ") + f"'{course_name}'")
                     for index, teacher in enumerate(lectures_list, 1):
                         print(f"{index}. {teacher}")
@@ -191,6 +192,7 @@ class Controller:
                 course_choice.available_teachers_for_practice = selected_teachers_lists[1]
                 selected_courses_choices[course_name] = course_choice
 
+        print("\n\n")
         print(_("Generating schedules..."))
 
         selected_activities = self.database.load_activities_by_courses_choices(selected_courses_choices,
@@ -208,6 +210,7 @@ class Controller:
 
             results_path = utils.get_results_path()
             self._save_schedule(schedules, settings, results_path)
+            print(_("The schedules were saved in the directory: ") + results_path)
             self._open_results_folder(results_path)
 
     def run_main_gui_flow(self):
