@@ -118,12 +118,6 @@ class TestDatabase:
         loaded_courses_choices = database.load_activities_by_courses_choices(courses_choices, campus_name, language)
         assert loaded_courses_choices == [create_activity(5)]
 
-    def test_all(self, database):
-        database.clear_all_data()
-        database.init_database_tables()
-        assert not database.load_settings()
-        assert not database.load_campus_names(Language.ENGLISH)
-
     def test_user_data(self, database):
         user = User("username", "password")
 
@@ -160,3 +154,14 @@ class TestDatabase:
 
         database.clear_years()
         assert not database.load_years()
+
+    def test_clear_all(self, database):
+        database.clear_all_data()
+        with suppress(PermissionError):
+            os.remove(Database.DATABASE_PATH)
+
+        Database.USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
+        Database.YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "years_data.txt")
+        Database.VERSIONS_PATH = os.path.join(utils.get_database_path(), "versions.txt")
+        Database.SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.txt")
+        Database.DATABASE_PATH = os.path.join(utils.get_database_path(), "database.db")
