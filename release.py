@@ -8,6 +8,7 @@ from typing import Optional
 
 import run_linter
 import utils
+from collector.db.db import Database
 
 
 class OS(Enum):
@@ -48,6 +49,7 @@ def build(os_build_type: OS):
     import customtkinter
 
     customtkinter_path = os.path.abspath(os.path.dirname(customtkinter.__file__))
+    database_file_path = os.path.join(utils.get_database_path(), Database.DATABASE_PATH)
     main_path = os.path.abspath(os.path.join(utils.ROOT_PATH, "__main__.py"))
     separator = ';'
     if os_build_type in [OS.UBUNTU, OS.MAC]:
@@ -58,6 +60,7 @@ def build(os_build_type: OS):
     print(f"customtkinter package path: {customtkinter_path}")
 
     pyinstaller_cmd = f"pyinstaller --onefile --add-data {customtkinter_path}{separator}customtkinter " \
+                      f"--add-binary {database_file_path}{separator}database " \
                       f"--name SemesterOrganizer{os_build_type.value} __main__.py"
 
     print("Running pyinstaller command: ", pyinstaller_cmd)
