@@ -6,13 +6,10 @@ from collections import defaultdict
 from copy import copy
 from operator import itemgetter
 from typing import List, Dict
-from timeit import default_timer as timer
-from datetime import timedelta
 
 import utils
 from collector.db.db import Database
 from collector.gui.gui import Gui, MessageType, UserClickExitException
-from collector.network.network import NetworkHttp, WeakNetworkConnectionException
 from convertor.convertor import Convertor
 from csp.csp import CSP
 from data import translation
@@ -28,7 +25,6 @@ class Controller:
 
     def __init__(self):
         self.database = Database()
-        self.network = NetworkHttp()
         self.gui = Gui()
         self.convertor = Convertor()
         self.csp = CSP()
@@ -133,7 +129,6 @@ class Controller:
         and without database nor GUI.
         """
         # pylint: disable=too-many-branches
-        self.network = None
         # For testing purposes
         test_input = iter([str(item) for item in test_input])
         self.logger.info("Starting console flow")
@@ -290,71 +285,7 @@ class Controller:
         except UserClickExitException:
             self.logger.info("User clicked exit button")
 
-        except WeakNetworkConnectionException as error:
-            message = str(error)
-            self.logger.error(message)
-            self.gui.open_notification_window(_(message), MessageType.ERROR)
-
         except Exception as error:
             message = "The system encountered an error, please contanct the engeniers."
             self.logger.error("The system encountered an error: %s", str(error))
             self.gui.open_notification_window(_(message), MessageType.ERROR)
-
-    def run_update_levnet_data_flow(self):
-        start = timer()
-        self.network = NetworkHttp()
-
-        self.logger.debug("Start updating the levnet data")
-        user = self.database.load_user_data()
-        assert user, "There is no user data, can't access the levnet website."
-        self.logger.debug("User data was loaded successfully")
-
-        self.network.set_user(user)
-        assert self.network.check_connection(), "ERROR: Can't connect to the levnet website"
-        self.logger.debug("The username and password are valid")
-
-        self.database.clear_all_data()
-        self.database.init_database_tables()
-        self.logger.debug("The database was cleared successfully")
-
-        self.network.change_language(Language.ENGLISH)
-        english_campuses = self.network.extract_campuses()
-        self.logger.debug("The english campus were extracted successfully")
-        self.logger.debug("The english campus are: %s", ", ".join(english_campuses.values()))
-
-        self.network.change_language(Language.HEBREW)
-        hebrew_campuses = self.network.extract_campuses()
-        self.logger.debug("The hebrew campus were extracted successfully")
-        self.logger.debug("The hebrew campus are: %s", ", ".join(hebrew_campuses.values()))
-
-        campuses = {key: (english_campuses[key], hebrew_campuses[key]) for key in english_campuses.keys()}
-
-        self.database.save_campuses(campuses)
-
-        for language in list(Language):
-            translation.config_language_text(language)
-            self.network.change_language(language)
-            self.logger.debug("The language was changed to %s", language)
-
-            courses = self.network.extract_all_courses(utils.get_campus_name_test())
-            self.logger.debug("The courses were extracted successfully")
-            self.logger.debug("The courses are: %s", ", ".join([course.name for course in courses]))
-
-            self.database.save_courses(courses, language)
-
-            common_campuses_names = self.database.get_common_campuses_names()
-
-            for campus_name in common_campuses_names:
-
-                self.logger.debug("Extracting data for campus: %s in language %s", campus_name, language.name)
-                self.logger.debug("Start extracting the academic activities data for the campus: %s", campus_name)
-                activities, missings = self.network.extract_academic_activities_data(campus_name, courses)
-                if activities and not missings:
-                    self.logger.debug("The academic activities data were extracted successfully")
-                else:
-                    self.logger.debug("The academic activities data were extracted with errors")
-                    self.logger.debug("The missing courses are: %s", ', '.join(missings))
-
-                self.database.save_academic_activities(activities, campus_name, language)
-        end = timer()
-        print(f"The levnet data was updated successfully in {timedelta(seconds=end - start)} time")
