@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
+
+
 import argparse
 import logging
 import os
@@ -5,6 +9,8 @@ import shutil
 import subprocess
 import sys
 from contextlib import suppress
+
+import argcomplete
 
 import utils
 from data.user import User
@@ -48,6 +54,7 @@ def get_args():
     parser.add_argument("-n", "--network", help="Run network_http pytest mark", default=False, action="store_true")
     parser.add_argument("-a", "--all", help="Run all tests", default=False, action="store_true")
     parser.add_argument("-v", "--verbose", help="Print more debug logs", default=False, action="store_true")
+    argcomplete.autocomplete(parser)
     arguments = parser.parse_args()
     return arguments
 

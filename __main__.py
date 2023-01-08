@@ -1,6 +1,10 @@
+#!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
+
 import argparse
 import logging
 import pathlib
+import argcomplete
 
 import utils
 from collector.db.db import Database
@@ -21,6 +25,7 @@ def get_args():
     parser.add_argument("--update_database", default="", type=pathlib.Path,
                         help="Path to database file (.db) Update database by given .db file, "
                              "that can be downaloaded from the server (currently the gitub)")
+    argcomplete.autocomplete(parser)
     return parser.parse_args()
 
 

@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
+
+
 import argparse
 import logging
 import os
@@ -6,6 +10,7 @@ import subprocess
 from enum import Enum
 from typing import Optional
 
+import argcomplete
 import customtkinter
 import utils
 from collector.db.db import Database
@@ -25,6 +30,7 @@ def get_args():
     parser.add_argument("-b", "--build", help="Create executable file", default=False, action="store_true")
     parser.add_argument("-t", "--title", help="Print the title of this build", default=False, action="store_true")
     parser.add_argument("-p", "--path", help="Print the executable path result", default=False, action="store_true")
+    argcomplete.autocomplete(parser)
     arguments = parser.parse_args()
     return arguments
 

@@ -1,7 +1,13 @@
+#!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
+
+
 import argparse
 import logging
 from datetime import timedelta
 from timeit import default_timer as timer
+
+import argcomplete
 
 import utils
 from collector.db.db import Database
@@ -15,6 +21,7 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", "--username", help="The username user in the server", default=None, type=str)
     parser.add_argument("-p", "--password", help="The password user in the server", default=None, type=str)
+    argcomplete.autocomplete(parser)
     return parser.parse_args()
 
 
