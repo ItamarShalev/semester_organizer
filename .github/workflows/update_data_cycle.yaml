@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3.2.0
-    - name: Set up Python 3.10
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4.3.1
       with:
-        python-version: "3.10"
+        python-version: "3.11"
         cache: pip
     - name: Install dependencies
       run: |
@@ -21,6 +21,14 @@ jobs:
       run: |
         rm -rf log.txt
         touch log.txt
+    - name: Extract secrets
+      shell: bash
+      run: |
+        mkdir -p database
+        rm -rf database/user_data.txt
+        touch database/user_data.txt
+        echo ${{ secrets.USERNAME_LEVNET }} >> database/user_data.txt
+        echo ${{ secrets.PASSWORD_LEVNET }} >> database/user_data.txt
     - name: Run python update script flow
       run: |
         python update_levnet_data.py
