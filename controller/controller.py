@@ -71,10 +71,7 @@ class Controller:
             if language and Language.contains(language):
                 translation.config_language_text(Language[language.upper()])
                 if self.database.get_language() != language:
-                    self.database.clear_all_data()
                     self.database.save_language(language)
-                    self.gui.set_language(language)
-                    self.convertor.set_language(language)
 
     def _save_schedule(self, all_schedules: List[Schedule], settings: Settings, results_path: str):
         # Save the most spread days and least spread days
@@ -237,50 +234,44 @@ class Controller:
         try:
             self.logger.info("Start the main gui flow")
 
-            self._delete_data_if_new_version()
-
             # Initialize the language for first time.
             self._initial_language_if_first_time()
 
-            user = self.gui.open_login_window(self.network.check_connection)
-            self.network.set_user(user)
-
-            self.database.clear_data_old_than(days=1)
+            # user = self.gui.open_login_window(self.network.check_connection)
+            # self.network.set_user(user)
 
             settings = self.database.load_settings() or Settings()
 
-            campus_names = self.database.load_campus_names() or self.network.extract_campus_names()
-            self.database.save_campus_names(campus_names)
+            campus_names = self.database.load_campus_names(settings.language)
 
-            years = self.database.load_years() or self.network.extract_years()
-            self.database.save_years(years)
+            years = self.database.load_years()
 
             settings = self.gui.open_settings_window(settings, campus_names, years)
 
             language = self.database.get_language()
 
-            self.network.set_settings(settings)
-
-            if settings.force_update_data or (language and language != settings.language):
-                self.database.clear_all_data()
+            if (language and language != settings.language):
+                translation.config_language_text(settings.language)
 
             self.database.save_settings(settings)
+
+            language = settings.language
+
             campus_name = settings.campus_name
 
             ask_attendance = not settings.attendance_required_all_courses
 
             self.logger.info("Loading courses data...")
 
-            courses = self.database.load_courses_data() or self.network.extract_all_courses(campus_name)
+            courses = self.database.load_active_courses(campus_name, language)
 
             if not courses:
-                message = _("There are no courses in the system, please try again with another campus or year.")
+                message = _("There are no courses in the system, "
+                            "please try again with another campus update your database from the server.")
                 self.gui.open_notification_window(message, MessageType.ERROR)
                 return
 
-            all_academic_activities, _unused = self.network.extract_academic_activities_data(campus_name, courses)
-
-            courses_choices = self._get_courses_choices(all_academic_activities)
+            courses_choices = self.database.load_courses_choices(campus_name, language, courses)
 
             courses_choices = self.gui.open_academic_activities_window(ask_attendance, courses_choices)
 
@@ -294,7 +285,7 @@ class Controller:
                         course.attendance_required_for_exercise = course_choise.attendance_required_for_exercise
                     user_courses.append(course)
 
-            activities = list(filter(lambda activity: activity.name in courses_choices.keys(), all_academic_activities))
+            activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
 
             AcademicActivity.union_courses(activities, user_courses)
 

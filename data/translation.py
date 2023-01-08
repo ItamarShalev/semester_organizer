@@ -7,7 +7,7 @@ from data.language import Language
 
 data = CaseInsensitiveDict({
     "Test": "בדיקה",
-    "There are no courses in the system, please try again with another campus or year.": "אין קורסים במערכת, אנא נסה שנית עם קמפוס אחר או שנה אחרת.",
+    "There are no courses in the system, please try again with another campus update your database from the server.": "אין קורסים במערכת, אנא נסה שנית עם קמפוס אחר או נסה לעדכן את הבסיס נתונים מהשרת.",
     "No schedule possible were found": "לא נמצאה מערכת שעות אפשרית",
     "The schedules were saved in the directory: ": "המערכות שעות נשמרו בתיקייה : ",
     "ERROR: Can't click exit button without choose from the options.": "שגיאה: לא ניתן ללחוץ על כפתור יציאה ללא בחירה מהאפשרויות.",
@@ -94,6 +94,7 @@ data = CaseInsensitiveDict({
     "day (.+?)[ :]": "יום (.+?):",
     "Done successfully !": "הפעולה הושלמה בהצלחה !",
     "No schedules were found": "לא נמצאו מערכות שעות אפשריות",
+    "the system encountered an error, please contanct the engeniers.": "המערכת נתקלה בשגיאה, אנא צור קשר עם המפתחים.",
 })
 
 
