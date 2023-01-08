@@ -1,4 +1,5 @@
 from typing import Union
+from itertools import count
 from time import struct_time, strptime
 import time
 import functools
@@ -7,8 +8,10 @@ from data.day import Day
 
 @functools.total_ordering
 class Meeting:
+    _ids = count(0)
 
     def __init__(self, day: Day, start_time: Union[struct_time, str], end_time: Union[struct_time, str]):
+        self.meeting_id = next(Meeting._ids)
         self.day = day
         if isinstance(start_time, str):
             self.start_time = Meeting.str_to_time(start_time)
