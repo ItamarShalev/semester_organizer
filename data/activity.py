@@ -1,16 +1,28 @@
 from collections import defaultdict
 from typing import Dict, List
+from itertools import count
 
 from data.type import Type
 
 
 class Activity:
+    _ids = count(0)
 
     def __init__(self, name: str = None, activity_type: Type = None, attendance_required: bool = None):
+        self.activity_id = next(self._ids)
         self.name = name
-        self.type = activity_type
-        self.attendance_required = attendance_required
+        self.type = activity_type or Type.PERSONAL
+        self.attendance_required = attendance_required if attendance_required is not None else True
         self.meetings = []
+
+    @staticmethod
+    def create_personal_from_database(activity_id: int, name: str):
+        activity = Activity()
+        activity.activity_id = activity_id
+        activity.name = name
+        activity.type = Type.PERSONAL
+        activity.attendance_required = True
+        return activity
 
     def add_slot(self, meeting):
         if meeting.is_crash_with_meetings(self.meetings):
