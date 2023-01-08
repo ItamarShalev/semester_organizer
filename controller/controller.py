@@ -309,7 +309,6 @@ class Controller:
             self.gui.open_notification_window(_(message), MessageType.ERROR)
 
     def run_update_levnet_data_flow(self):
-        translation.config_language_text(Language.ENGLISH)
         self.network = NetworkHttp()
 
         self.logger.debug("Start updating the levnet data")
@@ -322,29 +321,47 @@ class Controller:
         self.logger.debug("The username and password are valid")
 
         self.database.clear_all_data()
+        self.database.init_database_tables()
         self.logger.debug("The database was cleared successfully")
 
-        campus_names = self.network.extract_campus_names()
-        self.logger.debug("The campus names were extracted successfully")
-        self.logger.debug("The campus names are: %s", ", ".join(campus_names))
+        self.network.change_language(Language.ENGLISH)
+        english_campuses = self.network.extract_campuses()
+        self.logger.debug("The english campus were extracted successfully")
+        self.logger.debug("The english campus are: %s", ", ".join(english_campuses.values()))
 
-        self.database.save_campus_names(campus_names)
+        self.network.change_language(Language.HEBREW)
+        hebrew_campuses = self.network.extract_campuses()
+        self.logger.debug("The hebrew campus were extracted successfully")
+        self.logger.debug("The hebrew campus are: %s", ", ".join(english_campuses.values()))
 
-        courses = self.network.extract_all_courses(utils.get_campus_name_test())
-        self.logger.debug("The courses were extracted successfully")
-        self.logger.debug("The courses are: %s", ", ".join([course.name for course in courses]))
+        campuses = {key: (english_campuses[key], hebrew_campuses[key]) for key in english_campuses.keys()}
 
-        self.database.save_courses_data(courses)
+        self.database.save_campuses(campuses)
+        campuses = self.database.load_campus_names()
 
-        common_campuses_names = self.database.get_common_campuses_names()
+        for language in list(Language):
+            translation.config_language_text(language)
+            self.network.change_language(language)
+            self.logger.debug("The language was changed to %s", language)
 
-        for campus_name in common_campuses_names:
-            self.logger.debug("Start extracting the academic activities data for the campus: %s", campus_name)
-            activities, missings = self.network.extract_academic_activities_data(campus_name, courses)
-            if activities and not missings:
-                self.logger.debug("The academic activities data were extracted successfully")
-            else:
-                self.logger.debug("The academic activities data were extracted with errors")
-                self.logger.debug("The missing courses are: %s", ', '.join(missings))
+            courses = self.network.extract_all_courses(utils.get_campus_name_test())
+            self.logger.debug("The courses were extracted successfully")
+            self.logger.debug("The courses are: %s", ", ".join([course.name for course in courses]))
 
-            self.database.save_academic_activities_data(campus_name, activities)
+            self.database.save_courses(courses, language)
+
+            common_campuses_names = self.database.get_common_campuses_names()
+
+            for campus_name in common_campuses_names:
+                self.logger.debug("Start extracting the academic activities data for the campus: %s", campus_name)
+                activities, missings = self.network.extract_academic_activities_data(campus_name, courses)
+                if activities and not missings:
+                    self.logger.debug("The academic activities data were extracted successfully")
+                else:
+                    self.logger.debug("The academic activities data were extracted with errors")
+                    self.logger.debug("The missing courses are: %s", ', '.join(missings))
+                actitve_courses = [course for course in courses if course.name not in missings]
+
+                self.database.save_active_courses(actitve_courses, campus_name, language)
+
+                self.database.save_academic_activities(activities, campus_name, language)
