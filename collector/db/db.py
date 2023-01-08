@@ -1,5 +1,7 @@
 import json
 import os
+import pathlib
+import shutil
 import sqlite3 as database
 import time
 from collections import defaultdict
@@ -439,6 +441,11 @@ class Database:
         if user_data:
             with open(Database.USER_NAME_FILE_PATH, "w", encoding=utils.ENCODING) as file:
                 file.write(f"{user_data.username}\n{user_data.password}")
+
+    def update_database(self, database_path: pathlib.Path):
+        self.clear_database()
+        self.init_database_tables()
+        shutil.copy2(database_path, Database.DATABASE_PATH)
 
     def clear_database(self):
         if not os.path.exists(Database.DATABASE_PATH):
