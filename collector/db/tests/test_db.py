@@ -112,6 +112,26 @@ class TestDatabase:
         excepted_courses_choices = [CourseChoice(f"Course {i}", ["meir"], []) for i in range(10)]
         assert set(loaded_courses_choices.values()) == set(excepted_courses_choices)
 
+    def test_load_activities_by_courses_choices(self, database, campuses):
+        campus_name = "A"
+        language = Language.ENGLISH
+        courses = [Course(f"Cor {i}", i, i + 10) for i in range(10)]
+        database.save_courses(courses, language)
+        database.save_active_courses(courses, campus_name, language)
+
+        def create_activity(i):
+            return AcademicActivity(f"Cor {i}", Type.LECTURE, True, f"meir{i}", i, i + 10, "", f"12.23{i}", "", 0, 1, 0)
+
+        activities = [create_activity(i) for i in range(10)]
+
+        courses_choices_excepted = {"Cor 5": CourseChoice("Cor 5", ["meir5"], [])}
+        courses_choices = {"Cor 1": CourseChoice("Cor 1", ["meir0"], [])}
+        courses_choices.update(courses_choices_excepted)
+
+        database.save_academic_activities(activities, campus_name, language)
+        loaded_courses_choices = database.load_activities_by_courses_choices(courses_choices, campus_name, language)
+        assert loaded_courses_choices == [create_activity(5)]
+
     def test_all(self, database):
         database.clear_all_data()
         database.init_database_tables()

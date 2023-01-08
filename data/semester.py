@@ -16,3 +16,6 @@ class Semester(Enum):
 
     def __repr__(self):
         return str(self)
+
+    def __iter__(self):
+        return iter((self.value, self.name.lower()))

@@ -50,6 +50,9 @@ class Course:
     def __repr__(self):
         return str(self)
 
+    def __iter__(self):
+        return iter((self.name, self.course_number, self.parent_course_number))
+
     def is_attendance_required(self, course_type: Type):
         attendance_required = True
 

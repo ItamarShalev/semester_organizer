@@ -10,7 +10,6 @@ from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.course import Course
 from data.course_choice import CourseChoice
-from data.day import Day
 from data.language import Language
 from data.meeting import Meeting
 from data.semester import Semester
@@ -78,9 +77,10 @@ class Database:
                            "PRIMARY KEY(activity_id, campus_id, language_value));")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS activities_meetings "
-                           "(activity_id TEXT, meeting_id INTEGER, "
+                           "(activity_id TEXT, meeting_id INTEGER, campus_id INTEGER, language_value CHARACTER(2), "
                            "FOREIGN KEY(activity_id) REFERENCES activities(activity_id), "
-                           "FOREIGN KEY(meeting_id) REFERENCES meetings(id));")
+                           "FOREIGN KEY(meeting_id) REFERENCES meetings(id), "
+                           "PRIMARY KEY(activity_id, meeting_id, campus_id, language_value));")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS active_courses "
                            "(course_number INTEGER, parent_course_number INTEGER, campus_id INTEGER, "
@@ -114,8 +114,7 @@ class Database:
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
             for semester in semesters:
-                cursor.execute("INSERT OR IGNORE INTO semesters VALUES (?, ?);",
-                               (semester.value, semester.name.lower()))
+                cursor.execute("INSERT OR IGNORE INTO semesters VALUES (?, ?);", (*semester, ))
             connection.commit()
             cursor.close()
 
@@ -125,7 +124,7 @@ class Database:
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT name FROM semesters;")
-            semesters = [Semester[semester[0].upper()] for semester in cursor.fetchall()]
+            semesters = [Semester[semester_name.upper()] for (semester_name,) in cursor.fetchall()]
             cursor.close()
             return semesters
 
@@ -136,9 +135,7 @@ class Database:
                 cursor.execute("INSERT OR IGNORE INTO personal_activities VALUES (?, ?);",
                                (activity.activity_id, activity.name))
                 for meeting in activity.meetings:
-                    cursor.execute("INSERT OR IGNORE INTO meetings VALUES (?, ?, ?, ?);",
-                                   (meeting.meeting_id, meeting.day.value, meeting.get_string_start_time(),
-                                    meeting.get_string_end_time()))
+                    cursor.execute("INSERT OR IGNORE INTO meetings VALUES (?, ?, ?, ?);", (*meeting, ))
                     cursor.execute("INSERT OR IGNORE INTO personal_activities_meetings VALUES (?, ?);",
                                    (activity.activity_id, meeting.meeting_id))
             connection.commit()
@@ -192,12 +189,11 @@ class Database:
                           for activity_id, activity_name in cursor.fetchall()]
 
             for activity in activities:
-                cursor.execute("SELECT day, start_time, end_time FROM meetings "
+                cursor.execute("SELECT meetings.* FROM meetings "
                                "INNER JOIN personal_activities_meetings "
                                "ON meetings.id = personal_activities_meetings.meeting_id "
                                "WHERE personal_activities_meetings.acitivity_id = ?;", (activity.activity_id,))
-                meetings = [Meeting(Day(day_value), start_time_str, end_time_str)
-                            for day_value, start_time_str, end_time_str in cursor.fetchall()]
+                meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
                 activity.meetings = meetings
             cursor.close()
             return activities
@@ -206,8 +202,7 @@ class Database:
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
             for course in courses:
-                cursor.execute("INSERT INTO courses VALUES (?, ?, ?, ?);",
-                               (course.name, course.course_number, course.parent_course_number, language.value))
+                cursor.execute("INSERT INTO courses VALUES (?, ?, ?, ?);", (*course, language.value))
                 for semester in course.semesters:
                     cursor.execute("INSERT INTO semesters_courses VALUES (?, ?);",
                                    (semester.value, course.parent_course_number))
@@ -219,10 +214,9 @@ class Database:
             return []
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute("SELECT name, course_number, parent_course_number FROM courses "
+            cursor.execute("SELECT * FROM courses "
                            "WHERE language_value = ?;", (language.value,))
-            courses = [Course(name, course_number, parent_course_number)
-                       for name, course_number, parent_course_number in cursor.fetchall()]
+            courses = [Course(*data_line) for data_line in cursor.fetchall()]
             for course in courses:
                 cursor.execute("SELECT name FROM semesters "
                                "INNER JOIN semesters_courses ON semesters.id = semesters_courses.semester_id "
@@ -244,10 +238,51 @@ class Database:
                            "active_courses.language_value = courses.language_value AND "
                            "active_courses.course_number = courses.course_number "
                            "WHERE campus_id = ? AND active_courses.language_value = ?;", (campus_id, language.value))
-            courses = [Course(name, course_number, parent_course_number)
-                       for name, course_number, parent_course_number in cursor.fetchall()]
+            courses = [Course(*data_line) for data_line in cursor.fetchall()]
             cursor.close()
             return courses
+
+    def load_activities_by_courses_choices(self, courses_choices: Dict[str, CourseChoice], campus_name: str,
+                                           language: Language) -> List[AcademicActivity]:
+        if not os.path.exists(Database.DATABASE_PATH):
+            return []
+        with database.connect(Database.DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            campus_id = self.load_campus_id(campus_name)
+            activities_result = []
+            lecture_types = [Type.LECTURE, Type.SEMINAR]
+            practice_types = [Type.PRACTICE, Type.LAB]
+            for course_name, course_choice in courses_choices.items():
+                lectures = course_choice.available_teachers_for_lecture
+                practices = course_choice.available_teachers_for_practice
+                hold_place_lectures = ",".join(["?"] * len(course_choice.available_teachers_for_lecture))
+                hold_place_practices = ",".join(["?"] * len(course_choice.available_teachers_for_practice))
+
+                cursor.execute("SELECT * FROM activities "
+                               "WHERE name = ? AND language_value = ? AND campus_id = ? AND "
+                               f"((activity_type in (?, ?) AND lecturer_name in ({hold_place_lectures})) "
+                               "OR "
+                               f"(activity_type in (?, ?) AND lecturer_name in ({hold_place_practices})));",
+                               (course_name, language.value, campus_id,
+                                *lecture_types, *lectures,
+                                *practice_types, *practices))
+
+                activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language in cursor.fetchall()]
+
+                for activity in activities:
+                    cursor.execute("SELECT meetings.* FROM meetings "
+                                   "INNER JOIN activities_meetings "
+                                   "ON meetings.id = activities_meetings.meeting_id "
+                                   "WHERE activities_meetings.activity_id = ? AND "
+                                   "activities_meetings.campus_id = ? AND "
+                                   "activities_meetings.language_value = ?;",
+                                   (activity.activity_id, campus_id, language.value))
+                    meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
+                    activity.meetings = meetings
+
+                activities_result.extend(activities)
+            cursor.close()
+            return activities_result
 
     def save_academic_activities(self, activities: List[AcademicActivity], campus_name: str, language: Language):
         with database.connect(Database.DATABASE_PATH) as connection:
@@ -256,20 +291,14 @@ class Database:
             for activity in activities:
                 cursor.execute("INSERT OR IGNORE INTO lecturers VALUES (?);", (activity.lecturer_name,))
                 cursor.execute("INSERT OR IGNORE INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-                               (activity.name, activity.type.value, activity.attendance_required,
-                                activity.lecturer_name, activity.course_number, activity.parent_course_number,
-                                activity.location, activity.activity_id, activity.description,
-                                activity.current_capacity, activity.max_capacity, activity.actual_course_number,
-                                campus_id, language.value))
+                               (*activity, campus_id, language.value))
                 cursor.execute("INSERT OR IGNORE INTO courses_lecturers VALUES (?, ?, ?, ?, ?, ?);",
                                (activity.course_number, activity.parent_course_number, activity.lecturer_name,
                                 activity.type.is_lecture(), campus_id, language.value))
                 for meeting in activity.meetings:
-                    cursor.execute("INSERT OR IGNORE INTO meetings VALUES (?, ?, ?, ?);",
-                                   (meeting.meeting_id, meeting.day.value, meeting.get_string_start_time(),
-                                    meeting.get_string_end_time()))
-                    cursor.execute("INSERT OR IGNORE INTO activities_meetings VALUES (?, ?);",
-                                   (activity.activity_id, meeting.meeting_id))
+                    cursor.execute("INSERT OR IGNORE INTO meetings VALUES (?, ?, ?, ?);", (*meeting,))
+                    cursor.execute("INSERT OR IGNORE INTO activities_meetings VALUES (?, ?, ?,  ?);",
+                                   (activity.activity_id, meeting.meeting_id, campus_id, language.value))
             connection.commit()
             cursor.close()
 
@@ -281,26 +310,22 @@ class Database:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
             courses_parent_numbers = [str(course.parent_course_number) for course in courses]
-            cursor.execute("SELECT name, activity_type, attendance_required, lecturer_name, course_number, "
-                           "parent_course_number, location, activity_id, description, current_capacity, "
-                           "max_capacity, actual_course_number FROM activities "
+            cursor.execute("SELECT * FROM activities "
                            "WHERE campus_id = ? AND language_value = ? AND "
                            f"parent_course_number IN ({','.join(courses_parent_numbers)});",
                            (campus_id, language.value))
-            activities = [
-                AcademicActivity(name, Type(activity_type_value), attendance_required, lecturer_name, course_number,
-                                 parent_course_number, location, activity_id, description, current_capacity,
-                                 max_capacity, actual_course_number)
-                for name, activity_type_value, attendance_required, lecturer_name, course_number, parent_course_number,
-                location, activity_id, description, current_capacity, max_capacity, actual_course_number
-                in cursor.fetchall()]
+
+            activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language in cursor.fetchall()]
 
             for activity in activities:
-                cursor.execute("SELECT day, start_time, end_time FROM meetings "
-                               "INNER JOIN activities_meetings ON meetings.id = activities_meetings.meeting_id "
-                               "WHERE activities_meetings.activity_id = ?;", (activity.activity_id,))
-                meetings = [Meeting(Day(day_value), start_time_str, end_time_str)
-                            for day_value, start_time_str, end_time_str in cursor.fetchall()]
+                cursor.execute("SELECT meetings.* FROM meetings "
+                               "INNER JOIN activities_meetings "
+                               "ON meetings.id = activities_meetings.meeting_id "
+                               "WHERE activities_meetings.activity_id = ? AND "
+                               "activities_meetings.campus_id = ? AND "
+                               "activities_meetings.language_value = ?;",
+                               (activity.activity_id, campus_id, language.value))
+                meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
                 activity.meetings = meetings
             cursor.close()
             return activities
@@ -326,6 +351,17 @@ class Database:
             campus_names = [name[0] for name in cursor.fetchall()]
             cursor.close()
             return campus_names
+
+    def load_campuses(self) -> Dict[int, Tuple[EnglishName, HebrewName]]:
+        if not os.path.exists(Database.DATABASE_PATH):
+            return {}
+        with database.connect(Database.DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM campuses;")
+            campuses = {campus_id: (english_name, hebrew_name)
+                        for campus_id, english_name, hebrew_name in cursor.fetchall()}
+            cursor.close()
+            return campuses
 
     def save_courses_data(self, courses: List[Course]):
         raise AttributeError("This function is deprecated.")
