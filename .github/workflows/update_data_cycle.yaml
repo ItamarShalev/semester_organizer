@@ -37,7 +37,7 @@ jobs:
         git config --local user.email "itamar1111111@gmail.com"
         git config --local user.name "Itamar Shalev"
         git add . --force
-        git commit -sm "[BOT] Update levnet courses data."
+        git commit -sm "[DATA] database: Update levnet courses data ."
     - name: Push to main
       uses: CasperWA/push-protected@v2
       with:
