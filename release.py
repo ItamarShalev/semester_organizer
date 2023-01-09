@@ -70,16 +70,18 @@ def build(os_build_type: OS):
     return_code = subprocess.call(pyinstaller_cmd.split(" "))
     assert return_code == 0, "Pyinstaller command failed"
 
+    print("Build finished successfully")
 
-if __name__ == "__main__":
+
+def main():
     utils.init_project()
     utils.config_logging_level(logging.DEBUG)
     os_type = get_os_type()
     args = get_args()
     args_count = sum([args.build, args.title, args.path])
-    ERROR_MESSAGE = "Need exactly one argument from the following: build, title, path."
+    error_message = "Need exactly one argument from the following: build, title, path."
 
-    assert args_count == 1, ERROR_MESSAGE
+    assert args_count == 1, error_message
     assert os_type, f"{os.name} OS is not supported."
 
     if args.title:
@@ -91,3 +93,7 @@ if __name__ == "__main__":
 
     elif args.build:
         build(os_type)
+
+
+if __name__ == "__main__":
+    main()
