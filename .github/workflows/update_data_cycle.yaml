@@ -42,4 +42,4 @@ jobs:
       uses: CasperWA/push-protected@v2
       with:
         token: ${{ secrets.SPEICAL_TOKEN }}
-        branch: main
+        branch: update_data
