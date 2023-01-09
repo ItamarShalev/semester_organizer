@@ -7,6 +7,7 @@ from collector.gui.gui import MessageType
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.case_insensitive_dict import CaseInsensitiveDict
+from data.degree import Degree
 from data.language import Language
 from data.meeting import Meeting
 from data.course import Course
@@ -205,6 +206,11 @@ class TestData:
         assert utils.get_logging()
         assert utils.get_custom_software_name() == "semester_organizer_lev"
         assert utils.get_course_data_test().parent_course_number == 318
+
+    def test_degree(self):
+        degrees = Degree.get_defaults()
+        assert degrees == {Degree.SOFTWARE_ENGINEERING, Degree.COMPUTER_SCIENCE}
+        assert repr(Degree.COMPUTER_SCIENCE) == "Computer Science"
 
     def test_others(self):
         message = MessageType.ERROR
