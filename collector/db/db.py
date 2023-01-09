@@ -153,7 +153,7 @@ class Database:
                 cursor.execute("SELECT lecturer_name, is_lecture_rule FROM courses_lecturers "
                                "WHERE course_number = ? AND parent_course_number = ? AND campus_id = ? "
                                "AND language_value = ?;",
-                               (course.course_number, course.parent_course_number, campus_id, language.value))
+                               (course.course_number, course.parent_course_number, campus_id, language.short_name()))
 
                 for lecturer_name, is_lecture_rule in cursor.fetchall():
                     index = lecture_index if is_lecture_rule else practice_index
@@ -187,7 +187,7 @@ class Database:
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
             for course in courses:
-                cursor.execute("INSERT INTO courses VALUES (?, ?, ?, ?);", (*course, language.value))
+                cursor.execute("INSERT INTO courses VALUES (?, ?, ?, ?);", (*course, language.short_name()))
                 for semester in course.semesters:
                     cursor.execute("INSERT INTO semesters_courses VALUES (?, ?);",
                                    (semester.value, course.parent_course_number))
@@ -200,7 +200,7 @@ class Database:
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT * FROM courses "
-                           "WHERE language_value = ?;", (language.value,))
+                           "WHERE language_value = ?;", (language.short_name(),))
             courses = [Course(*data_line) for data_line in cursor.fetchall()]
             for course in courses:
                 cursor.execute("SELECT name FROM semesters "
@@ -222,7 +222,7 @@ class Database:
                            "AND courses.course_number = activities.course_number AND "
                            "courses.language_value = activities.language_value "
                            "WHERE activities.campus_id = ? AND courses.language_value = ?;",
-                           (campus_id, language.value))
+                           (campus_id, language.short_name()))
             courses = [Course(*data_line) for data_line in cursor.fetchall()]
             cursor.close()
             return courses
@@ -253,7 +253,7 @@ class Database:
                                f"((activity_type in (?, ?) AND {text_hold_place_lectures}) "
                                "OR "
                                f"(activity_type in (?, ?) AND {text_hold_place_practices}));",
-                               (course_name, language.value, campus_id,
+                               (course_name, language.short_name(), campus_id,
                                 *lecture_types, *lectures,
                                 *practice_types, *practices))
 
@@ -266,7 +266,7 @@ class Database:
                                    "WHERE activities_meetings.activity_id = ? AND "
                                    "activities_meetings.campus_id = ? AND "
                                    "activities_meetings.language_value = ?;",
-                                   (activity.activity_id, campus_id, language.value))
+                                   (activity.activity_id, campus_id, language.short_name()))
                     meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
                     activity.meetings = meetings
 
@@ -281,14 +281,14 @@ class Database:
             for activity in activities:
                 cursor.execute("INSERT OR IGNORE INTO lecturers VALUES (?);", (activity.lecturer_name,))
                 cursor.execute("INSERT OR IGNORE INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-                               (*activity, campus_id, language.value))
+                               (*activity, campus_id, language.short_name()))
                 cursor.execute("INSERT OR IGNORE INTO courses_lecturers VALUES (?, ?, ?, ?, ?, ?);",
                                (activity.course_number, activity.parent_course_number, activity.lecturer_name,
-                                activity.type.is_lecture(), campus_id, language.value))
+                                activity.type.is_lecture(), campus_id, language.short_name()))
                 for meeting in activity.meetings:
                     cursor.execute("INSERT OR IGNORE INTO meetings VALUES (?, ?, ?, ?);", (*meeting,))
                     cursor.execute("INSERT OR IGNORE INTO activities_meetings VALUES (?, ?, ?,  ?);",
-                                   (activity.activity_id, meeting.meeting_id, campus_id, language.value))
+                                   (activity.activity_id, meeting.meeting_id, campus_id, language.short_name()))
             connection.commit()
             cursor.close()
 
@@ -303,7 +303,7 @@ class Database:
             cursor.execute("SELECT * FROM activities "
                            "WHERE campus_id = ? AND language_value = ? AND "
                            f"parent_course_number IN ({','.join(courses_parent_numbers)});",
-                           (campus_id, language.value))
+                           (campus_id, language.short_name()))
 
             activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language in cursor.fetchall()]
 
@@ -314,7 +314,7 @@ class Database:
                                "WHERE activities_meetings.activity_id = ? AND "
                                "activities_meetings.campus_id = ? AND "
                                "activities_meetings.language_value = ?;",
-                               (activity.activity_id, campus_id, language.value))
+                               (activity.activity_id, campus_id, language.short_name()))
                 meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
                 activity.meetings = meetings
             cursor.close()

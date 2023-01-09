@@ -169,6 +169,7 @@ class TestData:
 
         assert Language.from_str("engLISH") is Language.ENGLISH
         assert Language.from_str("1") is Language.ENGLISH
+        assert Language.from_str("en") is Language.ENGLISH
         with pytest.raises(ValueError):
             Language.from_str("France")
 
