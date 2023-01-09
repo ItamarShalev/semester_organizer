@@ -1,3 +1,5 @@
+import re
+
 
 # pylint: disable=protected-access
 class CaseInsensitiveDict(dict):
@@ -39,3 +41,15 @@ class CaseInsensitiveDict(dict):
         for key in list(self.keys()):
             value = super().pop(key)
             self[key] = value
+
+
+class TextCaseInsensitiveDict(CaseInsensitiveDict):
+    @classmethod
+    def _k(cls, key):
+        if isinstance(key, str):
+            key = key.lower()
+            # Remove all text sign from the start and the end of the text
+            key = re.sub(r'[,.:;()!? \n\r\t=-]*$', '', key)
+            key = re.sub(r'^[,.:;()!? \n\r\t=-]*', '', key)
+            return key.lower().strip()
+        return key

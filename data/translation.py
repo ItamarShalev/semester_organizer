@@ -1,11 +1,11 @@
 from typing import Optional
 
-from data.case_insensitive_dict import CaseInsensitiveDict
+from data.case_insensitive_dict import TextCaseInsensitiveDict
 from data.language import Language
 
 # pylint: disable=line-too-long
 
-data = CaseInsensitiveDict({
+data = TextCaseInsensitiveDict({
     "Test": "בדיקה",
     "There are no courses in the system, please try again with another campus update your database from the server.": "אין קורסים במערכת, אנא נסה שנית עם קמפוס אחר או נסה לעדכן את הבסיס נתונים מהשרת.",
     "No schedule possible were found": "לא נמצאה מערכת שעות אפשרית",

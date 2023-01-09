@@ -6,7 +6,7 @@ import utils
 from collector.gui.gui import MessageType
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
-from data.case_insensitive_dict import CaseInsensitiveDict
+from data.case_insensitive_dict import CaseInsensitiveDict, TextCaseInsensitiveDict
 from data.degree import Degree
 from data.flow import Flow
 from data.language import Language
@@ -203,6 +203,9 @@ class TestData:
         assert case_insensitive_dict["A"] == 1
         case_insensitive_dict.update({"A": 2})
         assert case_insensitive_dict["A"] == 2
+
+        case_insensitive_dict = TextCaseInsensitiveDict({"? ASA,=   - ?": 1})
+        assert case_insensitive_dict["AsA"] == 1
 
     def test_utils(self):
         assert utils.get_logging()
