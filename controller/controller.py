@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import subprocess
+import time
 from collections import defaultdict
 from copy import copy
 from operator import itemgetter
@@ -144,6 +145,7 @@ class Controller:
         # For testing purposes
         test_input = iter([str(item) for item in test_input])
         self.logger.info("Starting console flow")
+        delay_time = 0.12
 
         self._validate_database('console')
 
@@ -151,6 +153,7 @@ class Controller:
         print(_("Select the campus by enter their index:"))
         available_campuses = self.database.get_common_campuses_names()
         for index, name in enumerate(available_campuses, 1):
+            time.sleep(delay_time)
             print(f"{index}. {name}")
         campus_index = self._get_next(test_input) or input(_("Enter the campus index: "))
         campus_name = available_campuses[int(campus_index) - 1]
@@ -161,6 +164,7 @@ class Controller:
 
         print(_("Select the courses by enter their index:"))
         for index, course_name in enumerate(courses_choices.keys(), 1):
+            time.sleep(delay_time)
             print(f"{index}. {course_name}")
         input_help = _("Enter the courses indexes separated by comma (example: 1,2,20): ")
         courses_indexes = self._get_next(test_input) or input(input_help)
@@ -174,6 +178,7 @@ class Controller:
         options = [_("Yes"), _("No")]
         print(_("Do you want to select favorite lecturers?"))
         for index, option in enumerate(options, 1):
+            time.sleep(delay_time)
             print(f"{index}. {option}")
         favorite_lecturers_option = self._get_next(test_input) or input(_("Enter the option index: "))
         yes_no_option = options[int(favorite_lecturers_option) - 1]
@@ -190,6 +195,7 @@ class Controller:
                     print("\n\n")
                     print(_(f"Select the favorite teachers for {lecture_type} for the course: ") + f"'{course_name}'")
                     for index, teacher in enumerate(lectures_list, 1):
+                        time.sleep(delay_time)
                         print(f"{index}. {teacher}")
                     input_help = \
                         _("Enter the teachers indexes separated by comma (example: 1,2,20) or 0 to select all: ")
