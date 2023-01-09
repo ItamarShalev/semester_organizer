@@ -425,6 +425,19 @@ class Database:
         campus_names.append(_("Mavchar- Men"))
         return campus_names
 
+    def translate_campus_name(self, campus_name: str) -> str:
+        with database.connect(Database.DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT english_name, hebrew_name FROM campuses WHERE hebrew_name = ? or english_name = ?;",
+                           (campus_name, campus_name))
+            result = cursor.fetchone()
+            if Language.get_current() is Language.HEBREW:
+                campus_name = result[1]
+            else:
+                campus_name = result[0]
+            cursor.close()
+            return campus_name
+
     def save_years(self, years: Dict[int, str]):
         with open(Database.YEARS_FILE_PATH, "w", encoding=utils.ENCODING) as file:
             file.write(json.dumps(years))

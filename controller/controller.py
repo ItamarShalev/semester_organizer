@@ -19,6 +19,8 @@ from data.course_choice import CourseChoice
 from data.language import Language
 from data.schedule import Schedule
 from data.settings import Settings
+from data.day import Day
+from data.output_format import OutputFormat
 from data.translation import _
 
 Lecture = str
@@ -234,6 +236,64 @@ class Controller:
             selected_courses_choices[course_name] = course_choice
         return selected_courses_choices
 
+    def _yes_no(self, value: bool):
+        return _("Yes") if value else _("No")
+
+    def _print_current_settings(self, settings: Settings):
+        enter_scentence_format = "\n" + len(_("Explain: ")) * " "
+
+        print(_("Current settings:"))
+        print(_("Attendance required all courses:"), self._yes_no(settings.attendance_required_all_courses))
+        print(_("Explain: Count all the courses as attendance is mandatory"), end=enter_scentence_format)
+        print(_("and there is no possibility of collision with other courses."), end=enter_scentence_format)
+        print(_("If is set to no, you will ask for each course if you will want to be present."), end="\n\n")
+
+        campus_name = settings.campus_name or _("Not set")
+        print(_("Campus name:"), campus_name)
+        print(_("Explain: The name of the campus that you want to search for the courses."), end=enter_scentence_format)
+
+        print(_("Year of study:"), settings.year)
+        print(_("Explain: The year of the courses to be selected and collect from the colleage."), end="\n\n")
+
+        print(_("Semester of study:"), _(str(settings.semester)))
+        print(_("Explain: The semester of the courses to be selected and collect from the colleage."), end="\n\n")
+
+        print(_("Show hertzog and yeshiva:"), self._yes_no(settings.show_hertzog_and_yeshiva))
+        print(_("Explain: Show or don't show the courses for hertzog and yeshiva."), end="\n\n")
+
+        print(_("Show only courses with free places:"), self._yes_no(settings.show_only_courses_with_free_places))
+        print(_("Explain: Show or don't show the courses that have free places to register."), end="\n\n")
+
+        yes_no = self._yes_no(settings.show_only_courses_with_the_same_actual_number)
+        print(_("Show only courses with the same actual number:"), yes_no)
+        print(_("Explain: Show or don't show the courses that have the same actual number and related."),
+              end=enter_scentence_format)
+        print(_("there is no guarantee you will get course that have lecture and exercise you can register."),
+              end=enter_scentence_format)
+        print(_("for example course that have lecture for english speaker and exercise for hebrew speaker."),
+              end="\n\n")
+
+        days = set(Day)
+        days_text = ""
+        if days == set(settings.show_only_classes_in_days):
+            days_text = _("All week days")
+        else:
+            settings.show_only_classes_in_days.sort(key=lambda day: day.value)
+            days_text = ", ".join([_(str(day)) for day in settings.show_only_classes_in_days])
+
+        print(_("Show only classes in days:"), days_text)
+        print(_("Explain: Show only the courses that have classes in the days you selected."), end="\n\n")
+
+        def output_formats_str(output_formats):
+            return ", ".join([output_format.name.lower() for output_format in output_formats])
+
+        print(_("Output formats: "), output_formats_str(settings.output_formats))
+        print(_("Explain: The output formats the schedules will be saved in."), end=enter_scentence_format)
+        print(_("Possible formats: "), output_formats_str(list(OutputFormat)), end="\n\n")
+
+    def _console_ask_for_settings(self, settings: Settings):
+        return settings
+
     def run_console_flow(self):
         """
         Run the console flow of the program, only for academic activities.
@@ -245,8 +305,30 @@ class Controller:
         self.logger.info("Starting console flow")
 
         language = Language.get_current()
+        settings = self.database.load_settings() or Settings()
+        language = language or settings.language
+        settings.language = language
+        translation.config_language_text(language)
+
+        if settings.campus_name:
+            campus_name = self.database.translate_campus_name(settings.campus_name)
+            settings.campus_name = campus_name
+
+        self.database.save_settings(settings)
 
         self._validate_database('console')
+
+        is_yes = self._console_ask_yes_or_no("Do you want to print the current settings and see their meaning?")
+
+        if is_yes:
+            self._print_current_settings(settings)
+
+        is_yes = self._console_ask_yes_or_no("Do you want to change the current settings?")
+
+        if is_yes:
+            settings = self._console_ask_for_settings(settings)
+            self.database.save_settings(settings)
+            language = settings.language
 
         campus_name = self._console_ask_campus_name()
 
@@ -261,9 +343,6 @@ class Controller:
         print(_("Generating schedules..."))
 
         selected_activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
-
-        settings = Settings()
-        settings.language = language
 
         schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings)
 

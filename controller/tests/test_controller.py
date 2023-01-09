@@ -9,7 +9,6 @@ from pytest import fixture
 
 import utils
 from collector.gui.gui import MessageType
-from collector.db.db import Database
 from controller.controller import Controller
 from convertor.convertor import Convertor
 from data.course_choice import CourseChoice
@@ -72,21 +71,25 @@ class TestController:
         convertor_mock.convert_activities = MagicMock(side_effect=convertor.convert_activities)
         controller.gui = gui_mock
         controller.convertor = convertor_mock
+        controller.database.SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "test_settings_data.txt")
+        settings = Settings()
+        settings.campus_name = utils.get_campus_name_test()
+        controller.database.save_settings(settings)
         controller._open_results_folder = MagicMock()
         return controller
 
     @pytest.mark.parametrize("language", list(Language))
     def test_run_main_gui_flow(self, controller, language: Language):
         translation.config_language_text(language)
-        Database().save_language(language)
+        controller.database.save_language(language)
         controller.run_main_gui_flow()
         controller.convertor.convert_activities.assert_called()
 
     @pytest.mark.parametrize("language", list(Language))
     def test_flow_console(self, controller, language: Language):
         translation.config_language_text(language)
-        Database().save_language(language)
-        test_input = iter([str(item) for item in [1, "1, 3", 2]])
+        controller.database.save_language(language)
+        test_input = iter([str(item) for item in [1, 2, 2, "1, 3", 2]])
 
         def input_next(*args):
             try:
