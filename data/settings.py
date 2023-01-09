@@ -13,7 +13,7 @@ import utils
 @dataclass
 class Settings:
     attendance_required_all_courses: bool = True
-    campus_name: str = None
+    campus_name: str = ""
     year: int = utils.get_current_hebrew_year()
     semester: Semester = utils.get_current_semester()
     show_hertzog_and_yeshiva: bool = False

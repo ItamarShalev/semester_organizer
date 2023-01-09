@@ -89,7 +89,7 @@ class TestController:
     def test_flow_console(self, controller, language: Language):
         translation.config_language_text(language)
         controller.database.save_language(language)
-        test_input = iter([str(item) for item in [1, 2, 2, "1, 3", 2]])
+        test_input = iter([str(item) for item in [1, 2, "1, 3", 2]])
 
         def input_next(*args):
             try:
