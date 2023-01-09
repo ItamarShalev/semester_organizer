@@ -21,6 +21,8 @@ from data.schedule import Schedule
 from data.settings import Settings
 from data.translation import _
 
+Lecture = str
+
 
 class Controller:
 
@@ -30,6 +32,7 @@ class Controller:
         self.convertor = Convertor()
         self.csp = CSP()
         self.logger = utils.get_logging()
+        self.delay_time = 0.12
 
     def _get_courses_choices(self, all_academic_activities: List[AcademicActivity]) -> Dict[str, CourseChoice]:
         # key = course name, first value list of lectures, second value list of exercises
@@ -129,35 +132,25 @@ class Controller:
                 print(msg)
             sys.exit(1)
 
-    def run_console_flow(self):
-        """
-        Run the console flow of the program, only for academic activities.
-        Console flow will use the default settings.
-        and without database nor GUI.
-        """
-        # pylint: disable=too-many-branches
-        # For testing purposes
-        self.logger.info("Starting console flow")
-        delay_time = 0.12
-
-        self._validate_database('console')
-
-        language = Language.get_current()
+    def _console_ask_campus_name(self):
         print(_("Select the campus by enter their index:"))
         available_campuses = self.database.get_common_campuses_names()
         for index, name in enumerate(available_campuses, 1):
-            time.sleep(delay_time)
+            time.sleep(self.delay_time)
             print(f"{index}. {name}")
         campus_index = input(_("Enter the campus index: "))
         campus_name = available_campuses[int(campus_index) - 1]
         print("\n\n")
+        return campus_name
 
+    def _console_ask_courses_choices(self, campus_name: str):
+        language = Language.get_current()
         courses_choices = self.database.load_courses_choices(campus_name, language)
         courses_choices = dict(sorted(courses_choices.items(), key=itemgetter(0)))
 
         print(_("Select the courses by enter their index:"))
         for index, course_name in enumerate(courses_choices.keys(), 1):
-            time.sleep(delay_time)
+            time.sleep(self.delay_time)
             print(f"{index}. {course_name}")
         input_help = _("Enter the courses indexes separated by comma (example: 1,2,20): ")
         courses_indexes = input(input_help)
@@ -170,76 +163,114 @@ class Controller:
                 selected_courses_choices[course_name] = course_choice
 
         print("\n\n")
+        return selected_courses_choices
+
+    def _console_ask_yes_or_no(self, text: str):
         options = [_("Yes"), _("No")]
-        print(_("Do you want to select favorite lecturers?"))
+        print(_(text))
         for index, option in enumerate(options, 1):
-            time.sleep(delay_time)
+            time.sleep(self.delay_time)
             print(f"{index}. {option}")
         favorite_lecturers_option = input(_("Enter the option index: "))
         yes_no_option = options[int(favorite_lecturers_option) - 1]
         self.logger.debug("Selected option: %s", yes_no_option)
-        if yes_no_option == _("Yes"):
-            for course_name, (course_name, course_choice) in enumerate(selected_courses_choices.items(), 1):
-                lectures_lists = [course_choice.available_teachers_for_lecture,
-                                  course_choice.available_teachers_for_practice]
-                selected_teachers_lists = []
-                lectures_lists = [sorted(lectures_list) for lectures_list in lectures_lists]
-                for lecture_type, lectures_list in zip(["lecture", "lab / exercise"], lectures_lists):
-                    if len(lectures_list) == 0:
-                        selected_teachers_lists.append(lectures_list)
-                        continue
-                    if len(lectures_list) == 1:
-                        text = _("There is only one lecture for this the course %s which is %s, automatic select it.")
-                        text = text.format(course_name, lectures_list[0])
-                        print(text)
-                        selected_teachers_lists.append(lectures_list)
-                        continue
-                    print("\n\n")
-                    print(_(f"Select the favorite teachers for {lecture_type} for the course: ") + f"'{course_name}'")
-                    for index, teacher in enumerate(lectures_list, 1):
-                        time.sleep(delay_time)
-                        print(f"{index}. {teacher}")
-                    input_help = \
-                        _("Enter the teachers indexes separated by comma (example: 1,2,20) or 0 to select all: ")
+        return yes_no_option == _("Yes")
 
-                    teachers_indexes = input(input_help)
-                    self.logger.debug("Selected teachers indexes: %s which they are: ", teachers_indexes)
-                    teachers_indexes = [int(index) for index in teachers_indexes.strip().split(",")]
-                    selected_teachers = []
-                    if 0 in teachers_indexes:
-                        selected_teachers = lectures_list
-                        self.logger.debug("All the available teachers are: %s", ', '.join(selected_teachers))
-                        teachers_indexes = []
-                    for index, teacher in enumerate(lectures_list, 1):
-                        if index in teachers_indexes:
-                            self.logger.debug("%d. '%s'", index, teacher)
-                            selected_teachers.append(teacher)
-                    selected_teachers_lists.append(selected_teachers)
-                course_choice.available_teachers_for_lecture = selected_teachers_lists[0]
-                course_choice.available_teachers_for_practice = selected_teachers_lists[1]
-                selected_courses_choices[course_name] = course_choice
+    def _console_save_schedules(self, settings: Settings, schedules: List[Schedule]):
+        print(_("Done successfully !"))
+        print(_("Found %d possible schedules").format(len(schedules)))
+
+        results_path = utils.get_results_path()
+        self._save_schedule(schedules, settings, results_path)
+        print(_("The schedules were saved in the directory: ") + results_path)
+        self._open_results_folder(results_path)
+
+    def _console_ask_favorite_lecturers(self, course_name: str, lecture_type: str, lectures_list: List[Lecture]):
+        selected_teachers = []
+        if len(lectures_list) == 0:
+            selected_teachers = []
+        if len(lectures_list) == 1:
+            text = _("There is only one lecture for this the course %s which is %s, automatic select it.")
+            text = text.format(course_name, lectures_list[0])
+            print(text)
+            selected_teachers = lectures_list
+        else:
+            print("\n\n")
+            print(_(f"Select the favorite teachers for {lecture_type} for the course: ") + f"'{course_name}'")
+            for index, teacher in enumerate(lectures_list, 1):
+                time.sleep(self.delay_time)
+                print(f"{index}. {teacher}")
+            input_help = \
+                _("Enter the teachers indexes separated by comma (example: 1,2,20) or 0 to select all: ")
+
+            teachers_indexes = input(input_help)
+            self.logger.debug("Selected teachers indexes: %s which they are: ", teachers_indexes)
+            teachers_indexes = [int(index) for index in teachers_indexes.strip().split(",")]
+            if 0 in teachers_indexes:
+                selected_teachers = lectures_list
+                self.logger.debug("All the available teachers are: %s", ', '.join(selected_teachers))
+                teachers_indexes = []
+            for index, teacher in enumerate(lectures_list, 1):
+                if index in teachers_indexes:
+                    self.logger.debug("%d. '%s'", index, teacher)
+                    selected_teachers.append(teacher)
+
+        return selected_teachers
+
+    def _console_ask_for_favorite_lecturers_all_courses(self, campus_name: str, courses_choices: Dict[str, List[str]]):
+        selected_courses_choices = {}
+        for course_name, (course_name, course_choice) in enumerate(courses_choices.items(), 1):
+            lectures_lists = [course_choice.available_teachers_for_lecture,
+                              course_choice.available_teachers_for_practice]
+            lectures_lists = [sorted(lectures_list) for lectures_list in lectures_lists]
+            lectures, pracitces = None, None
+            for lecture_type, lectures_list in zip(["lecture", "lab / exercise"], lectures_lists):
+                if lecture_type == "lecture":
+                    lectures = self._console_ask_favorite_lecturers(campus_name, course_name, lectures_list)
+                else:
+                    pracitces = self._console_ask_favorite_lecturers(campus_name, course_name, lectures_list)
+            course_choice.available_teachers_for_practice = lectures
+            course_choice.available_teachers_for_practice = pracitces
+            selected_courses_choices[course_name] = course_choice
+        return selected_courses_choices
+
+    def run_console_flow(self):
+        """
+        Run the console flow of the program, only for academic activities.
+        Console flow will use the default settings.
+        and without database nor GUI.
+        """
+        # pylint: disable=too-many-branches
+        # For testing purposes
+        self.logger.info("Starting console flow")
+
+        language = Language.get_current()
+
+        self._validate_database('console')
+
+        campus_name = self._console_ask_campus_name()
+
+        courses_choices = self._console_ask_courses_choices(campus_name)
+
+        is_yes = self._console_ask_yes_or_no("Do you want to select favorite lecturers?")
+
+        if is_yes:
+            courses_choices = self._console_ask_for_favorite_lecturers_all_courses(campus_name, courses_choices)
 
         print("\n\n")
         print(_("Generating schedules..."))
 
-        selected_activities = self.database.load_activities_by_courses_choices(selected_courses_choices,
-                                                                               campus_name, language)
+        selected_activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
 
         settings = Settings()
         settings.language = language
 
-        schedules = self.csp.extract_schedules(selected_activities, selected_courses_choices, settings)
+        schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings)
 
         if not schedules:
             print(_("No schedules were found"))
         else:
-            print(_("Done successfully !"))
-            print(_("Found %d possible schedules").format(len(schedules)))
-
-            results_path = utils.get_results_path()
-            self._save_schedule(schedules, settings, results_path)
-            print(_("The schedules were saved in the directory: ") + results_path)
-            self._open_results_folder(results_path)
+            self._console_save_schedules(settings, schedules)
 
     def run_main_gui_flow(self):
         try:
