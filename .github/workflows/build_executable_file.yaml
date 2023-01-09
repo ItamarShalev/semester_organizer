@@ -23,7 +23,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-          python release.py --install
+          python -m pip install -r development_requirements.txt
       - name: Build executable file
         shell: bash
         run: |
