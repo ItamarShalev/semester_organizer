@@ -43,3 +43,4 @@ jobs:
       with:
         token: ${{ secrets.SPEICAL_TOKEN }}
         branch: update_data
+        force: True
