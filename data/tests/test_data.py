@@ -8,6 +8,7 @@ from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.case_insensitive_dict import CaseInsensitiveDict
 from data.degree import Degree
+from data.flow import Flow
 from data.language import Language
 from data.meeting import Meeting
 from data.course import Course
@@ -212,6 +213,16 @@ class TestData:
         degrees = Degree.get_defaults()
         assert degrees == {Degree.SOFTWARE_ENGINEERING, Degree.COMPUTER_SCIENCE}
         assert repr(Degree.COMPUTER_SCIENCE) == "Computer Science"
+
+    def test_flow_enum(self):
+        flow = Flow.GUI
+        assert flow is Flow.GUI
+        assert str(flow) == "gui"
+        assert flow.from_str("guI") is Flow.GUI
+        assert flow.from_str("1") is Flow.GUI
+        assert flow.from_str(1) is Flow.GUI
+        with pytest.raises(ValueError):
+            flow.from_str("18")
 
     def test_others(self):
         message = MessageType.ERROR
