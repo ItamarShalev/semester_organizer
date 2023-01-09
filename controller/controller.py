@@ -161,10 +161,12 @@ class Controller:
             print(f"{index}. {course_name}")
         input_help = _("Enter the courses indexes separated by comma (example: 1,2,20): ")
         courses_indexes = input(input_help)
+        self.logger.debug("Selected courses indexes: %s which they are: ", courses_indexes)
         courses_indexes = [int(index) for index in courses_indexes.strip().split(",")]
         selected_courses_choices = {}
         for index, (course_name, course_choice) in enumerate(courses_choices.items(), 1):
             if index in courses_indexes:
+                self.logger.debug("%d. '%s'", index, course_name)
                 selected_courses_choices[course_name] = course_choice
 
         print("\n\n")
@@ -175,6 +177,7 @@ class Controller:
             print(f"{index}. {option}")
         favorite_lecturers_option = input(_("Enter the option index: "))
         yes_no_option = options[int(favorite_lecturers_option) - 1]
+        self.logger.debug("Selected option: %s", yes_no_option)
         if yes_no_option == _("Yes"):
             for course_name, (course_name, course_choice) in enumerate(selected_courses_choices.items(), 1):
                 lectures_lists = [course_choice.available_teachers_for_lecture,
@@ -182,7 +185,13 @@ class Controller:
                 selected_teachers_lists = []
                 lectures_lists = [sorted(lectures_list) for lectures_list in lectures_lists]
                 for lecture_type, lectures_list in zip(["lecture", "lab / exercise"], lectures_lists):
-                    if len(lectures_list) <= 1:
+                    if len(lectures_list) == 0:
+                        selected_teachers_lists.append(lectures_list)
+                        continue
+                    if len(lectures_list) == 1:
+                        text = _("There is only one lecture for this the course %s which is %s, automatic select it.")
+                        text = text.format(course_name, lectures_list[0])
+                        print(text)
                         selected_teachers_lists.append(lectures_list)
                         continue
                     print("\n\n")
@@ -194,13 +203,16 @@ class Controller:
                         _("Enter the teachers indexes separated by comma (example: 1,2,20) or 0 to select all: ")
 
                     teachers_indexes = input(input_help)
+                    self.logger.debug("Selected teachers indexes: %s which they are: ", teachers_indexes)
                     teachers_indexes = [int(index) for index in teachers_indexes.strip().split(",")]
                     selected_teachers = []
                     if 0 in teachers_indexes:
                         selected_teachers = lectures_list
+                        self.logger.debug("All the available teachers are: %s", ', '.join(selected_teachers))
                         teachers_indexes = []
                     for index, teacher in enumerate(lectures_list, 1):
                         if index in teachers_indexes:
+                            self.logger.debug("%d. '%s'", index, teacher)
                             selected_teachers.append(teacher)
                     selected_teachers_lists.append(selected_teachers)
                 course_choice.available_teachers_for_lecture = selected_teachers_lists[0]
@@ -222,6 +234,7 @@ class Controller:
             print(_("No schedules were found"))
         else:
             print(_("Done successfully !"))
+            print(_("Found %d possible schedules").format(len(schedules)))
 
             results_path = utils.get_results_path()
             self._save_schedule(schedules, settings, results_path)

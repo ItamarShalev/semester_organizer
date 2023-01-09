@@ -97,6 +97,8 @@ data = CaseInsensitiveDict({
     "the system encountered an error, please contanct the engeniers.": "המערכת נתקלה בשגיאה, אנא צור קשר עם המפתחים.",
     "Missing database, can't continue, please download the database file from the github server and import the database by running :": "אין בסיס נתונים על מנת לשלוף את המידע, נא הורד את בסיס הנתונים משרת הגיטאהב ותריץ את הפעולה הבאה : ",
     "Database path is not a file or doesn't exists, the path given is: ": "נתיב בסיס הנתונים אינו קובץ, נתיב בסיס הנתונים שהתקבל: ",
+    "There is only one lecture for this the course %s which is %s, automatic select it.": "יש בחירה יחידה לקורס %s שהיא המרצה %s,ולכן נעשתה בחירה אוטומטית.",
+    "Found %d possible schedules": "נמצאו %d מערכות שעות אפשריות",
 })
 
 
