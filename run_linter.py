@@ -76,11 +76,12 @@ def get_user_data(argument_args):
     # in case the user still not installed the requirements
     # it will import everything only after installing the requirements
     from collector.db.db import Database
-    if not args.username or not args.password:
+    if not argument_args.username or not argument_args.password:
         user_data = Database().load_user_data()
     else:
         user_data = User(argument_args.username, argument_args.password)
         Database().save_user_data(user_data)
+
     return user_data
 
 
@@ -131,7 +132,7 @@ def run_linter_and_tests(arguments):
     assert return_code == 0, "ERROR: Linter failed, check the log file"
 
 
-if __name__ == '__main__':
+def main():
     utils.init_project()
     clear_project()
     args = get_args()
@@ -140,5 +141,9 @@ if __name__ == '__main__':
         install_requirements()
         install_development_requirements()
     utils.config_logging_level(logging.DEBUG if args.verbose else logging.INFO)
-    user = get_user_data(args)
+    get_user_data(args)
     run_linter_and_tests(args)
+
+
+if __name__ == '__main__':
+    main()
