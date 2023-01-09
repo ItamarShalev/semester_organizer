@@ -1,10 +1,11 @@
 import os
+import sys
 import shutil
 import subprocess
 from collections import defaultdict
 from copy import copy
 from operator import itemgetter
-from typing import List, Dict
+from typing import List, Dict, Literal
 
 import utils
 from collector.db.db import Database
@@ -121,6 +122,18 @@ class Controller:
         except StopIteration:
             return None
 
+    def _validate_database(self, output_type: Literal['gui', 'console']):
+        if not self.database.is_all_tables_exists():
+            self.logger.error("ERROR: Missing database, can't continue.")
+            msg = _("Missing database, can't continue, please download the database file from the github server "
+                    "and import the database by running :")
+            msg += "'python __main__.py -- update_dabase {path_to_database.db}'"
+            if output_type == 'gui':
+                self.gui.open_notification_window(msg, MessageType.ERROR)
+            elif output_type == 'console':
+                print(msg)
+            sys.exit(1)
+
     def run_console_flow(self, *test_input):
         """
         Run the console flow of the program, only for academic activities.
@@ -131,6 +144,9 @@ class Controller:
         # For testing purposes
         test_input = iter([str(item) for item in test_input])
         self.logger.info("Starting console flow")
+
+        self._validate_database('console')
+
         language = Language.get_current()
         print(_("Select the campus by enter their index:"))
         available_campuses = self.database.get_common_campuses_names()
@@ -216,6 +232,8 @@ class Controller:
     def run_main_gui_flow(self):
         try:
             self.logger.info("Start the main gui flow")
+
+            self._validate_database('gui')
 
             # Initialize the language for first time.
             self._initial_language_if_first_time()

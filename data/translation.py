@@ -95,6 +95,7 @@ data = CaseInsensitiveDict({
     "Done successfully !": "הפעולה הושלמה בהצלחה !",
     "No schedules were found": "לא נמצאו מערכות שעות אפשריות",
     "the system encountered an error, please contanct the engeniers.": "המערכת נתקלה בשגיאה, אנא צור קשר עם המפתחים.",
+    "Missing database, can't continue, please download the database file from the github server and import the database by running :": "אין בסיס נתונים על מנת לשלוף את המידע, נא הורד את בסיס הנתונים משרת הגיטאהב ותריץ את הפעולה הבאה : "
 })
 
 
