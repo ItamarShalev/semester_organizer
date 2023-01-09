@@ -117,12 +117,6 @@ class Controller:
     def _open_results_folder(self, results_path: str):
         subprocess.call(f"explorer {results_path}", shell=True)
 
-    def _get_next(self, iterator):
-        try:
-            return next(iterator)
-        except StopIteration:
-            return None
-
     def _validate_database(self, output_type: Literal['gui', 'console']):
         if not self.database.is_all_tables_exists():
             self.logger.error("ERROR: Missing database, can't continue.")
@@ -135,7 +129,7 @@ class Controller:
                 print(msg)
             sys.exit(1)
 
-    def run_console_flow(self, *test_input):
+    def run_console_flow(self):
         """
         Run the console flow of the program, only for academic activities.
         Console flow will use the default settings.
@@ -143,7 +137,6 @@ class Controller:
         """
         # pylint: disable=too-many-branches
         # For testing purposes
-        test_input = iter([str(item) for item in test_input])
         self.logger.info("Starting console flow")
         delay_time = 0.12
 
@@ -155,7 +148,7 @@ class Controller:
         for index, name in enumerate(available_campuses, 1):
             time.sleep(delay_time)
             print(f"{index}. {name}")
-        campus_index = self._get_next(test_input) or input(_("Enter the campus index: "))
+        campus_index = input(_("Enter the campus index: "))
         campus_name = available_campuses[int(campus_index) - 1]
         print("\n\n")
 
@@ -167,7 +160,7 @@ class Controller:
             time.sleep(delay_time)
             print(f"{index}. {course_name}")
         input_help = _("Enter the courses indexes separated by comma (example: 1,2,20): ")
-        courses_indexes = self._get_next(test_input) or input(input_help)
+        courses_indexes = input(input_help)
         courses_indexes = [int(index) for index in courses_indexes.strip().split(",")]
         selected_courses_choices = {}
         for index, (course_name, course_choice) in enumerate(courses_choices.items(), 1):
@@ -180,7 +173,7 @@ class Controller:
         for index, option in enumerate(options, 1):
             time.sleep(delay_time)
             print(f"{index}. {option}")
-        favorite_lecturers_option = self._get_next(test_input) or input(_("Enter the option index: "))
+        favorite_lecturers_option = input(_("Enter the option index: "))
         yes_no_option = options[int(favorite_lecturers_option) - 1]
         if yes_no_option == _("Yes"):
             for course_name, (course_name, course_choice) in enumerate(selected_courses_choices.items(), 1):
@@ -200,7 +193,7 @@ class Controller:
                     input_help = \
                         _("Enter the teachers indexes separated by comma (example: 1,2,20) or 0 to select all: ")
 
-                    teachers_indexes = self._get_next(test_input) or input(input_help)
+                    teachers_indexes = input(input_help)
                     teachers_indexes = [int(index) for index in teachers_indexes.strip().split(",")]
                     selected_teachers = []
                     if 0 in teachers_indexes:

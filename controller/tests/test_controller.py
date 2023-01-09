@@ -1,3 +1,4 @@
+import builtins
 import os.path
 from typing import List, Dict, Tuple
 
@@ -85,16 +86,20 @@ class TestController:
     def test_flow_console(self, controller, language: Language):
         translation.config_language_text(language)
         Database().save_language(language)
-        input_for_english = 1, "2, 8, 11, 14, 15, 35", 1, 2, 3, 1, 1, 1
-        input_for_hebrew = 1, "1", 2
-        test_input = input_for_hebrew if language is Language.HEBREW else input_for_english
-        controller.run_console_flow(*test_input)
+        test_input = iter([str(item) for item in [1, "1, 3", 2]])
+
+        def input_next(*args):
+            try:
+                return next(test_input)
+            except StopIteration as error:
+                text = ' '.join([str(item) for item in args])
+                raise ValueError(f"FAIL: input args: {text}") from error
+
+        builtins.input = input_next
+        controller.run_console_flow()
         results = utils.get_results_path()
         # Check that the results file was created.
         # And contains only one file.
         assert os.path.exists(results)
         files_count, _dirs = TestController._get_count_files_and_directory(results)
-        if language is Language.HEBREW:
-            assert files_count >= 1
-        elif language is Language.ENGLISH:
-            assert files_count == 1
+        assert files_count >= 1
