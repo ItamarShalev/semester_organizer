@@ -25,6 +25,7 @@ def get_args():
     parser.add_argument("-p", "--password", help="The password user in the server", default=None, type=str)
     parser.add_argument("-l", "--language", help="Set the language of the program", choices=list(Language),
                         type=Language.from_str, default=Language.get_default())
+    parser.add_argument("-v", "--verbose", help="Print more debug logs", default=False, action="store_true")
     parser.add_argument("--database_path", default="", type=pathlib.Path,
                         help="Path to database file (.db) Update database by given .db file, "
                              "that can be downaloaded from the server (currently the gitub)")
@@ -34,8 +35,8 @@ def get_args():
 
 def main():
     utils.init_project()
-    utils.config_logging_level(logging.ERROR)
     args = get_args()
+    utils.config_logging_level(logging.DEBUG if args.verbose else logging.WARNING)
     translation.config_language_text(args.language)
     database = Database()
 
