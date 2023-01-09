@@ -48,6 +48,9 @@ class TestDatabase:
         database.save_campuses(campuses)
         return campuses
 
+    def test_not_empty(self, database):
+        assert database.is_all_tables_exists()
+
     def test_campuses(self, database):
 
         campuses = {

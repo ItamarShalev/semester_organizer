@@ -35,6 +35,9 @@ class Database:
 
     def __init__(self):
         self.logger = utils.get_logging()
+        self._all_sql_tables = ["lecturers", "courses_lecturers", "semesters_courses", "courses", "semesters",
+                                "personal_activities_meetings", "personal_activities", "activities_meetings",
+                                "activities", "meetings", "campuses"]
 
     def init_database_tables(self):
         with database.connect(Database.DATABASE_PATH) as connection:
@@ -447,22 +450,23 @@ class Database:
         self.init_database_tables()
         shutil.copy2(database_path, Database.DATABASE_PATH)
 
+    def is_all_tables_exists(self):
+        if not os.path.exists(Database.DATABASE_PATH):
+            return False
+        with database.connect(Database.DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            all_exists = True
+            for table_name in self._all_sql_tables:
+                cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name= ?;", (table_name,))
+                all_exists = all_exists and bool(cursor.fetchone())
+            cursor.close()
+            return all_exists
+
     def clear_database(self):
         if not os.path.exists(Database.DATABASE_PATH):
             return
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute("DROP TABLE IF EXISTS lecturers;")
-            cursor.execute("DROP TABLE IF EXISTS courses_lecturers;")
-            cursor.execute("DROP TABLE IF EXISTS semesters_courses;")
-            cursor.execute("DROP TABLE IF EXISTS courses;")
-            cursor.execute("DROP TABLE IF EXISTS semesters;")
-
-            cursor.execute("DROP TABLE IF EXISTS personal_activities_meetings;")
-            cursor.execute("DROP TABLE IF EXISTS personal_activities;")
-            cursor.execute("DROP TABLE IF EXISTS activities_meetings;")
-            cursor.execute("DROP TABLE IF EXISTS activities;")
-            cursor.execute("DROP TABLE IF EXISTS meetings;")
-            cursor.execute("DROP TABLE IF EXISTS campuses;")
-
+            for table_name in self._all_sql_tables:
+                cursor.execute(f"DROP TABLE IF EXISTS {table_name};")
             cursor.close()
