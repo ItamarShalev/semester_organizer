@@ -48,6 +48,7 @@ def install_auto_complete_cli():
         file_path = os.path.abspath(os.path.join(ROOT_PATH, file))
         file_path = windows_path_to_unix(file_path)
         text_to_copy += f'eval "$(register-python-argcomplete {file_path})"\n'
+    text_to_copy += "# End of the autocomplete section"
     if not os.path.exists(bashrc_path):
         with open(bashrc_path, "w") as file:
             file.write(text_to_copy)
