@@ -111,6 +111,7 @@ class Gui:
         :return: the courses that the user chose.
         :raises: UserClickExitException if the user clicked exit button.
         """
+        raise NotImplementedError()
 
     def open_personal_activities_window(self) -> List[Activity]:
         """
@@ -118,6 +119,7 @@ class Gui:
         for example, job, army, etc.
         :return: list of custom activities, or empty list.
         """
+        raise NotImplementedError()
 
     def open_notification_window(self, message: str, message_type: MessageType = MessageType.INFO,
                                  buttons: List[str] = None) -> Optional[str]:
@@ -188,3 +190,4 @@ class Gui:
         :param: years: all the years that the user can choose from.
         :return: new object of Settings, if the user click exit button, it will return the old settings.
         """
+        raise NotImplementedError()
