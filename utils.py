@@ -9,7 +9,7 @@ from data.course import Course
 from data.semester import Semester
 from data.translation import _
 
-ENCODING = "utf-8"
+ENCODING = "utf-8-sig"
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 LOG_FILE_HANDLER = logging.FileHandler(filename=os.path.join(ROOT_PATH, "log.txt"), encoding=ENCODING, mode='w')
 DATA_SOFTWARE_VERSION = "1.0"
