@@ -141,6 +141,11 @@ data = TextCaseInsensitiveDict({
     "Do you want to change the campus name?": "האם ברצונך לשנות את שם המכון?",
     "ERROR: can't save the schedules, maybe the file is open? failed to save in: ": "שגיאה: לא ניתן לשמור את מערכות השעות, אולי הקובץ פתוח? נכשל לשמור בתיקייה : ",
     "Try to save in directory:": "מנסה לשמור בתיקייה:",
+    "Would you like to be present and consider the lecture of course with mandatory attendance?": "האם תרצה להיות נוכח ולהחשיב את ההרצאה של הקורס עם נוכחות חובה?",
+    "Would you like to be present and consider the lab / exercise of course with mandatory attendance?": "האם תרצה להיות נוכח ולהחשיב את המעבדה או התרגול של הקורס עם נוכחות חובה?",
+    "lecture": "הרצאה",
+    "lab / exercise": "מעבדה / תרגול",
+    "Do you want to be present and consider all courses with mandatory attendance?": "האם תרצה להיות נוכח ולהחשיב את כל הקורסים עם נוכחות חובה?",
 })
 
 

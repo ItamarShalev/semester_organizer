@@ -260,6 +260,10 @@ class Database:
                 activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language in cursor.fetchall()]
 
                 for activity in activities:
+                    if activity.type.is_lecture():
+                        activity.attendance_required = course_choice.attendance_required_for_lecture
+                    else:
+                        activity.attendance_required = course_choice.attendance_required_for_practice
                     cursor.execute("SELECT meetings.* FROM meetings "
                                    "INNER JOIN activities_meetings "
                                    "ON meetings.id = activities_meetings.meeting_id "

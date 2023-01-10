@@ -228,21 +228,18 @@ class Controller:
 
         return selected_teachers
 
-    def _console_ask_for_favorite_lecturers_all_courses(self, campus_name: str, courses_choices: Dict[str, List[str]]):
+    def _console_ask_for_favorite_lecturers_all_courses(self, courses_choices: Dict[str, List[CourseChoice]]):
         selected_courses_choices = {}
-        for course_name, (course_name, course_choice) in enumerate(courses_choices.items(), 1):
+        for course_name, course_choice in courses_choices.items():
             lectures_lists = [course_choice.available_teachers_for_lecture,
                               course_choice.available_teachers_for_practice]
             lectures_lists = [sorted(lectures_list) for lectures_list in lectures_lists]
-            lectures, pracitces = None, None
             for lecture_type, lectures_list in zip(["lecture", "lab / exercise"], lectures_lists):
                 selected = self._console_ask_favorite_lecturers(course_name, lecture_type, lectures_list)
                 if lecture_type == "lecture":
-                    lectures = selected
+                    course_choice.available_teachers_for_lecture = selected
                 else:
-                    pracitces = selected
-            course_choice.available_teachers_for_lecture = lectures
-            course_choice.available_teachers_for_practice = pracitces
+                    course_choice.available_teachers_for_practice = selected
             selected_courses_choices[course_name] = course_choice
         return selected_courses_choices
 
@@ -444,6 +441,25 @@ class Controller:
 
         return settings
 
+    def _console_ask_for_attendance_required_all_courses(self, courses_choices: Dict[str, List[CourseChoice]]):
+        selected_courses_choices = {}
+        message = "Would you like to be present and consider the {} of course with mandatory attendance?"
+        for course_name, course_choice in courses_choices.items():
+            print(course_name + ":")
+            lectures_lists = [course_choice.available_teachers_for_lecture,
+                              course_choice.available_teachers_for_practice]
+            lectures_lists = [sorted(lectures_list) for lectures_list in lectures_lists]
+            for lecture_type, lectures_list in zip(["lecture", "lab / exercise"], lectures_lists):
+                is_yes = False
+                if len(lectures_list) > 0:
+                    is_yes = self._console_ask_yes_or_no(message.format(lecture_type))
+                if lecture_type == "lecture":
+                    course_choice.attendance_required_for_lecture = is_yes
+                else:
+                    course_choice.attendance_required_for_practice = is_yes
+            selected_courses_choices[course_name] = course_choice
+        return selected_courses_choices
+
     def run_console_flow(self):
         """
         Run the console flow of the program, only for academic activities.
@@ -492,7 +508,15 @@ class Controller:
         is_yes = self._console_ask_yes_or_no("Do you want to select favorite lecturers?")
 
         if is_yes:
-            courses_choices = self._console_ask_for_favorite_lecturers_all_courses(campus_name, courses_choices)
+            courses_choices = self._console_ask_for_favorite_lecturers_all_courses(courses_choices)
+        if not settings.attendance_required_all_courses:
+            message = "Do you want to be present and consider all courses with mandatory attendance?"
+            is_yes = self._console_ask_yes_or_no(message)
+            if is_yes:
+                settings.attendance_required_all_courses = True
+                self.database.save_settings(settings)
+            else:
+                courses_choices = self._console_ask_for_attendance_required_all_courses(courses_choices)
 
         print("\n\n")
         print(_("Generating schedules..."))
