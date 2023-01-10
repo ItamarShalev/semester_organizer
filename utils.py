@@ -84,7 +84,7 @@ def get_results_path():
 
 
 def get_current_semester():
-    return Semester.FALL
+    return Semester.SPRING
 
 
 def config_logging_level(level=logging.DEBUG):
