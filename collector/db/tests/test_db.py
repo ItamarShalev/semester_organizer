@@ -9,6 +9,7 @@ from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.course import Course
 from data.course_choice import CourseChoice
+from data.degree import Degree
 from data.language import Language
 from data.semester import Semester
 from data.settings import Settings
@@ -26,6 +27,7 @@ class TestDatabase:
         Database.VERSIONS_PATH = os.path.join(utils.get_database_path(), "test_versions.txt")
         Database.SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "test_settings_data.txt")
         Database.DATABASE_PATH = os.path.join(utils.get_database_path(), "test_database.db")
+        Database.COURSES_CHOOSE_PATH = os.path.join(utils.get_database_path(), "test_course_choose_user_input.txt")
 
         with suppress(Exception):
             os.remove(Database.DATABASE_PATH)
@@ -69,10 +71,10 @@ class TestDatabase:
         assert set(semesters) == set(database.load_semesters())
 
     def test_courses(self, database):
-        hebrew_courses = [Course(f"קורס {i}", i, i + 1000, semesters=Semester.ANNUAL) for i in range(10)]
+        hebrew_courses = [Course(f"קורס {i}", i, i + 1000, set(Semester), set(Degree)) for i in range(10)]
         database.save_courses(hebrew_courses, Language.HEBREW)
 
-        english_courses = [Course(f"course {i}", i, i + 1000) for i in range(10)]
+        english_courses = [Course(f"course {i}", i, i + 1000, set(Semester), set(Degree)) for i in range(10)]
         database.save_courses(english_courses, Language.ENGLISH)
 
         assert set(hebrew_courses) == set(database.load_courses(Language.HEBREW))
@@ -88,12 +90,13 @@ class TestDatabase:
         campus_name = "A"
         academic_activity = AcademicActivity("name", Type.LECTURE, True, "meir", 12, 232, "", "12.23", "", 0, 100, 1213)
         database.save_academic_activities([academic_activity], campus_name, Language.ENGLISH)
-        loaded = database.load_academic_activities(campus_name, Language.ENGLISH, [Course("name", 12, 232)])
+        loaded = database.load_academic_activities(campus_name, Language.ENGLISH,
+                                                   [Course("name", 12, 232, set(Semester), set(Degree))])
         assert loaded == [academic_activity]
 
     def test_course_choices(self, database, campuses):
         campus_name = "A"
-        courses = [Course(f"Course {i}", i, i + 1000) for i in range(10)]
+        courses = [Course(f"Course {i}", i, i + 1000, set(Semester), set(Degree)) for i in range(10)]
         database.save_courses(courses, Language.ENGLISH)
         activities = [AcademicActivity(f"Course {i}", Type.LECTURE, True, "meir", i, i + 1000, "", f"3{i}", "", 0, 1, 0)
                       for i in range(10)]
@@ -105,7 +108,7 @@ class TestDatabase:
     def test_load_activities_by_courses_choices(self, database, campuses):
         campus_name = "A"
         language = Language.ENGLISH
-        courses = [Course(f"Cor {i}", i, i + 10) for i in range(10)]
+        courses = [Course(f"Cor {i}", i, i + 10, set(Semester), set(Degree)) for i in range(10)]
         database.save_courses(courses, language)
 
         def create_activity(i):
@@ -158,6 +161,13 @@ class TestDatabase:
         database.clear_years()
         assert not database.load_years()
 
+    def test_last_courses_choices(self, database):
+        names = ["a", "b", "c"]
+        database.save_courses_console_choose(names)
+        assert database.load_courses_console_choose() == names
+        database.clear_last_courses_choose_input()
+        assert not database.load_courses_console_choose()
+
     def test_clear_all(self, database):
         database.clear_all_data()
         with suppress(PermissionError):
@@ -168,3 +178,4 @@ class TestDatabase:
         Database.VERSIONS_PATH = os.path.join(utils.get_database_path(), "versions.txt")
         Database.SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.txt")
         Database.DATABASE_PATH = os.path.join(utils.get_database_path(), "database.db")
+        Database.COURSES_CHOOSE_PATH = os.path.join(utils.get_database_path(), "course_choose_user_input.txt")

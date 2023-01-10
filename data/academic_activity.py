@@ -39,11 +39,6 @@ class AcademicActivity(Activity):
     def is_have_free_places(self) -> bool:
         return self.current_capacity < self.max_capacity
 
-    def convert_to_course_object(self):
-        course = Course(self.name, self.course_number, self.parent_course_number, activity_id=self.activity_id)
-        course.set_attendance_required(self.type, self.attendance_required)
-        return course
-
     def __eq__(self, other):
         is_equals = super().__eq__(other)
         is_equals = is_equals and self.lecturer_name == other.lecturer_name
@@ -68,16 +63,11 @@ class AcademicActivity(Activity):
         return is_same
 
     @staticmethod
-    def extract_courses_data(academic_activities) -> List[Course]:
-        return [activity.convert_to_course_object() for activity in academic_activities]
-
-    @staticmethod
     def union_courses(academic_activities, courses: List[Course]):
         for activity in academic_activities:
             for course in courses:
                 if activity.same_as_course(course):
                     activity.attendance_required = course.is_attendance_required(activity.type)
-                    activity.activity_id = activity.activity_id or course.activity_id
                     break
 
     def __iter__(self):

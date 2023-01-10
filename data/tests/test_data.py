@@ -15,6 +15,7 @@ from data.course import Course
 from data.day import Day
 from data.schedule import Schedule
 from data.semester import Semester
+from data.settings import Settings
 from data.type import Type
 from data.course_choice import CourseChoice
 from data import translation
@@ -45,8 +46,8 @@ class TestData:
         assert repr(meeting) == "09:00 - 11:00"
 
     def test_course(self):
-        course = Course("", 0, 0, "0.0.1", None)
-        course2 = Course("", 1, 2, "0.0.1", None, semesters=Semester.SPRING)
+        course = Course("", 0, 0, set(Semester), set(Degree))
+        course2 = Course("", 0, 0, Semester.ANNUAL, Degree.SOFTWARE_ENGINEERING)
         assert course == course2
 
         course.set_attendance_required(Type.LAB, True)
@@ -61,7 +62,7 @@ class TestData:
 
         course.add_semesters({Semester.SUMMER})
         course.add_semesters(Semester.ANNUAL)
-        assert course.semesters == {Semester.SUMMER, Semester.ANNUAL}
+        assert course.semesters == {Semester.SUMMER, Semester.ANNUAL, Semester.SPRING, Semester.FALL}
 
     def test_activity(self):
         activity = Activity("", Type.LAB, False)
@@ -83,13 +84,11 @@ class TestData:
 
     def test_academic_activity(self):
         activity = AcademicActivity("name", activity_type=Type.LAB, course_number=10, parent_course_number=20)
-        course = Course("name", 10, 20, "0.0.1", None)
+        course = Course("name", 10, 20, set(Semester), set(Degree))
         assert activity.same_as_course(course)
         activities = [activity]
 
         AcademicActivity.union_courses(activities, [course])
-        assert activity.activity_id == course.activity_id
-
         assert repr(activity) == "name"
 
     def test_type(self):
@@ -213,9 +212,12 @@ class TestData:
         assert utils.get_course_data_test().parent_course_number == 318
 
     def test_degree(self):
-        degrees = Degree.get_defaults()
-        assert degrees == {Degree.SOFTWARE_ENGINEERING, Degree.COMPUTER_SCIENCE}
+        degrees = set()
+        degrees.add(Degree.COMPUTER_SCIENCE)
+        degrees.add(Degree.SOFTWARE_ENGINEERING)
         assert repr(Degree.COMPUTER_SCIENCE) == "Computer Science"
+        assert len(Degree.get_defaults()) == 2
+        assert set(Degree) == {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
 
     def test_flow_enum(self):
         flow = Flow.GUI
@@ -226,6 +228,15 @@ class TestData:
         assert flow.from_str(1) is Flow.GUI
         with pytest.raises(ValueError):
             flow.from_str("18")
+
+    def test_settings(self):
+        # pylint: disable=no-member
+        excepted_settings = Settings()
+        excepted_settings.degrees = Degree.get_defaults()
+        json_settings = Settings().to_json()
+        settings = Settings.from_json(json_settings)
+        assert settings == Settings()
+        assert settings.degrees == Degree.get_defaults()
 
     def test_others(self):
         message = MessageType.ERROR

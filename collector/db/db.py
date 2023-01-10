@@ -5,13 +5,14 @@ import shutil
 import sqlite3 as database
 import time
 from collections import defaultdict
-from typing import List, Optional, Dict, Tuple
+from typing import List, Optional, Dict, Tuple, Collection, Set
 
 import utils
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.course import Course
 from data.course_choice import CourseChoice
+from data.degree import Degree
 from data.language import Language
 from data.meeting import Meeting
 from data.semester import Semester
@@ -27,17 +28,27 @@ HebrewName = str
 class Database:
 
     USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
-
     YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "years_data.txt")
     VERSIONS_PATH = os.path.join(utils.get_database_path(), "versions.txt")
     SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.txt")
     DATABASE_PATH = os.path.join(utils.get_database_path(), "database.db")
+    COURSES_CHOOSE_PATH = os.path.join(utils.get_database_path(), "course_choose_user_input.txt")
 
     def __init__(self):
         self.logger = utils.get_logging()
-        self._all_sql_tables = ["lecturers", "courses_lecturers", "semesters_courses", "courses", "semesters",
-                                "personal_activities_meetings", "personal_activities", "activities_meetings",
-                                "activities", "meetings", "campuses"]
+        self._all_sql_tables = ["degrees",
+                                "campuses",
+                                "degrees_courses",
+                                "lecturers",
+                                "courses_lecturers",
+                                "semesters_courses",
+                                "courses",
+                                "semesters",
+                                "personal_activities_meetings",
+                                "personal_activities",
+                                "activities_meetings",
+                                "activities",
+                                "meetings"]
 
     def init_database_tables(self):
         with database.connect(Database.DATABASE_PATH) as connection:
@@ -95,6 +106,14 @@ class Database:
                            "PRIMARY KEY(course_number, parent_course_number, lecturer_name, "
                            "is_lecture_rule, campus_id, lecturer_name));")
 
+            cursor.execute("CREATE TABLE IF NOT EXISTS degrees "
+                           "(name TEXT PRIMARY KEY, department INTEGER);")
+
+            cursor.execute("CREATE TABLE IF NOT EXISTS degrees_courses "
+                           "(degree_name TEXT, parent_course_number INTEGER, "
+                           "FOREIGN KEY(degree_name) REFERENCES degrees(name), "
+                           "PRIMARY KEY(degree_name, parent_course_number));")
+
             connection.commit()
             cursor.close()
 
@@ -111,6 +130,14 @@ class Database:
             cursor = connection.cursor()
             for semester in semesters:
                 cursor.execute("INSERT OR IGNORE INTO semesters VALUES (?, ?);", (*semester, ))
+            connection.commit()
+            cursor.close()
+
+    def save_degrees(self, degrees: List[Degree]):
+        with database.connect(Database.DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            for degree in degrees:
+                cursor.execute("INSERT OR IGNORE INTO degrees VALUES (?, ?);", (*degree, ))
             connection.commit()
             cursor.close()
 
@@ -137,11 +164,14 @@ class Database:
             connection.commit()
             cursor.close()
 
-    def load_courses_choices(self, campus_name: str, language: Language,
-                             courses: List[Course] = None) -> Dict[str, CourseChoice]:
+    def load_courses_choices(self, campus_name: str,
+                             language: Language, courses: List[Course] = None,
+                             degrees: Set[Degree] = None) -> Dict[str, CourseChoice]:
         """
         If courses is None - load all active courses
+        If degrees is None - load default degrees
         """
+        degrees = degrees or Degree.get_defaults()
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
@@ -149,11 +179,19 @@ class Database:
             courses_choices_data = defaultdict(lambda: (set(), set()))
             lecture_index = 0
             practice_index = 1
+            degrees_text = f"({', '.join(['?'] * len(degrees))})"
+
             for course in courses:
                 cursor.execute("SELECT lecturer_name, is_lecture_rule FROM courses_lecturers "
-                               "WHERE course_number = ? AND parent_course_number = ? AND campus_id = ? "
-                               "AND language_value = ?;",
-                               (course.course_number, course.parent_course_number, campus_id, language.short_name()))
+                               "INNER JOIN degrees_courses "
+                               "ON courses_lecturers.parent_course_number = degrees_courses.parent_course_number "
+                               "WHERE courses_lecturers.course_number = ? "
+                               "AND courses_lecturers.parent_course_number = ? "
+                               "AND courses_lecturers.campus_id = ? "
+                               "AND courses_lecturers.language_value = ? "
+                               f"AND degrees_courses.degree_name IN {degrees_text} ;",
+                               (course.course_number, course.parent_course_number, campus_id, language.short_name(),
+                                *[degree.name for degree in degrees]))
 
                 for lecturer_name, is_lecture_rule in cursor.fetchall():
                     index = lecture_index if is_lecture_rule else practice_index
@@ -191,38 +229,54 @@ class Database:
                 for semester in course.semesters:
                     cursor.execute("INSERT INTO semesters_courses VALUES (?, ?);",
                                    (semester.value, course.parent_course_number))
+                for degree in course.degrees:
+                    cursor.execute("INSERT OR IGNORE INTO degrees_courses VALUES (?, ?);",
+                                   (degree.name, course.parent_course_number))
             connection.commit()
             cursor.close()
 
-    def load_courses(self, language: Language) -> List[Course]:
+    def load_courses(self, language: Language, degrees: Optional[Set[Degree]] = None) -> List[Course]:
         if not os.path.exists(Database.DATABASE_PATH):
             return []
         with database.connect(Database.DATABASE_PATH) as connection:
+            degrees = degrees or Degree.get_defaults()
+            degrees_text = f"({', '.join(['?'] * len(degrees))})"
             cursor = connection.cursor()
             cursor.execute("SELECT * FROM courses "
                            "WHERE language_value = ?;", (language.short_name(),))
             courses = [Course(*data_line) for data_line in cursor.fetchall()]
             for course in courses:
                 cursor.execute("SELECT name FROM semesters "
-                               "INNER JOIN semesters_courses ON semesters.id = semesters_courses.semester_id "
-                               "WHERE semesters_courses.course_id = ?;", (course.parent_course_number,))
+                               "INNER JOIN semesters_courses "
+                               "INNER JOIN degrees_courses "
+                               "ON semesters.id = semesters_courses.semester_id "
+                               "AND semesters_courses.course_id = degrees_courses.parent_course_number "
+                               "WHERE semesters_courses.course_id = ?"
+                               f"AND degrees_courses.degree_name in {degrees_text};",
+                               (course.parent_course_number, *[degree.name for degree in degrees]))
                 course.semesters = [Semester[semester_name.upper()] for (semester_name,) in cursor.fetchall()]
             cursor.close()
             return courses
 
-    def load_active_courses(self, campus_name: str, language: Language):
+    def load_active_courses(self, campus_name: str, language: Language,
+                            degrees: Collection[Degree] = None) -> List[Course]:
         if not os.path.exists(Database.DATABASE_PATH):
             return []
         with database.connect(Database.DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
+            degrees = degrees or Degree.get_defaults()
+            degrees_text = f"({', '.join(['?'] * len(degrees))})"
             cursor.execute("SELECT DISTINCT courses.* FROM courses "
                            "INNER JOIN activities "
+                           "INNER JOIN degrees_courses "
                            "ON courses.parent_course_number = activities.parent_course_number "
                            "AND courses.course_number = activities.course_number AND "
                            "courses.language_value = activities.language_value "
-                           "WHERE activities.campus_id = ? AND courses.language_value = ?;",
-                           (campus_id, language.short_name()))
+                           "WHERE activities.campus_id = ? AND courses.language_value = ?"
+                           f"AND degrees_courses.degree_name in {degrees_text};",
+                           (campus_id, language.short_name(), *[degree.name for degree in degrees]))
+
             courses = [Course(*data_line) for data_line in cursor.fetchall()]
             cursor.close()
             return courses
@@ -244,9 +298,9 @@ class Database:
                 hold_place_practices = ",".join(["?"] * len(course_choice.available_teachers_for_practice))
                 is_not_null = "lecturer_name IS NOT NULL"
 
-                text_hold_place_lectures = f"lecturer_name in ({hold_place_lectures})" if lectures else is_not_null
+                text_hold_place_lectures = f"lecturer_name IN ({hold_place_lectures})" if lectures else is_not_null
 
-                text_hold_place_practices = f"lecturer_name in ({hold_place_practices})" if practices else is_not_null
+                text_hold_place_practices = f"lecturer_name IN ({hold_place_practices})" if practices else is_not_null
 
                 cursor.execute("SELECT * FROM activities "
                                "WHERE name = ? AND language_value = ? AND campus_id = ? AND "
@@ -337,7 +391,6 @@ class Database:
         if not os.path.exists(Database.DATABASE_PATH):
             return []
         with database.connect(Database.DATABASE_PATH) as connection:
-            cursor = connection.cursor()
             language = language or Language.get_current()
             cursor = connection.cursor()
             name_column = "english_name" if language is Language.ENGLISH else "hebrew_name"
@@ -356,9 +409,6 @@ class Database:
                         for campus_id, english_name, hebrew_name in cursor.fetchall()}
             cursor.close()
             return campuses
-
-    def save_courses_data(self, courses: List[Course]):
-        raise AttributeError("This function is deprecated.")
 
     def load_current_versions(self) -> Tuple[Optional[str], Optional[str]]:
         if not os.path.isfile(Database.VERSIONS_PATH):
@@ -380,6 +430,16 @@ class Database:
         settings.language = language
         self.save_settings(settings)
 
+    def save_courses_console_choose(self, courses_names: List[str]):
+        with open(Database.COURSES_CHOOSE_PATH, "w", encoding=utils.ENCODING) as file:
+            file.write("\n".join(courses_names))
+
+    def load_courses_console_choose(self) -> Optional[list[str]]:
+        if not os.path.isfile(Database.COURSES_CHOOSE_PATH):
+            return None
+        with open(Database.COURSES_CHOOSE_PATH, "r", encoding=utils.ENCODING) as file:
+            return [text.replace("\n", "") for text in file.readlines()]
+
     def load_user_data(self) -> Optional[User]:
         """
         This function is used to load the user data from the hard coded file.
@@ -398,6 +458,7 @@ class Database:
         self.clear_settings()
         self.clear_years()
         self.clear_database()
+        self.clear_last_courses_choose_input()
 
     def save_settings(self, settings: Settings):
         with open(Database.SETTINGS_FILE_PATH, "w", encoding=utils.ENCODING) as file:
@@ -487,3 +548,7 @@ class Database:
             for table_name in self._all_sql_tables:
                 cursor.execute(f"DROP TABLE IF EXISTS {table_name};")
             cursor.close()
+
+    def clear_last_courses_choose_input(self):
+        if os.path.exists(Database.COURSES_CHOOSE_PATH):
+            os.remove(Database.COURSES_CHOOSE_PATH)

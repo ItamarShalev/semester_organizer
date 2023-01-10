@@ -12,6 +12,7 @@ import argcomplete
 import utils
 from collector.db.db import Database
 from semester_organizer_private.network.network import NetworkHttp
+from data.degree import Degree
 from data import translation
 from data.language import Language
 from data.user import User
@@ -61,13 +62,17 @@ def run_update_levnet_data_flow():
     campuses = {key: (english_campuses[key], hebrew_campuses[key]) for key in english_campuses.keys()}
 
     database.save_campuses(campuses)
+    database.save_degrees(list(Degree))
 
     for language in list(Language):
         translation.config_language_text(language)
         network.change_language(language)
         logger.debug("The language was changed to %s", language)
 
-        courses = network.extract_all_courses(utils.get_campus_name_test())
+        all_degrees = set(Degree)
+
+        courses = network.extract_all_courses(utils.get_campus_name_test(), all_degrees)
+
         logger.debug("The courses were extracted successfully")
         logger.debug("The courses are: %s", ", ".join([course.name for course in courses]))
 

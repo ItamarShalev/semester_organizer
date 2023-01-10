@@ -6,7 +6,7 @@ import time
 from collections import defaultdict
 from copy import copy
 from operator import itemgetter
-from typing import List, Dict, Literal, Optional, Any
+from typing import List, Dict, Literal, Optional, Any, Set
 
 import utils
 from collector.db.db import Database
@@ -16,6 +16,7 @@ from csp.csp import CSP
 from data import translation
 from data.academic_activity import AcademicActivity
 from data.course_choice import CourseChoice
+from data.degree import Degree
 from data.language import Language
 from data.schedule import Schedule
 from data.settings import Settings
@@ -57,7 +58,8 @@ class Controller:
             message += _(str(Language.get_current()))
             language = self.gui.open_notification_window(message, MessageType.INFO, list(map(str, Language)))
             if language and Language.contains(language):
-                translation.config_language_text(Language[language.upper()])
+                language = Language[language.upper()]
+                translation.config_language_text(language)
                 if self.database.get_language() != language:
                     self.database.save_language(language)
 
@@ -133,7 +135,7 @@ class Controller:
                 self.gui.open_notification_window(msg, MessageType.ERROR)
             elif output_type == 'console':
                 print(msg)
-            sys.exit(1)
+            sys.exit(0)
 
     def _console_ask_campus_name(self):
         print(_("Select the campus by enter their index:"))
@@ -145,19 +147,32 @@ class Controller:
         print("\n\n")
         return campus_name
 
-    def _console_ask_courses_choices(self, campus_name: str):
+    def _console_ask_courses_choices(self, campus_name: str, degrees: Set[Degree]):
         language = Language.get_current()
-        courses_choices = self.database.load_courses_choices(campus_name, language)
+        courses_choices = self.database.load_courses_choices(campus_name, language, degrees=degrees)
         courses_choices = dict(sorted(courses_choices.items(), key=itemgetter(0)))
 
         print(_("Select the courses by enter their index:"))
+        time.sleep(self.delay_time)
+        last_choices = self.database.load_courses_console_choose() or []
+        if last_choices:
+            print(" 0.", _("Choose your previous selection:"), ", ".join(last_choices))
+        last_choices_in_indexes = []
         for index, course_name in enumerate(courses_choices.keys(), 1):
             time.sleep(self.delay_time)
-            print(f"{index}. {course_name}")
+            print(f"{str(index).rjust(2)}.", _("Course:"), f"{course_name}")
+            if course_name in last_choices:
+                last_choices_in_indexes.append(index)
         input_help = _("Enter the courses indexes separated by comma (example: 1,2,20): ")
-        courses_indexes = input(input_help)
-        self.logger.debug("Selected courses indexes: %s which they are: ", courses_indexes)
-        courses_indexes = [int(index) for index in courses_indexes.strip().split(",")]
+        courses_indexes_input = input(input_help)
+        self.logger.debug("Selected courses indexes: %s which they are: ", courses_indexes_input)
+        courses_indexes = [int(index) for index in courses_indexes_input.strip().split(",")]
+        self._validate_is_numbers_in_range(courses_indexes, len(courses_choices), 0 if last_choices else 1)
+        if 0 in courses_indexes:
+            courses_indexes = last_choices_in_indexes
+        else:
+            choices = [list(courses_choices.keys())[index - 1] for index in courses_indexes]
+            self.database.save_courses_console_choose(choices)
         selected_courses_choices = {}
         for index, (course_name, course_choice) in enumerate(courses_choices.items(), 1):
             if index in courses_indexes:
@@ -247,14 +262,14 @@ class Controller:
         return _("Yes") if value else _("No")
 
     def _print_current_settings(self, settings: Settings):
-        enter_scentence_format = "\n" + len(_("Explain: ")) * " "
+        enter_sentence_format = "\n" + len(_("Explain: ")) * " "
         end_line = "\n\n"
 
         print(_("Current settings:"))
         print()
         print(_("Attendance required all courses:"), self._yes_no(settings.attendance_required_all_courses))
-        print(_("Explain: Count all the courses as attendance is mandatory"), end=enter_scentence_format)
-        print(_("and there is no possibility of collision with other courses."), end=enter_scentence_format)
+        print(_("Explain: Count all the courses as attendance is mandatory"), end=enter_sentence_format)
+        print(_("and there is no possibility of collision with other courses."), end=enter_sentence_format)
         print(_("If is set to no, you will ask for each course if you will want to be present."), end=end_line)
 
         campus_name = settings.campus_name or _("Not set")
@@ -262,10 +277,16 @@ class Controller:
         print(_("Explain: The name of the campus that you want to search for the courses."), end=end_line)
 
         print(_("Year of study:"), settings.year)
-        print(_("Explain: The year of the courses to be selected and collect from the colleage."), end=end_line)
+        print(_("Explain: The year of the courses to be selected and collect from the college."), end=end_line)
 
         print(_("Semester of study:"), _(str(settings.semester)))
-        print(_("Explain: The semester of the courses to be selected and collect from the colleage."), end=end_line)
+        print(_("Explain: The semester of the courses to be selected and collect from the college."), end=end_line)
+
+        print(_("Degrees:"), ", ".join([_(str(degree)) for degree in settings.degrees]))
+        print(_("Explain: The degrees of the courses to be selected and collect from the college."),
+              end=enter_sentence_format)
+        print(_("You can select several degrees if you want, for example computer science and software engineering."),
+              end=end_line)
 
         print(_("Show hertzog and yeshiva:"), self._yes_no(settings.show_hertzog_and_yeshiva))
         print(_("Explain: Show or don't show the courses for hertzog and yeshiva."), end=end_line)
@@ -276,19 +297,13 @@ class Controller:
         yes_no = self._yes_no(settings.show_only_courses_with_the_same_actual_number)
         print(_("Show only courses with the same actual number:"), yes_no)
         print(_("Explain: Show or don't show the courses that have the same actual number and related."),
-              end=enter_scentence_format)
+              end=enter_sentence_format)
         print(_("there is no guarantee you will get course that have lecture and exercise you can register."),
-              end=enter_scentence_format)
+              end=enter_sentence_format)
         print(_("for example course that have lecture for english speaker and exercise for hebrew speaker."),
               end=end_line)
 
-        days = set(Day)
-        days_text = ""
-        if days == set(settings.show_only_classes_in_days):
-            days_text = _("All week days")
-        else:
-            settings.show_only_classes_in_days.sort(key=lambda day: day.value)
-            days_text = ", ".join([_(str(day)) for day in settings.show_only_classes_in_days])
+        days_text = self._days_to_text(settings.show_only_classes_in_days)
 
         print(_("Show only classes in days:"), days_text)
         print(_("Explain: Show only the courses that have classes in the days you selected."), end=end_line)
@@ -297,7 +312,7 @@ class Controller:
             return ", ".join([str(output_format) for output_format in output_formats])
 
         print(_("Output formats: "), output_formats_str(settings.output_formats))
-        print(_("Explain: The output formats the schedules will be saved in."), end=enter_scentence_format)
+        print(_("Explain: The output formats the schedules will be saved in."), end=enter_sentence_format)
         print(_("Possible formats: "), output_formats_str(list(OutputFormat)), end="\n\n")
 
     def _validate_is_number_in_range(self, number: Any, max_number: int, min_number: int = 0):
@@ -377,6 +392,22 @@ class Controller:
         settings.semester = return_options[int(selected_option)]
         print("\n\n")
 
+        print(_("Degrees:"))
+        print(_("Select 0 to use the default settings."))
+        print(_("Default value:"), ", ".join([_(str(degree)) for degree in settings.degrees]))
+        options = [_("Default")] + [_(str(degree)) for degree in Degree]
+        return_options = list(Degree)
+        for index, degree in enumerate(options):
+            print(f"{index}. {degree}")
+
+        selected_options = input(_("Enter indexes separated by comma (for example 1,2,3):"))
+        selected_options = selected_options.split(",")
+        self._validate_is_numbers_in_range(selected_options, len(options) - 1)
+        self.logger.debug("Selected options: %s",
+                          ", ".join([options[int(selected_option)] for selected_option in selected_options]))
+        settings.degrees = [return_options[int(selected_option)] for selected_option in selected_options]
+        print("\n\n")
+
         print(_("Show hertzog and yeshiva:"))
         print(_("Select 0 to use the default settings."))
         print(_("Default value:"), self._yes_no(settings.show_hertzog_and_yeshiva))
@@ -402,13 +433,8 @@ class Controller:
             settings.show_only_courses_active_classes = default_yes_no
         print("\n\n")
 
-        days = set(Day)
-        days_text = ""
-        if days == set(settings.show_only_classes_in_days):
-            days_text = _("All week days")
-        else:
-            settings.show_only_classes_in_days.sort(key=lambda day: day.value)
-            days_text = ", ".join([_(str(day)) for day in settings.show_only_classes_in_days])
+        days = settings.show_only_classes_in_days
+        days_text = self._days_to_text(settings.show_only_classes_in_days)
 
         print(_("Show only classes in days :"))
         print(_("Select 0 to use the default settings."))
@@ -416,7 +442,7 @@ class Controller:
         options = [_("Default")] + [_(str(day)) for day in days]
         for index, day in enumerate(options):
             print(f"{index}. {day}")
-        selected_options = input(_("Enter indexes separted by comma (for example 1,2,3):"))
+        selected_options = input(_("Enter indexes separated by comma (for example 1,2,3):"))
         selected_options = [int(option) for option in selected_options.split(",")]
         self._validate_is_numbers_in_range(selected_options, len(options) - 1)
         if 0 not in selected_options:
@@ -432,7 +458,7 @@ class Controller:
         for index, output_format in enumerate(options):
             print(f"{index}.", _("format"), str(output_format))
 
-        selected_options = input(_("Enter indexes separted by comma (for example 1,2,3):"))
+        selected_options = input(_("Enter indexes separated by comma (for example 1,2,3):"))
         selected_options = [int(option) for option in selected_options.split(",")]
         self._validate_is_numbers_in_range(selected_options, len(options) - 1)
         if 0 not in selected_options:
@@ -503,7 +529,7 @@ class Controller:
 
         campus_name = settings.campus_name
 
-        courses_choices = self._console_ask_courses_choices(campus_name)
+        courses_choices = self._console_ask_courses_choices(campus_name, settings.degrees)
 
         is_yes = self._console_ask_yes_or_no("Do you want to select favorite lecturers?")
 
@@ -552,7 +578,7 @@ class Controller:
 
             language = self.database.get_language()
 
-            if (language and language != settings.language):
+            if language and language != settings.language:
                 translation.config_language_text(settings.language)
 
             self.database.save_settings(settings)
@@ -611,3 +637,12 @@ class Controller:
             message = "The system encountered an error, please contanct the engeniers."
             self.logger.error("The system encountered an error: %s", str(error))
             self.gui.open_notification_window(_(message), MessageType.ERROR)
+
+    def _days_to_text(self, days: List[Day]) -> str:
+        all_days = set(Day)
+        if all_days == days:
+            days_text = _("All week days")
+        else:
+            days.sort(key=lambda day: day.value)
+            days_text = ", ".join([_(str(day)) for day in days])
+        return days_text

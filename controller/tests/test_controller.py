@@ -72,6 +72,8 @@ class TestController:
         controller.gui = gui_mock
         controller.convertor = convertor_mock
         controller.database.SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "test_settings_data.txt")
+        controller.database.COURSES_CHOOSE_PATH = os.path.join(utils.get_database_path(),
+                                                               "test_course_choose_user_input.txt")
         settings = Settings()
         settings.campus_name = utils.get_campus_name_test()
         controller.database.save_settings(settings)

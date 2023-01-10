@@ -1,8 +1,9 @@
-from typing import List
+from typing import List, Set
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
 
 from data.day import Day
+from data.degree import Degree
 from data.output_format import OutputFormat
 from data.semester import Semester
 from data.language import Language
@@ -16,6 +17,7 @@ class Settings:
     campus_name: str = ""
     year: int = utils.get_current_hebrew_year()
     semester: Semester = utils.get_current_semester()
+    _degrees: List[str] = field(default_factory=lambda: [degree.name for degree in Degree.get_defaults()])
     show_hertzog_and_yeshiva: bool = False
     show_only_courses_with_free_places: bool = False
     show_only_courses_active_classes: bool = True
@@ -25,3 +27,11 @@ class Settings:
     output_formats: List[OutputFormat] = field(default_factory=lambda: list(OutputFormat))
     language: Language = Language.HEBREW
     force_update_data: bool = True
+
+    @property
+    def degrees(self) -> Set[Degree]:
+        return {Degree[degree] for degree in self._degrees}
+
+    @degrees.setter
+    def degrees(self, degrees: Set[Degree]):
+        self._degrees = [degree.name for degree in degrees]

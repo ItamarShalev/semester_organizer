@@ -5,6 +5,7 @@ import sys
 from contextlib import suppress
 
 from data.course import Course
+from data.degree import Degree
 from data.semester import Semester
 from data.translation import _
 
@@ -108,4 +109,4 @@ def get_campus_name_test():
 
 
 def get_course_data_test():
-    return Course(_("Infinitesimal Calculus 1"), 120131, 318)
+    return Course(_("Infinitesimal Calculus 1"), 120131, 318, set(Semester), set(Degree))
