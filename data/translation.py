@@ -7,9 +7,9 @@ from data.language import Language
 
 data = TextCaseInsensitiveDict({
     "Test": "בדיקה",
-    "There are no courses in the system, please try again with another campus update your database from the server.": "אין קורסים במערכת, אנא נסה שנית עם קמפוס אחר או נסה לעדכן את הבסיס נתונים מהשרת.",
+    "There are no courses in the system, please try again with another campus update your database from the server.": "אין קורסים במערכת, אנא נסה שנית עם קמפוס אחר או נסה לעדכן את בסיס נתונים מהשרת.",
     "No schedule possible were found": "לא נמצאה מערכת שעות אפשרית",
-    "The schedules were saved in the directory: ": "מערכות שעות נשמרו בתיקייה : ",
+    "The schedules were saved in the directory: ": "מערכות השעות נשמרו בתיקייה: ",
     "ERROR: Can't click exit button without choose from the options.": "שגיאה: לא ניתן ללחוץ על כפתור יציאה ללא בחירה מהאפשרויות.",
     "Login window": "חלון התחברות",
     "Username or password is missing, please fill all the fields.": "שם משתמש או סיסמא חסרים, אנא מלא את כל השדות.",
@@ -58,7 +58,7 @@ data = TextCaseInsensitiveDict({
     "course": "קורס",
     "course type": "סוג קורס",
     "course location": "מיקום הקורס",
-    "Welcome to the semester organizer!\nPlease choose a language\nThe current language is: ": "ברוכים הבאים למארגן מערכת השעות\nאנא בחר שפה\nהשפה הנוכחית היא: ",
+    "Welcome to the semester organizer!\nPlease choose a language\nThe current language is: ": "ברוכים הבאים למארגן מערכות השעות\nאנא בחר שפה\nהשפה הנוכחית היא:",
     "option": "אפשרות_מספר",
     "with_{}_learning_days_and_{}_minutes_study_time": "עם_{}_ימי_לימוד_ו{}_דקות_זמן_חלון",
     "all_schedules": "כל_המערכות_שעות",
