@@ -22,6 +22,7 @@ def disable_logger_third_party_warnings():
     logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
     logging.getLogger("charset_normalizer").setLevel(logging.WARNING)
     logging.getLogger("WDM").setLevel(logging.WARNING)
+    logging.getLogger("PIL").setLevel(logging.WARNING)
 
 
 def windows_path_to_unix(path):
