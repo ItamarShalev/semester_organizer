@@ -20,9 +20,9 @@ class Convertor:
             _("day"),
             _("start time"),
             _("end time"),
+            _("lecturer name"),
             _("course location"),
             _("activity id"),
-            _("lecturer name"),
             _("course id")
         ]
         rows = []
@@ -48,9 +48,9 @@ class Convertor:
                             activity_day,
                             start_time,
                             end_time,
+                            academic_activity.lecturer_name,
                             course_location,
                             academic_activity.activity_id,
-                            academic_activity.lecturer_name,
                             course_number
                         ]
                         rows.append(new_row)
