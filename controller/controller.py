@@ -453,7 +453,7 @@ class Controller:
         print(_("Select 0 to use the default settings."))
         print(_("Default value:"), ", ".join([str(output_format) for output_format in settings.output_formats]))
         # For now only csv supported
-        options = [_("Default")] + [OutputFormat.CSV]
+        options = [_("Default")] + [OutputFormat.CSV, OutputFormat.EXCEL]
         for index, output_format in enumerate(options):
             print(f"{index}.", _("format"), str(output_format))
 
@@ -461,7 +461,7 @@ class Controller:
         selected_options = [int(option) for option in selected_options.split(",")]
         self._validate_is_numbers_in_range(selected_options, len(options) - 1)
         if 0 not in selected_options:
-            settings.output_formats = [OutputFormat.CSV]
+            settings.output_formats = [options[index] for index in selected_options]
         print("\n\n")
 
         return settings

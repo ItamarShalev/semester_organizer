@@ -22,7 +22,7 @@ class TestConvertor:
         activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("12:00")))
         return Schedule("שם", file_name, "", [activity])
 
-    @pytest.mark.parametrize("file_type", [OutputFormat.CSV])
+    @pytest.mark.parametrize("file_type", [OutputFormat.CSV, OutputFormat.EXCEL])
     def test_convert_type(self, file_type: OutputFormat):
 
         convertor = Convertor()
