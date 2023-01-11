@@ -1,5 +1,6 @@
 import builtins
 import os.path
+import shutil
 from typing import List, Dict, Tuple
 
 from unittest.mock import MagicMock
@@ -100,9 +101,10 @@ class TestController:
                 text = ' '.join([str(item) for item in args])
                 raise ValueError(f"FAIL: input args: {text}") from error
 
-        builtins.input = input_next
-        controller.run_console_flow()
         results = utils.get_results_path()
+        builtins.input = input_next
+        shutil.rmtree(results, ignore_errors=True)
+        controller.run_console_flow()
         # Check that the results file was created.
         # And contains only one file.
         assert os.path.exists(results)
