@@ -151,6 +151,7 @@ data = TextCaseInsensitiveDict({
     "Degrees:": "תארים:",
     "Choose your previous selection:": "בחר את הבחירה הקודמת שלך:",
     "Showing only the best {} schedules.": "מציג רק את {} מערכות השעות הכי טובות.",
+    "Saving the schedules, it can take few seconds...": "שומר את מערכות השעות, הפעולה יכולה לקחת מספר שניות...",
 })
 
 

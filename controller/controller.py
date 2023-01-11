@@ -205,15 +205,16 @@ class Controller:
         return yes_no_option == _("Yes")
 
     def _console_save_schedules(self, settings: Settings, schedules: List[Schedule]):
-        print(_("Done successfully !"))
         print(_("Found {} possible schedules").format(len(schedules)))
         if len(schedules) > MAX_OUTPUTS:
             print(_("Showing only the best {} schedules").format(MAX_OUTPUTS))
+        print(_("Saving the schedules, it can take few seconds..."))
 
         results_path = utils.get_results_path()
         for try_number in range(1, 4):
             try:
                 self._save_schedule(schedules, settings, results_path)
+                print(_("Done successfully !"))
                 print(_("The schedules were saved in the directory: ") + results_path)
                 self._open_results_folder(results_path)
                 break
