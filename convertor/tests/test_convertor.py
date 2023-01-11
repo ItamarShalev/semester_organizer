@@ -22,7 +22,7 @@ class TestConvertor:
         activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("12:00")))
         return Schedule("שם", file_name, "", [activity])
 
-    @pytest.mark.parametrize("file_type", [OutputFormat.CSV, OutputFormat.EXCEL])
+    @pytest.mark.parametrize("file_type", list(OutputFormat))
     def test_convert_type(self, file_type: OutputFormat):
 
         convertor = Convertor()
@@ -45,7 +45,6 @@ class TestConvertor:
             assert os.path.isfile(f"{file_path}"), f"{file_name} is not exist"
             assert os.path.getsize(f"{file_path}") > 0, f"{file_name} is empty"
 
-    @pytest.mark.skip(reason="Not implemented yet.")
     def test_convert_all_types(self):
         convertor = Convertor()
         path = os.path.join(utils.get_results_path(), "test_results")
