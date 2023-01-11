@@ -5,6 +5,8 @@ import shutil
 from typing import List, cast
 import warnings
 import pandas as pd
+import dataframe_image as dfi
+
 import utils
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
@@ -135,6 +137,15 @@ class Convertor:
 
             writer.close()
 
+    def convert_activities_to_png(self, schedules: List[Schedule], folder_location: str):
+        shutil.rmtree(folder_location, ignore_errors=True)
+        os.makedirs(folder_location, exist_ok=True)
+        for schedule in schedules:
+            df = self._create_schedule_table(schedule)
+            file_location = os.path.join(folder_location, f"{schedule.file_name}.{OutputFormat.IMAGE.value}")
+
+            dfi.export(df, file_location)
+
     def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: str):
         headers = [
             _("activity name"),
@@ -214,3 +225,10 @@ class Convertor:
             else:
                 excel_location = os.path.join(folder_location, OutputFormat.EXCEL.name.lower())
             self.convert_activities_to_excel(schedules, excel_location)
+
+        if OutputFormat.IMAGE in formats:
+            if len(formats) == 1:
+                png_location = folder_location
+            else:
+                png_location = os.path.join(folder_location, OutputFormat.IMAGE.name.lower())
+            self.convert_activities_to_png(schedules, png_location)
