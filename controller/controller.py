@@ -344,23 +344,21 @@ class Controller:
 
     def _console_ask_for_settings(self, settings: Settings):
         # pylint: disable=too-many-branches
+
+        print(_("Campus name:"))
+        print(_("Default value:"), settings.campus_name or _("Not set"))
+        is_yes = self._console_ask_yes_or_no("Do you want to change the campus name?")
+        if is_yes:
+            campus_name = self._console_ask_campus_name()
+            settings.campus_name = campus_name
+        print("\n\n")
+
         print(_("Attendance required all courses:"))
         print(_("Select 0 to use the default settings."))
         print(_("Default value:"), self._yes_no(settings.attendance_required_all_courses))
         default_yes_no = self._console_ask_default_yes_no()
         if default_yes_no is not None:
             settings.attendance_required_all_courses = default_yes_no
-        print("\n\n")
-
-        campus_name = settings.campus_name or _("Not set")
-        print(_("Campus name:"))
-        if campus_name != _("Not set"):
-            print(_("Select 0 to use the default settings."))
-        print(_("Default value:"), settings.campus_name or _("Not set"))
-        is_yes = self._console_ask_yes_or_no("Do you want to change the campus name?")
-        if is_yes:
-            campus_name = self._console_ask_campus_name()
-            settings.campus_name = campus_name
         print("\n\n")
 
         print(_("Year of study:"))
@@ -403,9 +401,11 @@ class Controller:
         selected_options = input(_("Enter indexes separated by comma (for example 1,2,3):"))
         selected_options = selected_options.split(",")
         self._validate_is_numbers_in_range(selected_options, len(options) - 1)
-        self.logger.debug("Selected options: %s",
-                          ", ".join([options[int(selected_option)] for selected_option in selected_options]))
-        settings.degrees = [return_options[int(selected_option)] for selected_option in selected_options]
+        if "0" in selected_options:
+            self.logger.debug("Selected default.")
+        else:
+            settings.degrees = [return_options[int(selected_option) - 1] for selected_option in selected_options]
+            self.logger.debug("Selected options: %s", ", ".join([str(degree) for degree in settings.degrees]))
         print("\n\n")
 
         print(_("Show hertzog and yeshiva:"))
@@ -433,13 +433,12 @@ class Controller:
             settings.show_only_courses_active_classes = default_yes_no
         print("\n\n")
 
-        days = settings.show_only_classes_in_days
         days_text = self._days_to_text(settings.show_only_classes_in_days)
 
         print(_("Show only classes in days :"))
         print(_("Select 0 to use the default settings."))
         print(_("Default value:"), days_text)
-        options = [_("Default")] + [_(str(day)) for day in days]
+        options = [_("Default")] + [_(str(day)) for day in Day]
         for index, day in enumerate(options):
             print(f"{index}. {day}")
         selected_options = input(_("Enter indexes separated by comma (for example 1,2,3):"))
@@ -640,7 +639,7 @@ class Controller:
 
     def _days_to_text(self, days: List[Day]) -> str:
         all_days = set(Day)
-        if all_days == days:
+        if all_days == set(days):
             days_text = _("All week days")
         else:
             days.sort(key=lambda day: day.value)
