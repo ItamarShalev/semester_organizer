@@ -36,11 +36,12 @@ class MeetingClass:
                 lecturer_name = academic_activity.lecturer_name
                 course_location = academic_activity.location
                 lecturer_type = [_(str(activity_type)), lecturer_name]
+                activity_id = academic_activity.activity_id
                 if Language.get_current() is Language.HEBREW:
                     lecturer_type.reverse()
                 result = f"{activity_name}\n"
                 result += " - ".join(lecturer_type)
-                result += f"\n{activity_time}\n{course_location}"
+                result += f"\n{activity_time}\n{activity_id}\n{course_location}"
             else:
                 result = f"{activity_name}\n{activity_time}"
             return result
@@ -90,8 +91,7 @@ class Convertor:
             "activity_type",
             "lecturer_name",
             "course_location",
-            "activity_id",
-            "course_id"
+            "activity_id"
         ]
 
         for activity in schedule.activities:

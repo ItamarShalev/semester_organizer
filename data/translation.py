@@ -150,7 +150,7 @@ data = TextCaseInsensitiveDict({
     "You can select several degrees if you want, for example computer science and software engineering.": "אתה יכול לבחור מספר תארים כרצונך, לדוגמא מדעי המחשב והנדסה תוכנה.",
     "Degrees:": "תארים:",
     "Choose your previous selection:": "בחר את הבחירה הקודמת שלך:",
-    "Showing only the best {} schedules.": "מציג רק את {} מערכות השעות הכי טובות.",
+    "Saving only the best {} schedules": "שומר רק את {} מערכות השעות הכי טובות.",
     "Saving the schedules, it can take few seconds...": "שומר את מערכות השעות, הפעולה יכולה לקחת מספר שניות...",
 })
 

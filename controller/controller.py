@@ -207,7 +207,7 @@ class Controller:
     def _console_save_schedules(self, settings: Settings, schedules: List[Schedule]):
         print(_("Found {} possible schedules").format(len(schedules)))
         if len(schedules) > MAX_OUTPUTS:
-            print(_("Showing only the best {} schedules").format(MAX_OUTPUTS))
+            print(_("Saving only the best {} schedules").format(MAX_OUTPUTS))
         print(_("Saving the schedules, it can take few seconds..."))
 
         results_path = utils.get_results_path()
