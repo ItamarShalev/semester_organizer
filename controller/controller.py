@@ -26,6 +26,7 @@ from data.output_format import OutputFormat
 from data.translation import _
 
 Lecture = str
+MAX_OUTPUTS = 20
 
 
 class Controller:
@@ -104,11 +105,19 @@ class Controller:
 
         shutil.rmtree(results_path, ignore_errors=True)
 
+        if len(all_schedules) > MAX_OUTPUTS:
+            all_schedules = all_schedules[:MAX_OUTPUTS]
         self.convertor.convert_activities(all_schedules, all_schedules_path, output_formats)
         if most_spread_days and least_spread_days:
+            if len(most_spread_days) > MAX_OUTPUTS:
+                most_spread_days = most_spread_days[:MAX_OUTPUTS]
+            if len(least_spread_days) > MAX_OUTPUTS:
+                least_spread_days = least_spread_days[:MAX_OUTPUTS]
             self.convertor.convert_activities(most_spread_days, most_spread_days_path, output_formats)
             self.convertor.convert_activities(least_spread_days, least_spread_days_path, output_formats)
         if schedules_by_standby_time:
+            if len(schedules_by_standby_time) > MAX_OUTPUTS:
+                schedules_by_standby_time = schedules_by_standby_time[:MAX_OUTPUTS]
             self.convertor.convert_activities(schedules_by_standby_time, least_standby_time_path, output_formats)
 
     def _delete_data_if_new_version(self):
@@ -198,6 +207,8 @@ class Controller:
     def _console_save_schedules(self, settings: Settings, schedules: List[Schedule]):
         print(_("Done successfully !"))
         print(_("Found {} possible schedules").format(len(schedules)))
+        if len(schedules) > MAX_OUTPUTS:
+            print(_("Showing only the best {} schedules").format(MAX_OUTPUTS))
 
         results_path = utils.get_results_path()
         for try_number in range(1, 4):
