@@ -464,7 +464,7 @@ class Controller:
         print(_("Select 0 to use the default settings."))
         print(_("Default value:"), ", ".join([str(output_format) for output_format in settings.output_formats]))
         # For now only csv supported
-        options = [_("Default")] + [list(OutputFormat)]
+        options = [_("Default")] + list(OutputFormat)
         for index, output_format in enumerate(options):
             print(f"{index}.", _("format"), str(output_format))
 
