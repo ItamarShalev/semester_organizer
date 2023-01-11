@@ -15,11 +15,11 @@ class Convertor:
 
     def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: str):
         headers = [
+            _("activity name"),
             _("activity type"),
             _("day"),
             _("start time"),
             _("end time"),
-            _("course name"),
             _("course location"),
             _("activity id"),
             _("lecturer name"),
@@ -43,11 +43,11 @@ class Convertor:
                         course_location = academic_activity.location
                         course_number = academic_activity.course_number
                         new_row = [
+                            course_name,
                             activity_type,
                             activity_day,
                             start_time,
                             end_time,
-                            course_name,
                             course_location,
                             academic_activity.activity_id,
                             academic_activity.lecturer_name,
@@ -57,6 +57,7 @@ class Convertor:
                     else:
                         # Five empty cells since it's not relevant to personal activity
                         new_row = [
+                            activity.name,
                             activity_type,
                             activity_day,
                             start_time,
