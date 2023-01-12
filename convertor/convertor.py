@@ -2,6 +2,7 @@ import csv
 import functools
 import os
 import shutil
+from collections import namedtuple
 from typing import List, cast
 import warnings
 import pandas as pd
@@ -47,19 +48,6 @@ class MeetingClass:
             return result
         return str(self.meeting)
 
-    def color(self):
-        activity_type = self.activity.type
-        color = "#000000"
-        if activity_type.is_personal():
-            color = '#3333ff'
-        elif activity_type.is_lecture():
-            color = '#00ffff'
-        elif activity_type is Type.PRACTICE:
-            color = '#00b3b3'
-        elif activity_type is Type.LAB:
-            color = '#4d94ff'
-        return color
-
     def __lt__(self, other):
         return self.meeting < other.meeting
 
@@ -69,13 +57,51 @@ class MeetingClass:
 
 class Convertor:
 
+    # https://www.w3schools.com/colors/colors_picker.asp will help to choose the right color
+    # Every tuple contains the strong and weak variety of color
+
+    Color = namedtuple('Color', ['strong', 'weak'])
+
+    PERSONAL_COLOR = "#BDC3C7"
+
+    COLORS = [
+        Color("#4d94ff", "#80b3ff"),
+        Color("#79d279", "#9fdf9f"),
+        Color("#b366ff", "#cc99ff"),
+        Color("#ff8080", "#ffb3b3"),
+        Color("#99e6e6", "#c1f0f0"),
+        Color("#f9e79f", "#fcf3cf"),
+        Color("#80ff80", "#b3ffb3"),
+        Color("#005ce6", "#1a75ff"),
+        Color("#339933", "#40bf40"),
+        Color("#cc9900", "#ffbf00"),
+    ]
+
     def __init__(self):
         warnings.simplefilter(action='ignore', category=FutureWarning)
+        self._activities_colors = {}
+
+    def _init_activities_color_indexes(self, activities: List[Activity]):
+        all_names = {activity.name for activity in activities if not activity.type.is_personal()}
+        if all(name in self._activities_colors for name in all_names):
+            return
+        all_names = sorted(list(all_names))
+        self._activities_colors = {}
+        for index, name in enumerate(all_names):
+            self._activities_colors[name] = Convertor.COLORS[index % len(Convertor.COLORS)]
 
     def _coloring(self, meeting_class):
         # White
         color = "#ffffff"
-        color = meeting_class.color() if meeting_class else color
+        if meeting_class:
+            activity_type = meeting_class.activity.type
+            activity_name = meeting_class.activity.name
+            if activity_type.is_personal():
+                color = Convertor.PERSONAL_COLOR
+            elif activity_type.is_lecture():
+                color = self._activities_colors[activity_name].strong
+            elif activity_type.is_exercise():
+                color = self._activities_colors[activity_name].weak
         return f'background-color: {color}'
 
     def _create_schedule_table(self, schedule):
@@ -120,8 +146,11 @@ class Convertor:
         return df_styled
 
     def convert_activities_to_excel(self, schedules: List[Schedule], folder_location: str):
+        if not schedules:
+            return
         shutil.rmtree(folder_location, ignore_errors=True)
         os.makedirs(folder_location, exist_ok=True)
+        self._init_activities_color_indexes(schedules[0].activities)
         for schedule in schedules:
             data_frame = self._create_schedule_table(schedule)
             file_location = os.path.join(folder_location, f"{schedule.file_name}.{OutputFormat.EXCEL.value}")
@@ -138,15 +167,22 @@ class Convertor:
             writer.close()
 
     def convert_activities_to_png(self, schedules: List[Schedule], folder_location: str):
+        if not schedules:
+            return
         shutil.rmtree(folder_location, ignore_errors=True)
         os.makedirs(folder_location, exist_ok=True)
+        self._init_activities_color_indexes(schedules[0].activities)
         for schedule in schedules:
             df = self._create_schedule_table(schedule)
             file_location = os.path.join(folder_location, f"{schedule.file_name}.{OutputFormat.IMAGE.value}")
-
             dfi.export(df, file_location)
 
     def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: str):
+        if not schedules:
+            return
+        shutil.rmtree(folder_location, ignore_errors=True)
+        os.makedirs(folder_location, exist_ok=True)
+        self._init_activities_color_indexes(schedules[0].activities)
         headers = [
             _("activity name"),
             _("activity type"),
@@ -159,8 +195,6 @@ class Convertor:
             _("course id")
         ]
         rows = []
-        shutil.rmtree(folder_location, ignore_errors=True)
-        os.makedirs(folder_location)
         for schedule in schedules:
             rows.clear()
             rows.append(headers)
