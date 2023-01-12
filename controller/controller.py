@@ -87,12 +87,9 @@ class Controller:
             most_spread_days = schedules_by_learning_days[max(schedules_by_learning_days.keys())]
             least_spread_days = schedules_by_learning_days[min(schedules_by_learning_days.keys())]
 
-        # Get the lowest standby time and the second lowest standby time
-        if len(schedules_by_standby_time.keys()) > 2:
-            lowest = schedules_by_standby_time[min(schedules_by_standby_time.keys())]
-            del schedules_by_standby_time[min(schedules_by_standby_time.keys())]
-            lowest += schedules_by_standby_time[min(schedules_by_standby_time.keys())]
-            schedules_by_standby_time = lowest
+        # Get the lowest standby time
+        if len(schedules_by_standby_time.keys()) > 1:
+            schedules_by_standby_time = schedules_by_standby_time[min(schedules_by_standby_time.keys())]
         else:
             schedules_by_standby_time = None
 
