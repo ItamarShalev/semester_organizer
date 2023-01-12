@@ -4,7 +4,6 @@ import shutil
 import subprocess
 import time
 from collections import defaultdict
-from copy import copy
 from operator import itemgetter
 from typing import List, Dict, Literal, Optional, Any, Set
 
@@ -75,12 +74,11 @@ class Controller:
         for schedule in all_schedules:
             standby_in_minutes = schedule.get_standby_in_minutes()
             learning_days = schedule.get_learning_days()
-            copied_schedule = copy(schedule)
-            copied_schedule.file_name = \
+            schedule.file_name = \
                 f"{schedule.file_name}_" + \
                 _("with_{}_learning_days_and_{}_minutes_study_time").format(len(learning_days), standby_in_minutes)
-            schedules_by_learning_days[len(learning_days)].append(copied_schedule)
-            schedules_by_standby_time[standby_in_minutes].append(copied_schedule)
+            schedules_by_learning_days[len(learning_days)].append(schedule)
+            schedules_by_standby_time[standby_in_minutes].append(schedule)
 
         schedules_by_learning_days = dict(sorted(schedules_by_learning_days.items(), key=itemgetter(0)))
         schedules_by_standby_time = dict(sorted(schedules_by_standby_time.items(), key=itemgetter(0)))
