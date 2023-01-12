@@ -197,7 +197,7 @@ class Convertor:
         rows = []
         for schedule in schedules:
             rows.clear()
-            rows.append(headers)
+            rows.append(headers.copy())
             for activity in schedule.activities:
                 for meeting in activity.meetings:
                     activity_type = _(str(activity.type))
@@ -231,6 +231,10 @@ class Convertor:
                             end_time]
                         new_row += [None] * (len(headers) - len(new_row))
                         rows.append(new_row)
+
+            if Language.get_current() is Language.HEBREW:
+                for row in rows:
+                    row.reverse()
 
             file_location = os.path.join(folder_location, f"{schedule.file_name}.{OutputFormat.CSV.value}")
             with open(file_location, 'w', encoding=utils.ENCODING, newline='') as file:
