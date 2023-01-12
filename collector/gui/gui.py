@@ -59,12 +59,12 @@ class Gui:
             self.logger.info("Login button clicked - checking if user is valid...")
             user = User(username_input.get(), password_input.get())
             if not user:
-                message = _("Username or password is missing, please fill all the fields.")
-                message_view.configure(text=message)
+                message = "Username or password is missing, please fill all the fields."
+                message_view.configure(text=_(message))
                 self.logger.warning(message)
             elif not is_valid_user_function(user):
-                message = _("Username or password is invalid, please check your input.")
-                message_view.configure(text=message)
+                message = "Username or password is invalid, please check your input."
+                message_view.configure(text=_(message))
                 self.logger.warning(message)
             else:
                 user_result = user
