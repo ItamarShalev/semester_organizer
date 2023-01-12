@@ -3,6 +3,7 @@ import os
 import shutil
 import sys
 from contextlib import suppress
+from typing import Tuple
 
 from data.course import Course
 from data.degree import Degree
@@ -83,6 +84,18 @@ def get_database_path():
 
 def get_results_path():
     return os.path.abspath(os.path.join(os.path.expanduser("~"), "semester_organizer_results"))
+
+
+def get_results_test_path():
+    return os.path.join(get_database_path(), "results_test")
+
+
+def count_files_and_directory(directory: str) -> Tuple[int, int]:
+    files = dirs = 0
+    for _unused, dirs_name, files_names in os.walk(directory):
+        files += len(files_names)
+        dirs += len(dirs_name)
+    return files, dirs
 
 
 def get_current_semester():
