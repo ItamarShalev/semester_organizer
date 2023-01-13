@@ -52,7 +52,8 @@ class Database:
         self._personal_sql_tables = [
             "personal_activities",
             "personal_meetings",
-            "personal_activities_meetings"
+            "personal_activities_meetings",
+            "activities_can_register"
         ]
 
     def init_personal_database_tables(self):
@@ -68,6 +69,9 @@ class Database:
                            "(acitivity_id INTEGER, meeting_id INTEGER, "
                            "FOREIGN KEY(acitivity_id) REFERENCES personal_activities(id), "
                            "FOREIGN KEY(meeting_id) REFERENCES meetings(id));")
+
+            cursor.execute("CREATE TABLE IF NOT EXISTS activities_can_register "
+                           "(activity_id TEXT PRIMARY KEY);")
 
             connection.commit()
             cursor.close()
@@ -150,6 +154,21 @@ class Database:
                 cursor.execute("INSERT OR IGNORE INTO semesters VALUES (?, ?);", (*semester, ))
             connection.commit()
             cursor.close()
+
+    def save_activities_ids_can_register(self, activities_can_register: List[str]):
+        with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            for activity_id in activities_can_register:
+                cursor.execute("INSERT OR IGNORE INTO activities_can_register VALUES (?);", (activity_id, ))
+            connection.commit()
+            cursor.close()
+
+    def load_activities_ids_can_register(self) -> List[str]:
+        with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT activity_id FROM activities_can_register;")
+            activities_can_register = [activity_id for (activity_id,) in cursor.fetchall()]
+            return activities_can_register
 
     def save_degrees(self, degrees: List[Degree]):
         with database.connect(self.SHARED_DATABASE_PATH) as connection:
