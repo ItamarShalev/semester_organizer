@@ -154,9 +154,11 @@ class Controller:
         print("\n\n")
         return campus_name
 
-    def _console_ask_courses_choices(self, campus_name: str, degrees: Set[Degree]):
+    def _console_ask_courses_choices(self, campus_name: str, degrees: Set[Degree],
+                                     activities_ids_can_enroll: List[str]):
         language = Language.get_current()
-        courses_choices = self.database.load_courses_choices(campus_name, language, degrees=degrees)
+        courses_choices = self.database.load_courses_choices(campus_name, language, degrees=degrees,
+                                                             activities_ids=activities_ids_can_enroll)
         courses_choices = dict(sorted(courses_choices.items(), key=itemgetter(0)))
 
         print(_("Select the courses by enter their index:"))
@@ -286,6 +288,12 @@ class Controller:
         print(_("Campus name:"), campus_name)
         print(_("Explain: The name of the campus that you want to search for the courses."), end=end_line)
 
+        print(_("Show only classes can enroll in:"), self._yes_no(settings.show_only_classes_can_enroll))
+        print(_("Explain: Show only the classes that you can enroll in Levnet."), end=enter_sentence_format)
+        print(_("This setting must use connection to levnet, and therefore need your username and password"),
+              end=enter_sentence_format)
+        print(_("Don't worry, the details will save only in your computer and will use only in Levnet."), end=end_line)
+
         user = self.database.load_user_data()
         text_exists = _("Exists in the system") if user else _("Not exists in the system")
         print(_("User details:"), text_exists)
@@ -369,6 +377,14 @@ class Controller:
             settings.campus_name = campus_name
         print("\n\n")
 
+        print(_("Show only classes can enroll in:"))
+        print(_("Default value:"), self._yes_no(settings.show_only_classes_can_enroll))
+        default_yes_no = self._console_ask_default_yes_no("Do you want to show only the courses you can enroll in?")
+        if default_yes_no is not None:
+            settings.show_only_classes_can_enroll = default_yes_no
+
+        print("\n\n")
+
         exists_text = _("Exists in the system") if self.database.load_user_data() else _("Not exists in the system")
         print(_("User details:"))
         print(exists_text)
@@ -376,6 +392,7 @@ class Controller:
         if is_yes:
             user = self._console_ask_user_details()
             self.database.save_user_data(user)
+        print("\n\n")
 
         print(_("Attendance required all courses:"))
         print(_("Select 0 to use the default settings."))
@@ -518,11 +535,13 @@ class Controller:
         # For testing purposes
         self.logger.info("Starting console flow")
 
+        self.database.init_personal_database_tables()
         language = Language.get_current()
         settings = self.database.load_settings() or Settings()
         language = language or settings.language
         settings.language = language
         translation.config_language_text(language)
+        activities_ids_can_enroll = []
 
         if settings.campus_name:
             campus_name = self.database.translate_campus_name(settings.campus_name)
@@ -551,8 +570,14 @@ class Controller:
             self.database.save_settings(settings)
 
         campus_name = settings.campus_name
+        user = self.database.load_user_data()
+        self.network.set_user(user)
 
-        courses_choices = self._console_ask_courses_choices(campus_name, settings.degrees)
+        self._console_alert_if_missing_user_data_and_need_to_login(settings, user)
+
+        activities_ids_can_enroll = self._console_get_activities_ids_can_enroll(settings, user)
+
+        courses_choices = self._console_ask_courses_choices(campus_name, settings.degrees, activities_ids_can_enroll)
 
         is_yes = self._console_ask_yes_or_no("Do you want to select favorite lecturers?")
 
@@ -571,8 +596,9 @@ class Controller:
         print(_("Generating schedules..."))
 
         selected_activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
+        activities_ids = activities_ids_can_enroll
 
-        schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings)
+        schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings, activities_ids)
 
         if not schedules:
             print(_("No schedules were found"))
@@ -687,3 +713,38 @@ class Controller:
                 print(_("Your user details are incorrect, please try again."))
                 user = None
         return user
+
+    def _console_alert_if_missing_user_data_and_need_to_login(self, settings: Settings, user: User):
+        if settings.show_only_classes_can_enroll and not user:
+            print(_("Show only courses you can enroll, courses or teacher that you can't enroll will no shown."))
+            print(_("Anyway you can set this setting to 'No' and see all the courses and teachers."))
+            print(_("And then ask from the student secretariat to enroll in the course."))
+            print(_("Can't guarantee that they will enroll you or it will be fast."))
+            print(_("Need to login to Levnet to use this feature."))
+            is_yes = self._console_ask_yes_or_no("Do you want to set your username and password (if not - pass)?")
+            if is_yes:
+                user = self._console_ask_user_details()
+                self.database.save_user_data(user)
+                self.network.set_user(user)
+            else:
+                settings.show_only_classes_can_enroll = False
+                self.database.save_settings(settings)
+            print("\n\n")
+
+    def _console_get_activities_ids_can_enroll(self, settings: Settings, user: User):
+        activities_ids_can_enroll = []
+        if settings.show_only_courses_active_classes and user:
+            activities_ids_can_enroll = self.database.load_activities_ids_can_enroll_in()
+            use_last_data = False
+            if activities_ids_can_enroll:
+                message = "Do you want to show only the courses you can enroll in?"
+                use_last_data = self._console_ask_yes_or_no(message)
+            if not use_last_data:
+                try:
+                    activities_ids_can_enroll = self.network.extract_all_activities_ids_can_enroll_in()
+                    self.database.save_activities_ids_can_enroll_in(activities_ids_can_enroll)
+                except Exception as error:
+                    self.logger.error("ERROR: While try to extract all activities ids can enroll in, error: %s", error)
+                    print(_("Error occurred while trying to extract the courses you can enroll in."))
+                    print(_("Check connection and try again, will use the last data or will not filter the courses."))
+        return activities_ids_can_enroll

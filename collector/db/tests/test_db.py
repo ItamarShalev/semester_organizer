@@ -126,9 +126,9 @@ class TestDatabase:
             "12.1.1",
             "10.10.1",
         ]
-        assert not database_mock.load_activities_ids_can_register()
-        database_mock.save_activities_ids_can_register(all_activities_can_register_ids)
-        loaded_activities_ids = database_mock.load_activities_ids_can_register()
+        assert not database_mock.load_activities_ids_can_enroll_in()
+        database_mock.save_activities_ids_can_enroll_in(all_activities_can_register_ids)
+        loaded_activities_ids = database_mock.load_activities_ids_can_enroll_in()
         assert len(loaded_activities_ids) == 2
         assert all(activity_id in loaded_activities_ids for activity_id in all_activities_can_register_ids)
 

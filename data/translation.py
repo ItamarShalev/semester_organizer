@@ -163,6 +163,19 @@ data = TextCaseInsensitiveDict({
     "Your user details are correct and can continue.": "פרטי המשתמש שלך נכונים ואתה יכול להמשיך.",
     "Your user details are incorrect, please try again.": "פרטי המשתמש שלך שגויים, אנא נסה שוב.",
     "User details can't be empty, please try again.": "פרטי המשתמש לא יכולים להיות ריקים, אנא נסה שוב.",
+    "Show only classes can enroll in:": "הצג רק קורסים שאפשר להירשם:",
+    "Explain: Show only the classes that you can enroll in Levnet.": "הסבר: הצג רק את הקורסים שאתה יכול להירשם בלבנט.",
+    "This setting must use connection to levnet, and therefore need your username and password": "הגדרה זו חייבת להשתמש בחיבור ללבנט, ולכן צריך את שם המשתמש והסיסמה שלך",
+    "Don't worry, the details will save only in your computer and will use only in Levnet.": "אל תדאג, פרטי המשתמש יישמרו במחשב שלך בלבד ויהיו רק בשימוש הלבנט.",
+    "Do you want to show only the courses you can enroll in?": "האם ברצונך להציג רק את הקורסים שאתה יכול להירשם אליהם?",
+    "Show only courses you can enroll, courses or teacher that you can't enroll will no shown.": "מציג רק את הקורסים שאתה יכול להירשם אליהם, קורסים או מרצים שאתה לא יכול להירשם אליהם לא יוצגו.",
+    "Anyway you can set this setting to 'No' and see all the courses and teachers.": "בכל זאת אתה יכול להגדיר את ההגדרה הזו ל'לא' ולראות את כל הקורסים והמרצים.",
+    "And then ask from the student secretariat to enroll in the course.": "ואז לבקש ממזכירות התלמידים לרשום אותך לקורס.",
+    "Can't guarantee that they will enroll you or it will be fast.": "לא ניתן להבטיח שהם ירשמו אותך או שזה יהיה מהיר.",
+    "Need to login to Levnet to use this feature.": "צריך להתחבר ללבנט כדי להשתמש בתכונה זו.",
+    "Do you want to set your username and password (if not - pass)?": "האם ברצונך להגדיר את שם המשתמש והסיסמה שלך (אם לא - נדלג)?",
+    "Error occurred while trying to extract the courses you can enroll in.": "אירעה שגיאה בעת ניסיון לחלץ את הקורסים שאתה יכול להירשם אליהם.",
+    "Check connection and try again, will use the last data or will not filter the courses.": "בדוק את חיבור האינטרנט ונסה שוב, משתמש בנתונים האחרונים או לא יסנן את הקורסים.",
 })
 
 

@@ -23,8 +23,8 @@ class Settings:
     show_only_courses_active_classes: bool = True
     show_only_courses_with_the_same_actual_number: bool = True
     show_only_classes_in_days: List[Day] = field(default_factory=lambda: list(Day))
-    show_only_classes_can_register: bool = False
     output_formats: List[OutputFormat] = field(default_factory=lambda: list(OutputFormat))
+    show_only_classes_can_enroll: bool = False
     language: Language = Language.HEBREW
     force_update_data: bool = True
 

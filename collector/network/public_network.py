@@ -1,6 +1,6 @@
 import json
 from contextlib import suppress
-from typing import Optional
+from typing import Optional, List
 
 from json import JSONDecodeError
 from requests.exceptions import Timeout
@@ -131,6 +131,9 @@ class PublicNetworkHttp:
         if not connected_succeeded:
             raise RuntimeError("Failed to connect")
         self.change_language(Language.get_current())
+
+    def extract_all_activities_ids_can_enroll_in(self) -> List[str]:
+        return []
 
     def change_language(self, language: Language):
         if not self._user:

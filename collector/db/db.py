@@ -53,7 +53,7 @@ class Database:
             "personal_activities",
             "personal_meetings",
             "personal_activities_meetings",
-            "activities_can_register"
+            "activities_can_enroll_in"
         ]
 
     def init_personal_database_tables(self):
@@ -70,7 +70,7 @@ class Database:
                            "FOREIGN KEY(acitivity_id) REFERENCES personal_activities(id), "
                            "FOREIGN KEY(meeting_id) REFERENCES meetings(id));")
 
-            cursor.execute("CREATE TABLE IF NOT EXISTS activities_can_register "
+            cursor.execute("CREATE TABLE IF NOT EXISTS activities_can_enroll_in "
                            "(activity_id TEXT PRIMARY KEY);")
 
             connection.commit()
@@ -155,20 +155,20 @@ class Database:
             connection.commit()
             cursor.close()
 
-    def save_activities_ids_can_register(self, activities_can_register: List[str]):
+    def save_activities_ids_can_enroll_in(self, activities_can_enroll_in: List[str]):
         with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
             cursor = connection.cursor()
-            for activity_id in activities_can_register:
-                cursor.execute("INSERT OR IGNORE INTO activities_can_register VALUES (?);", (activity_id, ))
+            for activity_id in activities_can_enroll_in:
+                cursor.execute("INSERT OR IGNORE INTO activities_can_enroll_in VALUES (?);", (activity_id, ))
             connection.commit()
             cursor.close()
 
-    def load_activities_ids_can_register(self) -> List[str]:
+    def load_activities_ids_can_enroll_in(self) -> List[str]:
         with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute("SELECT activity_id FROM activities_can_register;")
-            activities_can_register = [activity_id for (activity_id,) in cursor.fetchall()]
-            return activities_can_register
+            cursor.execute("SELECT activity_id FROM activities_can_enroll_in;")
+            activities_can_enroll_in = [activity_id for (activity_id,) in cursor.fetchall()]
+            return activities_can_enroll_in
 
     def save_degrees(self, degrees: List[Degree]):
         with database.connect(self.SHARED_DATABASE_PATH) as connection:
@@ -216,11 +216,13 @@ class Database:
 
     def load_courses_choices(self, campus_name: str,
                              language: Language, courses: List[Course] = None,
-                             degrees: Set[Degree] = None) -> Dict[str, CourseChoice]:
+                             degrees: Set[Degree] = None,
+                             activities_ids: List[str] = None) -> Dict[str, CourseChoice]:
         """
         If courses is None - load all active courses
         If degrees is None - load default degrees
         """
+        activities_ids = activities_ids or []
         degrees = degrees or Degree.get_defaults()
         with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
@@ -230,18 +232,24 @@ class Database:
             lecture_index = 0
             practice_index = 1
             degrees_text = f"({', '.join(['?'] * len(degrees))})"
+            activities_ids_text = f"activities.activity_id IN ({', '.join(['?'] * len(activities_ids))})"\
+                if activities_ids else "1"
 
             for course in courses:
-                cursor.execute("SELECT lecturer_name, is_lecture_rule FROM courses_lecturers "
+                cursor.execute("SELECT courses_lecturers.lecturer_name, courses_lecturers.is_lecture_rule "
+                               "FROM courses_lecturers "
                                "INNER JOIN degrees_courses "
+                               "INNER JOIN activities "
                                "ON courses_lecturers.parent_course_number = degrees_courses.parent_course_number "
+                               "AND courses_lecturers.parent_course_number = activities.parent_course_number "
                                "WHERE courses_lecturers.course_number = ? "
                                "AND courses_lecturers.parent_course_number = ? "
                                "AND courses_lecturers.campus_id = ? "
                                "AND courses_lecturers.language_value = ? "
-                               f"AND degrees_courses.degree_name IN {degrees_text} ;",
+                               f"AND degrees_courses.degree_name IN {degrees_text} "
+                               f"AND {activities_ids_text};",
                                (course.course_number, course.parent_course_number, campus_id, language.short_name(),
-                                *[degree.name for degree in degrees]))
+                                *[degree.name for degree in degrees], *activities_ids))
 
                 for lecturer_name, is_lecture_rule in cursor.fetchall():
                     index = lecture_index if is_lecture_rule else practice_index
@@ -331,16 +339,20 @@ class Database:
             cursor.close()
             return courses
 
-    def load_activities_by_courses_choices(self, courses_choices: Dict[str, CourseChoice], campus_name: str,
-                                           language: Language) -> List[AcademicActivity]:
+    def load_activities_by_courses_choices(self, courses_choices: Dict[str, CourseChoice],
+                                           campus_name: str, language: Language,
+                                           activities_ids: List[str] = None) -> List[AcademicActivity]:
         if not os.path.exists(self.SHARED_DATABASE_PATH):
             return []
         with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
             activities_result = []
+            activities_ids = activities_ids or []
             lecture_types = [Type.LECTURE, Type.SEMINAR]
             practice_types = [Type.PRACTICE, Type.LAB]
+            activities_ids_text = f"activities.activity.id IN ({', '.join(['?'] * len(activities_ids))})" \
+                if activities_ids else "1"
             for course_name, course_choice in courses_choices.items():
                 lectures = course_choice.available_teachers_for_lecture
                 practices = course_choice.available_teachers_for_practice
@@ -353,11 +365,11 @@ class Database:
                 text_hold_place_practices = f"lecturer_name IN ({hold_place_practices})" if practices else is_not_null
 
                 cursor.execute("SELECT * FROM activities "
-                               "WHERE name = ? AND language_value = ? AND campus_id = ? AND "
+                               f"WHERE name = ? AND {activities_ids_text} AND language_value = ? AND campus_id = ? AND "
                                f"((activity_type in (?, ?) AND {text_hold_place_lectures}) "
                                "OR "
                                f"(activity_type in (?, ?) AND {text_hold_place_practices}));",
-                               (course_name, language.short_name(), campus_id,
+                               (course_name, *activities_ids, language.short_name(), campus_id,
                                 *lecture_types, *lectures,
                                 *practice_types, *practices))
 
@@ -401,16 +413,20 @@ class Database:
             cursor.close()
 
     def load_academic_activities(self, campus_name: str, language: Language,
-                                 courses: List[Course]) -> List[AcademicActivity]:
+                                 courses: List[Course], activities_ids: List[str] = None) -> List[AcademicActivity]:
         if not os.path.exists(self.SHARED_DATABASE_PATH):
             return []
         with database.connect(self.SHARED_DATABASE_PATH) as connection:
+            activities_ids = activities_ids or []
+            activities_ids_text = f"activities.activity.id IN ({', '.join(['?'] * len(activities_ids))})" \
+                if activities_ids else "1"
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
             courses_parent_numbers = [str(course.parent_course_number) for course in courses]
             cursor.execute("SELECT * FROM activities "
                            "WHERE campus_id = ? AND language_value = ? AND "
-                           f"parent_course_number IN ({','.join(courses_parent_numbers)});",
+                           f"parent_course_number IN ({','.join(courses_parent_numbers)}) "
+                           f"AND {activities_ids_text} ;",
                            (campus_id, language.short_name()))
 
             activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language in cursor.fetchall()]

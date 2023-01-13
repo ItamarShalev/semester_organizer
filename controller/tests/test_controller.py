@@ -34,7 +34,19 @@ class TestController:
     def test_flow_console(self, _time_sleep_mock, results_path_mock, controller_mock, language: Language):
         translation.config_language_text(language)
         controller_mock.database.save_language(language)
-        test_input = iter([str(item) for item in [1, 2, "1, 3", 2]])
+        inputs = []
+        # show settings menu
+        inputs.append("1")
+        # don't change settings
+        inputs.append("2")
+        # don't show only courses can enroll in since tests always run with the same user details
+        # inputs.append("2")
+        # choose courses indexes
+        inputs.append("4,5")
+        # don't select lectures
+        inputs.append("2")
+
+        test_input = iter([str(item) for item in inputs])
 
         def input_next(*args):
             try:
