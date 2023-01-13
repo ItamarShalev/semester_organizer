@@ -8,6 +8,7 @@ from operator import itemgetter
 from typing import List, Dict, Literal, Optional, Any, Set
 
 import utils
+from collector.network.public_network import PublicNetworkHttp
 from collector.db.db import Database
 from collector.gui.gui import Gui, MessageType, UserClickExitException
 from convertor.convertor import Convertor
@@ -23,6 +24,7 @@ from data.day import Day
 from data.semester import Semester
 from data.output_format import OutputFormat
 from data.translation import _
+from data.user import User
 
 Lecture = str
 MAX_OUTPUTS = 20
@@ -35,6 +37,7 @@ class Controller:
         self.gui = Gui()
         self.convertor = Convertor()
         self.csp = CSP()
+        self.network = PublicNetworkHttp()
         self.logger = utils.get_logging()
         self.delay_time = 0.12
 
@@ -283,6 +286,12 @@ class Controller:
         print(_("Campus name:"), campus_name)
         print(_("Explain: The name of the campus that you want to search for the courses."), end=end_line)
 
+        user = self.database.load_user_data()
+        text_exists = _("Exists in the system") if user else _("Not exists in the system")
+        print(_("User details:"), text_exists)
+        print(_("Explain: The user name and password that you used to login to Levnet."), end=enter_sentence_format)
+        print(_("Used to check which courses you can actually register in the Levnet website."), end=end_line)
+
         print(_("Year of study:"), settings.year)
         print(_("Explain: The year of the courses to be selected and collect from the college."), end=end_line)
 
@@ -359,6 +368,14 @@ class Controller:
             campus_name = self._console_ask_campus_name()
             settings.campus_name = campus_name
         print("\n\n")
+
+        exists_text = _("Exists in the system") if self.database.load_user_data() else _("Not exists in the system")
+        print(_("User details:"))
+        print(exists_text)
+        is_yes = self._console_ask_yes_or_no("Do you want to set the user details?")
+        if is_yes:
+            user = self._console_ask_user_details()
+            self.database.save_user_data(user)
 
         print(_("Attendance required all courses:"))
         print(_("Select 0 to use the default settings."))
@@ -652,3 +669,21 @@ class Controller:
             days.sort(key=lambda day: day.value)
             days_text = ", ".join([_(str(day)) for day in days])
         return days_text
+
+    def _console_ask_user_details(self):
+        user = None
+        while not user:
+            print(_("Please enter your user details:"))
+            username = input(_("Username:"))
+            password = input(_("Password:"))
+            user = User(username, password)
+            if not user:
+                print(_("User details can't be empty, please try again."))
+                continue
+            print(_("Connecting to the server..."))
+            if self.network.check_connection(user):
+                print(_("Your user details are correct and can continue."))
+            else:
+                print(_("Your user details are incorrect, please try again."))
+                user = None
+        return user

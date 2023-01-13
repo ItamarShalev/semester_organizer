@@ -152,6 +152,17 @@ data = TextCaseInsensitiveDict({
     "Choose your previous selection:": "בחר את הבחירה הקודמת שלך:",
     "Saving only the best {} schedules": "שומר רק את {} מערכות השעות הכי טובות.",
     "Saving the schedules, it can take few seconds...": "שומר את מערכות השעות, הפעולה יכולה לקחת מספר שניות...",
+    "Exists in the system": "קיים במערכת",
+    "Not exists in the system": "לא קיים במערכת",
+    "User details:": "פרטי משתמש:",
+    "Explain: The user name and password that you used to login to Levnet.": "הסבר: שם המשתמש והסיסמה שאתה משתמש בהם להתחבר ללבנט.",
+    "Used to check which courses you can actually register in the Levnet website.": "משמש לבדיקה אילו קורסים אתה יכול להירשם בלבנט.",
+    "Do you want to set the user details?": "האם ברצונך להגדיר את פרטי המשתמש?",
+    "Please enter your user details:": "אנא הכנס את פרטי המשתמש שלך:",
+    "Connecting to the server...": "מתחבר לשרת...",
+    "Your user details are correct and can continue.": "פרטי המשתמש שלך נכונים ואתה יכול להמשיך.",
+    "Your user details are incorrect, please try again.": "פרטי המשתמש שלך שגויים, אנא נסה שוב.",
+    "User details can't be empty, please try again.": "פרטי המשתמש לא יכולים להיות ריקים, אנא נסה שוב.",
 })
 
 
