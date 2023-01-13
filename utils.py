@@ -123,4 +123,4 @@ def get_campus_name_test():
 
 
 def get_course_data_test():
-    return Course(_("Infinitesimal Calculus 1"), 120131, 318, set(Semester), set(Degree))
+    return Course(_("Infinitesimal Calculus 1"), 120131, 318, {Semester.SPRING, Semester.FALL}, set(Degree))
