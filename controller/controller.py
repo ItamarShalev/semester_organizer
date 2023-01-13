@@ -643,10 +643,10 @@ class Controller:
 
             for course in courses:
                 if course.name in courses_choices.keys():
-                    course_choise = courses_choices[course.name]
+                    course_choice = courses_choices[course.name]
                     if ask_attendance:
-                        course.attendance_required_for_lecture = course_choise.attendance_required_for_lecture
-                        course.attendance_required_for_exercise = course_choise.attendance_required_for_exercise
+                        course.attendance_required_for_lecture = course_choice.attendance_required_for_lecture
+                        course.attendance_required_for_exercise = course_choice.attendance_required_for_practice
                     user_courses.append(course)
 
             activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
@@ -720,7 +720,7 @@ class Controller:
 
     def _console_get_activities_ids_can_enroll(self, settings: Settings, user: User):
         activities_ids_can_enroll = []
-        if settings.show_only_courses_active_classes and user:
+        if settings.show_only_classes_can_enroll and user:
             activities_ids_can_enroll = self.database.load_activities_ids_can_enroll_in()
             use_last_data = False
             if activities_ids_can_enroll:

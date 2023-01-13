@@ -4,9 +4,9 @@ from constraint import Problem
 
 from data.activity import Activity
 from data.course_choice import CourseChoice
+from data.day import Day
 from data.schedule import Schedule
 from data.settings import Settings
-from data.type import Type
 from data.translation import _
 
 
@@ -18,21 +18,63 @@ class CSP:
         self.consist_one_favorite_teacher = False
         self.settings = None
 
-    def _get_flat_activities_by_type(self, activities: List[Activity]) -> List[List[Activity]]:
-        result = {activity_type: [] for activity_type in Type}
-        for activity in activities:
-            result[activity.type].append(activity)
-        return [item for item in result.values() if item]
+    def extract_schedules_minimal_consists(self, activities: List[Activity],
+                                           activities_ids: List[str] = None) -> List[Schedule]:
+        """
+        Extract only the schedules that consist the minimal conditions
+        if the activities_ids is None, the function will return only schedules that consist by their meetings
+        else will return only schedules that consist by their meetings and the activities_ids
+        (help for classes can enroll consist).
+        """
+        all_activities_names, problem = self._prepare_activities(activities)
+        self.activities_ids_can_enroll = activities_ids
+        for name in all_activities_names:
+            for other_name in all_activities_names:
+                if name == other_name:
+                    continue
+                problem.addConstraint(self._is_consist_activity, (name, other_name))
+            if activities_ids:
+                problem.addConstraint(self._is_consist_activities_ids_can_enroll, (name,))
 
-    def _get_all_options_of_activity(self, activities_list: List[List[Activity]]) -> List[List[Activity]]:
-        if not activities_list:
-            return [[]]
-        all_options = []
-        options = self._get_all_options_of_activity(activities_list[1:])
-        for activity in activities_list[0]:
-            for option in options:
-                all_options.append([activity] + option)
-        return all_options
+        return self._extract_solutions(problem)
+
+    def extract_schedules(self, activities: List[Activity], courses_choices: Optional[Dict[str, CourseChoice]] = None,
+                          settings: Settings = None, activities_ids_can_enroll: List[str] = None) -> List[Schedule]:
+        self.settings = settings or Settings()
+        self.courses_choices = courses_choices or {}
+        self.activities_ids_can_enroll = activities_ids_can_enroll
+        all_activities_names, problem = self._prepare_activities(activities)
+
+        for name in all_activities_names:
+            for other_name in all_activities_names:
+                if name == other_name:
+                    continue
+                problem.addConstraint(self._is_consist_activity, (name, other_name))
+            problem.addConstraint(self._is_consist_favorite_teachers, (name,))
+            if set(self.settings.show_only_classes_in_days) != set(Day):
+                problem.addConstraint(self._is_consist_classes_in_days, (name,))
+            if self.settings.show_only_courses_with_free_places:
+                problem.addConstraint(self._is_consist_capacity, (name,))
+            if self.settings.show_only_courses_with_the_same_actual_number:
+                problem.addConstraint(self._is_consist_actual_course, (name,))
+            if not self.settings.show_hertzog_and_yeshiva:
+                problem.addConstraint(self._is_consist_hertzog_and_yeshiva, (name,))
+            if self.settings.show_only_classes_can_enroll and self.activities_ids_can_enroll:
+                problem.addConstraint(self._is_consist_activities_ids_can_enroll, (name,))
+
+        schedule_result = self._extract_solutions(problem)
+
+        if not schedule_result and courses_choices and not self.consist_one_favorite_teacher:
+            # If there are no schedules, try to find schedules without favorite teachers
+            self.consist_one_favorite_teacher = True
+            return self.extract_schedules(activities, courses_choices, self.settings)
+
+        if not schedule_result and courses_choices and self.consist_one_favorite_teacher:
+            # If there are no schedules, try to find schedules without favorite teachers
+            self.consist_one_favorite_teacher = False
+            return self.extract_schedules(activities, None, self.settings)
+
+        return schedule_result
 
     def _is_consist_activity(self, activity_one, activity_two):
         return all(not activity.is_crash_with_activities(activity_one) for activity in activity_two)
@@ -107,39 +149,23 @@ class CSP:
                 break
         return is_consist
 
-    def extract_schedules(self, activities: List[Activity], courses_choices: Optional[Dict[str, CourseChoice]] = None,
-                          settings: Settings = None, activities_ids_can_enroll: List[str] = None) -> List[Schedule]:
+    def _prepare_activities(self, activities: List[Activity]):
         problem = Problem()
-        self.settings = settings or Settings()
-        activities_result = []
-        schedule_result = []
-        self.courses_choices = courses_choices or {}
-        self.activities_ids_can_enroll = activities_ids_can_enroll
-        option_counter = 1
         activities_by_name = Activity.get_activities_by_name(activities)
 
         for name, activities_values in activities_by_name.items():
-            flat_activities_by_type = self._get_flat_activities_by_type(activities_values)
-            options_for_activity = self._get_all_options_of_activity(flat_activities_by_type)
+            flat_activities_by_type = Activity.extract_flat_activities_by_type(activities_values)
+            options_for_activity = Activity.extract_all_options_of_activity(flat_activities_by_type)
             problem.addVariable(name, options_for_activity)
 
-        all_names_activities = activities_by_name.keys()
+        all_activities_names = list(activities_by_name.keys())
 
-        for name in all_names_activities:
-            problem.addConstraint(self._is_consist_favorite_teachers, (name,))
-            problem.addConstraint(self._is_consist_classes_in_days, (name,))
-            if self.settings.show_only_courses_with_free_places:
-                problem.addConstraint(self._is_consist_capacity, (name,))
-            if self.settings.show_only_courses_with_the_same_actual_number:
-                problem.addConstraint(self._is_consist_actual_course, (name,))
-            if not self.settings.show_hertzog_and_yeshiva:
-                problem.addConstraint(self._is_consist_hertzog_and_yeshiva, (name,))
-            if self.settings.show_only_classes_can_enroll and self.activities_ids_can_enroll:
-                problem.addConstraint(self._is_consist_activities_ids_can_enroll, (name,))
-            for other_name in all_names_activities:
-                if name == other_name:
-                    continue
-                problem.addConstraint(self._is_consist_activity, (name, other_name))
+        return all_activities_names, problem
+
+    def _extract_solutions(self, problem: Problem) -> List[Schedule]:
+        activities_result = []
+        schedule_result = []
+        option_counter = 1
 
         for solution in problem.getSolutions():
             activities_result.clear()
@@ -150,15 +176,5 @@ class CSP:
             schedule = Schedule(name, file_name, "", activities_result.copy())
             schedule_result.append(schedule)
             option_counter += 1
-
-        if not schedule_result and courses_choices and not self.consist_one_favorite_teacher:
-            # If there are no schedules, try to find schedules without favorite teachers
-            self.consist_one_favorite_teacher = True
-            return self.extract_schedules(activities, courses_choices, self.settings)
-
-        if not schedule_result and courses_choices and self.consist_one_favorite_teacher:
-            # If there are no schedules, try to find schedules without favorite teachers
-            self.consist_one_favorite_teacher = False
-            return self.extract_schedules(activities, None, self.settings)
 
         return schedule_result

@@ -13,24 +13,27 @@ class TestCsp:
 
     def test_one_from_one_option(self):
         activities = []
-        academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
-        academic_activity.add_slot(Meeting(Day.SUNDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("11:00")))
+        csp = CSP()
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a", "1")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
         activities.append(academic_activity)
 
-        academic_activity = AcademicActivity("b", Type.LAB, True, "b", 1, 1, "b")
-        academic_activity.add_slot(Meeting(Day.SUNDAY, Meeting.str_to_time("12:00"), Meeting.str_to_time("14:30")))
+        academic_activity = AcademicActivity("b", Type.LAB, True, "b", 1, 1, "b", "2")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "12:00", "14:30"))
         activities.append(academic_activity)
 
         activity = Activity("c", Type.PERSONAL, True)
-        activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("12:00"), Meeting.str_to_time("14:30")))
+        activity.add_slot(Meeting(Day.MONDAY, "12:00", "14:30"))
         activities.append(activity)
 
-        schdule = Schedule("Option 0", "option_0", "", activities)
+        schedule = Schedule("Option 0", "option_0", "", activities)
+        all_activities_ids = ["1", "2"]
 
-        schedules = CSP().extract_schedules(activities)
-        assert len(schedules) == 1
-        assert any(schedule.contains(activities) for schedule in schedules)
-        assert schdule in schedules
+        for schedules in [csp.extract_schedules(activities),
+                          csp.extract_schedules_minimal_consists(activities, all_activities_ids)]:
+            assert len(schedules) == 1
+            assert any(schedule.contains(activities) for schedule in schedules)
+            assert schedule in schedules
 
     def test_two_from_two_options(self):
         activities_option_1 = []
@@ -286,6 +289,7 @@ class TestCsp:
         activities_option_2.append(activity)
 
         settings = Settings()
+        settings.show_only_classes_in_days = [Day.SUNDAY, Day.MONDAY, Day.THURSDAY, Day.TUESDAY, Day.WEDNESDAY]
         settings.show_only_classes_can_enroll = True
 
         schedules = CSP().extract_schedules(activities, None, settings, activities_ids_can_enroll)

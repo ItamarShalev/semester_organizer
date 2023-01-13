@@ -56,6 +56,24 @@ class Activity:
             result[activity.name].append(activity)
         return dict(result)
 
+    @staticmethod
+    def extract_flat_activities_by_type(activities: List["Activity"]) -> List[List["Activity"]]:
+        result = {activity_type: [] for activity_type in Type}
+        for activity in activities:
+            result[activity.type].append(activity)
+        return [item for item in result.values() if item]
+
+    @staticmethod
+    def extract_all_options_of_activity(activities_list: List[List["Activity"]]) -> List[List["Activity"]]:
+        if not activities_list:
+            return [[]]
+        all_options = []
+        options = Activity.extract_all_options_of_activity(activities_list[1:])
+        for activity in activities_list[0]:
+            for option in options:
+                all_options.append([activity] + option)
+        return all_options
+
     def __eq__(self, other):
         is_equals = self.name == other.name and self.type == other.type
         is_equals = is_equals and self.attendance_required == other.attendance_required
