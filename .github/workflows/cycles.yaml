@@ -74,6 +74,8 @@ jobs:
           echo ${{ secrets.PASSWORD_LEVNET }} >> database/user_data.txt
       - name: Run pytest
         run: |
+          export JUPYTER_PLATFORM_DIRS=1
+          jupyter --paths
           coverage run --rcfile=".coveragerc_ci_cd" -m pytest $(git ls-files 'test_*.py') -s -v -m "not network"
       - name: Run coverage
         run: |
