@@ -52,7 +52,7 @@ def get_os_type() -> Optional[OS]:
 def build(os_build_type: OS):
 
     customtkinter_path = os.path.abspath(os.path.dirname(customtkinter.__file__))
-    database_file_path = os.path.join(utils.get_database_path(), Database.DATABASE_PATH)
+    database_file_path = os.path.join(utils.get_database_path(), Database.SHARED_DATABASE_PATH)
     main_path = os.path.abspath(os.path.join(utils.ROOT_PATH, "__main__.py"))
     separator = ';'
     if os_build_type in [OS.UBUNTU, OS.MAC]:

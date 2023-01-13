@@ -1,6 +1,7 @@
 import os
 import pathlib
 from contextlib import suppress
+from sqlite3 import IntegrityError
 
 import pytest
 from pytest import fixture
@@ -26,7 +27,7 @@ from data.output_format import OutputFormat
 class TestDatabase:
 
     def test_not_empty(self, database_mock):
-        assert database_mock.is_all_tables_exists()
+        assert database_mock.are_shared_tables_exists()
 
     def test_load_current_versions(self, database_mock):
         assert database_mock.load_current_versions() == (None, None)
@@ -61,19 +62,21 @@ class TestDatabase:
         assert _("Machon Lev") in database_mock.get_common_campuses_names()
 
     def test_update_database(self, database_mock):
-        database_mock.clear_database()
+        database_mock.clear_shared_database()
         database_mock.init_database_tables()
         assert not database_mock.load_degrees()
         new_database_path = os.path.join(utils.get_database_path(), "new_database.db")
-        old_database_path = database_mock.DATABASE_PATH
-        database_mock.DATABASE_PATH = new_database_path
+        old_database_path = database_mock.SHARED_DATABASE_PATH
+        database_mock.SHARED_DATABASE_PATH = new_database_path
         database_mock.init_database_tables()
         database_mock.save_degrees(list(Degree))
         assert database_mock.load_degrees()
-        database_mock.DATABASE_PATH = old_database_path
+        database_mock.SHARED_DATABASE_PATH = old_database_path
         assert not database_mock.load_degrees()
         database_mock.update_database(pathlib.Path(new_database_path))
         assert database_mock.load_degrees()
+        with suppress(Exception):
+            os.remove(new_database_path)
 
     def test_degrees(self, database_mock):
         degrees = [Degree.SOFTWARE_ENGINEERING]
@@ -103,6 +106,9 @@ class TestDatabase:
         loaded = database_mock.load_personal_activities()
         assert loaded == [activity]
         assert loaded[0].meetings == [Meeting(Day.MONDAY, "10:00", "12:00")]
+        assert database_mock.are_personal_tables_exists()
+        with pytest.raises(IntegrityError):
+            database_mock.save_personal_activities([activity])
 
     def test_activities(self, database_mock, campuses):
         campus_name = "A"
@@ -190,6 +196,10 @@ class TestDatabase:
 
     def test_clear_all(self, database_mock):
         database_mock.clear_all_data()
+        with suppress(Exception):
+            os.remove(database_mock.SHARED_DATABASE_PATH)
+        with suppress(Exception):
+            os.remove(database_mock.PERSONAL_DATABASE_PATH)
 
     @fixture
     def database_mock(self):
@@ -198,19 +208,19 @@ class TestDatabase:
             YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "test_years_data.txt")
             VERSIONS_PATH = os.path.join(utils.get_database_path(), "test_versions.txt")
             SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "test_settings_data.txt")
-            DATABASE_PATH = os.path.join(utils.get_database_path(), "test_database.db")
+            SHARED_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_database.db")
             COURSES_CHOOSE_PATH = os.path.join(utils.get_database_path(), "test_course_choose_user_input.txt")
+            PERSONAL_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_personal_database.db")
 
             def __init__(self):
                 super().__init__()
-                with suppress(Exception):
-                    os.remove(DatabaseMock.DATABASE_PATH)
-
                 with suppress(Exception):
                     os.remove(DatabaseMock.USER_NAME_FILE_PATH)
 
         database = DatabaseMock()
         database.clear_all_data()
+        database.clear_personal_database()
+        database.clear_shared_database()
         database.init_database_tables()
 
         return database

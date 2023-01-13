@@ -31,27 +31,49 @@ class Database:
     YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "years_data.txt")
     VERSIONS_PATH = os.path.join(utils.get_database_path(), "versions.txt")
     SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.txt")
-    DATABASE_PATH = os.path.join(utils.get_database_path(), "database.db")
+    SHARED_DATABASE_PATH = os.path.join(utils.get_database_path(), "database.db")
+    PERSONAL_DATABASE_PATH = os.path.join(utils.get_database_path(), "personal_database.db")
     COURSES_CHOOSE_PATH = os.path.join(utils.get_database_path(), "course_choose_user_input.txt")
 
     def __init__(self):
         self.logger = utils.get_logging()
-        self._all_sql_tables = ["degrees",
-                                "campuses",
-                                "degrees_courses",
-                                "lecturers",
-                                "courses_lecturers",
-                                "semesters_courses",
-                                "courses",
-                                "semesters",
-                                "personal_activities_meetings",
-                                "personal_activities",
-                                "activities_meetings",
-                                "activities",
-                                "meetings"]
+        self._shared_sql_tables = [
+            "degrees",
+            "campuses",
+            "degrees_courses",
+            "lecturers",
+            "courses_lecturers",
+            "semesters_courses",
+            "courses",
+            "semesters",
+            "activities_meetings",
+            "activities",
+        ]
+        self._personal_sql_tables = [
+            "personal_activities",
+            "personal_meetings",
+            "personal_activities_meetings"
+        ]
 
-    def init_database_tables(self):
-        with database.connect(self.DATABASE_PATH) as connection:
+    def init_personal_database_tables(self):
+        with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("CREATE TABLE IF NOT EXISTS personal_activities "
+                           "(id INTEGER PRIMARY KEY, name TEXT UNIQUE);")
+
+            cursor.execute("CREATE TABLE IF NOT EXISTS personal_meetings "
+                           "(id INTEGER PRIMARY KEY, day INTEGER, start_time TEXT, end_time TEXT);")
+
+            cursor.execute("CREATE TABLE IF NOT EXISTS personal_activities_meetings "
+                           "(acitivity_id INTEGER, meeting_id INTEGER, "
+                           "FOREIGN KEY(acitivity_id) REFERENCES personal_activities(id), "
+                           "FOREIGN KEY(meeting_id) REFERENCES meetings(id));")
+
+            connection.commit()
+            cursor.close()
+
+    def init_shared_database_tables(self):
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("CREATE TABLE IF NOT EXISTS campuses "
                            "(id INTEGER PRIMARY KEY, english_name TEXT, hebrew_name TEXT);")
@@ -68,16 +90,8 @@ class Database:
                            "parent_course_number INTEGER, language_value CHARACTER(2),"
                            "PRIMARY KEY(parent_course_number, language_value));")
 
-            cursor.execute("CREATE TABLE IF NOT EXISTS personal_activities "
-                           "(id INTEGER PRIMARY KEY, name TEXT UNIQUE);")
-
             cursor.execute("CREATE TABLE IF NOT EXISTS meetings "
                            "(id INTEGER PRIMARY KEY, day INTEGER, start_time TEXT, end_time TEXT);")
-
-            cursor.execute("CREATE TABLE IF NOT EXISTS personal_activities_meetings "
-                           "(acitivity_id INTEGER, meeting_id INTEGER, "
-                           "FOREIGN KEY(acitivity_id) REFERENCES personal_activities(id), "
-                           "FOREIGN KEY(meeting_id) REFERENCES meetings(id));")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS activities "
                            "(name TEXT, activity_type INTEGER, attendance_required BOOLEAN, lecturer_name TEXT, "
@@ -117,8 +131,12 @@ class Database:
             connection.commit()
             cursor.close()
 
+    def init_database_tables(self):
+        self.init_shared_database_tables()
+        self.init_personal_database_tables()
+
     def load_campus_id(self, campus_name: str):
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT id FROM campuses WHERE english_name = ? or hebrew_name = ?;",
                            (campus_name, campus_name))
@@ -126,7 +144,7 @@ class Database:
             return campus_id
 
     def save_semesters(self, semesters: List[Semester]):
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             for semester in semesters:
                 cursor.execute("INSERT OR IGNORE INTO semesters VALUES (?, ?);", (*semester, ))
@@ -134,7 +152,7 @@ class Database:
             cursor.close()
 
     def save_degrees(self, degrees: List[Degree]):
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             for degree in degrees:
                 cursor.execute("INSERT OR IGNORE INTO degrees VALUES (?, ?);", (*degree, ))
@@ -142,7 +160,7 @@ class Database:
             cursor.close()
 
     def load_degrees(self):
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT * FROM degrees;")
             degrees_values = cursor.fetchall()
@@ -155,9 +173,9 @@ class Database:
             return degrees
 
     def load_semesters(self) -> List[Semester]:
-        if not os.path.exists(self.DATABASE_PATH):
+        if not os.path.exists(self.SHARED_DATABASE_PATH):
             return []
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT name FROM semesters;")
             semesters = [Semester[semester_name.upper()] for (semester_name,) in cursor.fetchall()]
@@ -165,13 +183,13 @@ class Database:
             return semesters
 
     def save_personal_activities(self, activities: List[Activity]):
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             for activity in activities:
-                cursor.execute("INSERT OR IGNORE INTO personal_activities VALUES (?, ?);",
+                cursor.execute("INSERT INTO personal_activities VALUES (?, ?);",
                                (activity.activity_id, activity.name))
                 for meeting in activity.meetings:
-                    cursor.execute("INSERT OR IGNORE INTO meetings VALUES (?, ?, ?, ?);", (*meeting, ))
+                    cursor.execute("INSERT OR IGNORE INTO personal_meetings VALUES (?, ?, ?, ?);", (*meeting, ))
                     cursor.execute("INSERT OR IGNORE INTO personal_activities_meetings VALUES (?, ?);",
                                    (activity.activity_id, meeting.meeting_id))
             connection.commit()
@@ -185,7 +203,7 @@ class Database:
         If degrees is None - load default degrees
         """
         degrees = degrees or Degree.get_defaults()
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
             courses = courses or self.load_active_courses(campus_name, language)
@@ -216,18 +234,18 @@ class Database:
             return courses_choices
 
     def load_personal_activities(self) -> List[Activity]:
-        if not os.path.exists(self.DATABASE_PATH):
+        if not os.path.exists(self.PERSONAL_DATABASE_PATH):
             return []
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT id, name FROM personal_activities;")
             activities = [Activity.create_personal_from_database(activity_id, activity_name)
                           for activity_id, activity_name in cursor.fetchall()]
 
             for activity in activities:
-                cursor.execute("SELECT meetings.* FROM meetings "
+                cursor.execute("SELECT personal_meetings.* FROM personal_meetings "
                                "INNER JOIN personal_activities_meetings "
-                               "ON meetings.id = personal_activities_meetings.meeting_id "
+                               "ON personal_meetings.id = personal_activities_meetings.meeting_id "
                                "WHERE personal_activities_meetings.acitivity_id = ?;", (activity.activity_id,))
                 meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
                 activity.meetings = meetings
@@ -235,7 +253,7 @@ class Database:
             return activities
 
     def save_courses(self, courses: List[Course], language: Language):
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             for course in courses:
                 cursor.execute("INSERT INTO courses VALUES (?, ?, ?, ?);", (*course, language.short_name()))
@@ -249,9 +267,9 @@ class Database:
             cursor.close()
 
     def load_courses(self, language: Language, degrees: Optional[Set[Degree]] = None) -> List[Course]:
-        if not os.path.exists(self.DATABASE_PATH):
+        if not os.path.exists(self.SHARED_DATABASE_PATH):
             return []
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             degrees = degrees or Degree.get_defaults()
             degrees_text = f"({', '.join(['?'] * len(degrees))})"
             cursor = connection.cursor()
@@ -273,9 +291,9 @@ class Database:
 
     def load_active_courses(self, campus_name: str, language: Language,
                             degrees: Collection[Degree] = None) -> List[Course]:
-        if not os.path.exists(self.DATABASE_PATH):
+        if not os.path.exists(self.SHARED_DATABASE_PATH):
             return []
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
             degrees = degrees or Degree.get_defaults()
@@ -296,9 +314,9 @@ class Database:
 
     def load_activities_by_courses_choices(self, courses_choices: Dict[str, CourseChoice], campus_name: str,
                                            language: Language) -> List[AcademicActivity]:
-        if not os.path.exists(self.DATABASE_PATH):
+        if not os.path.exists(self.SHARED_DATABASE_PATH):
             return []
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
             activities_result = []
@@ -346,7 +364,7 @@ class Database:
             return activities_result
 
     def save_academic_activities(self, activities: List[AcademicActivity], campus_name: str, language: Language):
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
             for activity in activities:
@@ -365,9 +383,9 @@ class Database:
 
     def load_academic_activities(self, campus_name: str, language: Language,
                                  courses: List[Course]) -> List[AcademicActivity]:
-        if not os.path.exists(self.DATABASE_PATH):
+        if not os.path.exists(self.SHARED_DATABASE_PATH):
             return []
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
             courses_parent_numbers = [str(course.parent_course_number) for course in courses]
@@ -392,7 +410,7 @@ class Database:
             return activities
 
     def save_campuses(self, campuses: Dict[int, Tuple[EnglishName, HebrewName]]):
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             for campus_id, (english_name, hebrew_name) in campuses.items():
                 cursor.execute("INSERT OR IGNORE INTO campuses VALUES (?, ?, ?);",
@@ -401,9 +419,9 @@ class Database:
             cursor.close()
 
     def load_campus_names(self, language: Language = None) -> List[str]:
-        if not os.path.exists(self.DATABASE_PATH):
+        if not os.path.exists(self.SHARED_DATABASE_PATH):
             return []
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             language = language or Language.get_current()
             cursor = connection.cursor()
             name_column = "english_name" if language is Language.ENGLISH else "hebrew_name"
@@ -413,9 +431,9 @@ class Database:
             return campus_names
 
     def load_campuses(self) -> Dict[int, Tuple[EnglishName, HebrewName]]:
-        if not os.path.exists(self.DATABASE_PATH):
+        if not os.path.exists(self.SHARED_DATABASE_PATH):
             return {}
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT * FROM campuses;")
             campuses = {campus_id: (english_name, hebrew_name)
@@ -474,7 +492,7 @@ class Database:
     def clear_all_data(self):
         self.clear_settings()
         self.clear_years()
-        self.clear_database()
+        self.clear_shared_database()
         self.clear_last_courses_choose_input()
         self.clear_versions()
 
@@ -503,7 +521,7 @@ class Database:
         return campus_names
 
     def translate_campus_name(self, campus_name: str) -> str:
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT english_name, hebrew_name FROM campuses WHERE hebrew_name = ? or english_name = ?;",
                            (campus_name, campus_name))
@@ -536,30 +554,42 @@ class Database:
                 file.write(f"{user_data.username}\n{user_data.password}")
 
     def update_database(self, database_path: pathlib.Path):
-        self.clear_database()
+        self.clear_shared_database()
         self.init_database_tables()
-        shutil.copy2(database_path, self.DATABASE_PATH)
+        shutil.copy2(database_path, self.SHARED_DATABASE_PATH)
 
-    def is_all_tables_exists(self):
-        if not os.path.exists(self.DATABASE_PATH):
+    def _are_tables_exists(self, tables_names: List[str], database_path: str):
+        if not os.path.exists(database_path):
             return False
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(database_path) as connection:
             cursor = connection.cursor()
             all_exists = True
-            for table_name in self._all_sql_tables:
+            for table_name in tables_names:
                 cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name= ?;", (table_name,))
                 all_exists = all_exists and bool(cursor.fetchone())
             cursor.close()
             return all_exists
 
-    def clear_database(self):
-        if not os.path.exists(self.DATABASE_PATH):
+    def are_shared_tables_exists(self):
+        return self._are_tables_exists(self._shared_sql_tables, self.SHARED_DATABASE_PATH)
+
+    def are_personal_tables_exists(self):
+        return self._are_tables_exists(self._personal_sql_tables, self.PERSONAL_DATABASE_PATH)
+
+    def _clear_database(self, tables_names: List[str], database_path: str):
+        if not os.path.exists(database_path):
             return
-        with database.connect(self.DATABASE_PATH) as connection:
+        with database.connect(database_path) as connection:
             cursor = connection.cursor()
-            for table_name in self._all_sql_tables:
+            for table_name in tables_names:
                 cursor.execute(f"DROP TABLE IF EXISTS {table_name};")
             cursor.close()
+
+    def clear_shared_database(self):
+        self._clear_database(self._shared_sql_tables, self.SHARED_DATABASE_PATH)
+
+    def clear_personal_database(self):
+        self._clear_database(self._personal_sql_tables, self.PERSONAL_DATABASE_PATH)
 
     def clear_last_courses_choose_input(self):
         if os.path.exists(self.COURSES_CHOOSE_PATH):

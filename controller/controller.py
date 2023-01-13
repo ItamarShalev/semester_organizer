@@ -130,7 +130,7 @@ class Controller:
         subprocess.call(f"explorer {results_path}", shell=True)
 
     def _validate_database(self, output_type: Literal['gui', 'console']):
-        if not self.database.is_all_tables_exists():
+        if not self.database.are_shared_tables_exists():
             self.logger.error("ERROR: Missing database, can't continue.")
             msg = _("Missing database, can't continue, please download the database file from the github server "
                     "and import the database by running :")
