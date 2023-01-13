@@ -1,7 +1,9 @@
-from typing import List, Union
+from collections import defaultdict
+from typing import List, Union, Dict
 
 from data.activity import Activity
 from data.course import Course
+from data.course_choice import CourseChoice
 from data.type import Type
 
 
@@ -69,6 +71,20 @@ class AcademicActivity(Activity):
                 if activity.same_as_course(course):
                     activity.attendance_required = course.is_attendance_required(activity.type)
                     break
+
+    @staticmethod
+    def create_courses_choices(academic_activities: List["AcademicActivity"]) -> Dict[str, CourseChoice]:
+        # key = course name, first value list of lectures, second value list of exercises
+        dict_data = defaultdict(lambda: (set(), set()))
+        for activity in academic_activities:
+            index = 0 if activity.type.is_lecture() else 1
+            dict_data[activity.name][index].add(activity.lecturer_name)
+        courses_choices = {}
+        for course_name, (lecturers, exercises) in dict_data.items():
+            courses_choices[course_name] = CourseChoice(course_name,
+                                                        available_teachers_for_lecture=list(lecturers),
+                                                        available_teachers_for_practice=list(exercises))
+        return courses_choices
 
     def __iter__(self):
         return iter((self.name, self.type.value, self.attendance_required, self.lecturer_name, self.course_number,

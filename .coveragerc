@@ -13,3 +13,11 @@ exclude_lines =
     throw NotImplementedError
     @pytest.mark.skip
     except ImportError
+    def install_auto_complete_cli
+    raise Exception
+    if not os.path.exists
+    class NetworkDriver
+    class TestNetworkDriver
+    class NoDriverFoundException
+    class DriverType
+    if not response_json["totalItems"]

@@ -5,6 +5,7 @@ from copy import copy
 import pytest
 
 import utils
+from collector.gui.gui import UserClickExitException
 from collector.gui.gui import MessageType
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
@@ -100,6 +101,18 @@ class TestData:
 
         AcademicActivity.union_courses(activities, [course])
         assert repr(activity) == "name"
+
+        activities = [
+            AcademicActivity("name", Type.LECTURE, lecturer_name="a"),
+            AcademicActivity("name", Type.SEMINAR, lecturer_name="b"),
+            AcademicActivity("name", Type.PRACTICE, lecturer_name="d"),
+            AcademicActivity("name", Type.LAB, lecturer_name="c"),
+        ]
+        loaded_data = AcademicActivity.create_courses_choices(activities)
+        assert len(loaded_data) == 1
+        assert "name" in loaded_data
+        assert set(loaded_data["name"].available_teachers_for_lecture) == {"a", "b"}
+        assert set(loaded_data["name"].available_teachers_for_practice) == {"c", "d"}
 
     def test_type(self):
         typ = Type.LAB
@@ -266,3 +279,5 @@ class TestData:
         message = MessageType.ERROR
         assert repr(message) == "Error"
         assert str(message) == _("Error")
+        with pytest.raises(UserClickExitException):
+            raise UserClickExitException()

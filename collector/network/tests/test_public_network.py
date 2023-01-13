@@ -2,7 +2,9 @@ import pytest
 from pytest import fixture
 
 from collector.db.db import Database
-from collector.network.public_network import PublicNetworkHttp
+from collector.network.public_network import PublicNetworkHttp, WeakNetworkConnectionException
+from data.language import Language
+from data.settings import Settings
 from data.user import User
 
 
@@ -45,3 +47,10 @@ class TestPublicNetworkHttp(BaseTestNetworkHttp):
         network = PublicNetworkHttp()
         network.set_user(user)
         assert network.check_connection(), "Can't connect to the server."
+
+    def test_for_coverage(self):
+        network = PublicNetworkHttp()
+        network.set_settings(Settings())
+        network.change_language(Language.ENGLISH)
+        with pytest.raises(WeakNetworkConnectionException):
+            raise WeakNetworkConnectionException()

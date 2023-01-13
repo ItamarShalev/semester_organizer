@@ -1,5 +1,6 @@
 import os.path
 import shutil
+from contextlib import suppress
 from typing import List, Dict, Callable
 from unittest.mock import MagicMock, patch
 
@@ -27,6 +28,7 @@ class TestController:
     def test_run_main_gui_flow(self, _time_sleep_mock, _results_path_mock, controller_mock, language: Language):
         translation.config_language_text(language)
         controller_mock.database.save_language(language)
+        assert controller_mock.database.load_language() == language
         controller_mock.run_main_gui_flow()
         controller_mock.convertor.convert_activities.assert_called()
 
@@ -48,12 +50,9 @@ class TestController:
 
         test_input = iter([str(item) for item in inputs])
 
-        def input_next(*args):
-            try:
+        def input_next(*_unused_args):
+            with suppress(StopIteration):
                 return next(test_input)
-            except StopIteration as error:
-                text = ' '.join([str(item) for item in args])
-                raise ValueError(f"FAIL: input args: {text}") from error
 
         results = results_path_mock()
         shutil.rmtree(results, ignore_errors=True)

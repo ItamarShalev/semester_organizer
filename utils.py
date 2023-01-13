@@ -78,8 +78,7 @@ def get_current_hebrew_year():
 
 
 def get_database_path():
-    if not os.path.exists(os.path.join(ROOT_PATH, "database")):
-        os.makedirs(os.path.join(ROOT_PATH, "database"))
+    os.makedirs(os.path.join(ROOT_PATH, "database"), exist_ok=True)
     return os.path.join(ROOT_PATH, "database")
 
 

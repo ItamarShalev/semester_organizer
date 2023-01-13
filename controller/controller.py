@@ -41,19 +41,6 @@ class Controller:
         self.logger = utils.get_logging()
         self.delay_time = 0.12
 
-    def _get_courses_choices(self, all_academic_activities: List[AcademicActivity]) -> Dict[str, CourseChoice]:
-        # key = course name, first value list of lectures, second value list of exercises
-        dict_data = defaultdict(lambda: (set(), set()))
-        for activity in all_academic_activities:
-            index = 0 if activity.type.is_lecture() else 1
-            dict_data[activity.name][index].add(activity.lecturer_name)
-
-        courses_choices = {}
-        for course_name, (lecturers, exercises) in dict_data.items():
-            courses_choices[course_name] = CourseChoice(course_name, available_teachers_for_lecture=list(lecturers),
-                                                        available_teachers_for_practice=list(exercises))
-        return courses_choices
-
     def _initial_language_if_first_time(self):
         settings = self.database.load_settings()
         if not settings:
