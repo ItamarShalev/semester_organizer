@@ -2,6 +2,7 @@ import logging
 import os
 import shutil
 import sys
+import time
 from contextlib import suppress
 from typing import Tuple
 
@@ -96,6 +97,13 @@ def count_files_and_directory(directory: str) -> Tuple[int, int]:
         files += len(files_names)
         dirs += len(dirs_name)
     return files, dirs
+
+
+def get_last_modified_by_days(file_path: str) -> int:
+    if not os.path.exists(file_path):
+        return 0
+    last_modified = os.path.getmtime(file_path)
+    return int((time.time() - last_modified) / 60 / 60 / 24)
 
 
 def get_current_semester():

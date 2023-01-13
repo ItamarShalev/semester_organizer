@@ -27,32 +27,27 @@ class MeetingClass:
         self.activity = activity
 
     def __str__(self):
-        if self.activity:
-            activity = self.activity
-            activity_name = activity.name
-            activity_type = activity.type
-            activity_time = str(self.meeting)
-            if activity_type is not Type.PERSONAL:
-                academic_activity = cast(AcademicActivity, activity)
-                lecturer_name = academic_activity.lecturer_name
-                course_location = academic_activity.location
-                lecturer_type = [_(str(activity_type)), lecturer_name]
-                activity_id = academic_activity.activity_id
-                if Language.get_current() is Language.HEBREW:
-                    lecturer_type.reverse()
-                result = f"{activity_name}\n"
-                result += " - ".join(lecturer_type)
-                result += f"\n{activity_time}\n{activity_id}\n{course_location}"
-            else:
-                result = f"{activity_name}\n{activity_time}"
-            return result
-        return str(self.meeting)
+        activity = self.activity
+        activity_name = activity.name
+        activity_type = activity.type
+        activity_time = str(self.meeting)
+        if activity_type is not Type.PERSONAL:
+            academic_activity = cast(AcademicActivity, activity)
+            lecturer_name = academic_activity.lecturer_name
+            course_location = academic_activity.location
+            lecturer_type = [_(str(activity_type)), lecturer_name]
+            activity_id = academic_activity.activity_id
+            if Language.get_current() is Language.HEBREW:
+                lecturer_type.reverse()
+            result = f"{activity_name}\n"
+            result += " - ".join(lecturer_type)
+            result += f"\n{activity_time}\n{activity_id}\n{course_location}"
+        else:
+            result = f"{activity_name}\n{activity_time}"
+        return result
 
     def __lt__(self, other):
         return self.meeting < other.meeting
-
-    def __eq__(self, other):
-        return self.meeting == self.meeting
 
 
 class Convertor:
@@ -146,8 +141,6 @@ class Convertor:
         return df_styled
 
     def convert_activities_to_excel(self, schedules: List[Schedule], folder_location: str):
-        if not schedules:
-            return
         shutil.rmtree(folder_location, ignore_errors=True)
         os.makedirs(folder_location, exist_ok=True)
         self._init_activities_color_indexes(schedules[0].activities)
@@ -167,8 +160,6 @@ class Convertor:
             writer.close()
 
     def convert_activities_to_png(self, schedules: List[Schedule], folder_location: str):
-        if not schedules:
-            return
         shutil.rmtree(folder_location, ignore_errors=True)
         os.makedirs(folder_location, exist_ok=True)
         self._init_activities_color_indexes(schedules[0].activities)
@@ -178,8 +169,6 @@ class Convertor:
             dfi.export(df, file_location)
 
     def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: str):
-        if not schedules:
-            return
         shutil.rmtree(folder_location, ignore_errors=True)
         os.makedirs(folder_location, exist_ok=True)
         self._init_activities_color_indexes(schedules[0].activities)

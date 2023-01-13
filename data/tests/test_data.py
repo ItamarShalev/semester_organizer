@@ -1,3 +1,5 @@
+import os
+import shutil
 from copy import copy
 
 import pytest
@@ -45,10 +47,16 @@ class TestData:
 
         assert repr(meeting) == "09:00 - 11:00"
 
+        assert [meeting.meeting_id, Day.MONDAY.value, "09:00", "11:00"] == [*meeting]
+
     def test_course(self):
         course = Course("", 0, 0, set(Semester), set(Degree))
         course2 = Course("", 0, 0, Semester.ANNUAL, Degree.SOFTWARE_ENGINEERING)
         assert course == course2
+        course3 = Course("", 0, 0, Semester.ANNUAL, Degree.SOFTWARE_ENGINEERING)
+        course3.add_degrees(Degree.COMPUTER_SCIENCE)
+        course3.add_degrees({Degree.SOFTWARE_ENGINEERING, Degree.COMPUTER_SCIENCE})
+        assert len(course3.degrees) == 2
 
         course.set_attendance_required(Type.LAB, True)
         course.set_attendance_required(Type.LECTURE, False)
@@ -84,6 +92,8 @@ class TestData:
 
     def test_academic_activity(self):
         activity = AcademicActivity("name", activity_type=Type.LAB, course_number=10, parent_course_number=20)
+        hash_attributes = (activity.name, activity.course_number, activity.parent_course_number, activity.activity_id)
+        assert hash(activity) == hash(tuple([*hash_attributes]))
         course = Course("name", 10, 20, set(Semester), set(Degree))
         assert activity.same_as_course(course)
         activities = [activity]
@@ -203,13 +213,25 @@ class TestData:
         case_insensitive_dict.update({"A": 2})
         assert case_insensitive_dict["A"] == 2
 
-        case_insensitive_dict = TextCaseInsensitiveDict({"? ASA,=   - ?": 1})
+        case_insensitive_dict = TextCaseInsensitiveDict({"? ASA,=   - ?": 1, 2: 3})
         assert case_insensitive_dict["AsA"] == 1
+        assert case_insensitive_dict[2] == 3
 
     def test_utils(self):
         assert utils.get_logging()
         assert utils.get_custom_software_name() == "semester_organizer_lev"
         assert utils.get_course_data_test().parent_course_number == 318
+        assert utils.windows_path_to_unix("C:\\path\\to") == "/c/path/to"
+        test_folder = os.path.join(utils.get_database_path(), "test_folder")
+        test_file = os.path.join(test_folder, "test_file.txt")
+        shutil.rmtree(test_folder, ignore_errors=True)
+        os.mkdir(test_folder)
+        assert utils.get_last_modified_by_days(test_folder) == 0
+        with open(test_file, "w") as file:
+            file.write("test")
+        assert utils.count_files_and_directory(test_folder) == (1, 0)
+        shutil.rmtree(test_folder, ignore_errors=True)
+        assert utils.get_last_modified_by_days(test_folder) == 0
 
     def test_degree(self):
         degrees = set()
@@ -218,6 +240,8 @@ class TestData:
         assert repr(Degree.COMPUTER_SCIENCE) == "Computer Science"
         assert len(Degree.get_defaults()) == 2
         assert set(Degree) == {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
+        assert ["COMPUTER_SCIENCE", 20] == [*Degree.COMPUTER_SCIENCE]
+        assert Degree.COMPUTER_SCIENCE == Degree["COMPUTER_SCIENCE"]
 
     def test_flow_enum(self):
         flow = Flow.GUI

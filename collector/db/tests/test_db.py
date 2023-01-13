@@ -1,6 +1,8 @@
 import os
+import pathlib
 from contextlib import suppress
 
+import pytest
 from pytest import fixture
 
 import utils
@@ -9,10 +11,13 @@ from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.course import Course
 from data.course_choice import CourseChoice
+from data.day import Day
 from data.degree import Degree
 from data.language import Language
+from data.meeting import Meeting
 from data.semester import Semester
 from data.settings import Settings
+from data.translation import _
 from data.type import Type
 from data.user import User
 from data.output_format import OutputFormat
@@ -23,6 +28,11 @@ class TestDatabase:
     def test_not_empty(self, database_mock):
         assert database_mock.is_all_tables_exists()
 
+    def test_load_current_versions(self, database_mock):
+        assert database_mock.load_current_versions() == (None, None)
+        database_mock.save_current_versions("1.0", "2.0.0")
+        assert database_mock.load_current_versions() == ("1.0", "2.0.0")
+
     def test_campuses(self, database_mock):
 
         campuses = {
@@ -31,14 +41,50 @@ class TestDatabase:
             3: ("C", "ג"),
         }
         database_mock.save_campuses(campuses)
+        assert database_mock.load_campuses() == campuses
         assert database_mock.load_campus_names(Language.HEBREW) == ["א", "ב", "ג"]
         assert database_mock.load_campus_names(Language.ENGLISH) == ["A", "B", "C"]
+
+    def test_language(self, database_mock):
+        assert not database_mock.get_language()
+        database_mock.save_language(Language.ENGLISH)
+        assert database_mock.get_language() == Language.ENGLISH
 
     def test_semesters(self, database_mock):
         semesters = list(Semester)
         database_mock.save_semesters(semesters)
 
         assert set(semesters) == set(database_mock.load_semesters())
+
+    def test_common_campuses_names(self, database_mock):
+        assert len(database_mock.get_common_campuses_names()) == 5
+        assert _("Machon Lev") in database_mock.get_common_campuses_names()
+
+    def test_update_database(self, database_mock):
+        database_mock.clear_database()
+        database_mock.init_database_tables()
+        assert not database_mock.load_degrees()
+        new_database_path = os.path.join(utils.get_database_path(), "new_database.db")
+        old_database_path = database_mock.DATABASE_PATH
+        database_mock.DATABASE_PATH = new_database_path
+        database_mock.init_database_tables()
+        database_mock.save_degrees(list(Degree))
+        assert database_mock.load_degrees()
+        database_mock.DATABASE_PATH = old_database_path
+        assert not database_mock.load_degrees()
+        database_mock.update_database(pathlib.Path(new_database_path))
+        assert database_mock.load_degrees()
+
+    def test_degrees(self, database_mock):
+        degrees = [Degree.SOFTWARE_ENGINEERING]
+        database_mock.save_degrees(degrees)
+
+        assert set(degrees) == set(database_mock.load_degrees())
+        database_mock.clear_all_data()
+        database_mock.init_database_tables()
+        database_mock.save_degrees([("SOFTWARE_ENGINEERING", 30)])
+        with pytest.raises(ValueError):
+            database_mock.load_degrees()
 
     def test_courses(self, database_mock):
         hebrew_courses = [Course(f"קורס {i}", i, i + 1000, set(Semester), set(Degree)) for i in range(10)]
@@ -52,17 +98,21 @@ class TestDatabase:
 
     def test_personal_activities(self, database_mock):
         activity = Activity("my activity")
+        activity.add_slot(Meeting(Day.MONDAY, "10:00", "12:00"))
         database_mock.save_personal_activities([activity])
         loaded = database_mock.load_personal_activities()
         assert loaded == [activity]
+        assert loaded[0].meetings == [Meeting(Day.MONDAY, "10:00", "12:00")]
 
     def test_activities(self, database_mock, campuses):
         campus_name = "A"
         academic_activity = AcademicActivity("name", Type.LECTURE, True, "meir", 12, 232, "", "12.23", "", 0, 100, 1213)
+        academic_activity.add_slot(Meeting(Day.MONDAY, "10:00", "12:00"))
         database_mock.save_academic_activities([academic_activity], campus_name, Language.ENGLISH)
         loaded = database_mock.load_academic_activities(campus_name, Language.ENGLISH,
                                                         [Course("name", 12, 232, set(Semester), set(Degree))])
         assert loaded == [academic_activity]
+        assert loaded[0].meetings == [Meeting(Day.MONDAY, "10:00", "12:00")]
 
     def test_course_choices(self, database_mock, campuses):
         campus_name = "A"

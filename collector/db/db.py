@@ -3,8 +3,8 @@ import os
 import pathlib
 import shutil
 import sqlite3 as database
-import time
 from collections import defaultdict
+from contextlib import suppress
 from typing import List, Optional, Dict, Tuple, Collection, Set
 
 import utils
@@ -140,6 +140,19 @@ class Database:
                 cursor.execute("INSERT OR IGNORE INTO degrees VALUES (?, ?);", (*degree, ))
             connection.commit()
             cursor.close()
+
+    def load_degrees(self):
+        with database.connect(self.DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM degrees;")
+            degrees_values = cursor.fetchall()
+            degrees = set()
+            for name, department in degrees_values:
+                degree = Degree[name]
+                if degree.value != department:
+                    raise ValueError("Degree department in database is different from the one in the code")
+                degrees.add(degree)
+            return degrees
 
     def load_semesters(self) -> List[Semester]:
         if not os.path.exists(self.DATABASE_PATH):
@@ -454,11 +467,16 @@ class Database:
         with open(self.USER_NAME_FILE_PATH, "r", encoding=utils.ENCODING) as file:
             return User(file.readline().strip(), file.readline().strip())
 
+    def clear_versions(self):
+        with suppress(Exception):
+            os.remove(self.VERSIONS_PATH)
+
     def clear_all_data(self):
         self.clear_settings()
         self.clear_years()
         self.clear_database()
         self.clear_last_courses_choose_input()
+        self.clear_versions()
 
     def save_settings(self, settings: Settings):
         with open(self.SETTINGS_FILE_PATH, "w", encoding=utils.ENCODING) as file:
@@ -470,12 +488,6 @@ class Database:
         with open(self.SETTINGS_FILE_PATH, "r", encoding=utils.ENCODING) as file:
             # pylint: disable=no-member
             return Settings.from_json(file.read())
-
-    def _get_last_modified_by_days(self, file_path: str) -> int:
-        if not os.path.exists(file_path):
-            return 0
-        last_modified = os.path.getmtime(file_path)
-        return int((time.time() - last_modified) / 60 / 60 / 24)
 
     def clear_settings(self):
         if os.path.exists(self.SETTINGS_FILE_PATH):

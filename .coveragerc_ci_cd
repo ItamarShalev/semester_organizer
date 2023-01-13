@@ -14,9 +14,12 @@ exclude_lines =
     @pytest.mark.network
     @pytest.mark.skip
     if os.name == 'nt':
+    sys.stdout.reconfigure
+    sys.stdout.reconfigure(encoding="utf-8")
     if not os.path.exists
     except ImportError
     class TestController
     class Controller
     raise Exception
     class UserClickExitException
+    def install_auto_complete_cli
