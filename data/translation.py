@@ -181,7 +181,18 @@ data = TextCaseInsensitiveDict({
     "The last activities that were crashed were: (you may want to give up one of them)": "הפעילויות האחרונות שהתנגשו היו: (אתה אולי תרצה לוותר על אחת מהן)",
     "The activity: {} And {}": "הקורס: {} ו{}",
     "No courses were found, please try again with different settings.": "לא נמצאו קורסים, אנא נסה שוב עם הגדרות שונות.",
-
+    "Do you want to show all courses already done list?": "האם ברצונך להציג את רשימת כל הקורסים שכבר נעשו?",
+    "Courses already done:": "קורסים שכבר נעשו:",
+    "Do you want to show courses already done?": "האם ברצונך להציג קורסים שכבר נעשו?",
+    "Do you want to edit the courses already done list?": "האם ברצונך לערוך את רשימת הקורסים שכבר נעשו?",
+    "Do you want to add all courses from the start? (otherwise add to the exists list)": "האם ברצונך להוסיף את כל הקורסים מההתחלה? (אחרת הוסף לרשימה הקיימת)",
+    "The selected courses:": "הקורסים שנבחרו:",
+    "Are you sure you want to add these courses to the list?": "האם אתה בטוח שברצונך להוסיף את הקורסים האלה לרשימה?",
+    "Courses already done list updated successfully.": "רשימת הקורסים שכבר נעשו עודכנה בהצלחה.",
+    "Do you want to add the courses you already done?": "האם ברצונך להוסיף את הקורסים שכבר נעשו?",
+    "Don't show courses already done:": "אל תציג קורסים שכבר נעשו:",
+    "Explain: Don't show the courses that you already done in the past.": "הסבר: אל תציג את הקורסים שכבר עשית בעבר.",
+    "Setting 'don't show courses already done is on', but there are no courses already done.": "הגדרת 'אל תציג קורסים שכבר נעשו' מופעלת, אבל אין קורסים שכבר נעשו.",
 })
 
 

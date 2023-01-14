@@ -84,6 +84,8 @@ class Controller:
             settings.campus_name = campus_name
             self.database.save_settings(settings)
 
+        self._console_ask_for_courses_already_done_if_needed(settings, language)
+
         campus_name = settings.campus_name
         user = self.database.load_user_data()
         self.network.set_user(user)
@@ -307,7 +309,7 @@ class Controller:
             self.logger.error("ERROR: Missing database, can't continue.")
             msg = _("Missing database, can't continue, please download the database file from the github server "
                     "and import the database by running :")
-            msg += "'python __main__.py -- update_dabase {path_to_database.db}'"
+            msg += "'python __main__.py -- database_path {path_to_database.db}'"
             if output_type == 'gui':
                 self.gui.open_notification_window(msg, MessageType.ERROR)
             elif output_type == 'console':
@@ -327,8 +329,13 @@ class Controller:
     def _console_ask_courses_choices(self, campus_name: str, degrees: Set[Degree],
                                      activities_ids_can_enroll: List[str]):
         language = Language.get_current()
+        courses_already_done = self.database.load_courses_already_done(language)
         courses_choices = self.database.load_courses_choices(campus_name, language, degrees=degrees,
                                                              activities_ids=activities_ids_can_enroll)
+        for course in courses_already_done:
+            if course.name in courses_choices:
+                courses_choices.pop(course.name)
+
         courses_choices = dict(sorted(courses_choices.items(), key=itemgetter(0)))
 
         print(_("Select the courses by enter their index:"))
@@ -513,6 +520,19 @@ class Controller:
         print(_("Explain: The output formats the schedules will be saved in."), end=enter_sentence_format)
         print(_("Possible formats: "), output_formats_str(list(OutputFormat)), end="\n\n")
 
+        print(_("Don't show courses already done:"), self._yes_no(settings.dont_show_courses_already_done))
+        print(_("Explain: Don't show the courses that you already done in the past."), end=end_line)
+
+        courses_already_done = self.database.load_courses_already_done(Language.get_current())
+        if courses_already_done:
+            is_yes = self._console_ask_yes_or_no("Do you want to show all courses already done list?")
+            if is_yes:
+                names_already_done = [course.name for course in courses_already_done]
+                print(_("Courses already done:"))
+                for index, name in enumerate(names_already_done, 1):
+                    print(f"{str(index).rjust(2)}. {name}")
+            print(end_line)
+
     def _validate_is_number_in_range(self, number: Any, max_number: int, min_number: int = 0):
         try:
             number = int(number)
@@ -679,6 +699,17 @@ class Controller:
             settings.output_formats = [options[index] for index in selected_options]
         print("\n\n")
 
+        print(_("Don't show courses already done:"))
+        print(_("Select 0 to use the default settings."))
+        print(_("Default value:"), self._yes_no(settings.dont_show_courses_already_done))
+        default_yes_no = self._console_ask_default_yes_no("Do you want to show courses already done?")
+        if default_yes_no is not None:
+            settings.dont_show_courses_already_done = default_yes_no
+            if default_yes_no:
+                is_yes = self._console_ask_yes_or_no("Do you want to edit the courses already done list?")
+                if is_yes:
+                    self._console_edit_courses_already_done(settings)
+
         return settings
 
     def _console_ask_for_attendance_required_all_courses(self, courses_choices: Dict[str, List[CourseChoice]]):
@@ -761,3 +792,45 @@ class Controller:
                     print(_("Error occurred while trying to extract the courses you can enroll in."))
                     print(_("Check connection and try again, will use the last data or will not filter the courses."))
         return activities_ids_can_enroll
+
+    def _console_edit_courses_already_done(self, settings: Settings):
+        courses_already_done = self.database.load_courses_already_done(Language.get_current())
+        finish_successfully = False
+        message = "Do you want to add all courses from the start? (otherwise add to the exists list)"
+        if courses_already_done:
+            is_yes = self._console_ask_yes_or_no(message)
+            if is_yes:
+                self.database.clear_courses_already_done()
+                courses_already_done = []
+        all_courses = self.database.load_courses(Language.get_current(), settings.degrees)
+        courses = [course for course in all_courses if course not in courses_already_done]
+        courses.sort(key=lambda course: course.name)
+        while not finish_successfully:
+            for index, course in enumerate(courses, 1):
+                print(f"{str(index).rjust(2)}.", _("Course:"), course.name)
+
+            courses_indexes_input = input(_("Enter the courses indexes separated by comma (example: 1,2,20): "))
+            self.logger.debug("Selected courses indexes: %s which they are: ", courses_indexes_input)
+            courses_indexes = [int(index) for index in courses_indexes_input.strip().split(",")]
+            self._validate_is_numbers_in_range(courses_indexes, len(courses), 1)
+            choices = [courses[index - 1] for index in courses_indexes]
+            print(_("The selected courses:"))
+            for index, choice in enumerate(choices, 1):
+                print(f"{str(index).rjust(2)}.", _("Course:"), choice.name)
+
+            finish_successfully = self._console_ask_yes_or_no("Are you sure you want to add these courses to the list?")
+            if finish_successfully:
+                self.database.save_courses_already_done(set(choices))
+                print(_("Courses already done list updated successfully."))
+                print("\n\n")
+
+    def _console_ask_for_courses_already_done_if_needed(self, settings: Settings, language: Language):
+        courses_already_done = self.database.load_courses_already_done(language) or []
+        if not courses_already_done and settings.dont_show_courses_already_done:
+            print(_("Setting 'don't show courses already done is on', but there are no courses already done."))
+            is_yes = self._console_ask_yes_or_no("Do you want to add the courses you already done?")
+            if is_yes:
+                self._console_edit_courses_already_done(settings)
+            else:
+                settings.dont_show_courses_already_done = False
+                self.database.save_settings(settings)

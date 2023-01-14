@@ -41,6 +41,8 @@ class TestController:
         inputs.append("1")
         # don't change settings
         inputs.append("2")
+        # don't add courses already done
+        inputs.append("2")
         # don't show only courses can enroll in since tests always run with the same user details
         # inputs.append("2")
         # choose courses indexes
