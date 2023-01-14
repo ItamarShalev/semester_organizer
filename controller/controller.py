@@ -41,6 +41,167 @@ class Controller:
         self.logger = utils.get_logging()
         self.delay_time = 0.12
 
+    def run_console_flow(self):
+        """
+        Run the console flow of the program, only for academic activities.
+        Console flow will use the default settings.
+        and without database nor GUI.
+        """
+        # For testing purposes
+        self.logger.info("Starting console flow")
+
+        self.database.init_personal_database_tables()
+        language = Language.get_current()
+        settings = self.database.load_settings() or Settings()
+        language = language or settings.language
+        settings.language = language
+        translation.config_language_text(language)
+        activities_ids_can_enroll = []
+
+        if settings.campus_name:
+            campus_name = self.database.translate_campus_name(settings.campus_name)
+            settings.campus_name = campus_name
+
+        self.database.save_settings(settings)
+        Language.set_current(language)
+
+        self._validate_database('console')
+
+        is_yes = self._console_ask_yes_or_no("Do you want to print the current settings and see their meaning?")
+
+        if is_yes:
+            self._print_current_settings(settings)
+
+        is_yes = self._console_ask_yes_or_no("Do you want to change the current settings?")
+
+        if is_yes:
+            settings = self._console_ask_for_settings(settings)
+            self.database.save_settings(settings)
+            language = settings.language
+
+        if not settings.campus_name:
+            campus_name = self._console_ask_campus_name()
+            settings.campus_name = campus_name
+            self.database.save_settings(settings)
+
+        campus_name = settings.campus_name
+        user = self.database.load_user_data()
+        self.network.set_user(user)
+
+        self._console_alert_if_missing_user_data_and_need_to_login(settings, user)
+
+        activities_ids_can_enroll = self._console_get_activities_ids_can_enroll(settings, user)
+
+        courses_choices = self._console_ask_courses_choices(campus_name, settings.degrees, activities_ids_can_enroll)
+
+        is_yes = self._console_ask_yes_or_no("Do you want to select favorite lecturers?")
+
+        if is_yes:
+            courses_choices = self._console_ask_for_favorite_lecturers_all_courses(courses_choices)
+        if not settings.attendance_required_all_courses:
+            message = "Do you want to be present and consider all courses with mandatory attendance?"
+            is_yes = self._console_ask_yes_or_no(message)
+            if is_yes:
+                settings.attendance_required_all_courses = True
+                self.database.save_settings(settings)
+            else:
+                courses_choices = self._console_ask_for_attendance_required_all_courses(courses_choices)
+
+        print("\n\n")
+        print(_("Generating schedules..."))
+
+        selected_activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
+        activities_ids = activities_ids_can_enroll
+
+        schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings, activities_ids)
+
+        if not schedules:
+            print(_("No schedules were found"))
+        else:
+            self._console_save_schedules(settings, schedules)
+
+    def run_main_gui_flow(self):
+        try:
+            self.logger.info("Start the main gui flow")
+
+            self._validate_database('gui')
+
+            # Initialize the language for first time.
+            self._initial_language_if_first_time()
+
+            # user = self.gui.open_login_window(self.network.check_connection)
+            # self.network.set_user(user)
+
+            settings = self.database.load_settings() or Settings()
+
+            campus_names = self.database.load_campus_names(settings.language)
+
+            years = self.database.load_years()
+
+            settings = self.gui.open_settings_window(settings, campus_names, years)
+
+            language = self.database.get_language()
+
+            if language and language != settings.language:
+                translation.config_language_text(settings.language)
+
+            self.database.save_settings(settings)
+
+            language = settings.language
+
+            campus_name = settings.campus_name
+
+            ask_attendance = not settings.attendance_required_all_courses
+
+            self.logger.info("Loading courses data...")
+
+            courses = self.database.load_active_courses(campus_name, language)
+
+            if not courses:
+                message = _("There are no courses in the system, "
+                            "please try again with another campus update your database from the server.")
+                self.gui.open_notification_window(message, MessageType.ERROR)
+                return
+
+            courses_choices = self.database.load_courses_choices(campus_name, language, courses)
+
+            courses_choices = self.gui.open_academic_activities_window(ask_attendance, courses_choices)
+
+            user_courses = []
+
+            for course in courses:
+                if course.name in courses_choices.keys():
+                    course_choice = courses_choices[course.name]
+                    if ask_attendance:
+                        course.attendance_required_for_lecture = course_choice.attendance_required_for_lecture
+                        course.attendance_required_for_exercise = course_choice.attendance_required_for_practice
+                    user_courses.append(course)
+
+            activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
+
+            AcademicActivity.union_courses(activities, user_courses)
+
+            activities += self.gui.open_personal_activities_window()
+
+            schedules = self.csp.extract_schedules(activities, courses_choices, settings)
+
+            if not schedules:
+                self.gui.open_notification_window(_("No schedule were found"))
+            else:
+                results_path = utils.get_results_path()
+                self._save_schedule(schedules, settings, results_path)
+                message = _("The schedules were saved in the directory: ") + results_path
+                self.gui.open_notification_window(message)
+                self._open_results_folder(results_path)
+
+        except UserClickExitException:
+            self.logger.info("User clicked exit button")
+
+        except Exception as error:
+            message = "The system encountered an error, please contanct the engeniers."
+            self.logger.error("The system encountered an error: %s", str(error))
+            self.gui.open_notification_window(_(message), MessageType.ERROR)
+
     def _initial_language_if_first_time(self):
         settings = self.database.load_settings()
         if not settings:
@@ -512,167 +673,6 @@ class Controller:
                     course_choice.attendance_required_for_practice = is_yes
             selected_courses_choices[course_name] = course_choice
         return selected_courses_choices
-
-    def run_console_flow(self):
-        """
-        Run the console flow of the program, only for academic activities.
-        Console flow will use the default settings.
-        and without database nor GUI.
-        """
-        # For testing purposes
-        self.logger.info("Starting console flow")
-
-        self.database.init_personal_database_tables()
-        language = Language.get_current()
-        settings = self.database.load_settings() or Settings()
-        language = language or settings.language
-        settings.language = language
-        translation.config_language_text(language)
-        activities_ids_can_enroll = []
-
-        if settings.campus_name:
-            campus_name = self.database.translate_campus_name(settings.campus_name)
-            settings.campus_name = campus_name
-
-        self.database.save_settings(settings)
-        Language.set_current(language)
-
-        self._validate_database('console')
-
-        is_yes = self._console_ask_yes_or_no("Do you want to print the current settings and see their meaning?")
-
-        if is_yes:
-            self._print_current_settings(settings)
-
-        is_yes = self._console_ask_yes_or_no("Do you want to change the current settings?")
-
-        if is_yes:
-            settings = self._console_ask_for_settings(settings)
-            self.database.save_settings(settings)
-            language = settings.language
-
-        if not settings.campus_name:
-            campus_name = self._console_ask_campus_name()
-            settings.campus_name = campus_name
-            self.database.save_settings(settings)
-
-        campus_name = settings.campus_name
-        user = self.database.load_user_data()
-        self.network.set_user(user)
-
-        self._console_alert_if_missing_user_data_and_need_to_login(settings, user)
-
-        activities_ids_can_enroll = self._console_get_activities_ids_can_enroll(settings, user)
-
-        courses_choices = self._console_ask_courses_choices(campus_name, settings.degrees, activities_ids_can_enroll)
-
-        is_yes = self._console_ask_yes_or_no("Do you want to select favorite lecturers?")
-
-        if is_yes:
-            courses_choices = self._console_ask_for_favorite_lecturers_all_courses(courses_choices)
-        if not settings.attendance_required_all_courses:
-            message = "Do you want to be present and consider all courses with mandatory attendance?"
-            is_yes = self._console_ask_yes_or_no(message)
-            if is_yes:
-                settings.attendance_required_all_courses = True
-                self.database.save_settings(settings)
-            else:
-                courses_choices = self._console_ask_for_attendance_required_all_courses(courses_choices)
-
-        print("\n\n")
-        print(_("Generating schedules..."))
-
-        selected_activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
-        activities_ids = activities_ids_can_enroll
-
-        schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings, activities_ids)
-
-        if not schedules:
-            print(_("No schedules were found"))
-        else:
-            self._console_save_schedules(settings, schedules)
-
-    def run_main_gui_flow(self):
-        try:
-            self.logger.info("Start the main gui flow")
-
-            self._validate_database('gui')
-
-            # Initialize the language for first time.
-            self._initial_language_if_first_time()
-
-            # user = self.gui.open_login_window(self.network.check_connection)
-            # self.network.set_user(user)
-
-            settings = self.database.load_settings() or Settings()
-
-            campus_names = self.database.load_campus_names(settings.language)
-
-            years = self.database.load_years()
-
-            settings = self.gui.open_settings_window(settings, campus_names, years)
-
-            language = self.database.get_language()
-
-            if language and language != settings.language:
-                translation.config_language_text(settings.language)
-
-            self.database.save_settings(settings)
-
-            language = settings.language
-
-            campus_name = settings.campus_name
-
-            ask_attendance = not settings.attendance_required_all_courses
-
-            self.logger.info("Loading courses data...")
-
-            courses = self.database.load_active_courses(campus_name, language)
-
-            if not courses:
-                message = _("There are no courses in the system, "
-                            "please try again with another campus update your database from the server.")
-                self.gui.open_notification_window(message, MessageType.ERROR)
-                return
-
-            courses_choices = self.database.load_courses_choices(campus_name, language, courses)
-
-            courses_choices = self.gui.open_academic_activities_window(ask_attendance, courses_choices)
-
-            user_courses = []
-
-            for course in courses:
-                if course.name in courses_choices.keys():
-                    course_choice = courses_choices[course.name]
-                    if ask_attendance:
-                        course.attendance_required_for_lecture = course_choice.attendance_required_for_lecture
-                        course.attendance_required_for_exercise = course_choice.attendance_required_for_practice
-                    user_courses.append(course)
-
-            activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
-
-            AcademicActivity.union_courses(activities, user_courses)
-
-            activities += self.gui.open_personal_activities_window()
-
-            schedules = self.csp.extract_schedules(activities, courses_choices, settings)
-
-            if not schedules:
-                self.gui.open_notification_window(_("No schedule were found"))
-            else:
-                results_path = utils.get_results_path()
-                self._save_schedule(schedules, settings, results_path)
-                message = _("The schedules were saved in the directory: ") + results_path
-                self.gui.open_notification_window(message)
-                self._open_results_folder(results_path)
-
-        except UserClickExitException:
-            self.logger.info("User clicked exit button")
-
-        except Exception as error:
-            message = "The system encountered an error, please contanct the engeniers."
-            self.logger.error("The system encountered an error: %s", str(error))
-            self.gui.open_notification_window(_(message), MessageType.ERROR)
 
     def _days_to_text(self, days: List[Day]) -> str:
         all_days = set(Day)
