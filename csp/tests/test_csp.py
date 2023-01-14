@@ -1,4 +1,4 @@
-from csp.csp import CSP
+from csp.csp import CSP, Status
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.course_choice import CourseChoice
@@ -90,6 +90,7 @@ class TestCsp:
 
     def test_no_option(self):
         activities = []
+        csp = CSP()
         academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
         academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
         activities.append(academic_activity)
@@ -102,8 +103,13 @@ class TestCsp:
         activity.add_slot(Meeting(Day.MONDAY, "12:00", "14:30"))
         activities.append(activity)
 
-        schedules = CSP().extract_schedules(activities)
+        schedules = csp.extract_schedules(activities)
         assert len(schedules) == 0
+        assert csp.get_status() is Status.FAILED
+
+        schedules = csp.extract_schedules_minimal_consists(activities)
+        assert len(schedules) == 0
+        assert csp.get_status() is Status.FAILED
 
     def test_one_option_favorite_one_teacher(self):
         activities_option = []
@@ -155,6 +161,7 @@ class TestCsp:
 
     def test_one_option_only_parts_options_for_favorite_teacher(self):
         activities_option = []
+        csp = CSP()
 
         activities = []
         academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
@@ -178,11 +185,12 @@ class TestCsp:
 
         course_choice = CourseChoice("a", 1, set(), {"Mike"})
 
-        schedules = CSP().extract_schedules(activities, {"a": course_choice})
+        schedules = csp.extract_schedules(activities, {"a": course_choice})
         assert len(schedules) == 1
         assert schedules[0].contains(activities_option)
+        assert csp.get_status() is Status.SUCCESS
 
-    def test_one_option_capacity_consinst(self):
+    def test_one_option_capacity_consist(self):
         activities_option = []
 
         activities = []

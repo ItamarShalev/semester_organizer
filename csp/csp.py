@@ -1,3 +1,4 @@
+from enum import Enum, auto
 from typing import List, Optional, Dict
 
 from constraint import Problem
@@ -10,6 +11,13 @@ from data.settings import Settings
 from data.translation import _
 
 
+class Status(Enum):
+    SUCCESS = auto()
+    SUCCESS_WITH_ONE_FAVORITE_LECTURER = auto()
+    SUCCESS_WITHOUT_FAVORITE_LECTURERS = auto()
+    FAILED = auto()
+
+
 class CSP:
 
     def __init__(self):
@@ -17,6 +25,7 @@ class CSP:
         self.courses_choices = None
         self.consist_one_favorite_teacher = False
         self.settings = None
+        self.status = None
 
     def extract_schedules_minimal_consists(self, activities: List[Activity],
                                            activities_ids: List[str] = None) -> List[Schedule]:
@@ -28,6 +37,7 @@ class CSP:
         """
         all_activities_names, problem = self._prepare_activities(activities)
         self.activities_ids_can_enroll = activities_ids
+        self.status = Status.SUCCESS
         for name in all_activities_names:
             for other_name in all_activities_names:
                 if name == other_name:
@@ -36,13 +46,19 @@ class CSP:
             if activities_ids:
                 problem.addConstraint(self._is_consist_activities_ids_can_enroll, (name,))
 
-        return self._extract_solutions(problem)
+        schedules = self._extract_solutions(problem)
+
+        if not schedules:
+            self.status = Status.FAILED
+
+        return schedules
 
     def extract_schedules(self, activities: List[Activity], courses_choices: Optional[Dict[str, CourseChoice]] = None,
                           settings: Settings = None, activities_ids_can_enroll: List[str] = None) -> List[Schedule]:
         self.settings = settings or Settings()
         self.courses_choices = courses_choices or {}
         self.activities_ids_can_enroll = activities_ids_can_enroll
+        self.status = Status.SUCCESS
         all_activities_names, problem = self._prepare_activities(activities)
 
         for name in all_activities_names:
@@ -66,15 +82,23 @@ class CSP:
 
         if not schedule_result and courses_choices and not self.consist_one_favorite_teacher:
             # If there are no schedules, try to find schedules without favorite teachers
+            self.status = Status.SUCCESS_WITH_ONE_FAVORITE_LECTURER
             self.consist_one_favorite_teacher = True
             return self.extract_schedules(activities, courses_choices, self.settings)
 
         if not schedule_result and courses_choices and self.consist_one_favorite_teacher:
             # If there are no schedules, try to find schedules without favorite teachers
+            self.status = Status.SUCCESS_WITHOUT_FAVORITE_LECTURERS
             self.consist_one_favorite_teacher = False
             return self.extract_schedules(activities, None, self.settings)
 
+        if not schedule_result:
+            self.status = Status.FAILED
+
         return schedule_result
+
+    def get_status(self):
+        return self.status
 
     def _is_consist_activity(self, activity_one, activity_two):
         return all(not activity.is_crash_with_activities(activity_one) for activity in activity_two)
