@@ -114,6 +114,13 @@ class TestData:
         assert set(loaded_data["name"].available_teachers_for_lecture) == {"a", "b"}
         assert set(loaded_data["name"].available_teachers_for_practice) == {"c", "d"}
 
+        activity1 = AcademicActivity("name1", Type.LAB, True, lecturer_name="a")
+        activity2 = AcademicActivity("name1", Type.LAB, True, lecturer_name="b")
+        course_choice = CourseChoice("name1", 10, {"a"}, {"b"}, False, False)
+        AcademicActivity.union_attendance_required([activity1, activity2], {"name1": course_choice})
+        assert not activity1.attendance_required
+        assert not activity2.attendance_required
+
     def test_type(self):
         typ = Type.LAB
         assert typ == Type.LAB

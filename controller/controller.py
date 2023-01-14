@@ -12,7 +12,7 @@ from collector.network.public_network import PublicNetworkHttp
 from collector.db.db import Database
 from collector.gui.gui import Gui, MessageType, UserClickExitException
 from convertor.convertor import Convertor
-from csp.csp import CSP
+from csp.csp import CSP, Status
 from data import translation
 from data.academic_activity import AcademicActivity
 from data.course_choice import CourseChoice
@@ -110,15 +110,26 @@ class Controller:
         print("\n\n")
         print(_("Generating schedules..."))
 
-        selected_activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
+        all_courses_parent_numbers = {course_choice.parent_course_number for course_choice in courses_choices.values()}
+
+        selected_activities = self.database.load_activities_by_parent_courses_numbers(all_courses_parent_numbers,
+                                                                                      campus_name, language,
+                                                                                      settings.degrees)
+        AcademicActivity.union_attendance_required(selected_activities, courses_choices)
         activities_ids = activities_ids_can_enroll
 
         schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings, activities_ids)
 
-        if not schedules:
+        status = self.csp.get_status()
+
+        if status is Status.FAILED:
             print(_("No schedules were found"))
-        else:
-            self._console_save_schedules(settings, schedules)
+        elif status is Status.SUCCESS_WITH_ONE_FAVORITE_LECTURER:
+            print(_("No schedules were found with all favorite lecturers, but found with some of them"))
+        elif status is Status.SUCCESS_WITHOUT_FAVORITE_LECTURERS:
+            print(_("No schedules were found with favorite lecturers"))
+
+        self._console_save_schedules(settings, schedules)
 
     def run_main_gui_flow(self):
         try:
@@ -354,7 +365,9 @@ class Controller:
         print("\n\n")
         return yes_no_option == _("Yes")
 
-    def _console_save_schedules(self, settings: Settings, schedules: List[Schedule]):
+    def _console_save_schedules(self, settings: Settings, schedules: Optional[List[Schedule]]):
+        if not schedules:
+            return
         print(_("Found {} possible schedules").format(len(schedules)))
         if len(schedules) > MAX_OUTPUTS:
             print(_("Saving only the best {} schedules").format(MAX_OUTPUTS))

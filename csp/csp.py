@@ -58,7 +58,6 @@ class CSP:
         self.settings = settings or Settings()
         self.courses_choices = courses_choices or {}
         self.activities_ids_can_enroll = activities_ids_can_enroll
-        self.status = Status.SUCCESS
         all_activities_names, problem = self._prepare_activities(activities)
 
         for name in all_activities_names:
@@ -94,6 +93,8 @@ class CSP:
 
         if not schedule_result:
             self.status = Status.FAILED
+        elif self.status is None:
+            self.status = Status.SUCCESS
 
         return schedule_result
 

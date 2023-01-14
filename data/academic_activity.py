@@ -91,3 +91,13 @@ class AcademicActivity(Activity):
         return iter((self.name, self.type.value, self.attendance_required, self.lecturer_name, self.course_number,
                      self.parent_course_number, self.location, self.activity_id, self.description,
                      self.current_capacity, self.max_capacity, self.actual_course_number))
+
+    @classmethod
+    def union_attendance_required(cls, selected_activities: List["AcademicActivity"],
+                                  courses_choices: Dict[str, CourseChoice]):
+        for activity in selected_activities:
+            course_choice = courses_choices[activity.name]
+            if activity.type.is_lecture():
+                activity.attendance_required = course_choice.attendance_required_for_lecture
+            else:
+                activity.attendance_required = course_choice.attendance_required_for_practice

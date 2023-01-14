@@ -176,6 +176,8 @@ data = TextCaseInsensitiveDict({
     "Do you want to set your username and password (if not - pass)?": "האם ברצונך להגדיר את שם המשתמש והסיסמה שלך (אם לא - נדלג)?",
     "Error occurred while trying to extract the courses you can enroll in.": "אירעה שגיאה בעת ניסיון לחלץ את הקורסים שאתה יכול להירשם אליהם.",
     "Check connection and try again, will use the last data or will not filter the courses.": "בדוק את חיבור האינטרנט ונסה שוב, משתמש בנתונים האחרונים או לא יסנן את הקורסים.",
+    "No schedules were found with all favorite lecturers, but found with some of them": "לא נמצאו מערכות שעות עם כל המרצים המועדפים, אבל נמצאו עם חלק מהם",
+    "No schedules were found with favorite lecturers": "לא נמצאו מערכות שעות עם מרצים מועדפים",
 })
 
 
