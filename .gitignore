@@ -4,6 +4,7 @@ database/
 log.txt
 results/
 dev.py
+algorithms/generated_data/personal*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
