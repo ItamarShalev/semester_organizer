@@ -535,7 +535,7 @@ class Database:
         with open(self.COURSES_CHOOSE_PATH, "w", encoding=utils.ENCODING) as file:
             file.write("\n".join(courses_names))
 
-    def load_courses_console_choose(self) -> Optional[list[str]]:
+    def load_courses_console_choose(self) -> Optional[List[str]]:
         if not os.path.isfile(self.COURSES_CHOOSE_PATH):
             return None
         with open(self.COURSES_CHOOSE_PATH, "r", encoding=utils.ENCODING) as file:

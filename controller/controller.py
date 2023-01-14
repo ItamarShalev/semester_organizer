@@ -495,7 +495,7 @@ class Controller:
         if number < min_number or number > max_number:
             raise ValueError(_("The number must be between {} to {}").format(min_number, max_number))
 
-    def _validate_is_numbers_in_range(self, numbers: list[Any], max_number: int, min_number: int = 0):
+    def _validate_is_numbers_in_range(self, numbers: List[Any], max_number: int, min_number: int = 0):
         for number in numbers:
             self._validate_is_number_in_range(number, max_number, min_number)
 
