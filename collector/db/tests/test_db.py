@@ -78,6 +78,18 @@ class TestDatabase:
         with suppress(Exception):
             os.remove(new_database_path)
 
+    def test_load_activities_by_parent_courses_numbers(self, database_mock, campuses):
+        campus_name = campuses[1][0]
+        activity = AcademicActivity("activity", Type.LECTURE, True, "lecturer_", 0, 2, "", "1.0", "")
+        activity1 = AcademicActivity("activity", Type.LECTURE, True, "lecturer_", 0, 2, "", "1.0", "")
+        activity.add_slot(Meeting(Day.MONDAY, "10:00", "12:00"))
+        database_mock.save_courses([Course("course", 1221, 2, set(Semester), set(Degree))], Language.ENGLISH)
+        database_mock.save_academic_activities([activity], campus_name, Language.ENGLISH)
+        database_mock.save_academic_activities([activity1], campus_name, Language.HEBREW)
+        activities_loaded = database_mock.load_activities_by_parent_courses_numbers({2}, campus_name, Language.ENGLISH)
+        assert activities_loaded == [activity]
+        assert database_mock.load_activities_by_parent_courses_numbers({1}, campus_name, Language.ENGLISH) == []
+
     def test_degrees(self, database_mock):
         degrees = [Degree.SOFTWARE_ENGINEERING]
         database_mock.save_degrees(degrees)

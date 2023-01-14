@@ -340,6 +340,40 @@ class Database:
             cursor.close()
             return courses
 
+    def load_activities_by_parent_courses_numbers(self, parent_courses_numbers: Set[int],
+                                                  campus_name: str, language: Language,
+                                                  degrees: Collection[Degree] = None) -> List[AcademicActivity]:
+        if not os.path.exists(self.SHARED_DATABASE_PATH):
+            return []
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            campus_id = self.load_campus_id(campus_name)
+            degrees = degrees or Degree.get_defaults()
+            degrees_text = f"({', '.join(['?'] * len(degrees))})"
+            parent_courses_numbers_text = f"({', '.join(['?'] * len(parent_courses_numbers))})"
+            cursor.execute("SELECT DISTINCT activities.* FROM activities "
+                           "INNER JOIN degrees_courses "
+                           "ON activities.parent_course_number = degrees_courses.parent_course_number "
+                           "WHERE activities.campus_id = ? AND activities.language_value = ? "
+                           f"AND degrees_courses.degree_name in {degrees_text} "
+                           f"AND activities.parent_course_number in {parent_courses_numbers_text};",
+                           (campus_id, language.short_name(), *[degree.name for degree in degrees],
+                            *parent_courses_numbers))
+            activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language_value in cursor.fetchall()]
+            for activity in activities:
+                cursor.execute("SELECT meetings.* FROM meetings "
+                               "INNER JOIN activities_meetings "
+                               "ON meetings.id = activities_meetings.meeting_id "
+                               "WHERE activities_meetings.activity_id = ? AND "
+                               "activities_meetings.campus_id = ? AND "
+                               "activities_meetings.language_value = ?;",
+                               (activity.activity_id, campus_id, language.short_name()))
+                meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
+                activity.meetings = meetings
+
+            cursor.close()
+            return activities
+
     def load_activities_by_courses_choices(self, courses_choices: Dict[str, CourseChoice],
                                            campus_name: str, language: Language,
                                            activities_ids: List[str] = None) -> List[AcademicActivity]:
