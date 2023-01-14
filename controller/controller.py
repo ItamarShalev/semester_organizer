@@ -12,7 +12,7 @@ from collector.network.public_network import PublicNetworkHttp
 from collector.db.db import Database
 from collector.gui.gui import Gui, MessageType, UserClickExitException
 from convertor.convertor import Convertor
-from csp.csp import CSP, Status
+from algorithms.csp import CSP, Status
 from data import translation
 from data.academic_activity import AcademicActivity
 from data.course_choice import CourseChoice

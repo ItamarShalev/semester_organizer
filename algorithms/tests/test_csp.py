@@ -1,4 +1,4 @@
-from csp.csp import CSP, Status
+from algorithms.csp import CSP, Status
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.course_choice import CourseChoice
