@@ -27,6 +27,20 @@ python -m pip install -r requirements.txt
 
 and then run the software.
 
+for herbrew:
+
+Be sure you are using console that support hebrew,
+for example git bash.
+
+For git bash:
+
+Change the settings (right click on the screen of git bash)
+Options -> Text -> Font -> Select font "Miriam Fixed"
+
+Then 
+
+Options -> Text -> Character set: Change to utf-8
+
 open git bash outside your IDE, no in pycharm and etc.
 
 run this line:
