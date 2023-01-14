@@ -311,7 +311,9 @@ class Controller:
 
         print(_("Select the courses by enter their index:"))
         time.sleep(self.delay_time)
-        last_choices = self.database.load_courses_console_choose() or []
+        last_choices_parent_courses_numbers = self.database.load_courses_console_choose() or []
+        last_choices = [course_choice.name for course_choice in courses_choices.values()
+                        if str(course_choice.parent_course_number) in last_choices_parent_courses_numbers]
         if last_choices:
             print(" 0.", _("Choose your previous selection:"), ", ".join(last_choices))
         last_choices_in_indexes = []
@@ -328,7 +330,7 @@ class Controller:
         if 0 in courses_indexes:
             courses_indexes = last_choices_in_indexes
         else:
-            choices = [list(courses_choices.keys())[index - 1] for index in courses_indexes]
+            choices = [str(list(courses_choices.values())[index - 1].parent_course_number) for index in courses_indexes]
             self.database.save_courses_console_choose(choices)
         selected_courses_choices = {}
         for index, (course_name, course_choice) in enumerate(courses_choices.items(), 1):
