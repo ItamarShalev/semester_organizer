@@ -229,6 +229,7 @@ class Database:
             campus_id = self.load_campus_id(campus_name)
             courses = courses or self.load_active_courses(campus_name, language)
             courses_choices_data = defaultdict(lambda: (set(), set()))
+            courses_choices = {}
             lecture_index = 0
             practice_index = 1
             degrees_text = f"({', '.join(['?'] * len(degrees))})"
@@ -255,8 +256,8 @@ class Database:
                     index = lecture_index if is_lecture_rule else practice_index
                     courses_choices_data[course.name][index].add(lecturer_name)
 
-            courses_choices = {course_name: CourseChoice(course_name, list(lectures), list(practices))
-                               for course_name, (lectures, practices) in courses_choices_data.items()}
+                courses_choices[course.name] = CourseChoice(course.name, course.parent_course_number,
+                                                            *courses_choices_data[course.name])
             cursor.close()
             return courses_choices
 

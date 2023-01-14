@@ -125,7 +125,7 @@ class TestData:
         assert typ.is_personal()
 
     def test_course_choices(self):
-        course_choice = CourseChoice("A", [], [])
+        course_choice = CourseChoice("A", 1, set(), set())
         assert course_choice.name == "A"
         assert hash(course_choice) == hash("A")
 

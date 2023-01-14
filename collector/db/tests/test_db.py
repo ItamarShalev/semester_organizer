@@ -140,7 +140,7 @@ class TestDatabase:
                       for i in range(10)]
         database_mock.save_academic_activities(activities, campus_name, Language.ENGLISH)
         loaded_courses_choices = database_mock.load_courses_choices(campus_name, Language.ENGLISH)
-        excepted_courses_choices = [CourseChoice(f"Course {i}", ["meir"], []) for i in range(10)]
+        excepted_courses_choices = [CourseChoice(f"Course {i}", i, {"meir"}, set()) for i in range(10)]
         assert set(loaded_courses_choices.values()) == set(excepted_courses_choices)
 
     def test_load_activities_by_courses_choices(self, database_mock, campuses):
@@ -154,8 +154,8 @@ class TestDatabase:
 
         activities = [create_activity(i) for i in range(10)]
 
-        courses_choices_excepted = {"Cor 5": CourseChoice("Cor 5", ["meir5"], [])}
-        courses_choices = {"Cor 1": CourseChoice("Cor 1", ["meir0"], [])}
+        courses_choices_excepted = {"Cor 5": CourseChoice("Cor 5", 5, {"meir5"}, set())}
+        courses_choices = {"Cor 1": CourseChoice("Cor 1", 1, {"meir0"}, set())}
         courses_choices.update(courses_choices_excepted)
 
         database_mock.save_academic_activities(activities, campus_name, language)

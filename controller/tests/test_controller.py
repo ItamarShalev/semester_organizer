@@ -76,7 +76,8 @@ class TestController:
                           f"{course_choices.keys()}"
                 self.logger.debug(message)
                 name = utils.get_course_data_test().name
-                return {name: CourseChoice(name, [], [])}
+                parent_course_number = utils.get_course_data_test().parent_course_number
+                return {name: CourseChoice(name, parent_course_number, set(), set())}
 
             def open_notification_window(self, message: str, message_type: MessageType = MessageType.INFO,
                                          buttons: List[str] = None):

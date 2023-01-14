@@ -91,15 +91,15 @@ class TestCsp:
     def test_no_option(self):
         activities = []
         academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
-        academic_activity.add_slot(Meeting(Day.SUNDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("11:00")))
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
         activities.append(academic_activity)
 
         academic_activity = AcademicActivity("a", Type.LAB, True, "a", 2, 2, "a")
-        academic_activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("12:00"), Meeting.str_to_time("13:30")))
+        academic_activity.add_slot(Meeting(Day.MONDAY, "12:00", "13:30"))
         activities.append(academic_activity)
 
         activity = Activity("c", Type.PERSONAL, True)
-        activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("12:00"), Meeting.str_to_time("14:30")))
+        activity.add_slot(Meeting(Day.MONDAY, "12:00", "14:30"))
         activities.append(activity)
 
         schedules = CSP().extract_schedules(activities)
@@ -110,20 +110,20 @@ class TestCsp:
 
         activities = []
         academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a")
-        academic_activity.add_slot(Meeting(Day.SUNDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("11:00")))
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
         activities.append(academic_activity)
 
         academic_activity = AcademicActivity("a", Type.LECTURE, True, "Mike", 2, 2, "a")
-        academic_activity.add_slot(Meeting(Day.SUNDAY, Meeting.str_to_time("15:00"), Meeting.str_to_time("17:30")))
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "15:00", "17:30"))
         activities.append(academic_activity)
         activities_option.append(academic_activity)
 
         activity = Activity("c", Type.PERSONAL, True)
-        activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("12:00"), Meeting.str_to_time("14:30")))
+        activity.add_slot(Meeting(Day.MONDAY, "12:00", "14:30"))
         activities.append(activity)
         activities_option.append(activity)
 
-        course_choice = CourseChoice("a", available_teachers_for_lecture=["Mike"], available_teachers_for_practice=[])
+        course_choice = CourseChoice("a", 1, {"Mike"}, set())
 
         schedules = CSP().extract_schedules(activities, {"a": course_choice})
         assert len(schedules) == 1
@@ -147,7 +147,7 @@ class TestCsp:
         activities.append(activity)
         activities_option.append(activity)
 
-        course_choice = CourseChoice("a", available_teachers_for_lecture=["Mike"], available_teachers_for_practice=[])
+        course_choice = CourseChoice("a", 1, {"Mike"}, set())
 
         schedules = CSP().extract_schedules(activities, {"a": course_choice})
         assert len(schedules) == 1
@@ -176,7 +176,7 @@ class TestCsp:
         activities.append(activity)
         activities_option.append(activity)
 
-        course_choice = CourseChoice("a", available_teachers_for_lecture=[], available_teachers_for_practice=["Mike"])
+        course_choice = CourseChoice("a", 1, set(), {"Mike"})
 
         schedules = CSP().extract_schedules(activities, {"a": course_choice})
         assert len(schedules) == 1

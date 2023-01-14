@@ -1,4 +1,3 @@
-from collections import defaultdict
 from typing import List, Union, Dict
 
 from data.activity import Activity
@@ -75,15 +74,17 @@ class AcademicActivity(Activity):
     @staticmethod
     def create_courses_choices(academic_activities: List["AcademicActivity"]) -> Dict[str, CourseChoice]:
         # key = course name, first value list of lectures, second value list of exercises
-        dict_data = defaultdict(lambda: (set(), set()))
-        for activity in academic_activities:
-            index = 0 if activity.type.is_lecture() else 1
-            dict_data[activity.name][index].add(activity.lecturer_name)
+        academic_activities = Activity.get_activities_by_name(academic_activities)
         courses_choices = {}
-        for course_name, (lecturers, exercises) in dict_data.items():
-            courses_choices[course_name] = CourseChoice(course_name,
-                                                        available_teachers_for_lecture=list(lecturers),
-                                                        available_teachers_for_practice=list(exercises))
+
+        for name, activities in academic_activities.items():
+            courses_choices[name] = CourseChoice(name, activities[0].parent_course_number, set(), set())
+            for activity in activities:
+                if activity.type.is_lecture():
+                    courses_choices[name].available_teachers_for_lecture.add(activity.lecturer_name)
+                else:
+                    courses_choices[name].available_teachers_for_practice.add(activity.lecturer_name)
+
         return courses_choices
 
     def __iter__(self):
