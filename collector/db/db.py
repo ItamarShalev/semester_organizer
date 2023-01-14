@@ -53,7 +53,8 @@ class Database:
             "personal_activities",
             "personal_meetings",
             "personal_activities_meetings",
-            "activities_can_enroll_in"
+            "activities_can_enroll_in",
+            "courses_already_done"
         ]
 
     def init_personal_database_tables(self):
@@ -72,6 +73,9 @@ class Database:
 
             cursor.execute("CREATE TABLE IF NOT EXISTS activities_can_enroll_in "
                            "(activity_id TEXT PRIMARY KEY);")
+
+            cursor.execute("CREATE TABLE IF NOT EXISTS courses_already_done "
+                           "(parent_course_number INTEGER PRIMARY KEY);")
 
             connection.commit()
             cursor.close()
@@ -664,3 +668,37 @@ class Database:
     def clear_last_courses_choose_input(self):
         if os.path.exists(self.COURSES_CHOOSE_PATH):
             os.remove(self.COURSES_CHOOSE_PATH)
+
+    def save_courses_already_done(self, courses: Set[Course]):
+        with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            for course in courses:
+                cursor.execute("INSERT INTO courses_already_done (parent_course_number) VALUES (?);",
+                               (course.parent_course_number,))
+            cursor.close()
+
+    def load_courses_already_done(self, language: Language) -> Set[Course]:
+        parent_courses_numbers = None
+        courses = None
+        with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM courses_already_done;")
+            parent_courses_numbers = {parent_course_number for (parent_course_number,) in cursor.fetchall()}
+            cursor.close()
+        if not parent_courses_numbers:
+            return set()
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM courses "
+                           "WHERE language_value = ? "
+                           "AND parent_course_number IN (" + ", ".join(["?"] * len(parent_courses_numbers)) + ");",
+                           (language.short_name(), *parent_courses_numbers))
+            courses = {Course(*course_data) for *course_data, _language_value in cursor.fetchall()}
+            cursor.close()
+            return courses
+
+    def clear_courses_already_done(self):
+        with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("DELETE FROM courses_already_done;")
+            cursor.close()
