@@ -180,6 +180,7 @@ data = TextCaseInsensitiveDict({
     "No schedules were found with favorite lecturers": "לא נמצאו מערכות שעות עם מרצים מועדפים",
     "The last activities that were crashed were: (you may want to give up one of them)": "הפעילויות האחרונות שהתנגשו היו: (אתה אולי תרצה לוותר על אחת מהן)",
     "The activity: {} And {}": "הקורס: {} ו{}",
+    "No courses were found, please try again with different settings.": "לא נמצאו קורסים, אנא נסה שוב עם הגדרות שונות.",
 
 })
 

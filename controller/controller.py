@@ -94,6 +94,10 @@ class Controller:
 
         courses_choices = self._console_ask_courses_choices(campus_name, settings.degrees, activities_ids_can_enroll)
 
+        if not courses_choices:
+            print(_("No courses were found, please try again with different settings."))
+            return
+
         is_yes = self._console_ask_yes_or_no("Do you want to select favorite lecturers?")
 
         if is_yes:
@@ -122,16 +126,7 @@ class Controller:
 
         status = self.csp.get_status()
 
-        if status is Status.FAILED:
-            print(_("No schedules were found"))
-            first_name, second_name = self.csp.get_last_activities_crashed()
-            if first_name and second_name:
-                print(_("The last activities that were crashed were: (you may want to give up one of them)"))
-                print(_("The activity: {} And {}").format(first_name, second_name))
-        elif status is Status.SUCCESS_WITH_ONE_FAVORITE_LECTURER:
-            print(_("No schedules were found with all favorite lecturers, but found with some of them"))
-        elif status is Status.SUCCESS_WITHOUT_FAVORITE_LECTURERS:
-            print(_("No schedules were found with favorite lecturers"))
+        self._console_print_status_results(status)
 
         self._console_save_schedules(settings, schedules)
 
@@ -216,6 +211,18 @@ class Controller:
             message = "The system encountered an error, please contanct the engeniers."
             self.logger.error("The system encountered an error: %s", str(error))
             self.gui.open_notification_window(_(message), MessageType.ERROR)
+
+    def _console_print_status_results(self, status: Status):
+        if status is Status.FAILED:
+            print(_("No schedules were found"))
+            first_name, second_name = self.csp.get_last_activities_crashed()
+            if first_name and second_name:
+                print(_("The last activities that were crashed were: (you may want to give up one of them)"))
+                print(_("The activity: {} And {}").format(first_name, second_name))
+        elif status is Status.SUCCESS_WITH_ONE_FAVORITE_LECTURER:
+            print(_("No schedules were found with all favorite lecturers, but found with some of them"))
+        elif status is Status.SUCCESS_WITHOUT_FAVORITE_LECTURERS:
+            print(_("No schedules were found with favorite lecturers"))
 
     def _initial_language_if_first_time(self):
         settings = self.database.load_settings()
