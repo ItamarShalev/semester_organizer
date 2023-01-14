@@ -26,6 +26,7 @@ class CSP:
         self.consist_one_favorite_teacher = False
         self.settings = None
         self.status = None
+        self.last_courses_crashed = (None, None)
 
     def extract_schedules_minimal_consists(self, activities: List[Activity],
                                            activities_ids: List[str] = None) -> List[Schedule]:
@@ -101,8 +102,14 @@ class CSP:
     def get_status(self):
         return self.status
 
-    def _is_consist_activity(self, activity_one, activity_two):
-        return all(not activity.is_crash_with_activities(activity_one) for activity in activity_two)
+    def get_last_activities_crashed(self):
+        return self.last_courses_crashed
+
+    def _is_consist_activity(self, group_one: List[Activity], group_two: List[Activity]):
+        result = all(not activity.is_crash_with_activities(group_one) for activity in group_two)
+        if not result:
+            self.last_courses_crashed = (group_one[0].name, group_two[0].name)
+        return result
 
     def _is_consist_capacity(self, activities: List[Activity]):
         """

@@ -124,6 +124,10 @@ class Controller:
 
         if status is Status.FAILED:
             print(_("No schedules were found"))
+            first_name, second_name = self.csp.get_last_activities_crashed()
+            if first_name and second_name:
+                print(_("The last activities that were crashed were: (you may want to give up one of them)"))
+                print(_("The activity: {} And {}").format(first_name, second_name))
         elif status is Status.SUCCESS_WITH_ONE_FAVORITE_LECTURER:
             print(_("No schedules were found with all favorite lecturers, but found with some of them"))
         elif status is Status.SUCCESS_WITHOUT_FAVORITE_LECTURERS:

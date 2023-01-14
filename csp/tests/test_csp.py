@@ -110,6 +110,7 @@ class TestCsp:
         schedules = csp.extract_schedules_minimal_consists(activities)
         assert len(schedules) == 0
         assert csp.get_status() is Status.FAILED
+        assert csp.get_last_activities_crashed() == ("a", "c")
 
     def test_one_option_favorite_one_teacher(self):
         activities_option = []

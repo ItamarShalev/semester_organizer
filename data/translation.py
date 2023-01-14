@@ -178,6 +178,9 @@ data = TextCaseInsensitiveDict({
     "Check connection and try again, will use the last data or will not filter the courses.": "בדוק את חיבור האינטרנט ונסה שוב, משתמש בנתונים האחרונים או לא יסנן את הקורסים.",
     "No schedules were found with all favorite lecturers, but found with some of them": "לא נמצאו מערכות שעות עם כל המרצים המועדפים, אבל נמצאו עם חלק מהם",
     "No schedules were found with favorite lecturers": "לא נמצאו מערכות שעות עם מרצים מועדפים",
+    "The last activities that were crashed were: (you may want to give up one of them)": "הפעילויות האחרונות שהתנגשו היו: (אתה אולי תרצה לוותר על אחת מהן)",
+    "The activity: {} And {}": "הקורס: {} ו{}",
+
 })
 
 
