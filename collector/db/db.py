@@ -52,7 +52,8 @@ class Database:
             "personal_activities",
             "personal_meetings",
             "activities_can_enroll_in",
-            "courses_already_done"
+            "courses_already_done",
+            "activities_tracks",
         ]
 
     def init_personal_database_tables(self):
@@ -70,6 +71,10 @@ class Database:
 
             cursor.execute("CREATE TABLE IF NOT EXISTS courses_already_done "
                            "(parent_course_number INTEGER PRIMARY KEY);")
+
+            cursor.execute("CREATE TABLE IF NOT EXISTS activities_tracks "
+                           "(activity_id TEXT, track INTEGER, "
+                           "PRIMARY KEY (activity_id, track));")
 
             connection.commit()
             cursor.close()
@@ -134,6 +139,14 @@ class Database:
         self.init_shared_database_tables()
         self.init_personal_database_tables()
 
+    def clear_activities_ids_tracks_can_enroll(self):
+        with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("DELETE FROM activities_can_enroll_in;")
+            cursor.execute("DELETE FROM activities_tracks;")
+            connection.commit()
+            cursor.close()
+
     def load_campus_id(self, campus_name: str):
         with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
@@ -150,19 +163,26 @@ class Database:
             connection.commit()
             cursor.close()
 
-    def save_activities_ids_can_enroll_in(self, activities_can_enroll_in: List[str]):
+    def save_activities_ids_groups_can_enroll_in(self, activities_can_enroll_in: Dict[str, Set[int]]):
+        self.clear_activities_ids_tracks_can_enroll()
         with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
             cursor = connection.cursor()
-            for activity_id in activities_can_enroll_in:
-                cursor.execute("INSERT OR IGNORE INTO activities_can_enroll_in VALUES (?);", (activity_id, ))
+            for activity_id, tracks in activities_can_enroll_in.items():
+                cursor.execute("INSERT INTO activities_can_enroll_in VALUES (?);", (activity_id, ))
+                for track in tracks:
+                    cursor.execute("INSERT INTO activities_tracks VALUES (?, ?);", (activity_id, track))
             connection.commit()
             cursor.close()
 
-    def load_activities_ids_can_enroll_in(self) -> List[str]:
+    def load_activities_ids_groups_can_enroll_in(self) -> Dict[str, Set[str]]:
         with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT activity_id FROM activities_can_enroll_in;")
-            activities_can_enroll_in = [activity_id for (activity_id,) in cursor.fetchall()]
+            activities_can_enroll_in = {activity_id: set() for (activity_id,) in cursor.fetchall()}
+            for activity_id, tracks in activities_can_enroll_in.items():
+                cursor.execute("SELECT track FROM activities_tracks WHERE activity_id = ?;", (activity_id, ))
+                tracks.update(track for (track,) in cursor.fetchall())
+            cursor.close()
             return activities_can_enroll_in
 
     def save_degrees(self, degrees: List[Degree]):
@@ -250,8 +270,9 @@ class Database:
                     index = lecture_index if is_lecture_rule else practice_index
                     courses_choices_data[course.name][index].add(lecturer_name)
 
-                courses_choices[course.name] = CourseChoice(course.name, course.parent_course_number,
-                                                            *courses_choices_data[course.name])
+                if course.name in courses_choices_data.keys():
+                    courses_choices[course.name] = CourseChoice(course.name, course.parent_course_number,
+                                                                *courses_choices_data[course.name])
             cursor.close()
             return courses_choices
 

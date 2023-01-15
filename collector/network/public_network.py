@@ -1,6 +1,7 @@
 import json
+from collections import defaultdict
 from contextlib import suppress
-from typing import Optional, List, Set, Tuple
+from typing import Optional, List, Set, Tuple, Dict
 
 from json import JSONDecodeError
 from requests.exceptions import Timeout
@@ -10,6 +11,7 @@ import urllib3
 import utils
 from data import translation
 from data.language import Language
+from data.semester import Semester
 from data.settings import Settings
 from data.user import User
 
@@ -32,7 +34,7 @@ class PublicNetworkHttp:
     """
 
     HTTP_OK = 200
-    TIMEOUT = 25
+    TIMEOUT = 40
 
     def __init__(self, user: Optional[User] = None):
         self._user = user
@@ -132,8 +134,39 @@ class PublicNetworkHttp:
             raise RuntimeError("Failed to connect")
         self.change_language(Language.get_current())
 
-    def extract_all_activities_ids_can_enroll_in(self) -> List[str]:
-        return []
+    def extract_all_activities_ids_can_enroll_in(self, settings: Settings,
+                                                 parent_courses_already_did: List[int] = None) -> Dict[str, Set[int]]:
+        self._config_for_build_schedule_start()
+        self._config_year_and_semester(settings.year, settings.semester)
+        tracks = self._get_tracks(settings.year, settings.semester)
+        activities_ids = defaultdict(set)
+        parent_courses_already_did = parent_courses_already_did or []
+
+        payload_track = {"selectedTrack": None}
+        payload_member_id = {"programMemberId": None}
+
+        url_for_track = "https://levnet.jct.ac.il/api/student/buildSchedule.ashx?action=LoadCoursesForTrack"
+        url_for_member_id = "https://levnet.jct.ac.il/api/student/buildSchedule.ashx?action=LoadCoursesForProgram"
+        for track in tracks:
+            payload_track["selectedTrack"] = track
+            json_data_track = self.request(url_for_track, payload_track)
+            all_programs_member_id = [(item["programMemberId"], item["parentCourseId"])
+                                      for item in json_data_track["coursesForTrack"]]
+            for program_member_id, parent_course_id in all_programs_member_id:
+                if parent_course_id in parent_courses_already_did:
+                    continue
+                payload_member_id["programMemberId"] = program_member_id
+                json_data_member = self.request(url_for_member_id, payload_member_id)
+                for course_program in json_data_member["coursesForProgram"]:
+                    activity_id_without_group = course_program["courseFullNumber"]
+                    for group in course_program["groups"]:
+                        group_number = str(group["groupNumber"])
+                        if group_number == "-1":
+                            # Waiting list, don't add it.
+                            continue
+                        full_activity_id = activity_id_without_group + "." + group_number.zfill(2)
+                        activities_ids[full_activity_id].add(track)
+        return activities_ids
 
     def extract_courses_already_did(self) -> Set[Tuple[str, int]]:
         """
@@ -176,3 +209,19 @@ class PublicNetworkHttp:
                 self.request(url)
             self._session.close()
             self._session = None
+
+    def _config_year_and_semester(self, year: int, semester: Semester):
+        payload = {"academicYear": year, "semester": semester.value}
+        url = "https://levnet.jct.ac.il/api/student/buildSchedule.ashx?action=SelectSemesterForBuildSchedule"
+        self.request(url, payload)
+
+    def _get_tracks(self, year: int, semester: Semester):
+        payload = {"academicYear": year, "semester": semester.value}
+        url = "https://levnet.jct.ac.il/api/student/buildSchedule.ashx?action=LoadData"
+        json_data = self.request(url, payload)
+        tracks = [track["id"] for track in json_data["tracks"]]
+        return tracks
+
+    def _config_for_build_schedule_start(self):
+        url = "https://levnet.jct.ac.il/api/student/buildSchedule.ashx?action=LoadDataForBuildScheduleStart"
+        self.request(url)

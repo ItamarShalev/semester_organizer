@@ -27,10 +27,13 @@ class TestCsp:
         activities.append(activity)
 
         schedule = Schedule("Option 0", "option_0", "", activities)
-        all_activities_ids = ["1", "2"]
+        activities_ids_groups = {
+            "1": {1},
+            "2": {1},
+        }
 
         for schedules in [csp.extract_schedules(activities),
-                          csp.extract_schedules_minimal_consists(activities, all_activities_ids)]:
+                          csp.extract_schedules_minimal_consists(activities, activities_ids_groups)]:
             assert len(schedules) == 1
             assert any(schedule.contains(activities) for schedule in schedules)
             assert schedule in schedules
@@ -267,7 +270,11 @@ class TestCsp:
         assert any(schedule.contains(activities_option_2) for schedule in schedules)
 
     def test_only_activities_ids_can_enroll(self):
-        activities_ids_can_enroll = ["1", "2", "3"]
+        activities_ids_can_enroll = {
+            "1": {1, 2},
+            "2": {1, 2},
+            "3": {1},
+        }
         activities_option_1 = []
         activities_option_2 = []
         activities = []

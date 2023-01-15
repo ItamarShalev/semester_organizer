@@ -1,7 +1,8 @@
 from enum import Enum, auto
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Set
 
 from constraint import Problem
+from constraint import AllEqualConstraint
 
 from data.activity import Activity
 from data.course_choice import CourseChoice
@@ -21,7 +22,7 @@ class Status(Enum):
 class CSP:
 
     def __init__(self):
-        self.activities_ids_can_enroll = None
+        self.activities_ids_groups = None
         self.courses_choices = None
         self.consist_one_favorite_teacher = False
         self.settings = None
@@ -29,7 +30,7 @@ class CSP:
         self.last_courses_crashed = (None, None)
 
     def extract_schedules_minimal_consists(self, activities: List[Activity],
-                                           activities_ids: List[str] = None) -> List[Schedule]:
+                                           activities_ids_groups: Dict[str, Set[int]] = None) -> List[Schedule]:
         """
         Extract only the schedules that consist the minimal conditions
         if the activities_ids is None, the function will return only schedules that consist by their meetings
@@ -37,14 +38,14 @@ class CSP:
         (help for classes can enroll consist).
         """
         all_activities_names, problem = self._prepare_activities(activities)
-        self.activities_ids_can_enroll = activities_ids
+        self.activities_ids_groups = activities_ids_groups
         self.status = Status.SUCCESS
         for name in all_activities_names:
             for other_name in all_activities_names:
                 if name == other_name:
                     continue
                 problem.addConstraint(self._is_consist_activity, (name, other_name))
-            if activities_ids:
+            if activities_ids_groups:
                 problem.addConstraint(self._is_consist_activities_ids_can_enroll, (name,))
 
         schedules = self._extract_solutions(problem)
@@ -54,11 +55,14 @@ class CSP:
 
         return schedules
 
-    def extract_schedules(self, activities: List[Activity], courses_choices: Optional[Dict[str, CourseChoice]] = None,
-                          settings: Settings = None, activities_ids_can_enroll: List[str] = None) -> List[Schedule]:
+    def extract_schedules(self, activities: List[Activity],
+                          courses_choices: Optional[Dict[str, CourseChoice]] = None,
+                          settings: Settings = None,
+                          activities_ids_groups: Dict[str, Set[int]] = None) -> List[Schedule]:
+
         self.settings = settings or Settings()
         self.courses_choices = courses_choices or {}
-        self.activities_ids_can_enroll = activities_ids_can_enroll
+        self.activities_ids_groups = activities_ids_groups
         all_activities_names, problem = self._prepare_activities(activities)
 
         for name in all_activities_names:
@@ -75,7 +79,7 @@ class CSP:
                 problem.addConstraint(self._is_consist_actual_course, (name,))
             if not self.settings.show_hertzog_and_yeshiva:
                 problem.addConstraint(self._is_consist_hertzog_and_yeshiva, (name,))
-            if self.settings.show_only_classes_can_enroll and self.activities_ids_can_enroll:
+            if self.settings.show_only_classes_can_enroll and self.activities_ids_groups:
                 problem.addConstraint(self._is_consist_activities_ids_can_enroll, (name,))
 
         schedule_result = self._extract_solutions(problem)
@@ -174,12 +178,17 @@ class CSP:
                    for activity in activities for meeting in activity.meetings)
 
     def _is_consist_activities_ids_can_enroll(self, activities: List[Activity]):
-        is_consist = True
+        if activities[0].type.is_personal():
+            return True
+        all_activities_ids_found = all(activity.activity_id in self.activities_ids_groups for activity in activities)
+        if not all_activities_ids_found:
+            return False
+
+        problem = Problem()
         for activity in activities:
-            if not activity.type.is_personal() and activity.activity_id not in self.activities_ids_can_enroll:
-                is_consist = False
-                break
-        return is_consist
+            problem.addVariable(activity.activity_id, list(self.activities_ids_groups[activity.activity_id]))
+            problem.addConstraint(AllEqualConstraint())
+        return problem.getSolution() is not None
 
     def _prepare_activities(self, activities: List[Activity]):
         problem = Problem()

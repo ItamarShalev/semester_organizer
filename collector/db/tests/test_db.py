@@ -142,17 +142,18 @@ class TestDatabase:
         assert loaded == [academic_activity]
         assert loaded[0].meetings == [Meeting(Day.MONDAY, "10:00", "12:00")]
 
-    def test_activities_can_register(self, database_mock):
-        all_activities_can_register_ids = [
-            "12.1.1",
-            "12.1.1",
-            "10.10.1",
-        ]
-        assert not database_mock.load_activities_ids_can_enroll_in()
-        database_mock.save_activities_ids_can_enroll_in(all_activities_can_register_ids)
-        loaded_activities_ids = database_mock.load_activities_ids_can_enroll_in()
+    def test_activities_can_enroll_in(self, database_mock):
+        all_activities_can_enroll_in = {
+            "12.1.1": {103},
+            "10.10.1": {103, 104},
+        }
+        database_mock.clear_activities_ids_tracks_can_enroll()
+        assert not database_mock.load_activities_ids_groups_can_enroll_in()
+        database_mock.save_activities_ids_groups_can_enroll_in(all_activities_can_enroll_in)
+        loaded_activities_ids = database_mock.load_activities_ids_groups_can_enroll_in()
         assert len(loaded_activities_ids) == 2
-        assert all(activity_id in loaded_activities_ids for activity_id in all_activities_can_register_ids)
+        assert loaded_activities_ids["12.1.1"] == {103}
+        assert loaded_activities_ids["10.10.1"] == {103, 104}
 
     def test_course_choices(self, database_mock, campuses):
         campus_name = "A"
@@ -227,6 +228,31 @@ class TestDatabase:
         assert database_mock.load_courses_console_choose() == names
         database_mock.clear_last_courses_choose_input()
         assert not database_mock.load_courses_console_choose()
+
+    def test_load_courses_choices(self, database_mock, campuses):
+        campus_name = campuses[1][0]
+        activity1 = AcademicActivity("name1", Type.LECTURE, True, "meir", 124, 34, "", "124.01", "", 0, 100, 1213)
+        activity2 = AcademicActivity("name2", Type.LAB, True, "meir2", 125, 35, "", "125.02", "", 0, 100, 1213)
+        activity3 = AcademicActivity("name3", Type.LECTURE, True, "meir", 126, 36, "", "126.03", "", 0, 100, 1213)
+        activity1.add_slot(Meeting(Day.MONDAY, "10:00", "12:00"))
+        activity2.add_slot(Meeting(Day.SUNDAY, "10:00", "12:00"))
+        activity3.add_slot(Meeting(Day.WEDNESDAY, "10:00", "12:00"))
+        activities = [activity1, activity2, activity3]
+        courses = [Course("name1", 124, 34, set(Semester), set(Degree)),
+                   Course("name2", 125, 35, set(Semester), set(Degree)),
+                   Course("name3", 126, 36, set(Semester), set(Degree))]
+        database_mock.save_degrees(list(Degree))
+        database_mock.save_semesters(list(Semester))
+        database_mock.save_courses(courses, Language.ENGLISH)
+        database_mock.save_academic_activities(activities, campus_name, Language.ENGLISH)
+        excepted_courses_choices = {
+            "name1": CourseChoice("name1", 124, {"meir"}, set()),
+            "name2": CourseChoice("name2", 125, set(), {"meir2"}),
+        }
+        courses_choices = database_mock.load_courses_choices(campus_name, Language.ENGLISH, courses, set(Degree),
+                                                             ["124.01", "125.02"])
+        assert len(courses_choices) == 2
+        assert courses_choices == excepted_courses_choices
 
     def test_clear_all(self, database_mock):
         database_mock.clear_all_data()

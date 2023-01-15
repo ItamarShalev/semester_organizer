@@ -5,7 +5,7 @@ import subprocess
 import time
 from collections import defaultdict
 from operator import itemgetter
-from typing import List, Dict, Literal, Optional, Any
+from typing import List, Dict, Literal, Optional, Any, Set
 
 import utils
 from algorithms.csp import CSP, Status
@@ -57,7 +57,7 @@ class Controller:
         language = language or settings.language
         settings.language = language
         translation.config_language_text(language)
-        activities_ids_can_enroll = []
+        activities_ids_groups = {}
 
         if settings.campus_name:
             campus_name = self.database.translate_campus_name(settings.campus_name)
@@ -93,9 +93,9 @@ class Controller:
 
         self._console_alert_if_missing_user_data_and_need_to_login(settings, user)
 
-        activities_ids_can_enroll = self._console_get_activities_ids_can_enroll(settings, user)
+        activities_ids_groups = self._console_get_activities_ids_can_enroll(settings, user)
 
-        courses_choices = self._console_ask_courses_choices(campus_name, settings, activities_ids_can_enroll)
+        courses_choices = self._console_ask_courses_choices(campus_name, settings, activities_ids_groups)
 
         if not courses_choices:
             print(_("No courses were found, please try again with different settings."))
@@ -123,9 +123,8 @@ class Controller:
                                                                                       campus_name, language,
                                                                                       settings.degrees)
         AcademicActivity.union_attendance_required(selected_activities, courses_choices)
-        activities_ids = activities_ids_can_enroll
 
-        schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings, activities_ids)
+        schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings, activities_ids_groups)
 
         status = self.csp.get_status()
 
@@ -327,7 +326,8 @@ class Controller:
         print("\n\n")
         return campus_name
 
-    def _console_ask_courses_choices(self, campus_name: str, settings: Settings, activities_ids_can_enroll: List[str]):
+    def _console_ask_courses_choices(self, campus_name: str, settings: Settings,
+                                     activities_ids_can_enroll: Dict[str, Set[int]]):
         courses_choices = self._get_courses_choices_to_ask(campus_name, settings, activities_ids_can_enroll)
 
         print(_("Select the courses by enter their index:"))
@@ -590,10 +590,10 @@ class Controller:
 
         print(_("Show only courses with prerequisites done:"))
         print(_("Select 0 to use the default settings."))
-        print(_("Default value:"), self._yes_no(settings.show_only_courses_with_prerequisites_done))
+        print(_("Default value:"), self._yes_no(settings.show_only_courses_with_prerequisite_done))
         default_yes_no = self._console_ask_default_yes_no()
         if default_yes_no is not None:
-            settings.attendance_required_all_courses = default_yes_no
+            settings.show_only_courses_with_prerequisite_done = default_yes_no
         print("\n\n")
 
         print(_("Attendance required all courses:"))
@@ -710,7 +710,7 @@ class Controller:
         print(_("Don't show courses already done:"))
         print(_("Select 0 to use the default settings."))
         print(_("Default value:"), self._yes_no(settings.dont_show_courses_already_done))
-        default_yes_no = self._console_ask_default_yes_no("Do you want to show courses already done?")
+        default_yes_no = self._console_ask_default_yes_no("Do you want to hide courses already done?")
         if default_yes_no is not None:
             settings.dont_show_courses_already_done = default_yes_no
             if default_yes_no:
@@ -784,22 +784,41 @@ class Controller:
             print("\n\n")
 
     def _console_get_activities_ids_can_enroll(self, settings: Settings, user: User):
-        activities_ids_can_enroll = []
+        activities_ids_groups = {}
         if settings.show_only_classes_can_enroll and user:
-            activities_ids_can_enroll = self.database.load_activities_ids_can_enroll_in()
-            use_last_data = False
-            if activities_ids_can_enroll:
-                message = "Do you want to show only the courses you can enroll in?"
+            activities_ids_groups = self.database.load_activities_ids_groups_can_enroll_in()
+            use_last_data = True
+            if activities_ids_groups:
+                message = "Do you want to reset the activities list you can enroll in and extract from the Levnet?"
                 use_last_data = self._console_ask_yes_or_no(message)
-            if not use_last_data:
+            if use_last_data:
                 try:
-                    activities_ids_can_enroll = self.network.extract_all_activities_ids_can_enroll_in()
-                    self.database.save_activities_ids_can_enroll_in(activities_ids_can_enroll)
+                    if settings.dont_show_courses_already_done:
+                        courses_already_did = self.database.load_courses_already_done(Language.get_current())
+                        parent_courses_already_done = [course.parent_course_number for course in courses_already_did]
+                    else:
+                        parent_courses_already_done = []
+                    max_tries = 5
+                    message = "Fail in try number {}/{}, Will try again, Levnet is too slow now."
+                    for number_try in range(1, max_tries + 1):
+                        try:
+                            print(_("Extracting activities list you can enroll in from Levnet..."))
+                            activities_ids_groups = \
+                                self.network.extract_all_activities_ids_can_enroll_in(settings,
+                                                                                      parent_courses_already_done)
+                            print(_("Extract all activities can enroll successfully."))
+                            break
+                        except Exception as error:
+                            print(_(message).format(number_try, max_tries))
+                            error_message = message.format(number_try, max_tries) + "ERROR: " + str(error)
+                            self.logger.warning(error_message)
+
+                    self.database.save_activities_ids_groups_can_enroll_in(activities_ids_groups)
                 except Exception as error:
                     self.logger.error("ERROR: While try to extract all activities ids can enroll in, error: %s", error)
                     print(_("Error occurred while trying to extract the courses you can enroll in."))
                     print(_("Check connection and try again, will use the last data or will not filter the courses."))
-        return activities_ids_can_enroll
+        return activities_ids_groups
 
     def _console_edit_courses_already_done(self, settings: Settings):
         courses_already_done = self.database.load_courses_already_done(Language.get_current())
@@ -860,11 +879,12 @@ class Controller:
                 settings.dont_show_courses_already_done = False
                 self.database.save_settings(settings)
 
-    def _get_courses_choices_to_ask(self, campus_name: str, settings: Settings, activities_ids):
+    def _get_courses_choices_to_ask(self, campus_name: str, settings: Settings, activities_ids: Dict[str, Set[int]]):
         language = Language.get_current()
         courses_already_done = self.database.load_courses_already_done(language)
         degrees = settings.degrees
-        courses_choices = self.database.load_courses_choices(campus_name, language, None, degrees, activities_ids)
+        courses_choices = self.database.load_courses_choices(campus_name, language, None, degrees,
+                                                             list(activities_ids.keys()))
         for course in courses_already_done:
             if course.name in courses_choices:
                 courses_choices.pop(course.name)

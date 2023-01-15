@@ -36,7 +36,7 @@ def get_args():
 def main():
     utils.init_project()
     args = get_args()
-    utils.config_logging_level(logging.DEBUG if args.verbose else logging.WARNING)
+    utils.config_logging_level(logging.DEBUG if args.verbose else logging.ERROR)
     translation.config_language_text(args.language)
     database = Database()
 

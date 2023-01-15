@@ -43,6 +43,12 @@ class TestPublicNetworkHttp(BaseTestNetworkHttp):
         network.connect()
         network.disconnect()
 
+    def test_extract_all_activities_ids_can_enroll_in(self, user):
+        network = PublicNetworkHttp(user)
+        settings = Settings()
+        activities_ids_can_enroll_in = network.extract_all_activities_ids_can_enroll_in(settings, [])
+        assert "120131.04.5783.1" in activities_ids_can_enroll_in, "Can't extract activities ids can enroll in."
+
     def test_check_setup(self, user):
         network = PublicNetworkHttp()
         network.set_user(user)

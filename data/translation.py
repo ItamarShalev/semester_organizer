@@ -183,7 +183,7 @@ data = TextCaseInsensitiveDict({
     "No courses were found, please try again with different settings.": "לא נמצאו קורסים, אנא נסה שוב עם הגדרות שונות.",
     "Do you want to show all courses already done list?": "האם ברצונך להציג את רשימת כל הקורסים שכבר נעשו?",
     "Courses already done:": "קורסים שכבר נעשו:",
-    "Do you want to show courses already done?": "האם ברצונך להציג קורסים שכבר נעשו?",
+    "Do you want to hide courses already done?": "האם ברצונך להסתיר קורסים שכבר נעשו?",
     "Do you want to edit the courses already done list?": "האם ברצונך לערוך את רשימת הקורסים שכבר נעשו?",
     "Do you want to add all courses from the start? (otherwise add to the exists list)": "האם ברצונך להוסיף את כל הקורסים מההתחלה? (אחרת הוסף לרשימה הקיימת)",
     "The selected courses:": "הקורסים שנבחרו:",
@@ -201,6 +201,11 @@ data = TextCaseInsensitiveDict({
     "But you need to login to Levnet to use this feature.": "אבל אתה צריך להתחבר ללבנט כדי להשתמש בתכונה זו.",
     "Anyway, courses you do now or didn't pass will not be added.": "בכל מקרה, קורסים שאתה עושה עכשיו או לא עברת או לא יתווספו.",
     "Do you want to extract the data from the Levnet?": "האם ברצונך לחלץ את הנתונים מהלבנט?",
+    "Show only courses with prerequisites done:": "הצג רק קורסים שהקורסי קדם נעשו.",
+    "Extract all activities can enroll successfully.": "חילץ בהצלחה את כל הפעילויות שאפשר להירשם אליהן.",
+    "Do you want to reset the activities list you can enroll in and extract from the Levnet?": "האם ברצונך לאפס את רשימת הפעילויות שאתה יכול להירשם אליהן ולחלץ מהלבנט?",
+    "Extracting activities list you can enroll in from Levnet...": "מחלץ את רשימת הפעילויות שאתה יכול להירשם אליהן מהלבנט...",
+    "Fail in try number {}/{}, Will try again, Levnet is too slow now.": "נכשל בניסיון מספר {}/{}, מנסה שוב, הלבנט איטי כרגע.",
 })
 
 
