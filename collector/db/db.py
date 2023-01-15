@@ -46,13 +46,11 @@ class Database:
             "semesters_courses",
             "courses",
             "semesters",
-            "activities_meetings",
             "activities",
         ]
         self._personal_sql_tables = [
             "personal_activities",
             "personal_meetings",
-            "personal_activities_meetings",
             "activities_can_enroll_in",
             "courses_already_done"
         ]
@@ -64,12 +62,8 @@ class Database:
                            "(id INTEGER PRIMARY KEY, name TEXT UNIQUE);")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS personal_meetings "
-                           "(id INTEGER PRIMARY KEY, day INTEGER, start_time TEXT, end_time TEXT);")
-
-            cursor.execute("CREATE TABLE IF NOT EXISTS personal_activities_meetings "
-                           "(acitivity_id INTEGER, meeting_id INTEGER, "
-                           "FOREIGN KEY(acitivity_id) REFERENCES personal_activities(id), "
-                           "FOREIGN KEY(meeting_id) REFERENCES meetings(id));")
+                           "(activity_id INTEGER, day INTEGER, start_time TEXT, end_time TEXT, "
+                           "PRIMARY KEY (activity_id, day, start_time, end_time));")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS activities_can_enroll_in "
                            "(activity_id TEXT PRIMARY KEY);")
@@ -99,7 +93,10 @@ class Database:
                            "PRIMARY KEY(parent_course_number, language_value));")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS meetings "
-                           "(id INTEGER PRIMARY KEY, day INTEGER, start_time TEXT, end_time TEXT);")
+                           "(activity_id TEXT, day INTEGER, start_time TEXT, end_time TEXT, "
+                           "language_value CHARACTER(2), "
+                           "FOREIGN KEY(activity_id) REFERENCES activities(id), "
+                           "PRIMARY KEY(activity_id, day, start_time, end_time, language_value));")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS activities "
                            "(name TEXT, activity_type INTEGER, attendance_required BOOLEAN, lecturer_name TEXT, "
@@ -110,12 +107,6 @@ class Database:
                            "FOREIGN KEY(campus_id) REFERENCES campuses(id), "
                            "FOREIGN KEY(lecturer_name) REFERENCES lecturers(name),"
                            "PRIMARY KEY(activity_id, campus_id, language_value));")
-
-            cursor.execute("CREATE TABLE IF NOT EXISTS activities_meetings "
-                           "(activity_id TEXT, meeting_id INTEGER, campus_id INTEGER, language_value CHARACTER(2), "
-                           "FOREIGN KEY(activity_id) REFERENCES activities(activity_id), "
-                           "FOREIGN KEY(meeting_id) REFERENCES meetings(id), "
-                           "PRIMARY KEY(activity_id, meeting_id, campus_id, language_value));")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS lecturers "
                            "(name TEXT PRIMARY KEY);")
@@ -212,9 +203,8 @@ class Database:
                 cursor.execute("INSERT INTO personal_activities VALUES (?, ?);",
                                (activity.activity_id, activity.name))
                 for meeting in activity.meetings:
-                    cursor.execute("INSERT OR IGNORE INTO personal_meetings VALUES (?, ?, ?, ?);", (*meeting, ))
-                    cursor.execute("INSERT OR IGNORE INTO personal_activities_meetings VALUES (?, ?);",
-                                   (activity.activity_id, meeting.meeting_id))
+                    cursor.execute("INSERT OR IGNORE INTO personal_meetings VALUES (?, ?, ?, ?);",
+                                   (activity.activity_id, *meeting, ))
             connection.commit()
             cursor.close()
 
@@ -237,7 +227,7 @@ class Database:
             lecture_index = 0
             practice_index = 1
             degrees_text = f"({', '.join(['?'] * len(degrees))})"
-            activities_ids_text = f"activities.activity_id IN ({', '.join(['?'] * len(activities_ids))})"\
+            activities_ids_text = f"activities.activity_id IN ({', '.join(['?'] * len(activities_ids))})" \
                 if activities_ids else "1"
 
             for course in courses:
@@ -275,11 +265,9 @@ class Database:
                           for activity_id, activity_name in cursor.fetchall()]
 
             for activity in activities:
-                cursor.execute("SELECT personal_meetings.* FROM personal_meetings "
-                               "INNER JOIN personal_activities_meetings "
-                               "ON personal_meetings.id = personal_activities_meetings.meeting_id "
-                               "WHERE personal_activities_meetings.acitivity_id = ?;", (activity.activity_id,))
-                meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
+                cursor.execute("SELECT * FROM personal_meetings "
+                               "WHERE activity_id = ?;", (activity.activity_id, ))
+                meetings = [Meeting(*data_line) for _activity_id, *data_line in cursor.fetchall()]
                 activity.meetings = meetings
             cursor.close()
             return activities
@@ -365,14 +353,11 @@ class Database:
                             *parent_courses_numbers))
             activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language_value in cursor.fetchall()]
             for activity in activities:
-                cursor.execute("SELECT meetings.* FROM meetings "
-                               "INNER JOIN activities_meetings "
-                               "ON meetings.id = activities_meetings.meeting_id "
-                               "WHERE activities_meetings.activity_id = ? AND "
-                               "activities_meetings.campus_id = ? AND "
-                               "activities_meetings.language_value = ?;",
-                               (activity.activity_id, campus_id, language.short_name()))
-                meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
+                cursor.execute("SELECT * FROM meetings "
+                               "WHERE activity_id = ? AND "
+                               "language_value = ?;",
+                               (activity.activity_id, language.short_name()))
+                meetings = [Meeting(*data_line) for _activity_id, *data_line, _language_value in cursor.fetchall()]
                 activity.meetings = meetings
 
             cursor.close()
@@ -419,14 +404,10 @@ class Database:
                         activity.attendance_required = course_choice.attendance_required_for_lecture
                     else:
                         activity.attendance_required = course_choice.attendance_required_for_practice
-                    cursor.execute("SELECT meetings.* FROM meetings "
-                                   "INNER JOIN activities_meetings "
-                                   "ON meetings.id = activities_meetings.meeting_id "
-                                   "WHERE activities_meetings.activity_id = ? AND "
-                                   "activities_meetings.campus_id = ? AND "
-                                   "activities_meetings.language_value = ?;",
-                                   (activity.activity_id, campus_id, language.short_name()))
-                    meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
+                    cursor.execute("SELECT * FROM meetings "
+                                   "WHERE activity_id = ? AND language_value = ?;",
+                                   (activity.activity_id, language.short_name()))
+                    meetings = [Meeting(*data_line) for _activity_id, *data_line, _language_value in cursor.fetchall()]
                     activity.meetings = meetings
 
                 activities_result.extend(activities)
@@ -439,15 +420,15 @@ class Database:
             campus_id = self.load_campus_id(campus_name)
             for activity in activities:
                 cursor.execute("INSERT OR IGNORE INTO lecturers VALUES (?);", (activity.lecturer_name,))
-                cursor.execute("INSERT OR IGNORE INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                cursor.execute("INSERT INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
                                (*activity, campus_id, language.short_name()))
                 cursor.execute("INSERT OR IGNORE INTO courses_lecturers VALUES (?, ?, ?, ?, ?, ?);",
                                (activity.course_number, activity.parent_course_number, activity.lecturer_name,
                                 activity.type.is_lecture(), campus_id, language.short_name()))
                 for meeting in activity.meetings:
-                    cursor.execute("INSERT OR IGNORE INTO meetings VALUES (?, ?, ?, ?);", (*meeting,))
-                    cursor.execute("INSERT OR IGNORE INTO activities_meetings VALUES (?, ?, ?,  ?);",
-                                   (activity.activity_id, meeting.meeting_id, campus_id, language.short_name()))
+                    cursor.execute("INSERT OR IGNORE INTO meetings VALUES (?, ?, ?, ?, ?);",
+                                   (activity.activity_id, *meeting, language.short_name()))
+
             connection.commit()
             cursor.close()
 
@@ -471,14 +452,11 @@ class Database:
             activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language in cursor.fetchall()]
 
             for activity in activities:
-                cursor.execute("SELECT meetings.* FROM meetings "
-                               "INNER JOIN activities_meetings "
-                               "ON meetings.id = activities_meetings.meeting_id "
-                               "WHERE activities_meetings.activity_id = ? AND "
-                               "activities_meetings.campus_id = ? AND "
-                               "activities_meetings.language_value = ?;",
-                               (activity.activity_id, campus_id, language.short_name()))
-                meetings = [Meeting.create_meeting_from_database(*data_line) for data_line in cursor.fetchall()]
+                cursor.execute("SELECT * FROM meetings "
+                               "WHERE activity_id = ? AND "
+                               "language_value = ?;",
+                               (activity.activity_id, language.short_name()))
+                meetings = [Meeting(*data_line) for _activity_id, *data_line, _language_value in cursor.fetchall()]
                 activity.meetings = meetings
             cursor.close()
             return activities

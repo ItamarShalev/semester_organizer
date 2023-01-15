@@ -49,7 +49,7 @@ class TestData:
 
         assert repr(meeting) == "09:00 - 11:00"
 
-        assert [meeting.meeting_id, Day.MONDAY.value, "09:00", "11:00"] == [*meeting]
+        assert [Day.MONDAY.value, "09:00", "11:00"] == [*meeting]
 
     def test_course(self):
         course = Course("", 0, 0, set(Semester), set(Degree))

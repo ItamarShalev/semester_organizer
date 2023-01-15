@@ -1,5 +1,4 @@
 from typing import Union
-from itertools import count
 from time import struct_time, strptime
 import time
 import functools
@@ -8,10 +7,8 @@ from data.day import Day
 
 @functools.total_ordering
 class Meeting:
-    _ids = count(0)
 
     def __init__(self, day: Union[Day, int], start_time: Union[struct_time, str], end_time: Union[struct_time, str]):
-        self.meeting_id = next(Meeting._ids)
         if isinstance(day, int):
             day = Day(day)
         self.day = day
@@ -27,12 +24,6 @@ class Meeting:
 
         if self.start_time >= self.end_time:
             raise Exception("Start time is after end time")
-
-    @staticmethod
-    def create_meeting_from_database(meeting_id, day, start_time, end_time):
-        meeting = Meeting(day, start_time, end_time)
-        meeting.meeting_id = meeting_id
-        return meeting
 
     def __str__(self):
         return f"{self.get_string_start_time()} - {self.get_string_end_time()}"
@@ -71,7 +62,7 @@ class Meeting:
         return hash((self.day, self.start_time, self.end_time))
 
     def __iter__(self):
-        return iter((self.meeting_id, self.day.value, self.get_string_start_time(), self.get_string_end_time()))
+        return iter((self.day.value, self.get_string_start_time(), self.get_string_end_time()))
 
     @staticmethod
     def str_to_time(time_str):
