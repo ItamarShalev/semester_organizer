@@ -38,7 +38,7 @@ class ConstraintCourses:
         self.validate_courses_data(all_courses_in_txt.keys(), all_courses_in_txt.keys())
         are_blocked_by_result = {name: course.get_extended_prerequisite_courses_names(all_courses_in_txt)
                                  for name, course in all_courses_in_txt.items()}
-        are_blocked_by_result = utils.sort_dict_by_key(are_blocked_by_result)
+        are_blocked_by_result = self._sort_dict(are_blocked_by_result)
         with open(self.BLOCKED_COURSES_PATH, "w", newline="\n", encoding=utils.ENCODING) as file:
             for name, extended_prerequisite_courses_names in are_blocked_by_result.items():
                 file.write(f"{name}: {', '.join(extended_prerequisite_courses_names)}\n")
@@ -48,7 +48,7 @@ class ConstraintCourses:
             for extended_prerequisite_course_name in extended_prerequisite_courses_names:
                 blocks_courses_result[extended_prerequisite_course_name].add(name)
 
-        blocks_courses_result = utils.sort_dict_by_key(blocks_courses_result)
+        blocks_courses_result = self._sort_dict(blocks_courses_result)
         with open(self.BLOCKS_COURSES_PATH, "w", newline="\n", encoding=utils.ENCODING) as file:
             for name, blocks_courses_names in blocks_courses_result.items():
                 file.write(f"{name}: {', '.join(blocks_courses_names)}\n")
@@ -93,7 +93,10 @@ class ConstraintCourses:
         return courses_can_do
 
     def _write_personal_dict_data(self, file_path: Path, dict_data: Dict[Name, Set[Name]]):
-        dict_data = utils.sort_dict_by_key(dict_data)
+        dict_data = self._sort_dict(dict_data)
         with open(file_path, "w", newline="\n", encoding=utils.ENCODING) as file:
             for name, courses in dict_data.items():
                 file.write(f"{name}: {', '.join(courses)}\n")
+
+    def _sort_dict(self, dict_data: Dict[Name, Set[Name]]) -> Dict[Name, Set[Name]]:
+        return dict(sorted(dict_data.items(), key=lambda x: (len(x[1]), x[0], x[1])))
