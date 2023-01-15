@@ -803,6 +803,7 @@ class Controller:
 
     def _console_edit_courses_already_done(self, settings: Settings):
         courses_already_done = self.database.load_courses_already_done(Language.get_current())
+        all_courses = self.database.load_courses(Language.get_current(), settings.degrees)
         finish_successfully = False
         message = "Do you want to add all courses from the start? (otherwise add to the exists list)"
         if courses_already_done:
@@ -810,7 +811,23 @@ class Controller:
             if is_yes:
                 self.database.clear_courses_already_done()
                 courses_already_done = []
-        all_courses = self.database.load_courses(Language.get_current(), settings.degrees)
+
+        print(_("We can help you to extract part of the courses you already done by extract them from the Levnet."))
+        print(_("But you need to login to Levnet to use this feature."))
+        print(_("Anyway, courses you do now or didn't pass will not be added."))
+        is_yes = self._console_ask_yes_or_no("Do you want to extract the data from the Levnet?")
+        if is_yes:
+            user = self.database.load_user_data()
+            if not user:
+                user = self._console_ask_user_details()
+                self.database.save_user_data(user)
+            self.network.set_user(user)
+            courses = self.network.extract_courses_already_did()
+            courses_already_done = {course for course in all_courses for course_name, course_number in courses
+                                    if course_number == course.course_number}
+            self.database.save_courses_already_done(courses_already_done)
+
+        courses_already_done = self.database.load_courses_already_done(Language.get_current())
         courses = [course for course in all_courses if course not in courses_already_done]
         courses.sort(key=lambda course: course.name)
         while not finish_successfully:

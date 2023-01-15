@@ -197,6 +197,10 @@ data = TextCaseInsensitiveDict({
     "Explain: Show only courses that you can take because you have already passed the prerequisite.": "הסבר: הצג רק קורסים שאתה יכול לקחת כיוון שכבר עברת את הקורסי הקדם.",
     "If no data about the prerequisite exists in the system, the course will be shown anyway.": "אם אין נתונים על הקורסי הקדם במערכת, הקורס יוצג בכל מקרה.",
     "Courses whose prerequisites can be taken in parallel will be shown in any case.": "קורסים שהקורסי קדם שלהם יכולים להילקח במקביל יוצגו בכל מקרה.",
+    "We can help you to extract part of the courses you already done by extract them from the Levnet.": "אנחנו יכולים לעזור לך לחלץ חלק מהקורסים שכבר עשית על ידי חילוץ מהלבנט.",
+    "But you need to login to Levnet to use this feature.": "אבל אתה צריך להתחבר ללבנט כדי להשתמש בתכונה זו.",
+    "Anyway, courses you do now or didn't pass will not be added.": "בכל מקרה, קורסים שאתה עושה עכשיו או לא עברת או לא יתווספו.",
+    "Do you want to extract the data from the Levnet?": "האם ברצונך לחלץ את הנתונים מהלבנט?",
 })
 
 
