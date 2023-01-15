@@ -5,14 +5,15 @@ import subprocess
 import time
 from collections import defaultdict
 from operator import itemgetter
-from typing import List, Dict, Literal, Optional, Any, Set
+from typing import List, Dict, Literal, Optional, Any
 
 import utils
+from algorithms.csp import CSP, Status
+from algorithms.constraint_courses import ConstraintCourses
 from collector.network.public_network import PublicNetworkHttp
 from collector.db.db import Database
 from collector.gui.gui import Gui, MessageType, UserClickExitException
 from convertor.convertor import Convertor
-from algorithms.csp import CSP, Status
 from data import translation
 from data.academic_activity import AcademicActivity
 from data.course_choice import CourseChoice
@@ -94,7 +95,7 @@ class Controller:
 
         activities_ids_can_enroll = self._console_get_activities_ids_can_enroll(settings, user)
 
-        courses_choices = self._console_ask_courses_choices(campus_name, settings.degrees, activities_ids_can_enroll)
+        courses_choices = self._console_ask_courses_choices(campus_name, settings, activities_ids_can_enroll)
 
         if not courses_choices:
             print(_("No courses were found, please try again with different settings."))
@@ -326,17 +327,8 @@ class Controller:
         print("\n\n")
         return campus_name
 
-    def _console_ask_courses_choices(self, campus_name: str, degrees: Set[Degree],
-                                     activities_ids_can_enroll: List[str]):
-        language = Language.get_current()
-        courses_already_done = self.database.load_courses_already_done(language)
-        courses_choices = self.database.load_courses_choices(campus_name, language, degrees=degrees,
-                                                             activities_ids=activities_ids_can_enroll)
-        for course in courses_already_done:
-            if course.name in courses_choices:
-                courses_choices.pop(course.name)
-
-        courses_choices = dict(sorted(courses_choices.items(), key=itemgetter(0)))
+    def _console_ask_courses_choices(self, campus_name: str, settings: Settings, activities_ids_can_enroll: List[str]):
+        courses_choices = self._get_courses_choices_to_ask(campus_name, settings, activities_ids_can_enroll)
 
         print(_("Select the courses by enter their index:"))
         time.sleep(self.delay_time)
@@ -469,17 +461,25 @@ class Controller:
         print(_("Campus name:"), campus_name)
         print(_("Explain: The name of the campus that you want to search for the courses."), end=end_line)
 
+        user = self.database.load_user_data()
+        text_exists = _("Exists in the system") if user else _("Not exists in the system")
+        print(_("User details:"), text_exists)
+        print(_("Explain: The user name and password that you used to login to Levnet."), end=enter_sentence_format)
+        print(_("Used to check which courses you can actually register in the Levnet website."), end=end_line)
+
         print(_("Show only classes can enroll in:"), self._yes_no(settings.show_only_classes_can_enroll))
         print(_("Explain: Show only the classes that you can enroll in Levnet."), end=enter_sentence_format)
         print(_("This setting must use connection to levnet, and therefore need your username and password"),
               end=enter_sentence_format)
         print(_("Don't worry, the details will save only in your computer and will use only in Levnet."), end=end_line)
 
-        user = self.database.load_user_data()
-        text_exists = _("Exists in the system") if user else _("Not exists in the system")
-        print(_("User details:"), text_exists)
-        print(_("Explain: The user name and password that you used to login to Levnet."), end=enter_sentence_format)
-        print(_("Used to check which courses you can actually register in the Levnet website."), end=end_line)
+        yes_no = self._yes_no(settings.show_only_courses_with_prerequisite_done)
+        print(_("Show only courses with prerequisite done:"), yes_no)
+        print(_("Explain: Show only courses that you can take because you have already passed the prerequisite."),
+              end=enter_sentence_format)
+        print(_("If no data about the prerequisite exists in the system, the course will be shown anyway."),
+              end=enter_sentence_format)
+        print(_("Courses whose prerequisites can be taken in parallel will be shown in any case."), end=end_line)
 
         print(_("Year of study:"), settings.year)
         print(_("Explain: The year of the courses to be selected and collect from the college."), end=end_line)
@@ -586,6 +586,14 @@ class Controller:
         if is_yes:
             user = self._console_ask_user_details()
             self.database.save_user_data(user)
+        print("\n\n")
+
+        print(_("Show only courses with prerequisites done:"))
+        print(_("Select 0 to use the default settings."))
+        print(_("Default value:"), self._yes_no(settings.show_only_courses_with_prerequisites_done))
+        default_yes_no = self._console_ask_default_yes_no()
+        if default_yes_no is not None:
+            settings.attendance_required_all_courses = default_yes_no
         print("\n\n")
 
         print(_("Attendance required all courses:"))
@@ -834,3 +842,24 @@ class Controller:
             else:
                 settings.dont_show_courses_already_done = False
                 self.database.save_settings(settings)
+
+    def _get_courses_choices_to_ask(self, campus_name: str, settings: Settings, activities_ids):
+        language = Language.get_current()
+        courses_already_done = self.database.load_courses_already_done(language)
+        degrees = settings.degrees
+        courses_choices = self.database.load_courses_choices(campus_name, language, None, degrees, activities_ids)
+        for course in courses_already_done:
+            if course.name in courses_choices:
+                courses_choices.pop(course.name)
+
+        if settings.show_only_courses_with_prerequisite_done and courses_already_done:
+            constraint_courses = ConstraintCourses()
+            courses_cant_do = constraint_courses.get_courses_cant_do()
+            for _course_name, course_parent_number in courses_cant_do:
+                for course_choice in courses_choices.values():
+                    if course_choice.parent_course_number == course_parent_number:
+                        courses_choices.pop(course_choice.name)
+                        break
+
+        courses_choices = utils.sort_dict_by_key(courses_choices)
+        return courses_choices

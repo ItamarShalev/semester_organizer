@@ -193,6 +193,10 @@ data = TextCaseInsensitiveDict({
     "Don't show courses already done:": "אל תציג קורסים שכבר נעשו:",
     "Explain: Don't show the courses that you already done in the past.": "הסבר: אל תציג את הקורסים שכבר עשית בעבר.",
     "Setting 'don't show courses already done is on', but there are no courses already done.": "הגדרת 'אל תציג קורסים שכבר נעשו' מופעלת, אבל אין קורסים שכבר נעשו.",
+    "Show only courses with prerequisite done:": "הצג רק קורסים שהקורסי קדם כבר נעשו:",
+    "Explain: Show only courses that you can take because you have already passed the prerequisite.": "הסבר: הצג רק קורסים שאתה יכול לקחת כיוון שכבר עברת את הקורסי הקדם.",
+    "If no data about the prerequisite exists in the system, the course will be shown anyway.": "אם אין נתונים על הקורסי הקדם במערכת, הקורס יוצג בכל מקרה.",
+    "Courses whose prerequisites can be taken in parallel will be shown in any case.": "קורסים שהקורסי קדם שלהם יכולים להילקח במקביל יוצגו בכל מקרה.",
 })
 
 
