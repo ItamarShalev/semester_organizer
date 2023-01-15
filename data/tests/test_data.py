@@ -10,6 +10,7 @@ from collector.gui.gui import MessageType
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.case_insensitive_dict import CaseInsensitiveDict, TextCaseInsensitiveDict
+from data.course_constraint import CourseConstraint
 from data.degree import Degree
 from data.flow import Flow
 from data.language import Language
@@ -281,6 +282,17 @@ class TestData:
         settings = Settings.from_json(json_settings)
         assert settings == Settings()
         assert settings.degrees == Degree.get_defaults()
+
+    def test_course_constants(self):
+        course_constants = CourseConstraint()
+        course_constants.name = "test"
+        course_constants.prerequisite_courses = []
+        assert hash(course_constants) == hash("test")
+        course_constants2 = CourseConstraint()
+        course_constants2.name = "test"
+        assert course_constants == course_constants2
+        assert repr(course_constants) == "test"
+        assert not course_constants.get_prerequisite_courses_names()
 
     def test_others(self):
         message = MessageType.ERROR

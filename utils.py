@@ -4,7 +4,8 @@ import shutil
 import sys
 import time
 from contextlib import suppress
-from typing import Tuple
+from operator import itemgetter
+from typing import Tuple, Dict, Any
 
 from data.course import Course
 from data.degree import Degree
@@ -16,6 +17,10 @@ ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 LOG_FILE_HANDLER = logging.FileHandler(filename=os.path.join(ROOT_PATH, "log.txt"), encoding=ENCODING, mode='w')
 DATA_SOFTWARE_VERSION = "1.0"
 SOFTWARE_VERSION = "1.0"
+
+
+def sort_dict_by_key(dictionary: Dict[Any, Any]) -> Dict[Any, Any]:
+    return dict(sorted(dictionary.items(), key=itemgetter(0)))
 
 
 def disable_logger_third_party_warnings():
