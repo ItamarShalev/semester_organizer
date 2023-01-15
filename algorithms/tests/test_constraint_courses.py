@@ -6,9 +6,9 @@ from pytest import fixture
 import utils
 from algorithms.constraint_courses import ConstraintCourses
 from collector.db.db import Database
+from data import translation
 from data.degree import Degree
 from data.language import Language
-from data import translation
 
 
 class TestConstraintCourses:
@@ -59,11 +59,20 @@ class TestConstraintCourses:
 
         class DatabaseMock(Database):
             PERSONAL_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_personal_database.db")
+
+        class ConstraintCoursesMock(ConstraintCourses):
+
+            BLOCKED_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "are_blocked_by.txt"
+            BLOCKS_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "blocks_courses.txt"
+            PERSONAL_PASSED_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "personal_passed_courses.txt"
+            PERSONAL_BLOCKED_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "personal_are_blocked_by.txt"
+            PERSONAL_BLOCKS_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "personal_blocks_courses.txt"
+
         database = DatabaseMock()
         database.clear_personal_database()
         database.init_personal_database_tables()
         course = utils.get_course_data_test()
         database.save_courses_already_done({course})
-        constraint_courses = ConstraintCourses()
+        constraint_courses = ConstraintCoursesMock()
         constraint_courses.database = database
         return constraint_courses

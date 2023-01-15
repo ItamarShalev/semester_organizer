@@ -13,10 +13,11 @@ Name = str
 class ConstraintCourses:
     CURRENT_DIR = Path(__file__).parent
     GENERATED_DATA_PATH = CURRENT_DIR / "generated_data"
-
     CONSTRAINT_COURSES_DATA_PATH = CURRENT_DIR / "constraint_courses_data.txt"
+
     BLOCKED_COURSES_PATH = GENERATED_DATA_PATH / "are_blocked_by.txt"
     BLOCKS_COURSES_PATH = GENERATED_DATA_PATH / "blocks_courses.txt"
+
     PERSONAL_PASSED_COURSES_PATH = GENERATED_DATA_PATH / "personal_passed_courses.txt"
     PERSONAL_BLOCKED_COURSES_PATH = GENERATED_DATA_PATH / "personal_are_blocked_by.txt"
     PERSONAL_BLOCKS_COURSES_PATH = GENERATED_DATA_PATH / "personal_blocks_courses.txt"
