@@ -57,18 +57,29 @@ class Convertor:
 
     Color = namedtuple('Color', ['strong', 'weak'])
 
-    PERSONAL_COLOR = "#BDC3C7"
+    # Gray
+    PERSONAL_COLOR = "#bdc3c7"
 
     COLORS = [
+        # Light blue
         Color("#4d94ff", "#80b3ff"),
+        # Light green
         Color("#79d279", "#9fdf9f"),
+        # Purple
         Color("#b366ff", "#cc99ff"),
+        # Red
         Color("#ff8080", "#ffb3b3"),
-        Color("#99e6e6", "#c1f0f0"),
+        # Light yellow
         Color("#f9e79f", "#fcf3cf"),
+        # Weak light blue
+        Color("#99e6e6", "#d6f5f5"),
+        # Shiny light green
         Color("#80ff80", "#b3ffb3"),
+        # Blue
         Color("#005ce6", "#1a75ff"),
+        # Green
         Color("#339933", "#40bf40"),
+        # Yellow
         Color("#cc9900", "#ffbf00"),
     ]
 
