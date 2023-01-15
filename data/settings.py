@@ -17,6 +17,7 @@ class Settings:
     campus_name: str = ""
     year: int = utils.get_current_hebrew_year()
     semester: Semester = utils.get_current_semester()
+    _degree: str = "COMPUTER_SCIENCE"
     _degrees: List[str] = field(default_factory=lambda: [degree.name for degree in Degree.get_defaults()])
     show_hertzog_and_yeshiva: bool = False
     show_only_courses_with_free_places: bool = False
@@ -37,3 +38,11 @@ class Settings:
     @degrees.setter
     def degrees(self, degrees: Set[Degree]):
         self._degrees = [degree.name for degree in degrees]
+
+    @property
+    def degree(self) -> Degree:
+        return Degree[self._degree]
+
+    @degree.setter
+    def degree(self, degree: Degree):
+        self._degree = degree.name

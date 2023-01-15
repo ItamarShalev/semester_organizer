@@ -282,6 +282,8 @@ class TestData:
         settings = Settings.from_json(json_settings)
         assert settings == Settings()
         assert settings.degrees == Degree.get_defaults()
+        settings.degree = Degree.COMPUTER_SCIENCE
+        assert settings.degree == Degree.COMPUTER_SCIENCE
 
     def test_course_constants(self):
         course_constants = CourseConstraint()
