@@ -1,6 +1,6 @@
 import json
 from contextlib import suppress
-from typing import Optional, List
+from typing import Optional, List, Set, Tuple
 
 from json import JSONDecodeError
 from requests.exceptions import Timeout
@@ -134,6 +134,31 @@ class PublicNetworkHttp:
 
     def extract_all_activities_ids_can_enroll_in(self) -> List[str]:
         return []
+
+    def extract_courses_already_did(self) -> Set[Tuple[str, int]]:
+        """
+        Extract the courses that the user already did
+        :return: a set of tuples of the course name and the course number (not parent course number)
+        """
+        courses = set()
+        current_page = 1
+        payload = {"selectedAcademicYear": None, "selectedSemester": None, "current": current_page}
+        url = "https://levnet.jct.ac.il/api/student/grades.ashx?action=LoadGrades"
+        while True:
+            json_data = self.request(url, payload)
+            current_page += 1
+            payload["current"] = current_page
+            items = json_data["items"]
+            if not items:
+                break
+            for item in items:
+                if not item["finalGradeName"].isdigit() or int(item["finalGradeName"]) < int(item["effectiveMinGrade"]):
+                    continue
+                if item["isDroppedOut"]:
+                    continue
+                course_number = item["actualCourseFullNumber"].split(".")[0]
+                courses.add((item["courseName"], int(course_number)))
+        return courses
 
     def change_language(self, language: Language):
         if not self._user:

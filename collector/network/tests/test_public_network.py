@@ -48,6 +48,12 @@ class TestPublicNetworkHttp(BaseTestNetworkHttp):
         network.set_user(user)
         assert network.check_connection(), "Can't connect to the server."
 
+    def test_extract_courses_already_did(self, user):
+        network = PublicNetworkHttp(user)
+        courses = network.extract_courses_already_did()
+        assert courses, "Can't extract courses already did."
+        assert any(course for course in courses if course[1] == 120701)
+
     def test_for_coverage(self):
         network = PublicNetworkHttp()
         network.set_settings(Settings())
