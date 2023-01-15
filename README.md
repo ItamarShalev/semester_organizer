@@ -45,7 +45,13 @@ open git bash outside your IDE, no in pycharm and etc.
 
 run this line:
 
-python main.py --flow console --language hebrew
+python main.py
+
+To change language (the default is Hebrew) or any other flow.
+
+Run python main.py -h 
+
+to explore all of them.
 
 you can choose english if you want.
 
