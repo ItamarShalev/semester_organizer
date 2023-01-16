@@ -94,13 +94,15 @@ class CSP:
             # If there are no schedules, try to find schedules without favorite teachers
             self.status = Status.SUCCESS_WITH_ONE_FAVORITE_LECTURER
             self.consist_one_favorite_teacher = True
-            return self.extract_schedules(activities, courses_choices, self.settings)
+            return self.extract_schedules(activities, courses_choices, self.settings,
+                                          self.activities_ids_groups, self.courses_degrees)
 
         if not schedule_result and courses_choices and self.consist_one_favorite_teacher:
             # If there are no schedules, try to find schedules without favorite teachers
             self.status = Status.SUCCESS_WITHOUT_FAVORITE_LECTURERS
             self.consist_one_favorite_teacher = False
-            return self.extract_schedules(activities, None, self.settings)
+            return self.extract_schedules(activities, None, self.settings,
+                                          self.activities_ids_groups, self.courses_degrees)
 
         if not schedule_result:
             self.status = Status.FAILED
