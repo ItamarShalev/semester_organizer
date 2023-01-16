@@ -51,6 +51,13 @@ class TestData:
 
         assert [Day.MONDAY.value, "09:00", "11:00"] == [*meeting]
 
+        meeting = Meeting(Day.SUNDAY, "14:30", "16:00")
+        meeting1 = Meeting(Day.SUNDAY, "16:15", "17:00")
+        meeting2 = Meeting(Day.SUNDAY, "17:00", "18:30")
+        meeting3 = Meeting(Day.FRIDAY, "17:00", "18:30")
+        meetings = [meeting2, meeting1, meeting3, meeting]
+        assert sorted(meetings) == [meeting, meeting1, meeting2, meeting3]
+
     def test_course(self):
         course = Course("", 0, 0, set(Semester), set(Degree))
         course2 = Course("", 0, 0, Semester.ANNUAL, Degree.SOFTWARE_ENGINEERING)

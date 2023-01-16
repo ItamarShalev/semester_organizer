@@ -56,7 +56,9 @@ class Meeting:
         return is_equals
 
     def __lt__(self, other):
-        return self.day < other.day or (self.day == other.day and self.end_time < other.start_time)
+        if self.day < other.day:
+            return True
+        return self.day == other.day and self.start_time < other.start_time and self.end_time < other.end_time
 
     def __hash__(self):
         return hash((self.day, self.start_time, self.end_time))
