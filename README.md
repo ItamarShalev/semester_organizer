@@ -37,6 +37,15 @@ With the semester organizer, you can create a time system according to your conv
 - Excel
 - Image
 
+### Example output:
+
+
+![Alt text](readme_data/example_image_output_hebrew.png?raw=true "Example hebrew output")
+
+
+
+![Alt text](readme_data/example_image_output_english.png?raw=true "Example english output")
+
 
 ## Prerequisites
 
