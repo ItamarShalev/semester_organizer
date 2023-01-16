@@ -21,7 +21,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pylint
+        pip install -r development_requirements.txt
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
@@ -42,7 +42,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pycodestyle
+          pip install -r development_requirements.txt
       - name: Analysing the code with pycodestyle
         run: |
           pycodestyle $(git ls-files '*.py')
@@ -63,8 +63,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest
-          pip install coverage
+          pip install -r development_requirements.txt
       - name: Extract secrets
         run: |
           mkdir -p database

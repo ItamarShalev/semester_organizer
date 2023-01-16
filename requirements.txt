@@ -1,16 +1,22 @@
-pytest>=7.2.0
-pytest-rerunfailures>=10.3
+# Csp package, the main algorithm.
 python_constraint>=1.4.0
-requests>=2.28.1
-selenium>=4.6.0
-webdriver-manager>=3.8.5
-beautifulsoup4>=4.11.1
+# Save and load dataclass as json format.
 dataclasses_json>=0.5.7
+# Gui package use tkinter, Must have tkinter with the python, can't install via pip.
 customtkinter>=5.0.2
-pandas>=1.5.2
-dataframe_image>=0.1.5
+# Network requests.
+requests==2.28.2
+# For network, avoid printing warnings for each request.
 urllib3>=1.26.13
+# Automatic bash complete commands.
 argcomplete>=2.0.0
-xlsxwriter>=3.0.6
+# Work with dataframe to export in csv, excel and image output formats.
+pandas>=1.5.2
+# Excel output.
+xlsxwriter==3.0.7
+# Image output.
+dataframe_image>=0.1.5
+# Support enum with duplicate values.
 aenum>=3.1.11
+# Password input, hide the password while typing.
 pwinput>=1.0.2
