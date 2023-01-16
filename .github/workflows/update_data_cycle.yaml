@@ -2,8 +2,7 @@ name: Update data cycle
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/40 9-17 * * 0-5'
+
 jobs:
   Update:
     runs-on: ubuntu-latest
