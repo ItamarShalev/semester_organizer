@@ -3,6 +3,7 @@ from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.course_choice import CourseChoice
 from data.day import Day
+from data.degree import Degree
 from data.meeting import Meeting
 from data.schedule import Schedule
 from data.settings import Settings
@@ -278,6 +279,7 @@ class TestCsp:
         activities_option_1 = []
         activities_option_2 = []
         activities = []
+        csp = CSP()
 
         academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, activity_id="1")
         academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
@@ -308,7 +310,13 @@ class TestCsp:
         settings.show_only_classes_in_days = [Day.SUNDAY, Day.MONDAY, Day.THURSDAY, Day.TUESDAY, Day.WEDNESDAY]
         settings.show_only_classes_can_enroll = True
 
-        schedules = CSP().extract_schedules(activities, None, settings, activities_ids_can_enroll)
+        schedules = csp.extract_schedules(activities, None, settings, activities_ids_can_enroll)
         assert len(schedules) == 2
         assert any(schedule.contains(activities_option_1) for schedule in schedules)
         assert any(schedule.contains(activities_option_2) for schedule in schedules)
+
+        courses_degrees = {
+            1: {Degree.SOFTWARE_ENGINEERING},
+        }
+        schedules = csp.extract_schedules(activities, None, settings, activities_ids_can_enroll, courses_degrees)
+        assert len(schedules) == 4

@@ -7,6 +7,7 @@ from constraint import AllEqualConstraint
 from data.activity import Activity
 from data.course_choice import CourseChoice
 from data.day import Day
+from data.degree import Degree
 from data.schedule import Schedule
 from data.settings import Settings
 from data.translation import _
@@ -22,6 +23,7 @@ class Status(Enum):
 class CSP:
 
     def __init__(self):
+        self.courses_degrees = None
         self.activities_ids_groups = None
         self.courses_choices = None
         self.consist_one_favorite_teacher = False
@@ -58,11 +60,13 @@ class CSP:
     def extract_schedules(self, activities: List[Activity],
                           courses_choices: Optional[Dict[str, CourseChoice]] = None,
                           settings: Settings = None,
-                          activities_ids_groups: Dict[str, Set[int]] = None) -> List[Schedule]:
+                          activities_ids_groups: Dict[str, Set[int]] = None,
+                          courses_degrees: Dict[int, Set[Degree]] = None) -> List[Schedule]:
 
         self.settings = settings or Settings()
         self.courses_choices = courses_choices or {}
         self.activities_ids_groups = activities_ids_groups
+        self.courses_degrees = courses_degrees or {}
         all_activities_names, problem = self._prepare_activities(activities)
 
         for name in all_activities_names:
@@ -178,8 +182,17 @@ class CSP:
                    for activity in activities for meeting in activity.meetings)
 
     def _is_consist_activities_ids_can_enroll(self, activities: List[Activity]):
+        # Ignore personal activities
         if activities[0].type.is_personal():
             return True
+
+        # Ignore activities not related to your degree
+        parent_course_number = activities[0].parent_course_number
+        if parent_course_number in self.courses_degrees:
+            course_degrees = self.courses_degrees[parent_course_number]
+            if self.settings.degrees - course_degrees and not {self.settings.degree} & course_degrees:
+                return True
+
         all_activities_ids_found = all(activity.activity_id in self.activities_ids_groups for activity in activities)
         if not all_activities_ids_found:
             return False

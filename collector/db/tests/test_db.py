@@ -162,7 +162,7 @@ class TestDatabase:
         activities = [AcademicActivity(f"Course {i}", Type.LECTURE, True, "meir", i, i + 1000, "", f"3{i}", "", 0, 1, 0)
                       for i in range(10)]
         database_mock.save_academic_activities(activities, campus_name, Language.ENGLISH)
-        loaded_courses_choices = database_mock.load_courses_choices(campus_name, Language.ENGLISH)
+        loaded_courses_choices = database_mock.load_courses_choices(campus_name, Language.ENGLISH, set(Degree))
         excepted_courses_choices = [CourseChoice(f"Course {i}", i, {"meir"}, set()) for i in range(10)]
         assert set(loaded_courses_choices.values()) == set(excepted_courses_choices)
 
@@ -249,7 +249,7 @@ class TestDatabase:
             "name1": CourseChoice("name1", 124, {"meir"}, set()),
             "name2": CourseChoice("name2", 125, set(), {"meir2"}),
         }
-        courses_choices = database_mock.load_courses_choices(campus_name, Language.ENGLISH, courses, set(Degree),
+        courses_choices = database_mock.load_courses_choices(campus_name, Language.ENGLISH, set(Degree), courses,
                                                              ["124.01", "125.02"])
         assert len(courses_choices) == 2
         assert courses_choices == excepted_courses_choices

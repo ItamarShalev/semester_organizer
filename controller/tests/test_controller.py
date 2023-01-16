@@ -1,7 +1,7 @@
 import os.path
 import shutil
 from contextlib import suppress
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Set
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -10,6 +10,7 @@ from pytest import fixture
 import utils
 from collector.db.db import Database
 from collector.gui.gui import MessageType, Gui
+from collector.network.public_network import PublicNetworkHttp
 from controller.controller import Controller
 from convertor.convertor import Convertor
 from data import translation
@@ -136,11 +137,21 @@ class TestController:
         return DatabaseMock()
 
     @fixture
-    def controller_mock(self, database_mock, convertor_mock, gui_mock):
+    def network_mock(self):
+        class NetworkMock(PublicNetworkHttp):
+            def extract_all_activities_ids_can_enroll_in(self, *_unused_args) -> Dict[str, Set[int]]:
+                self.logger.info("extract_all_activities_ids_can_enroll_in was called")
+                return {}
+
+        return NetworkMock()
+
+    @fixture
+    def controller_mock(self, database_mock, convertor_mock, gui_mock, network_mock):
         # pylint: disable=protected-access
         controller = Controller()
         controller.gui = gui_mock
         controller.convertor = convertor_mock
         controller.database = database_mock
+        controller.network = network_mock
         controller._open_results_folder = MagicMock()
         return controller

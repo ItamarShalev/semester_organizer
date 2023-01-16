@@ -147,6 +147,16 @@ class Database:
             connection.commit()
             cursor.close()
 
+    def load_degrees_courses(self) -> Dict[int, Set[Degree]]:
+        degrees_courses = defaultdict(set)
+        with database.connect(self.SHARED_DATABASE_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM degrees_courses;")
+            for degree_name, course_number in cursor.fetchall():
+                degrees_courses[course_number].add(Degree[degree_name])
+            cursor.close()
+        return degrees_courses
+
     def load_campus_id(self, campus_name: str):
         with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
@@ -229,15 +239,19 @@ class Database:
             cursor.close()
 
     def load_courses_choices(self, campus_name: str,
-                             language: Language, courses: List[Course] = None,
-                             degrees: Set[Degree] = None,
-                             activities_ids: List[str] = None) -> Dict[str, CourseChoice]:
+                             language: Language,
+                             degrees: Set[Degree],
+                             courses: List[Course] = None,
+                             activities_ids: List[str] = None,
+                             extract_unrelated_degrees: bool = False,
+                             settings: Settings = None) -> Dict[str, CourseChoice]:
         """
         If courses is None - load all active courses
         If degrees is None - load default degrees
         """
         activities_ids = activities_ids or []
-        degrees = degrees or Degree.get_defaults()
+        assert extract_unrelated_degrees is bool(settings)
+        assert degrees
         with database.connect(self.SHARED_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             campus_id = self.load_campus_id(campus_name)
@@ -251,6 +265,15 @@ class Database:
                 if activities_ids else "1"
 
             for course in courses:
+                cursor.execute("SELECT degree_name FROM degrees_courses "
+                               "WHERE parent_course_number = ?;", (course.parent_course_number,))
+                courses_degrees = {Degree[degree_name] for (degree_name,) in cursor.fetchall()}
+
+                unrelated_degrees_text = "0"
+                if extract_unrelated_degrees:
+                    if degrees - courses_degrees and not {settings.degree} & courses_degrees:
+                        unrelated_degrees_text = "1"
+
                 cursor.execute("SELECT courses_lecturers.lecturer_name, courses_lecturers.is_lecture_rule "
                                "FROM courses_lecturers "
                                "INNER JOIN degrees_courses "
@@ -262,7 +285,8 @@ class Database:
                                "AND courses_lecturers.campus_id = ? "
                                "AND courses_lecturers.language_value = ? "
                                f"AND degrees_courses.degree_name IN {degrees_text} "
-                               f"AND {activities_ids_text};",
+                               f"AND (({activities_ids_text}) "
+                               f"OR ({unrelated_degrees_text}));",
                                (course.course_number, course.parent_course_number, campus_id, language.short_name(),
                                 *[degree.name for degree in degrees], *activities_ids))
 
@@ -672,7 +696,7 @@ class Database:
         with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
             cursor = connection.cursor()
             for course in courses:
-                cursor.execute("INSERT INTO courses_already_done (parent_course_number) VALUES (?);",
+                cursor.execute("INSERT OR IGNORE INTO courses_already_done (parent_course_number) VALUES (?);",
                                (course.parent_course_number,))
             cursor.close()
 

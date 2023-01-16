@@ -206,6 +206,9 @@ data = TextCaseInsensitiveDict({
     "Do you want to reset the activities list you can enroll in and extract from the Levnet?": "האם ברצונך לאפס את רשימת הפעילויות שאתה יכול להירשם אליהן ולחלץ מהלבנט?",
     "Extracting activities list you can enroll in from Levnet...": "מחלץ את רשימת הפעילויות שאתה יכול להירשם אליהן מהלבנט...",
     "Fail in try number {}/{}, Will try again, Levnet is too slow now.": "נכשל בניסיון מספר {}/{}, מנסה שוב, הלבנט איטי כרגע.",
+    "Degree you are studying:": "התואר שאתה לומד:",
+    "Explain: The degree that you are currently studying.": "הסבר: התואר שאתה לומד כרגע.",
+    "This settings is used to show courses even if you can't enroll in them.": "הגדרה זו משמשת להצגת קורסים גם אם אינך יכול להירשם אליהם.",
 })
 
 

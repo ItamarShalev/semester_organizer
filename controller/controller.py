@@ -124,7 +124,10 @@ class Controller:
                                                                                       settings.degrees)
         AcademicActivity.union_attendance_required(selected_activities, courses_choices)
 
-        schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings, activities_ids_groups)
+        courses_degrees = self.database.load_degrees_courses()
+
+        schedules = self.csp.extract_schedules(selected_activities, courses_choices, settings, activities_ids_groups,
+                                               courses_degrees)
 
         status = self.csp.get_status()
 
@@ -175,7 +178,7 @@ class Controller:
                 self.gui.open_notification_window(message, MessageType.ERROR)
                 return
 
-            courses_choices = self.database.load_courses_choices(campus_name, language, courses)
+            courses_choices = self.database.load_courses_choices(campus_name, language, settings.degrees, courses)
 
             courses_choices = self.gui.open_academic_activities_window(ask_attendance, courses_choices)
 
@@ -487,6 +490,10 @@ class Controller:
         print(_("Semester of study:"), _(str(settings.semester)))
         print(_("Explain: The semester of the courses to be selected and collect from the college."), end=end_line)
 
+        print(_("Degree you are studying:"), _(str(settings.degree)))
+        print(_("Explain: The degree that you are currently studying."), end=end_line)
+        print(_("This settings is used to show courses even if you can't enroll in them."), end=end_line)
+
         print(_("Degrees:"), ", ".join([_(str(degree)) for degree in settings.degrees]))
         print(_("Explain: The degrees of the courses to be selected and collect from the college."),
               end=enter_sentence_format)
@@ -631,6 +638,20 @@ class Controller:
         self._validate_is_number_in_range(selected_option, len(options) - 1)
         self.logger.debug("Selected option: %s", options[int(selected_option)])
         settings.semester = return_options[int(selected_option)]
+        print("\n\n")
+
+        print(_("Degree you are studying:"))
+        print(_("Select 0 to use the default settings."))
+        print(_("Default value:"), _(str(settings.degree)))
+        options = [_("Default")] + [_(str(degree)) for degree in Degree]
+        return_options = [settings.degree] + list(Degree)
+        for index, degree in enumerate(options):
+            print(f"{index}. {degree}")
+
+        selected_option = input(_("Enter the option index: "))
+        self._validate_is_number_in_range(selected_option, len(options) - 1)
+        self.logger.debug("Selected option: %s", options[int(selected_option)])
+        settings.degree = return_options[int(selected_option)]
         print("\n\n")
 
         print(_("Degrees:"))
@@ -883,8 +904,8 @@ class Controller:
         language = Language.get_current()
         courses_already_done = self.database.load_courses_already_done(language)
         degrees = settings.degrees
-        courses_choices = self.database.load_courses_choices(campus_name, language, None, degrees,
-                                                             list(activities_ids.keys()))
+        ids = list(activities_ids.keys())
+        courses_choices = self.database.load_courses_choices(campus_name, language, degrees, None, ids, True, settings)
         for course in courses_already_done:
             if course.name in courses_choices:
                 courses_choices.pop(course.name)
