@@ -14,3 +14,4 @@ urllib3>=1.26.13
 argcomplete>=2.0.0
 xlsxwriter>=3.0.6
 aenum>=3.1.11
+pwinput>=1.0.2

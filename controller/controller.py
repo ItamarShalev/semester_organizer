@@ -6,6 +6,7 @@ import time
 from collections import defaultdict
 from operator import itemgetter
 from typing import List, Dict, Literal, Optional, Any, Set
+import pwinput
 
 import utils
 from algorithms.csp import CSP, Status
@@ -774,7 +775,7 @@ class Controller:
         while not user:
             print(_("Please enter your user details:"))
             username = input(_("Username:"))
-            password = input(_("Password:"))
+            password = pwinput.pwinput(_("Password:"), '*')
             user = User(username, password)
             if not user:
                 print(_("User details can't be empty, please try again."))
