@@ -7,7 +7,6 @@ webdriver-manager>=3.8.5
 beautifulsoup4>=4.11.1
 dataclasses_json>=0.5.7
 customtkinter>=5.0.2
-tk>=0.1.0
 pandas>=1.5.2
 dataframe_image>=0.1.5
 urllib3>=1.26.13

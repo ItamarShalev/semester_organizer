@@ -26,15 +26,16 @@ from data.user import User
 class TestController:
 
     @pytest.mark.parametrize("language", list(Language))
-    def test_run_main_gui_flow(self, _time_sleep_mock, _results_path_mock, controller_mock, language: Language):
+    def test_run_main_gui_flow(self, _time_sleep_mock, _results_path_mock, gui_mock, controller_mock, language):
         translation.config_language_text(language)
         controller_mock.database.save_language(language)
         assert controller_mock.database.load_language() == language
-        controller_mock.run_main_gui_flow()
+        with patch("collector.gui.gui.Gui", return_value=gui_mock) as _run_main_gui_flow_mock:
+            controller_mock.run_main_gui_flow()
         controller_mock.convertor.convert_activities.assert_called()
 
     @pytest.mark.parametrize("language", list(Language))
-    def test_flow_console(self, _time_sleep_mock, results_path_mock, controller_mock, language: Language):
+    def test_flow_console(self, _time_sleep_mock, results_path_mock, controller_mock, language):
         translation.config_language_text(language)
         controller_mock.database.save_language(language)
         inputs = []
@@ -146,10 +147,9 @@ class TestController:
         return NetworkMock()
 
     @fixture
-    def controller_mock(self, database_mock, convertor_mock, gui_mock, network_mock):
+    def controller_mock(self, database_mock, convertor_mock, network_mock):
         # pylint: disable=protected-access
         controller = Controller()
-        controller.gui = gui_mock
         controller.convertor = convertor_mock
         controller.database = database_mock
         controller.network = network_mock

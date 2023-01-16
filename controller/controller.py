@@ -13,7 +13,6 @@ from algorithms.csp import CSP, Status
 from algorithms.constraint_courses import ConstraintCourses
 from collector.network.public_network import PublicNetworkHttp
 from collector.db.db import Database
-from collector.gui.gui import Gui, MessageType, UserClickExitException
 from convertor.convertor import Convertor
 from data import translation
 from data.academic_activity import AcademicActivity
@@ -22,6 +21,7 @@ from data.degree import Degree
 from data.language import Language
 from data.schedule import Schedule
 from data.settings import Settings
+from data.message_type import MessageType
 from data.day import Day
 from data.semester import Semester
 from data.output_format import OutputFormat
@@ -36,7 +36,6 @@ class Controller:
 
     def __init__(self):
         self.database = Database()
-        self.gui = Gui()
         self.convertor = Convertor()
         self.csp = CSP()
         self.network = PublicNetworkHttp()
@@ -49,7 +48,6 @@ class Controller:
         Console flow will use the default settings.
         and without database nor GUI.
         """
-        # For testing purposes
         self.logger.info("Starting console flow")
 
         self.database.init_personal_database_tables()
@@ -137,13 +135,18 @@ class Controller:
         self._console_save_schedules(settings, schedules)
 
     def run_main_gui_flow(self):
+        # Support users who don't have tkinter.
+        # pylint: disable=import-outside-toplevel
+        from collector.gui.gui import Gui, UserClickExitException
+        gui = Gui()
         try:
+
             self.logger.info("Start the main gui flow")
 
             self._validate_database('gui')
 
             # Initialize the language for first time.
-            self._initial_language_if_first_time()
+            self._initial_language_if_first_time(gui)
 
             # user = self.gui.open_login_window(self.network.check_connection)
             # self.network.set_user(user)
@@ -154,7 +157,7 @@ class Controller:
 
             years = self.database.load_years()
 
-            settings = self.gui.open_settings_window(settings, campus_names, years)
+            settings = gui.open_settings_window(settings, campus_names, years)
 
             language = self.database.get_language()
 
@@ -176,12 +179,12 @@ class Controller:
             if not courses:
                 message = _("There are no courses in the system, "
                             "please try again with another campus update your database from the server.")
-                self.gui.open_notification_window(message, MessageType.ERROR)
+                gui.open_notification_window(message, MessageType.ERROR)
                 return
 
             courses_choices = self.database.load_courses_choices(campus_name, language, settings.degrees, courses)
 
-            courses_choices = self.gui.open_academic_activities_window(ask_attendance, courses_choices)
+            courses_choices = gui.open_academic_activities_window(ask_attendance, courses_choices)
 
             user_courses = []
 
@@ -197,17 +200,17 @@ class Controller:
 
             AcademicActivity.union_courses(activities, user_courses)
 
-            activities += self.gui.open_personal_activities_window()
+            activities += gui.open_personal_activities_window()
 
             schedules = self.csp.extract_schedules(activities, courses_choices, settings)
 
             if not schedules:
-                self.gui.open_notification_window(_("No schedule were found"))
+                gui.open_notification_window(_("No schedule were found"))
             else:
                 results_path = utils.get_results_path()
                 self._save_schedule(schedules, settings, results_path)
                 message = _("The schedules were saved in the directory: ") + results_path
-                self.gui.open_notification_window(message)
+                gui.open_notification_window(message)
                 self._open_results_folder(results_path)
 
         except UserClickExitException:
@@ -216,7 +219,7 @@ class Controller:
         except Exception as error:
             message = "The system encountered an error, please contanct the engeniers."
             self.logger.error("The system encountered an error: %s", str(error))
-            self.gui.open_notification_window(_(message), MessageType.ERROR)
+            gui.open_notification_window(_(message), MessageType.ERROR)
 
     def _console_print_status_results(self, status: Status):
         if status is Status.FAILED:
@@ -230,12 +233,12 @@ class Controller:
         elif status is Status.SUCCESS_WITHOUT_FAVORITE_LECTURERS:
             print(_("No schedules were found with favorite lecturers"))
 
-    def _initial_language_if_first_time(self):
+    def _initial_language_if_first_time(self, gui):
         settings = self.database.load_settings()
         if not settings:
             message = _("Welcome to the semester organizer!\nPlease choose a language\nThe current language is: ")
             message += _(str(Language.get_current()))
-            language = self.gui.open_notification_window(message, MessageType.INFO, list(map(str, Language)))
+            language = gui.open_notification_window(message, MessageType.INFO, list(map(str, Language)))
             if language and Language.contains(language):
                 language = Language[language.upper()]
                 translation.config_language_text(language)
@@ -315,7 +318,8 @@ class Controller:
                     "and import the database by running :")
             msg += "'python __main__.py -- database_path {path_to_database.db}'"
             if output_type == 'gui':
-                self.gui.open_notification_window(msg, MessageType.ERROR)
+                pass
+                # self.gui.open_notification_window(msg, MessageType.ERROR)
             elif output_type == 'console':
                 print(msg)
             sys.exit(0)

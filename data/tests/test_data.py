@@ -306,6 +306,5 @@ class TestData:
     def test_others(self):
         message = MessageType.ERROR
         assert repr(message) == "Error"
-        assert str(message) == _("Error")
         with pytest.raises(UserClickExitException):
             raise UserClickExitException()

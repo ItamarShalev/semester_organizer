@@ -1,5 +1,4 @@
 import sys
-from enum import Enum, auto
 from typing import List, Dict, Optional, Callable
 
 try:
@@ -10,23 +9,12 @@ except ImportError:
 import customtkinter
 
 import utils
+from data.message_type import MessageType
 from data.activity import Activity
 from data.course_choice import CourseChoice
 from data.user import User
 from data.settings import Settings
 from data.translation import _
-
-
-class MessageType(Enum):
-    ERROR = auto()
-    WARNING = auto()
-    INFO = auto()
-
-    def __str__(self):
-        return _(self.name.capitalize())
-
-    def __repr__(self):
-        return self.name.capitalize()
 
 
 class UserClickExitException(Exception):
@@ -138,7 +126,7 @@ class Gui:
         text_color = "white"
 
         app = customtkinter.CTk()
-        app.title(f"{message_type} {_('notification')}")
+        app.title(f"{_(str(message_type))} {_('notification')}")
         app.geometry("550x240")
 
         def button_clicked(text_button):
