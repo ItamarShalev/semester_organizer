@@ -49,6 +49,7 @@ class CSP:
                 problem.addConstraint(self._is_consist_activity, (name, other_name))
             if activities_ids_groups:
                 problem.addConstraint(self._is_consist_activities_ids_can_enroll, (name,))
+            problem.addConstraint(self._is_consist_itself, (name,))
 
         schedules = self._extract_solutions(problem)
 
@@ -75,6 +76,7 @@ class CSP:
                     continue
                 problem.addConstraint(self._is_consist_activity, (name, other_name))
             problem.addConstraint(self._is_consist_favorite_teachers, (name,))
+            problem.addConstraint(self._is_consist_itself, (name,))
             if set(self.settings.show_only_classes_in_days) != set(Day):
                 problem.addConstraint(self._is_consist_classes_in_days, (name,))
             if self.settings.show_only_courses_with_free_places:
@@ -127,6 +129,13 @@ class CSP:
         :return: bool
         """
         return all(activity.type.is_personal() or activity.is_have_free_places() for activity in activities)
+
+    def _is_consist_itself(self, activities: List[Activity]):
+        for i, activity in enumerate(activities):
+            for j in range(i + 1, len(activities)):
+                if activity.is_crash_with_activity(activities[j]):
+                    return False
+        return True
 
     def _is_consist_favorite_teachers(self, activities: List[Activity]):
         """
