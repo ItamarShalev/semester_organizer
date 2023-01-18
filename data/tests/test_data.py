@@ -98,6 +98,7 @@ class TestData:
 
         activity.name = "name"
         assert repr(activity) == "name"
+        assert hash(activity) == hash("name")
 
     def test_academic_activity(self):
         activity = AcademicActivity("name", activity_type=Type.LAB, course_number=10, parent_course_number=20)
