@@ -49,6 +49,9 @@ class Activity:
     def no_meetings(self):
         return not self.meetings
 
+    def __hash__(self):
+        return hash(self.name)
+
     @staticmethod
     def get_activities_by_name(activities) -> Dict[str, List]:
         result = defaultdict(list)
