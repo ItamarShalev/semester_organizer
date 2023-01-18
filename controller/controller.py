@@ -189,7 +189,7 @@ class Controller:
             user_courses = []
 
             for course in courses:
-                if course.name in courses_choices.keys():
+                if course.name in courses_choices:
                     course_choice = courses_choices[course.name]
                     if ask_attendance:
                         course.attendance_required_for_lecture = course_choice.attendance_required_for_lecture
