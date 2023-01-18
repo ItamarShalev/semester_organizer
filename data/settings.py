@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Set
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
@@ -30,6 +31,8 @@ class Settings:
     show_only_courses_with_prerequisite_done: bool = False
     language: Language = Language.HEBREW
     force_update_data: bool = True
+    semester_start_date = datetime(2023, 2, 19)
+    semester_end_date = datetime(2023, 7, 27)
 
     @property
     def degrees(self) -> Set[Degree]:

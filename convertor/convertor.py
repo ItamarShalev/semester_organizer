@@ -4,9 +4,12 @@ import os
 import shutil
 from collections import namedtuple
 from typing import List, cast
+from datetime import datetime, timedelta
 import warnings
 import pandas as pd
 import dataframe_image as dfi
+import arrow
+from icalendar import Calendar, Event
 
 import utils
 from data.academic_activity import AcademicActivity
@@ -15,6 +18,7 @@ from data.language import Language
 from data.meeting import Meeting
 from data.output_format import OutputFormat
 from data.schedule import Schedule
+from data.settings import Settings
 from data.type import Type
 from data.translation import _
 from data.day import Day
@@ -95,6 +99,44 @@ class Convertor:
         self._activities_colors = {}
         for index, name in enumerate(all_names):
             self._activities_colors[name] = Convertor.COLORS[index % len(Convertor.COLORS)]
+
+    def _create_calendar(self, semester_start_date: datetime, semester_end_date: datetime, schedule: Schedule):
+        calendar = Calendar()
+        calendar.add('version', '2.0')
+        # Count sunday as value 1
+        semester_start_day = semester_start_date.isoweekday() % 7 + 1
+
+        for activity in schedule.activities:
+            for meeting in activity.meetings:
+                start_time = meeting.start_time
+                start_hour = start_time.tm_hour
+                start_minute = start_time.tm_min
+                end_time = meeting.end_time
+                end_hour = end_time.tm_hour
+                end_minute = end_time.tm_min
+                day_value = meeting.day.value
+                # Check if this meeting is before or after the first week of the beginning of the semester
+                current_day = semester_start_date
+                if semester_start_day <= day_value:
+                    current_day += timedelta(days=(day_value - semester_start_day))
+                else:
+                    current_day += timedelta(weeks=1) - timedelta(days=day_value - semester_start_day)
+
+                for week in arrow.Arrow.range('week', current_day, semester_end_date):
+                    event = Event()
+                    event.add('name', 'Semester Organaizer')
+                    event.add('summary', f'{activity.name} - {_(str(activity.type))}')
+                    event.add('dtstart', week.naive + timedelta(hours=start_hour, minutes=start_minute))
+                    event.add('dtend', week.naive + timedelta(hours=end_hour, minutes=end_minute))
+
+                    if activity.type is not Type.PERSONAL:
+                        academic_activity = cast(AcademicActivity, activity)
+                        course_location = academic_activity.location
+                        lecturer_name = academic_activity.lecturer_name
+                        event.add('location', f'{course_location}')
+                        event.add('description', f'{activity.name} - {_(str(activity.type))} - {lecturer_name}')
+                    calendar.add_component(event)
+        return calendar
 
     def _coloring(self, meeting_class):
         # White
@@ -179,6 +221,15 @@ class Convertor:
             file_location = os.path.join(folder_location, f"{schedule.file_name}.{OutputFormat.IMAGE.value}")
             dfi.export(df, file_location)
 
+    def convert_activities_to_calender(self, settings: Settings, schedules: List[Schedule], folder_location: str):
+        shutil.rmtree(folder_location, ignore_errors=True)
+        os.makedirs(folder_location, exist_ok=True)
+        for schedule in schedules:
+            calendar = self._create_calendar(settings.semester_start_date, settings.semester_end_date, schedule)
+            file_location = os.path.join(folder_location, f"{schedule.file_name}.ics")
+            with open(file_location, "wb") as binary_file:
+                binary_file.write(calendar.to_ical())
+
     def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: str):
         shutil.rmtree(folder_location, ignore_errors=True)
         os.makedirs(folder_location, exist_ok=True)
@@ -241,12 +292,14 @@ class Convertor:
                 writer = csv.writer(file, delimiter=',')
                 writer.writerows(rows)
 
-    def convert_activities(self, schedules: List[Schedule], folder_location: str, formats: List[OutputFormat]):
+    def convert_activities(self, schedules: List[Schedule], folder_location: str, formats: List[OutputFormat],
+                           settings: Settings):
         """
         The function will save each schedule in the folder location in the wanted formats.
-        :param schedules: the schedules
-        :param folder_location: the folder location
-        :param formats: the formats
+        :param: schedules: the schedules
+        :param: folder_location: the folder location
+        :param: formats: the formats
+        :param: settings: the settings containing the semester start and end date
         :return:
         """
 
@@ -270,3 +323,10 @@ class Convertor:
             else:
                 png_location = os.path.join(folder_location, OutputFormat.IMAGE.name.lower())
             self.convert_activities_to_png(schedules, png_location)
+
+        if OutputFormat.CALENDAR in formats:
+            if len(formats) == 1:
+                calendar_location = folder_location
+            else:
+                calendar_location = os.path.join(folder_location, OutputFormat.CALENDAR.name.lower())
+            self.convert_activities_to_calender(settings, schedules, calendar_location)

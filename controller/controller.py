@@ -289,18 +289,19 @@ class Controller:
 
         if len(all_schedules) > MAX_OUTPUTS:
             all_schedules = all_schedules[:MAX_OUTPUTS]
-        self.convertor.convert_activities(all_schedules, all_schedules_path, output_formats)
+        self.convertor.convert_activities(all_schedules, all_schedules_path, output_formats, settings)
         if most_spread_days and least_spread_days:
             if len(most_spread_days) > MAX_OUTPUTS:
                 most_spread_days = most_spread_days[:MAX_OUTPUTS]
             if len(least_spread_days) > MAX_OUTPUTS:
                 least_spread_days = least_spread_days[:MAX_OUTPUTS]
-            self.convertor.convert_activities(most_spread_days, most_spread_days_path, output_formats)
-            self.convertor.convert_activities(least_spread_days, least_spread_days_path, output_formats)
+            self.convertor.convert_activities(most_spread_days, most_spread_days_path, output_formats, settings)
+            self.convertor.convert_activities(least_spread_days, least_spread_days_path, output_formats, settings)
         if schedules_by_standby_time:
             if len(schedules_by_standby_time) > MAX_OUTPUTS:
                 schedules_by_standby_time = schedules_by_standby_time[:MAX_OUTPUTS]
-            self.convertor.convert_activities(schedules_by_standby_time, least_standby_time_path, output_formats)
+            self.convertor.convert_activities(schedules_by_standby_time, least_standby_time_path, output_formats,
+                                              settings)
 
     def _delete_data_if_new_version(self):
         language = self.database.get_language()

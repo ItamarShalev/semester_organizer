@@ -5,6 +5,7 @@ class OutputFormat(Enum):
     CSV = "csv"
     EXCEL = "xlsx"
     IMAGE = "png"
+    CALENDAR = "ics"
 
     def __str__(self):
         return self.name.lower()

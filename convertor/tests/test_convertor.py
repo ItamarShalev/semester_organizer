@@ -11,6 +11,7 @@ from data.day import Day
 from data.meeting import Meeting
 from data.output_format import OutputFormat
 from data.schedule import Schedule
+from data.settings import Settings
 from data.type import Type
 
 
@@ -38,7 +39,7 @@ class TestConvertor:
         activity.add_slot(Meeting(Day.FRIDAY, "10:00", "12:00"))
         schedules.append(Schedule("שם", f"option_{10}", "", [activity]))
 
-        convertor.convert_activities(schedules, path, [file_type])
+        convertor.convert_activities(schedules, path, [file_type], Settings())
         for i in range(1, 11):
             file_name = f"option_{i}.{extension}"
             file_path = os.path.join(path, file_name)
@@ -57,7 +58,7 @@ class TestConvertor:
         activity.add_slot(Meeting(Day.FRIDAY, "10:00", "12:00"))
         schedules.append(Schedule("שם", f"option_{10}", "", [activity]))
 
-        convertor.convert_activities(schedules, path, list(OutputFormat))
+        convertor.convert_activities(schedules, path, list(OutputFormat), Settings())
 
         for file_type in OutputFormat:
             extension = file_type.value
