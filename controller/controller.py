@@ -137,6 +137,7 @@ class Controller:
     def run_main_gui_flow(self):
         # Support users who don't have tkinter.
         # pylint: disable=import-outside-toplevel
+        translation.config_language_text(Language.ENGLISH)
         from collector.gui.gui import Gui, UserClickExitException
         gui = Gui()
         try:
@@ -146,23 +147,27 @@ class Controller:
             self._validate_database('gui')
 
             # Initialize the language for first time.
-            self._initial_language_if_first_time(gui)
+            # Currently, only English supported.
+            # self._initial_language_if_first_time(gui)
 
             # user = self.gui.open_login_window(self.network.check_connection)
             # self.network.set_user(user)
 
             settings = self.database.load_settings() or Settings()
 
+            # Override the settings with the default settings.
+            settings.language = Language.ENGLISH
+
             campus_names = self.database.load_campus_names(settings.language)
 
-            years = self.database.load_years()
+            # years = self.database.load_years()
 
-            settings = gui.open_settings_window(settings, campus_names, years)
+            settings = gui.open_settings_window(settings, campus_names, {utils.get_current_hebrew_year(): "2013"})
 
-            language = self.database.get_language()
+            # language = self.database.get_language()
 
-            if language and language != settings.language:
-                translation.config_language_text(settings.language)
+            # if language and language != settings.language:
+            #    translation.config_language_text(settings.language)
 
             self.database.save_settings(settings)
 
@@ -209,9 +214,9 @@ class Controller:
             else:
                 results_path = utils.get_results_path()
                 self._save_schedule(schedules, settings, results_path)
+                self._open_results_folder(results_path)
                 message = _("The schedules were saved in the directory: ") + results_path
                 gui.open_notification_window(message)
-                self._open_results_folder(results_path)
 
         except UserClickExitException:
             self.logger.info("User clicked exit button")

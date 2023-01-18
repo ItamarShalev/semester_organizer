@@ -16,7 +16,7 @@ With the semester organizer, you can create a time system according to your conv
 - If we consider only the courses that can be enrolled in for the server (username and password for the Levant site are required).
 - Consider which days to study.
 - Cross platform.
-- Support both Hebrew and English.
+- Support both Hebrew and English (console flow, GUI support only English).
 
 #### Make your choices easy!
 
@@ -129,10 +129,9 @@ git fetch --all && git reset --hard origin/main
 You must install new python with tkinter, tkinter is a package builtin with python to show UI, no need for the console flow.
 
 If you install python with the default options, you will get a tkinter too.
-#### UI doesn't work and shows an error, how to solve it ?
-Right, the GUI flow doesn't support it yet, so you will not be able to use that.
-
-Right now is for development only.
+#### UI only in English even if I asked for hebrew, what can I do ?
+Right, the GUI flow doesn't support it hebrew yet.
+You can use the console flow to work with Hebrew.
 
 #### I have issues with my data and don't get all, or some tables aren't there.
 
@@ -146,7 +145,7 @@ git clean -fdx && git fetch --all && git reset --hard origin/main
 
 ## License
 
-[Apache-2.0](https://choosealicense.com/licenses/apache-2.0/)
+[Apache-2.0](LICENSE)
 
 
 ## Feedback
