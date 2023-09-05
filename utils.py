@@ -111,7 +111,7 @@ def get_last_modified_by_days(file_path: str) -> int:
 
 
 def get_current_semester():
-    return Semester.SPRING
+    return Semester.FALL
 
 
 def config_logging_level(level=logging.DEBUG):
