@@ -26,7 +26,7 @@ class Activity:
 
     def add_slot(self, meeting):
         if meeting.is_crash_with_meetings(self.meetings):
-            raise Exception("Meeting is crash with other meeting")
+            raise RuntimeError("Meeting is crash with other meeting")
         self.meetings.append(meeting)
 
     def is_free_slot(self, meeting):

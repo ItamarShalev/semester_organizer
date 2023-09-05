@@ -146,7 +146,8 @@ class Convertor:
         df_styled.set_properties(**{'border': '1px black solid',
                                     'text-align': 'center',
                                     'white-space': 'pre-wrap'})
-        df_styled.set_table_styles([dict(selector='th', props=[('text-align', 'center')])])
+        table_style = {"selector": 'th', "props": [('text-align', 'center')]}
+        df_styled.set_table_styles([table_style])
         df_styled.hide(axis="index")
 
         return df_styled

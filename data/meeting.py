@@ -23,7 +23,7 @@ class Meeting:
             self.end_time = end_time
 
         if self.start_time >= self.end_time:
-            raise Exception("Start time is after end time")
+            raise RuntimeError("Start time is after end time")
 
     def __str__(self):
         return f"{self.get_string_start_time()} - {self.get_string_end_time()}"
