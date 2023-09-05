@@ -309,3 +309,7 @@ class TestData:
         assert repr(message) == "Error"
         with pytest.raises(UserClickExitException):
             raise UserClickExitException()
+
+    def test_year(self):
+        assert utils.get_current_hebrew_year() > 5700
+        assert "תשפ" in utils.get_current_hebrew_name()

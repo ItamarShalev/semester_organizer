@@ -4,6 +4,7 @@ import shutil
 import sys
 import time
 from contextlib import suppress
+from datetime import datetime
 from operator import itemgetter
 from typing import Tuple, Dict, Any
 
@@ -79,7 +80,17 @@ def init_project():
 
 
 def get_current_hebrew_year():
-    return 5783
+    diff_hebrew_year = 3761
+    return diff_hebrew_year + datetime.now().year
+
+
+def get_current_hebrew_name():
+    # This is temporal solution until
+    # תשפ"ט
+    additional_letter = chr(ord("א") + get_current_hebrew_year() - 5781)
+    assert additional_letter != "י", "ERROR: Invalid calculation and should using different method."
+    hebrew_name = 'תשפ"' + additional_letter
+    return hebrew_name
 
 
 def get_database_path():
