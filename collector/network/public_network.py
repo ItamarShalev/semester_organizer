@@ -4,6 +4,8 @@ from contextlib import suppress
 from typing import Optional, List, Set, Tuple, Dict
 
 from json import JSONDecodeError
+
+from requests import Response
 from requests.exceptions import Timeout
 import requests
 import urllib3
@@ -23,8 +25,15 @@ class WeakNetworkConnectionException(Exception):
 
 
 class InvalidServerRequestException(Exception):
-    def __init__(self):
+    def __init__(self, url_request: str, data_request: Dict, response: Response, json_data: Dict = None):
         super().__init__("ERROR: Invalid server request, please try again later")
+        self.url_request = url_request
+        self.data_request = data_request or {}
+        self.response = response
+        self.json_data = json_data or {}
+
+    def has_json(self):
+        return bool(self.json_data)
 
 
 class PublicNetworkHttp:
@@ -92,10 +101,10 @@ class PublicNetworkHttp:
         except JSONDecodeError as error:
             self.logger.debug("\n\nFAIL: request url = %s", url)
             self.logger.error("Invalid server response")
-            raise InvalidServerRequestException() from error
+            raise InvalidServerRequestException(url, data, response) from error
 
         if not json_data["success"]:
-            raise InvalidServerRequestException()
+            raise InvalidServerRequestException(url, data, response, json_data)
         self.logger.debug("\n\nSUCCESS: request url = %s", url)
         return json_data
 
