@@ -20,6 +20,10 @@ from data.user import User
 
 def get_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--campus", default=None, type=str,
+                        help="Download data to specific campus, default is for all the campuses")
+    parser.add_argument("-l", "--language", default=None, type=str,
+                        help="Download data to specific language, default is for all the languages")
     parser.add_argument("-u", "--username", help="The username user in the server", default=None, type=str)
     parser.add_argument("-p", "--password", help="The password user in the server", default=None, type=str)
     argcomplete.autocomplete(parser)
@@ -63,8 +67,9 @@ def run_update_levnet_data_flow():
 
     database.save_campuses(campuses)
     database.save_degrees(list(Degree))
+    languages = [Language[args.language.upper()]] if args.language else list(Language)
 
-    for language in list(Language):
+    for language in languages:
         translation.config_language_text(language)
         network.change_language(language)
         logger.debug("The language was changed to %s", language)
@@ -79,8 +84,9 @@ def run_update_levnet_data_flow():
         database.save_courses(courses, language)
 
         common_campuses_names = database.get_common_campuses_names()
+        campuses = [args.campus] if args.campus else common_campuses_names
 
-        for campus_name in common_campuses_names:
+        for campus_name in campuses:
 
             logger.debug("Extracting data for campus: %s in language %s", campus_name, language.name)
             logger.debug("Start extracting the academic activities data for the campus: %s", campus_name)
