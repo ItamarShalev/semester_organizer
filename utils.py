@@ -85,7 +85,7 @@ def init_project():
 
 def get_current_hebrew_year():
     diff_hebrew_year = 3761
-    return diff_hebrew_year + datetime.now().year
+    return diff_hebrew_year + datetime.now().year - 1
 
 
 def get_current_hebrew_name():
