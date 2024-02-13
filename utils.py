@@ -8,6 +8,9 @@ from datetime import datetime
 from operator import itemgetter
 from typing import Tuple, Dict, Any
 
+import urllib3
+from urllib3.exceptions import InsecureRequestWarning
+
 from data.course import Course
 from data.degree import Degree
 from data.semester import Semester
@@ -25,6 +28,7 @@ def sort_dict_by_key(dictionary: Dict[Any, Any]) -> Dict[Any, Any]:
 
 
 def disable_logger_third_party_warnings():
+    urllib3.disable_warnings(InsecureRequestWarning)
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("requests").setLevel(logging.WARNING)
     logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
