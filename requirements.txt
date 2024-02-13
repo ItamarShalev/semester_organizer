@@ -5,7 +5,7 @@ dataclasses_json>=0.5.7
 # Gui package use tkinter, Must have tkinter with the python, can't install via pip.
 customtkinter>=5.0.2
 # Network requests.
-requests==2.28.2
+requests>=2.31
 # For network, avoid printing warnings for each request.
 urllib3>=1.26.13
 # Automatic bash complete commands.
@@ -13,7 +13,7 @@ argcomplete>=2.0.0
 # Work with dataframe to export in csv, excel and image output formats.
 pandas>=1.5.2
 # Excel output.
-xlsxwriter==3.0.7
+xlsxwriter==3.1.9
 # Image output.
 dataframe_image>=0.1.5
 # Support enum with duplicate values.
