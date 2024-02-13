@@ -50,8 +50,11 @@ With the semester organizer, you can create a time system according to your conv
 ## Prerequisites
 
 - Python version 3.7 and above
+- Chrome browser installed.
 - For GUI flow - Tkinter
 - Git bash or any terminal support your language (pycharm doesn't support Hebrew by default)
+
+
 Tkinter come with python installation, if you didn't install it right,
 please install A new python and configure it correctly.
 
