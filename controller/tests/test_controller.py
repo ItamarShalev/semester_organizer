@@ -48,7 +48,7 @@ class TestController:
         # don't show only courses can enroll in since tests always run with the same user details
         # inputs.append("2")
         # choose courses indexes
-        inputs.append("4,5")
+        inputs.append("1")
         # don't select lectures
         inputs.append("2")
 
@@ -150,6 +150,7 @@ class TestController:
     def controller_mock(self, database_mock, convertor_mock, network_mock):
         # pylint: disable=protected-access
         controller = Controller()
+        controller.max_output = 1
         controller.convertor = convertor_mock
         controller.database = database_mock
         controller.network = network_mock
