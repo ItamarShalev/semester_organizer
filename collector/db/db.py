@@ -5,6 +5,7 @@ import shutil
 import sqlite3 as database
 from collections import defaultdict
 from contextlib import suppress
+from sqlite3 import OperationalError
 from typing import List, Optional, Dict, Tuple, Collection, Set
 
 import utils
@@ -705,7 +706,10 @@ class Database:
         courses = None
         with database.connect(self.PERSONAL_DATABASE_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM courses_already_done;")
+            try:
+                cursor.execute("SELECT * FROM courses_already_done;")
+            except OperationalError:
+                return set()
             parent_courses_numbers = {parent_course_number for (parent_course_number,) in cursor.fetchall()}
             cursor.close()
         if not parent_courses_numbers:

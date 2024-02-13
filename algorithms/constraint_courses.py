@@ -50,13 +50,21 @@ class ConstraintCourses:
             file_path=file_path_all
         )
 
+    def export_generated_json_data(self):
+        _unused_all_courses_in_json, are_blocked_by_result, blocks_courses_result = self.prepare_data()
+        self.export_data(are_blocked_by_result, blocks_courses_result, self.BLOCKED_COURSES_PATH,
+                         self.BLOCKS_COURSES_PATH, self.ALL_INFO_PATH)
+
+        _unused_all_courses_in_json, are_blocked_by_result, blocks_courses_result = self.prepare_personal_data()
+
+        self.export_data(are_blocked_by_result, blocks_courses_result, self.PERSONAL_BLOCKED_COURSES_PATH,
+                         self.PERSONAL_BLOCKS_COURSES_PATH, self.PERSONAL_ALL_INFO_PATH)
+
     @lru_cache(maxsize=128)
     def prepare_data(self) -> (Dict[Name, CourseConstraint], Dict[Name, Set[Name]], Dict[Name, Set[Name]]):
         all_courses_in_json = self.course_constraint.extract_courses_data(self.CONSTRAINT_COURSES_DATA_PATH)
         are_blocked_by_result = self.course_constraint.get_extended_blocked_by_courses(all_courses_in_json)
         blocks_courses_result = self.course_constraint.get_extended_blocks_courses(are_blocked_by_result)
-        self.export_data(are_blocked_by_result, blocks_courses_result, self.BLOCKED_COURSES_PATH,
-                         self.BLOCKS_COURSES_PATH, self.ALL_INFO_PATH)
         return all_courses_in_json, are_blocked_by_result, blocks_courses_result
 
     @lru_cache(maxsize=128)
@@ -70,9 +78,6 @@ class ConstraintCourses:
 
         blocks_courses_result = {object_id: course for object_id, course in blocks_courses_result.items()
                                  if course.course_number not in courses_already_done}
-
-        self.export_data(are_blocked_by_result, blocks_courses_result, self.PERSONAL_BLOCKED_COURSES_PATH,
-                         self.PERSONAL_BLOCKS_COURSES_PATH, self.PERSONAL_ALL_INFO_PATH)
 
         return all_courses_in_json, are_blocked_by_result, blocks_courses_result
 

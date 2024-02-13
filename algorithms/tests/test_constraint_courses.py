@@ -13,6 +13,10 @@ from data.language import Language
 
 class TestConstraintCourses:
 
+    def test_export_generated_json_data(self):
+        translation.config_language_text(Language.HEBREW)
+        ConstraintCourses().export_generated_json_data()
+
     def test_new_course_exist_in_levnet_but_not_in_constraint(self):
         translation.config_language_text(Language.HEBREW)
         courses, *_ = ConstraintCourses().prepare_data()

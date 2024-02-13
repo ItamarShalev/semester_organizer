@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
 
-import argparse
 import logging
 import pathlib
+from argparse import ArgumentParser
 
 import argcomplete
 
 import utils
 from collector.db.db import Database
 from controller.controller import Controller
+from algorithms.constraint_courses import ConstraintCourses
 from data import translation
 from data.language import Language
 from data.user import User
@@ -18,7 +19,7 @@ from data.translation import _
 
 
 def get_args():
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("-f", "--flow", help="Run the program with flow, can be gui or console.",
                         default=Flow.CONSOLE, choices=list(Flow), type=Flow.from_str)
     parser.add_argument("-u", "--username", help="The username user in the server", default=None, type=str)
@@ -43,7 +44,7 @@ def main():
     if args.username and args.password:
         database.save_user_data(User(args.username, args.password))
 
-    elif args.flow is Flow.CONSOLE:
+    if args.flow is Flow.CONSOLE:
         Controller().run_console_flow()
 
     elif args.flow is Flow.GUI:
@@ -53,6 +54,9 @@ def main():
         message = _("Database path is not a file or doesn't exists, the path given is: ")
         assert args.database_path.is_file(), message + str(args.database_path)
         database.update_database(args.database_path)
+
+    elif args.flow is Flow.UPDATE_GENERATED_JSON_DATA:
+        ConstraintCourses().export_generated_json_data()
 
 
 if __name__ == '__main__':
