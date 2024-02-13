@@ -1,6 +1,6 @@
 import os
+import warnings
 
-import pytest
 from pytest import fixture
 
 import utils
@@ -13,27 +13,46 @@ from data.language import Language
 
 class TestConstraintCourses:
 
-    def test_all_courses_constraints_in_txt_file_database(self):
+    def test_new_course_exist_in_levnet_but_not_in_constraint(self):
         translation.config_language_text(Language.HEBREW)
-        courses, _unused_are_blocked_by_result, _unused_blocks_courses_result = ConstraintCourses().prepare_data()
+        courses, *_ = ConstraintCourses().prepare_data()
         degrees = {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
         all_courses = Database().load_courses(Language.HEBREW, degrees)
-        all_courses_names = {course.name for course in all_courses}
-        courses_dont_exist = all_courses_names - courses.keys()
-        assert not courses_dont_exist
+        all_courses_id_name = {course.course_number: course.name for course in all_courses}
+        courses_doesnt_exist = set(all_courses_id_name.keys()) - {course.course_number for course in courses.values()}
+        list_doesnt_exist = {course_number: all_courses_id_name[course_number]
+                             for course_number in courses_doesnt_exist}
+        str_courses_names = '\n'.join(f"Course id: '{course_number}',Course name: '{course_name}'"
+                                      for course_number, course_name in list_doesnt_exist.items())
+        assert not courses_doesnt_exist, f"ERROR: There are more new courses\n" \
+                                         f"Please add them.\n" \
+                                         f"Courses:\n{str_courses_names}."
 
-    def test_validate_courses_data(self):
-        constraint_courses = ConstraintCourses()
-        courses_names = {"a", "b", "c"}
-        all_courses = {"a", "b", "c"}
-        constraint_courses.validate_courses_data(courses_names, all_courses)
+    def test_deprecated_course_exist_in_constraint_but_not_in_levnet(self):
 
-        with pytest.raises(ValueError):
-            constraint_courses.validate_courses_data({"a", "b", "c", "d"}, all_courses)
+        translation.config_language_text(Language.HEBREW)
+        courses, *_ = ConstraintCourses().prepare_data()
+        degrees = {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
+        all_courses = Database().load_courses(Language.HEBREW, degrees)
+        all_levnet_courses_ids = {course.course_number for course in all_courses}
+        constraint_courses_ids_names = {course.course_number: course.name for course in courses.values()}
+        courses_doesnt_exist = set(constraint_courses_ids_names.keys()) - all_levnet_courses_ids
+
+        list_doesnt_exist = {course_number: constraint_courses_ids_names[course_number]
+                             for course_number in courses_doesnt_exist}
+        str_courses_names = '\n'.join(f"Course id: '{course_number}',Course name: '{course_name}'"
+                                      for course_number, course_name in list_doesnt_exist.items())
+        if list_doesnt_exist:
+            warnings.simplefilter("always")
+            warning_message = f"WARNING: There can be more deprecated courses.\n" \
+                              f"Check if it's because it's exist this semester or really deprecated." \
+                              f"Please remove them if needed or add 'deprecated' = true in the json data file.\n" \
+                              f"Courses:\n{str_courses_names}."
+            print(warning_message)
+            warnings.warn(warning_message, UserWarning)
 
     def test_prepare_data(self, constraint_courses_mock):
-        data = constraint_courses_mock.prepare_personal_data()
-        all_courses_in_txt, are_blocked_by_result, blocks_courses_result = data
+        all_courses_in_txt, are_blocked_by_result, blocks_courses_result = constraint_courses_mock.prepare_data()
         assert all_courses_in_txt
         assert are_blocked_by_result
         assert blocks_courses_result
@@ -61,12 +80,16 @@ class TestConstraintCourses:
             PERSONAL_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_personal_database.db")
 
         class ConstraintCoursesMock(ConstraintCourses):
+            _ALL_COURSES_FILE_NAME = "all_courses_blocked_and_blocks_info.json"
+            _ALL_COURSES_FILE_NAME_PERSONAL = "personal_all_courses_blocked_and_blocks_info.json"
 
-            BLOCKED_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "are_blocked_by.txt"
-            BLOCKS_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "blocks_courses.txt"
-            PERSONAL_PASSED_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "personal_passed_courses.txt"
-            PERSONAL_BLOCKED_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "personal_are_blocked_by.txt"
-            PERSONAL_BLOCKS_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "personal_blocks_courses.txt"
+            BLOCKED_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "are_blocked_by_courses.json"
+            BLOCKS_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "blocks_courses.json"
+            ALL_INFO_PATH = ConstraintCourses.GENERATED_DATA_PATH / _ALL_COURSES_FILE_NAME
+            PERSONAL_PASSED_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "personal_passed_courses.json"
+            PERSONAL_BLOCKED_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "personal_are_blocked_by.json"
+            PERSONAL_BLOCKS_COURSES_PATH = ConstraintCourses.GENERATED_DATA_PATH / "personal_blocks_courses.json"
+            PERSONAL_ALL_INFO_PATH = ConstraintCourses.GENERATED_DATA_PATH / _ALL_COURSES_FILE_NAME_PERSONAL
 
         database = DatabaseMock()
         database.clear_personal_database()

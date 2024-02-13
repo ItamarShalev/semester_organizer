@@ -10,7 +10,7 @@ from collector.gui.gui import MessageType
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.case_insensitive_dict import CaseInsensitiveDict, TextCaseInsensitiveDict
-from data.course_constraint import CourseConstraint
+from data.course_constraint import PrerequisiteCourse, ConstraintCourseData
 from data.degree import Degree
 from data.flow import Flow
 from data.language import Language
@@ -293,16 +293,20 @@ class TestData:
         settings.degree = Degree.COMPUTER_SCIENCE
         assert settings.degree == Degree.COMPUTER_SCIENCE
 
-    def test_course_constants(self):
-        course_constants = CourseConstraint()
-        course_constants.name = "test"
-        course_constants.prerequisite_courses = []
-        assert hash(course_constants) == hash("test")
-        course_constants2 = CourseConstraint()
-        course_constants2.name = "test"
-        assert course_constants == course_constants2
-        assert repr(course_constants) == "test"
-        assert not course_constants.get_prerequisite_courses_names()
+    def test_prerequisite_course(self):
+        object_data = PrerequisiteCourse(id=1, course_number=20, name="Name", can_be_taken_in_parallel=True)
+        json_data = object_data.to_json(include_can_be_taken_in_parallel=True)
+        assert "can_be_taken_in_parallel" in json_data
+
+        other_object_data = PrerequisiteCourse(id=1, course_number=11, name="aa", can_be_taken_in_parallel=False)
+        set_data = {other_object_data, object_data}
+        assert len(set_data) == 1, "ERROR: Hash doesn't work on the id."
+
+    def test_constraint_course_data(self):
+        object_data = ConstraintCourseData(id=20, course_number=20, name="Name")
+        other_object_data = ConstraintCourseData(id=20, course_number=33, name="aa")
+        assert hash(object_data)
+        assert object_data == other_object_data, "ERROR: Compare doesn't compare the id alone."
 
     def test_others(self):
         message = MessageType.ERROR

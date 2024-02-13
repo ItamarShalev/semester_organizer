@@ -1,0 +1,1185 @@
+{
+    "version": 1.0,
+    "_comment": "First courses data version - there wasn't any change from the last version.",
+    "courses": [
+        {
+            "id": 1,
+            "course_number": 150000,
+            "name": "מבוא למחשבים",
+            "aliases": [],
+            "blocked_by": []
+        },
+        {
+            "id": 2,
+            "course_number": 120000,
+            "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+            "aliases": [
+                "קדם מתמטיקה"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 3,
+            "course_number": 120201,
+            "name": "אלגברה לינארית א",
+            "aliases": [
+                "לינארית א",
+                "לינארית 1"
+            ],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "course_number": 900011,
+            "name": "הכרת משאבי הספריה להנדסה ומדעי המחשב",
+            "aliases": [
+                "משאבי הספריה"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 5,
+            "course_number": 120131,
+            "name": "חשבון אינפני' להנדסה 1",
+            "aliases": [
+                "אינפי א",
+                "אינפי 1"
+            ],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "course_number": 150005,
+            "name": "מבוא למדעי המחשב",
+            "aliases": [
+                "אינפי א",
+                "אינפי 1"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "course_number": 120221,
+            "name": "אלגברה לינארית ב",
+            "aliases": [
+                "לינארית ב",
+                "לינארית 2"
+            ],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "course_number": 120132,
+            "name": "חשבון אינפיני' להנדסה 2",
+            "aliases": [
+                "אינפי 2",
+                "אינפי ב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 5,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "course_number": 156200,
+            "name": "מבוא לתקשרת מחשבים",
+            "aliases": [
+                "מבוא לתקשורת מחשבים",
+                "תקשורת מחשבים",
+                "תקשורת"
+            ],
+            "blocked_by": [
+                {
+                    "id": 5,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "course_number": 150301,
+            "name": "מערכות ספרתיות",
+            "aliases": [
+                "ספרתיות"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 11,
+            "course_number": 151101,
+            "name": "מבנה המחשב",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 10,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "course_number": 140004,
+            "name": "מכינה בפיזיקה למחשבים",
+            "aliases": [
+                "מכינה לפיזיקה",
+                "מכינה בפיזיקה"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 13,
+            "course_number": 141001,
+            "name": "פיזיקה להנדסת מחשבים",
+            "aliases": [
+                "פיזיקה א",
+                "פיזיקה 1",
+                "פיסיקה 1",
+                "פיסיקה א"
+            ],
+            "blocked_by": [
+                {
+                    "id": 12,
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "course_number": 150015,
+            "name": "מבנה נתונים א",
+            "aliases": [
+                "מבנה נתונים 1",
+                "מבנת א",
+                "מבנת 1"
+            ],
+            "blocked_by": [
+                {
+                    "id": 5,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 15,
+            "course_number": 151103,
+            "name": "מעבדה במבנה המחשב",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 10,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 16,
+            "course_number": 150018,
+            "name": "סדנא בC++",
+            "aliases": [
+                "סדנא בCPP",
+                "סדנה בCPP"
+            ],
+            "blocked_by": [
+                {
+                    "id": 6,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 17,
+            "course_number": 120701,
+            "name": "הסתברות",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 5,
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 8,
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 18,
+            "course_number": 120304,
+            "name": "לוגיקה מתמטית",
+            "aliases": [
+                "לוגיקה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 19,
+            "course_number": 156331,
+            "name": "רשתות TCP-IP",
+            "deprecated": true,
+            "aliases": [
+                "רשתות",
+                "TCP-IP"
+            ],
+            "blocked_by": [
+                {
+                    "id": 9,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 20,
+            "course_number": 151050,
+            "name": "מבוא להנדסת תוכנה",
+            "aliases": [
+                "מבוא להנדסת תכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 3,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 21,
+            "course_number": 150090,
+            "name": "מבנה נתונים ב",
+            "aliases": [
+                "מבנה נתונים 2",
+                "מבנת ב",
+                "מבנת 2"
+            ],
+            "blocked_by": [
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 22,
+            "course_number": 153007,
+            "name": "מיני פרויקט במערכות חלונות",
+            "aliases": [
+                "מיניפ בחלונות",
+                "מיניפ חלונות",
+                "מיני פרויקט בחלונות"
+            ],
+            "blocked_by": [
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 23,
+            "course_number": 120302,
+            "name": "מתמטיקה בדידה",
+            "aliases": [
+                "בדידה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 24,
+            "course_number": 120711,
+            "name": "סטטיסטיקה למהנדסים",
+            "aliases": [
+                "סטטיסטיקה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 17,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 25,
+            "course_number": 141037,
+            "name": "פיזיקה ב להנדסת מחשבים",
+            "aliases": [
+                "פיזיקה ב",
+                "פיזיקה 2",
+                "פיסיקה ב",
+                "פיסיקה 2"
+            ],
+            "blocked_by": [
+                {
+                    "id": 13,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 26,
+            "course_number": 150101,
+            "name": "אוטומטים ושפות פורמליות",
+            "aliases": [
+                "אוטומטים"
+            ],
+            "blocked_by": [
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 18,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 27,
+            "course_number": 156360,
+            "name": "מבוא לאבטחת מידע",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 11,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 28,
+            "course_number": 157100,
+            "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+            "aliases": [
+                "מבוא לבינה מלאכותית",
+                "בינה מלאכותית"
+            ],
+            "blocked_by": [
+                {
+                    "id": 21,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 29,
+            "course_number": 157130,
+            "name": "מבוא לרברסינג",
+            "aliases": [
+                "רברסינג"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 30,
+            "course_number": 151055,
+            "name": "מיני פרויקט במבוא להנדסת תוכנה",
+            "aliases": [
+                "מיניפ במבוא להנדסת תוכנה",
+                "מיניפ במבוא להנדסה תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 20,
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 3,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 31,
+            "course_number": 151111,
+            "name": "מערכות הפעלה",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 6,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 32,
+            "course_number": 156353,
+            "name": "מערכות להרצת קוד בסביבה בטוחה",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 27,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 33,
+            "course_number": 120501,
+            "name": "משוואות דפרנציאליות",
+            "aliases": [
+                "מישדיף",
+                "מישדיפ"
+            ],
+            "blocked_by": [
+                {
+                    "id": 3,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 34,
+            "course_number": 153105,
+            "name": "תכנות פונקציונלית ולוגית",
+            "aliases": [
+                "תכפול"
+            ],
+            "blocked_by": [
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 18,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 35,
+            "course_number": 151123,
+            "name": "UNIX מערכות",
+            "aliases": [
+                "UNIX",
+                "יוניקס",
+                "מערכות יוניקס"
+            ],
+            "blocked_by": [
+                {
+                    "id": 6,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 31,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 36,
+            "course_number": 179161,
+            "name": "אנגלית טרום בסיסי א",
+            "aliases": [],
+            "blocked_by": []
+        },
+        {
+            "id": 37,
+            "course_number": 179162,
+            "name": "אנגלית טרום בסיסי ב",
+            "aliases": [],
+            "blocked_by": []
+        },
+        {
+            "id": 38,
+            "course_number": 179163,
+            "name": "אנגלית בסיסי",
+            "aliases": [
+                "בסיסי"
+            ],
+            "blocked_by": [
+                {
+                    "id": 36,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 37,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 39,
+            "course_number": 179164,
+            "name": "אנגלית מתקדמים א",
+            "aliases": [
+                "מתקדמים א"
+            ],
+            "blocked_by": [
+                {
+                    "id": 38,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 40,
+            "course_number": 179165,
+            "name": "אנגלית מתקדמים ב",
+            "aliases": [
+                "מתקדמים ב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 39,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 41,
+            "course_number": 150790,
+            "name": "אנגלית למדעי המחשב",
+            "aliases": [
+                "אנגלית למדמח",
+                "אנגלית מקצועית",
+                "אנגלית למחשבים"
+            ],
+            "blocked_by": [
+                {
+                    "id": 40,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 42,
+            "course_number": 150221,
+            "name": "בסיסי נתונים",
+            "aliases": [
+                "בסנת"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 43,
+            "course_number": 153004,
+            "name": "הנדסת מערכות חלונות",
+            "aliases": [
+            ],
+            "blocked_by": [
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 22,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 44,
+            "course_number": 151060,
+            "name": "הנדסת תכנה",
+            "aliases": [
+                "הנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 20,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 45,
+            "course_number": 156364,
+            "name": "יסודות לאבטחת רשתות",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 9,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 27,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 46,
+            "course_number": 150134,
+            "name": "ניתוח אלגוריתמים וסיבוכיות",
+            "aliases": [
+                "ניתוח",
+                "ניתוח אלגוריתמים",
+                "אלגוריתמים"
+            ],
+            "blocked_by": [
+                {
+                    "id": 7,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 8,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 26,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 47,
+            "course_number": 151131,
+            "name": "קומפיילרים ומתרגמים",
+            "aliases": [
+                "קומפיילרים",
+                "קומפילרים"
+            ],
+            "blocked_by": [
+                {
+                    "id": 26,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 48,
+            "course_number": 157127,
+            "name": "רשתות מחשבים בגישה מחקרית",
+            "deprecated": true,
+            "aliases": [
+                "רמבם"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 49,
+            "course_number": 157200,
+            "name": "אקסלנטים",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 21,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 50,
+            "course_number": 151285,
+            "name": "חישוביות ומורכבות החישובים",
+            "aliases": [
+                "חישוביות"
+            ],
+            "blocked_by": [
+                {
+                    "id": 18,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 26,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 46,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 51,
+            "course_number": 156363,
+            "name": "יסודות באבטחת תוכנה",
+            "aliases": [
+                "יסודות"
+            ],
+            "blocked_by": [
+                {
+                    "id": 27,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 52,
+            "course_number": 150225,
+            "name": "מיני פרויקט בבסיסי נתונים",
+            "aliases": [
+                "מיניפ בסיסי נתונים",
+                "מיניפ בבסיסי נתונים",
+                "מיניפ בסנת",
+                "מיניפ בבסנת"
+            ],
+            "blocked_by": [
+                {
+                    "id": 42,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 53,
+            "course_number": 157109,
+            "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+            "aliases": [
+                "עיצוב ותכנות",
+                "עיצוב ותכנות מונחי עצמים"
+            ],
+            "blocked_by": [
+                {
+                    "id": 21,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 30,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 54,
+            "course_number": 150060,
+            "name": "עקרונות שפות תכנה",
+            "aliases": [
+                "עקרונות",
+                "עקרונות שפות תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 34,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 55,
+            "course_number": 153300,
+            "name": "מהשכלה לתעסוקה - מיומניות וכישורים",
+            "aliases": [
+                "מהשכלה לתעסוקה"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 56,
+            "course_number": 150858,
+            "name": "סמינריון למדעי המחשב",
+            "aliases": [
+                "סמינריון למדמח"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 57,
+            "course_number": 157103,
+            "name": "ניתוח ותיכון ממשקי תוכנה",
+            "aliases": [],
+            "blocked_by": []
+        },
+        {
+            "id": 58,
+            "course_number": 157121,
+            "name": "סדנא מתקדמת בC",
+            "aliases": [
+                "סדנא בC"
+            ],
+            "blocked_by": [
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 31,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 59,
+            "course_number": 157102,
+            "name": "בינה מלאכותית וישומה",
+            "aliases": [
+                "פרויקט בבינה מלאכותית",
+                "פרויקט בבינה מלאכותית וישומה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 28,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 60,
+            "course_number": 157123,
+            "name": "כריית מידע - למדהמ",
+            "aliases": [
+                "כריית מידע",
+                "כריית מידע למדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 28,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 61,
+            "course_number": 157115,
+            "name": "BIG DATA - נתוני עתק",
+            "aliases": [
+                "BIG DATA",
+                "ביג דאטה",
+                "נתוני עתק"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 62,
+            "course_number": 157117,
+            "name": "רשתות נוירונים ולמידה עמוקה",
+            "aliases": [
+                "רשתות נוירונים",
+                "נוירונים"
+            ],
+            "blocked_by": [
+                {
+                    "id": 7,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 8,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 28,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 60,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 63,
+            "course_number": 150900,
+            "name": "תכנון - פרויקט גמר בהנדסת מחשבים",
+            "aliases": [
+                "פרויקט גמר בהנדסת מחשבים"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 64,
+            "course_number": 157113,
+            "name": "מבנה שפות תכנה",
+            "aliases": [
+                "מבנה שפות תוכנה",
+                "שפות תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 65,
+            "course_number": 151035,
+            "name": "ניהול פרויקטים ובקרת איכות",
+            "aliases": [
+                "ניהול פרויקטים"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 66,
+            "course_number": 157125,
+            "name": "איחזור מידע",
+            "aliases": [
+                "אחזור מידע"
+            ],
+            "blocked_by": [
+                {
+                    "id": 28,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 67,
+            "course_number": 151281,
+            "name": "אלגוריתמיקה מקבילית",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 7,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 8,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 46,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 68,
+            "course_number": 157111,
+            "name": "מערכות זמן אמת ותכנות מקבילי",
+            "aliases": [
+                "מערכות זמן אמת"
+            ],
+            "blocked_by": [
+                {
+                    "id": 11,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 31,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 69,
+            "course_number": 151026,
+            "name": "הנדסת תוכנה לאינטרנט",
+            "deprecated": true,
+            "aliases": [],
+            "blocked_by": []
+        },
+        {
+            "id": 70,
+            "course_number": 157119,
+            "name": "סמינר להנדסת תכנה",
+            "aliases": [
+                "סמינר להנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 42,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 46,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 71,
+            "course_number": 150901,
+            "name": "פרויקט גמר בהנדסת מחשבים",
+            "aliases": [
+                "פרויקט גמר"
+            ],
+            "blocked_by": [
+                {
+                    "id": 63,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 72,
+            "course_number": 150019,
+            "name": "סדנא ב-java",
+            "aliases": [
+                "סדנא בJAVA",
+                "סדנה בJAVA",
+                "סדנא בגאבה",
+                "סדנה בגאבה",
+                "פיתוח אנדראויד",
+                "פיתוח ANDROID"
+            ],
+            "blocked_by": [
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 73,
+            "course_number": 150024,
+            "name": "תכנות מתקדם",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 6,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 74,
+            "course_number": 151030,
+            "name": "Full-Stack Web Development",
+            "aliases": [
+                "פול סטאק",
+                "פולסטאק",
+                "פולסטק"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 75,
+            "course_number": 157107,
+            "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+            "aliases": [
+                "אבטחת איכות",
+                "בדיקות תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 20,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 76,
+            "course_number": 156336,
+            "name": "רשתות מחשבים מתקדמות",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 9,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        }
+    ]
+}
