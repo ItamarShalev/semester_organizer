@@ -140,9 +140,9 @@ class CourseConstraint:
                 can_be_taken_in_parallel = current_pre_course.can_be_taken_in_parallel
                 sub_quese.append(current_pre_course)
                 while sub_quese:
-                    current_course = sub_quese.pop()
+                    current_course = deepcopy(sub_quese.pop())
                     current_course.can_be_taken_in_parallel = can_be_taken_in_parallel
-                    all_pre_courses.append(deepcopy(current_course))
+                    all_pre_courses.append(current_course)
                     sub_quese.extend(all_courses[current_course.id].blocked_by)
 
             for pre_course in all_pre_courses:
