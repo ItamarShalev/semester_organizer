@@ -17,7 +17,7 @@ jobs:
       with:
         python-version: "3.12"
     - name: Cache pip packages
-      uses: actions/cache@v2
+      uses: actions/cache@v4.0.0
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -44,7 +44,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Cache pip packages
-        uses: actions/cache@v2
+        uses: actions/cache@v4.0.0
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -71,7 +71,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Cache pip packages
-        uses: actions/cache@v2
+        uses: actions/cache@v4.0.0
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
