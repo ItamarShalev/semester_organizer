@@ -267,7 +267,7 @@ class TestDatabase:
             USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "test_user_data.txt")
             YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "test_years_data.txt")
             VERSIONS_PATH = os.path.join(utils.get_database_path(), "test_versions.txt")
-            SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "test_settings_data.txt")
+            SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "test_settings_data.json")
             SHARED_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_database.db")
             COURSES_CHOOSE_PATH = os.path.join(utils.get_database_path(), "test_course_choose_user_input.txt")
             PERSONAL_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_personal_database.db")

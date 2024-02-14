@@ -31,7 +31,7 @@ class Database:
     USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "user_data.txt")
     YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "years_data.txt")
     VERSIONS_PATH = os.path.join(utils.get_database_path(), "versions.txt")
-    SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.txt")
+    SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "settings_data.json")
     SHARED_DATABASE_PATH = os.path.join(utils.get_database_path(), "database.db")
     PERSONAL_DATABASE_PATH = os.path.join(utils.get_database_path(), "personal_database.db")
     COURSES_CHOOSE_PATH = os.path.join(utils.get_database_path(), "course_choose_user_input.txt")
@@ -596,7 +596,7 @@ class Database:
 
     def save_settings(self, settings: Settings):
         with open(self.SETTINGS_FILE_PATH, "w", encoding=utils.ENCODING) as file:
-            file.write(settings.to_json())
+            file.write(settings.to_json(indent=4, ensure_ascii=False, sort_keys=False))
 
     def load_settings(self) -> Optional[Settings]:
         if not os.path.exists(self.SETTINGS_FILE_PATH):
