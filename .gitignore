@@ -5,6 +5,7 @@ log.txt
 results/
 dev.py
 algorithms/generated_data/*
+.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
