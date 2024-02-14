@@ -857,6 +857,10 @@
                 {
                     "id": 34,
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 47,
+                    "can_be_taken_in_parallel": true
                 }
             ]
         },
