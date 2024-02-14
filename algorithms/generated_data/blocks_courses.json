@@ -1959,6 +1959,12 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
+                    "id": 54,
+                    "course_number": 150060,
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": true
+                },
+                {
                     "id": 67,
                     "course_number": 151281,
                     "name": "אלגוריתמיקה מקבילית",
@@ -2021,6 +2027,12 @@
                     "course_number": 151285,
                     "name": "חישוביות ומורכבות החישובים",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 54,
+                    "course_number": 150060,
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 67,
@@ -2445,7 +2457,14 @@
                 "קומפילרים",
                 "קומפיילרים ומתרגמים"
             ],
-            "blocks": []
+            "blocks": [
+                {
+                    "id": 54,
+                    "course_number": 150060,
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": true
+                }
+            ]
         },
         {
             "id": 49,

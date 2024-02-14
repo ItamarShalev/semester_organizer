@@ -2262,6 +2262,12 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
+                    "id": 54,
+                    "course_number": 150060,
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": true
+                },
+                {
                     "id": 67,
                     "course_number": 151281,
                     "name": "אלגוריתמיקה מקבילית",
@@ -2408,6 +2414,12 @@
                     "course_number": 151285,
                     "name": "חישוביות ומורכבות החישובים",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 54,
+                    "course_number": 150060,
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 67,
@@ -3554,7 +3566,14 @@
                     "can_be_taken_in_parallel": false
                 }
             ],
-            "blocks": []
+            "blocks": [
+                {
+                    "id": 54,
+                    "course_number": 150060,
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": true
+                }
+            ]
         },
         {
             "id": 49,
@@ -3906,10 +3925,28 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 26,
+                    "course_number": 150101,
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": true
+                },
+                {
                     "id": 34,
                     "course_number": 153105,
                     "name": "תכנות פונקציונלית ולוגית",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 47,
+                    "course_number": 151131,
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": true
                 }
             ],
             "blocks": []
