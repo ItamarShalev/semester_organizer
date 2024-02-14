@@ -35,18 +35,21 @@ class ConstraintCourses:
             list(are_blocked_by_result.values()),
             include_blocked_by=True,
             include_blocks=False,
+            include_can_be_taken_in_parallel=True,
             file_path=file_path_blocked
         )
         self.course_constraint.export(
             list(blocks_courses_result.values()),
             include_blocked_by=False,
             include_blocks=True,
+            include_can_be_taken_in_parallel=True,
             file_path=file_path_blocks
         )
         self.course_constraint.export(
             list(blocks_courses_result.values()),
             include_blocked_by=True,
             include_blocks=True,
+            include_can_be_taken_in_parallel=True,
             file_path=file_path_all
         )
 

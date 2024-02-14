@@ -67,7 +67,7 @@ class CourseConstraint:
         self.comment = None
 
     def export(self, all_courses: List[ConstraintCourseData], include_blocked_by: bool, include_blocks: bool,
-               file_path: Path, include_can_be_taken_in_parallel: bool = False):
+               include_can_be_taken_in_parallel: bool, file_path: Path):
         all_courses.sort(key=lambda course: course.id)
         assert self.version, "ERROR: Version json file unknown."
         assert self.comment is not None, "ERROR: Comment json file unknown"
@@ -131,17 +131,28 @@ class CourseConstraint:
     def get_extended_blocked_by_courses(self, all_courses: Dict[int, ConstraintCourseData]) \
             -> Dict[int, ConstraintCourseData]:
         result_courses = deepcopy(all_courses)
-        there_was_update = True
-        while there_was_update:
-            there_was_update = False
-            for course in result_courses.values():
-                old_pre_courses = course.blocked_by
-                new_pre_courses = set(old_pre_courses)
-                for pre_course_data in old_pre_courses:
-                    pre_course_object = result_courses[pre_course_data.id]
-                    new_pre_courses.update(pre_course_object.blocked_by)
-                there_was_update = there_was_update or len(old_pre_courses) != len(new_pre_courses)
-                course.blocked_by = list(sorted(new_pre_courses, key=lambda data: data.id))
+        all_pre_courses = []
+        for course in result_courses.values():
+            all_pre_courses.clear()
+            main_queue = list(deepcopy(course.blocked_by))
+            sub_quese = []
+            for current_pre_course in main_queue:
+                can_be_taken_in_parallel = current_pre_course.can_be_taken_in_parallel
+                sub_quese.append(current_pre_course)
+                while sub_quese:
+                    current_course = sub_quese.pop()
+                    current_course.can_be_taken_in_parallel = can_be_taken_in_parallel
+                    all_pre_courses.append(deepcopy(current_course))
+                    sub_quese.extend(all_courses[current_course.id].blocked_by)
+
+            for pre_course in all_pre_courses:
+                for other_pre_course in all_pre_courses:
+                    must = not other_pre_course.can_be_taken_in_parallel or not pre_course.can_be_taken_in_parallel
+                    if pre_course == other_pre_course and must:
+                        pre_course.can_be_taken_in_parallel = False
+                        other_pre_course.can_be_taken_in_parallel = False
+
+                course.blocked_by = list(sorted(set(all_pre_courses), key=lambda data: data.id))
         return result_courses
 
     def get_extended_blocks_courses(self, all_courses: Dict) -> Dict[int, ConstraintCourseData]:
@@ -151,7 +162,11 @@ class CourseConstraint:
             found_in_courses.clear()
             for _object_id, other_course in result_courses.items():
                 if object_id in {pre_course.id for pre_course in other_course.blocked_by}:
-                    pre_course_obj = PrerequisiteCourse(other_course.id, other_course.course_number, other_course.name)
+                    can_be_taken_in_parallel = any(course.can_be_taken_in_parallel
+                                                   for course in other_course.blocked_by if course.id == object_id)
+                    pre_course_obj = PrerequisiteCourse(
+                        other_course.id, other_course.course_number, other_course.name, can_be_taken_in_parallel
+                    )
                     found_in_courses.add(pre_course_obj)
             course.blocks = list(sorted(found_in_courses, key=lambda data: data.id))
         return result_courses
