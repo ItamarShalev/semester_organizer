@@ -35,7 +35,7 @@ jobs:
           echo "path=${path}" >> $GITHUB_ENV
           python release.py --build
       - name: Upload executable file
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: ${{ env.title }}
           path: ${{ env.path }}
