@@ -1,6 +1,4 @@
-import os
 import pathlib
-from contextlib import suppress
 from sqlite3 import IntegrityError
 
 import pytest
@@ -36,6 +34,28 @@ class TestDatabase:
         database_mock.save_current_versions("1.0", "2.0.0")
         assert database_mock.load_current_versions() == ("1.0", "2.0.0")
 
+    def test_not_exists(self, database_mock):
+        database_mock.clear_all_data()
+        database_mock.shared_database_path.unlink(missing_ok=True)
+        assert database_mock.get_common_campuses_names()
+        assert not database_mock.load_semesters()
+        assert not database_mock.get_language()
+        assert not database_mock.load_years()
+        assert not database_mock.load_settings()
+        assert not database_mock.load_degrees()
+        assert not database_mock.load_courses_already_done(Language.ENGLISH)
+        assert not database_mock.load_activities_ids_groups_can_enroll_in()
+        assert not database_mock.load_user_data()
+        assert not database_mock.load_campus_names()
+        assert not database_mock.load_personal_activities()
+        assert not database_mock.load_courses(Language.ENGLISH, None)
+        assert not database_mock.load_active_courses("", Language.ENGLISH)
+        assert not database_mock.load_activities_by_parent_courses_numbers(set(), "", Language.ENGLISH)
+        assert not database_mock.load_activities_by_courses_choices({}, "", Language.ENGLISH)
+        assert not database_mock.load_academic_activities("", Language.ENGLISH, [])
+        assert not database_mock.load_campuses()
+        assert not database_mock.are_shared_tables_exists()
+
     def test_campuses(self, database_mock):
 
         campuses = {
@@ -67,8 +87,8 @@ class TestDatabase:
         database_mock.clear_shared_database()
         database_mock.init_database_tables()
         assert not database_mock.load_degrees()
-        database_path = os.path.join(utils.get_database_path(), TestDatabase.TEST_DATABASE_FOLDER)
-        new_database_path = os.path.join(database_path, "new_database.db")
+        database_path = utils.get_database_path() / TestDatabase.TEST_DATABASE_FOLDER
+        new_database_path = database_path / "new_database.db"
         old_database_path = database_mock.shared_database_path
         database_mock.shared_database_path = new_database_path
         database_mock.init_database_tables()
@@ -78,8 +98,7 @@ class TestDatabase:
         assert not database_mock.load_degrees()
         database_mock.update_database(pathlib.Path(new_database_path))
         assert database_mock.load_degrees()
-        with suppress(Exception):
-            os.remove(new_database_path)
+        new_database_path.unlink(missing_ok=True)
 
     def test_load_activities_by_parent_courses_numbers(self, database_mock, campuses):
         campus_name = campuses[1][0]
@@ -196,7 +215,7 @@ class TestDatabase:
         loaded_user = database_mock.load_user_data()
         assert user == loaded_user
 
-        os.remove(database_mock.user_name_file_path)
+        database_mock.user_name_file_path.unlink(missing_ok=True)
         assert database_mock.load_user_data() is None
 
     def test_settings(self, database_mock):
@@ -259,10 +278,8 @@ class TestDatabase:
 
     def test_clear_all(self, database_mock):
         database_mock.clear_all_data()
-        with suppress(Exception):
-            os.remove(database_mock.shared_database_path)
-        with suppress(Exception):
-            os.remove(database_mock.personal_database_path)
+        database_mock.shared_database_path.unlink(missing_ok=True)
+        database_mock.personal_database_path.unlink(missing_ok=True)
 
     @fixture
     def database_mock(self):
@@ -270,10 +287,9 @@ class TestDatabase:
 
             def __init__(self):
                 super().__init__(TestDatabase.TEST_DATABASE_FOLDER)
-                database_path = os.path.join(utils.get_database_path(), TestDatabase.TEST_DATABASE_FOLDER)
-                self.shared_database_path = os.path.join(database_path, "database.db")
-                with suppress(Exception):
-                    os.remove(self.user_name_file_path)
+                database_path = utils.get_database_path() / TestDatabase.TEST_DATABASE_FOLDER
+                self.shared_database_path = database_path / "database.db"
+                self.user_name_file_path.unlink(missing_ok=True)
 
         database = DatabaseMock()
         database.clear_all_data()

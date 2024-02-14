@@ -1,7 +1,7 @@
 import csv
 import functools
-import os
 import shutil
+from pathlib import Path
 from collections import namedtuple
 from typing import List, cast
 import warnings
@@ -152,13 +152,13 @@ class Convertor:
 
         return df_styled
 
-    def convert_activities_to_excel(self, schedules: List[Schedule], folder_location: str):
+    def convert_activities_to_excel(self, schedules: List[Schedule], folder_location: Path):
         shutil.rmtree(folder_location, ignore_errors=True)
-        os.makedirs(folder_location, exist_ok=True)
+        folder_location.mkdir(parents=True)
         self._init_activities_color_indexes(schedules[0].activities)
         for schedule in schedules:
             data_frame = self._create_schedule_table(schedule)
-            file_location = os.path.join(folder_location, f"{schedule.file_name}.{OutputFormat.EXCEL.value}")
+            file_location = folder_location / f"{schedule.file_name}.{OutputFormat.EXCEL.value}"
             # pylint: disable=abstract-class-instantiated
             writer = pd.ExcelWriter(file_location)
             data_frame.to_excel(writer, index=False, encoding=utils.ENCODING, sheet_name=schedule.name,
@@ -171,18 +171,18 @@ class Convertor:
 
             writer.close()
 
-    def convert_activities_to_png(self, schedules: List[Schedule], folder_location: str):
+    def convert_activities_to_png(self, schedules: List[Schedule], folder_location: Path):
         shutil.rmtree(folder_location, ignore_errors=True)
-        os.makedirs(folder_location, exist_ok=True)
+        folder_location.mkdir(parents=True)
         self._init_activities_color_indexes(schedules[0].activities)
         for schedule in schedules:
             df = self._create_schedule_table(schedule)
-            file_location = os.path.join(folder_location, f"{schedule.file_name}.{OutputFormat.IMAGE.value}")
-            dfi.export(df, file_location)
+            file_location = folder_location / f"{schedule.file_name}.{OutputFormat.IMAGE.value}"
+            dfi.export(df, str(file_location))
 
-    def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: str):
+    def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: Path):
         shutil.rmtree(folder_location, ignore_errors=True)
-        os.makedirs(folder_location, exist_ok=True)
+        folder_location.mkdir(parents=True)
         self._init_activities_color_indexes(schedules[0].activities)
         headers = [
             _("activity name"),
@@ -237,12 +237,12 @@ class Convertor:
                 for row in rows:
                     row.reverse()
 
-            file_location = os.path.join(folder_location, f"{schedule.file_name}.{OutputFormat.CSV.value}")
+            file_location = folder_location / f"{schedule.file_name}.{OutputFormat.CSV.value}"
             with open(file_location, 'w', encoding=utils.ENCODING, newline='') as file:
                 writer = csv.writer(file, delimiter=',')
                 writer.writerows(rows)
 
-    def convert_activities(self, schedules: List[Schedule], folder_location: str, formats: List[OutputFormat]):
+    def convert_activities(self, schedules: List[Schedule], folder_location: Path, formats: List[OutputFormat]):
         """
         The function will save each schedule in the folder location in the wanted formats.
         :param schedules: the schedules
@@ -255,19 +255,19 @@ class Convertor:
             if len(formats) == 1:
                 csv_location = folder_location
             else:
-                csv_location = os.path.join(folder_location, OutputFormat.CSV.name.lower())
+                csv_location = folder_location / OutputFormat.CSV.name.lower()
             self.convert_activities_to_csv(schedules, csv_location)
 
         if OutputFormat.EXCEL in formats:
             if len(formats) == 1:
                 excel_location = folder_location
             else:
-                excel_location = os.path.join(folder_location, OutputFormat.EXCEL.name.lower())
+                excel_location = folder_location / OutputFormat.EXCEL.name.lower()
             self.convert_activities_to_excel(schedules, excel_location)
 
         if OutputFormat.IMAGE in formats:
             if len(formats) == 1:
                 png_location = folder_location
             else:
-                png_location = os.path.join(folder_location, OutputFormat.IMAGE.name.lower())
+                png_location = folder_location / OutputFormat.IMAGE.name.lower()
             self.convert_activities_to_png(schedules, png_location)

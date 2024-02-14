@@ -3,6 +3,7 @@ import os
 import shutil
 import sys
 import time
+from pathlib import Path
 from contextlib import suppress
 from datetime import datetime
 from operator import itemgetter
@@ -17,8 +18,8 @@ from data.semester import Semester
 from data.translation import _
 
 ENCODING = "utf-8-sig"
-ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
-LOG_FILE_HANDLER = logging.FileHandler(filename=os.path.join(ROOT_PATH, "log.txt"), encoding=ENCODING, mode='w')
+ROOT_PATH = Path(__file__).parent.resolve()
+LOG_FILE_HANDLER = logging.FileHandler(filename=ROOT_PATH / "log.txt", encoding=ENCODING, mode='w')
 DATA_SOFTWARE_VERSION = "1.0"
 SOFTWARE_VERSION = "1.0"
 
@@ -97,17 +98,18 @@ def get_current_hebrew_name():
     return hebrew_name
 
 
-def get_database_path():
-    os.makedirs(os.path.join(ROOT_PATH, "database"), exist_ok=True)
-    return os.path.join(ROOT_PATH, "database")
+def get_database_path() -> Path:
+    database_path = ROOT_PATH / "database"
+    database_path.mkdir(parents=True, exist_ok=True)
+    return database_path
 
 
-def get_results_path():
-    return os.path.abspath(os.path.join(os.path.expanduser("~"), "semester_organizer_results"))
+def get_results_path() -> Path:
+    return Path.home() / "semester_organizer_results"
 
 
-def get_results_test_path():
-    return os.path.join(get_database_path(), "results_test")
+def get_results_test_path() -> Path:
+    return get_database_path() / "results_test"
 
 
 def count_files_and_directory(directory: str) -> Tuple[int, int]:

@@ -1,4 +1,3 @@
-import os.path
 import shutil
 from contextlib import suppress
 from typing import List, Dict, Callable, Set
@@ -63,7 +62,7 @@ class TestController:
         with patch('builtins.input', side_effect=input_next) as _input_mock:
             controller_mock.run_console_flow()
         # Check that the results file was created.
-        assert os.path.exists(results)
+        assert results.exists()
         files_count, _dirs = utils.count_files_and_directory(results)
         assert files_count >= 1
 

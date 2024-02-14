@@ -94,7 +94,7 @@ data = TextCaseInsensitiveDict({
     "day (.+?)[ :]": "יום (.+?):",
     "Done successfully !": "הפעולה הושלמה בהצלחה !",
     "No schedules were found": "לא נמצאו מערכות שעות אפשריות",
-    "the system encountered an error, please contanct the engeniers.": "המערכת נתקלה בשגיאה, אנא צור קשר עם המפתחים.",
+    "The system encountered an error, please contact the engineers.": "המערכת נתקלה בשגיאה, אנא צור קשר עם המפתחים.",
     "Missing database, can't continue, please download the database file from the github server and import the database by running :": "אין בסיס נתונים על מנת לשלוף את המידע, נא הורד את בסיס הנתונים משרת הגיטאהב ותריץ את הפעולה הבאה : ",
     "Database path is not a file or doesn't exists, the path given is: ": "נתיב בסיס הנתונים אינו קובץ, נתיב בסיס הנתונים שהתקבל: ",
     "There is only one lecture for this the course {} which is {}, automatic select it.": "יש בחירה יחידה לקורס {} שהיא המרצה {},ולכן נעשתה בחירה אוטומטית.",

@@ -1,10 +1,8 @@
 import json
-import os
 from pathlib import Path
 import shutil
 import sqlite3 as database
 from collections import defaultdict
-from contextlib import suppress
 from sqlite3 import OperationalError
 from typing import List, Optional, Dict, Tuple, Collection, Set
 
@@ -49,19 +47,19 @@ class Database:
             "activities_tracks",
         ]
         main_database_path = utils.get_database_path()
-        personal_path = os.path.join(main_database_path, database_id) if database_id else main_database_path
-        os.makedirs(personal_path, exist_ok=True)
+        personal_path = main_database_path / database_id if database_id else main_database_path
+        personal_path.mkdir(parents=True, exist_ok=True)
 
-        self.shared_database_path = os.path.join(main_database_path, "database.db")
-        self.user_name_file_path = os.path.join(personal_path, "user_data.txt")
-        self.years_file_path = os.path.join(personal_path, "years_data.txt")
-        self.versions_path = os.path.join(personal_path, "versions.txt")
-        self.settings_file_path = os.path.join(personal_path, "settings_data.json")
-        self.personal_database_path = os.path.join(personal_path, "personal_database.db")
-        self.courses_choose_path = os.path.join(personal_path, "course_choose_user_input.txt")
+        self.shared_database_path = main_database_path / "database.db"
+        self.user_name_file_path = personal_path / "user_data.txt"
+        self.years_file_path = personal_path / "years_data.txt"
+        self.versions_path = personal_path / "versions.txt"
+        self.settings_file_path = personal_path / "settings_data.json"
+        self.personal_database_path = personal_path / "personal_database.db"
+        self.courses_choose_path = personal_path / "course_choose_user_input.txt"
 
     def init_personal_database_tables(self):
-        os.makedirs(os.path.dirname(self.personal_database_path), exist_ok=True)
+        self.personal_database_path.parent.mkdir(parents=True, exist_ok=True)
         with database.connect(self.personal_database_path) as connection:
             cursor = connection.cursor()
             cursor.execute("CREATE TABLE IF NOT EXISTS personal_activities "
@@ -85,7 +83,7 @@ class Database:
             cursor.close()
 
     def init_shared_database_tables(self):
-        os.makedirs(os.path.dirname(self.shared_database_path), exist_ok=True)
+        self.shared_database_path.parent.mkdir(parents=True, exist_ok=True)
         with database.connect(self.shared_database_path) as connection:
             cursor = connection.cursor()
             cursor.execute("CREATE TABLE IF NOT EXISTS campuses "
@@ -191,6 +189,8 @@ class Database:
             cursor.close()
 
     def load_activities_ids_groups_can_enroll_in(self) -> Dict[str, Set[str]]:
+        if not self.personal_database_path.exists():
+            return {}
         with database.connect(self.personal_database_path) as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT activity_id FROM activities_can_enroll_in;")
@@ -209,10 +209,15 @@ class Database:
             connection.commit()
             cursor.close()
 
-    def load_degrees(self):
+    def load_degrees(self) -> List[Degree]:
+        if not self.shared_database_path.exists():
+            return []
         with database.connect(self.shared_database_path) as connection:
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM degrees;")
+            try:
+                cursor.execute("SELECT * FROM degrees;")
+            except OperationalError:
+                return []
             degrees_values = cursor.fetchall()
             degrees = set()
             for name, department in degrees_values:
@@ -223,11 +228,14 @@ class Database:
             return degrees
 
     def load_semesters(self) -> List[Semester]:
-        if not os.path.exists(self.shared_database_path):
+        if not self.shared_database_path.exists():
             return []
         with database.connect(self.shared_database_path) as connection:
             cursor = connection.cursor()
-            cursor.execute("SELECT name FROM semesters;")
+            try:
+                cursor.execute("SELECT name FROM semesters;")
+            except OperationalError:
+                return []
             semesters = [Semester[semester_name.upper()] for (semester_name,) in cursor.fetchall()]
             cursor.close()
             return semesters
@@ -307,7 +315,7 @@ class Database:
             return courses_choices
 
     def load_personal_activities(self) -> List[Activity]:
-        if not os.path.exists(self.personal_database_path):
+        if not self.personal_database_path.exists():
             return []
         with database.connect(self.personal_database_path) as connection:
             cursor = connection.cursor()
@@ -338,7 +346,7 @@ class Database:
             cursor.close()
 
     def load_courses(self, language: Language, degrees: Optional[Set[Degree]] = None) -> List[Course]:
-        if not os.path.exists(self.shared_database_path):
+        if not self.shared_database_path.exists():
             return []
         with database.connect(self.shared_database_path) as connection:
             degrees = degrees or Degree.get_defaults()
@@ -362,7 +370,7 @@ class Database:
 
     def load_active_courses(self, campus_name: str, language: Language,
                             degrees: Collection[Degree] = None) -> List[Course]:
-        if not os.path.exists(self.shared_database_path):
+        if not self.shared_database_path.exists():
             return []
         with database.connect(self.shared_database_path) as connection:
             cursor = connection.cursor()
@@ -386,7 +394,7 @@ class Database:
     def load_activities_by_parent_courses_numbers(self, parent_courses_numbers: Set[int],
                                                   campus_name: str, language: Language,
                                                   degrees: Collection[Degree] = None) -> List[AcademicActivity]:
-        if not os.path.exists(self.shared_database_path):
+        if not self.shared_database_path.exists():
             return []
         with database.connect(self.shared_database_path) as connection:
             cursor = connection.cursor()
@@ -417,7 +425,7 @@ class Database:
     def load_activities_by_courses_choices(self, courses_choices: Dict[str, CourseChoice],
                                            campus_name: str, language: Language,
                                            activities_ids: List[str] = None) -> List[AcademicActivity]:
-        if not os.path.exists(self.shared_database_path):
+        if not self.shared_database_path.exists():
             return []
         with database.connect(self.shared_database_path) as connection:
             cursor = connection.cursor()
@@ -485,7 +493,7 @@ class Database:
 
     def load_academic_activities(self, campus_name: str, language: Language,
                                  courses: List[Course], activities_ids: List[str] = None) -> List[AcademicActivity]:
-        if not os.path.exists(self.shared_database_path):
+        if not self.shared_database_path.exists():
             return []
         with database.connect(self.shared_database_path) as connection:
             activities_ids = activities_ids or []
@@ -522,19 +530,22 @@ class Database:
             cursor.close()
 
     def load_campus_names(self, language: Language = None) -> List[str]:
-        if not os.path.exists(self.shared_database_path):
+        if not self.shared_database_path.exists():
             return []
         with database.connect(self.shared_database_path) as connection:
             language = language or Language.get_current()
             cursor = connection.cursor()
             name_column = "english_name" if language is Language.ENGLISH else "hebrew_name"
-            cursor.execute(f"SELECT {name_column} FROM campuses;")
+            try:
+                cursor.execute(f"SELECT {name_column} FROM campuses;")
+            except OperationalError:
+                return []
             campus_names = [name[0] for name in cursor.fetchall()]
             cursor.close()
             return campus_names
 
     def load_campuses(self) -> Dict[int, Tuple[EnglishName, HebrewName]]:
-        if not os.path.exists(self.shared_database_path):
+        if not self.shared_database_path.exists():
             return {}
         with database.connect(self.shared_database_path) as connection:
             cursor = connection.cursor()
@@ -545,7 +556,7 @@ class Database:
             return campuses
 
     def load_current_versions(self) -> Tuple[Optional[str], Optional[str]]:
-        if not os.path.isfile(self.versions_path):
+        if not self.versions_path.is_file():
             return None, None
         with open(self.versions_path, "r", encoding=utils.ENCODING) as file:
             software_version, database_version = file.readlines()
@@ -569,7 +580,7 @@ class Database:
             file.write("\n".join(courses_names))
 
     def load_courses_console_choose(self) -> Optional[List[str]]:
-        if not os.path.isfile(self.courses_choose_path):
+        if not self.courses_choose_path.is_file():
             return None
         with open(self.courses_choose_path, "r", encoding=utils.ENCODING) as file:
             return [text.replace("\n", "") for text in file.readlines()]
@@ -583,14 +594,13 @@ class Database:
         password
         :return: The user data or None if not found.
         """
-        if not os.path.exists(self.user_name_file_path):
+        if not self.user_name_file_path.exists():
             return None
         with open(self.user_name_file_path, "r", encoding=utils.ENCODING) as file:
             return User(file.readline().strip(), file.readline().strip())
 
     def clear_versions(self):
-        with suppress(Exception):
-            os.remove(self.versions_path)
+        self.versions_path.unlink(missing_ok=True)
 
     def clear_all_data(self):
         self.clear_all_personal_folders()
@@ -601,11 +611,7 @@ class Database:
         self.clear_versions()
 
     def clear_all_personal_folders(self):
-        os.makedirs(os.path.join(utils.get_database_path(), "aaaa"), exist_ok=True)
-        database_path = utils.get_database_path()
-        all_items = os.listdir(database_path)
-        all_folders = [os.path.join(database_path, path)
-                       for path in all_items if os.path.isdir(os.path.join(database_path, path))]
+        all_folders = [path for path in utils.get_database_path().iterdir() if path.is_dir()]
         for folder in all_folders:
             shutil.rmtree(folder, ignore_errors=True)
 
@@ -614,15 +620,14 @@ class Database:
             file.write(settings.to_json(indent=4, ensure_ascii=False, sort_keys=False))
 
     def load_settings(self) -> Optional[Settings]:
-        if not os.path.exists(self.settings_file_path):
+        if not self.settings_file_path.exists():
             return None
         with open(self.settings_file_path, "r", encoding=utils.ENCODING) as file:
             # pylint: disable=no-member
             return Settings.from_json(file.read())
 
     def clear_settings(self):
-        if os.path.exists(self.settings_file_path):
-            os.remove(self.settings_file_path)
+        self.settings_file_path.unlink(missing_ok=True)
 
     def get_common_campuses_names(self) -> List[str]:
         campus_names = []
@@ -651,15 +656,14 @@ class Database:
             file.write(json.dumps(years))
 
     def load_years(self):
-        if not os.path.exists(self.years_file_path):
+        if not self.years_file_path.exists():
             return {}
         with open(self.years_file_path, "r", encoding=utils.ENCODING) as file:
             data = json.loads(file.read())
             return {int(key): value for key, value in data.items()}
 
     def clear_years(self):
-        if os.path.exists(self.years_file_path):
-            os.remove(self.years_file_path)
+        self.years_file_path.unlink(missing_ok=True)
 
     def save_user_data(self, user_data: User):
         if user_data:
@@ -671,8 +675,8 @@ class Database:
         self.init_database_tables()
         shutil.copy2(database_path, self.shared_database_path)
 
-    def _are_tables_exists(self, tables_names: List[str], database_path: str):
-        if not os.path.exists(database_path):
+    def _are_tables_exists(self, tables_names: List[str], database_path: Path):
+        if not database_path.exists():
             return False
         with database.connect(database_path) as connection:
             cursor = connection.cursor()
@@ -689,8 +693,8 @@ class Database:
     def are_personal_tables_exists(self):
         return self._are_tables_exists(self._personal_sql_tables, self.personal_database_path)
 
-    def _clear_database(self, tables_names: List[str], database_path: str):
-        if not os.path.exists(database_path):
+    def _clear_database(self, tables_names: List[str], database_path: Path):
+        if not database_path.exists():
             return
         with database.connect(database_path) as connection:
             cursor = connection.cursor()
@@ -705,8 +709,7 @@ class Database:
         self._clear_database(self._personal_sql_tables, self.personal_database_path)
 
     def clear_last_courses_choose_input(self):
-        if os.path.exists(self.courses_choose_path):
-            os.remove(self.courses_choose_path)
+        self.courses_choose_path.unlink(missing_ok=True)
 
     def save_courses_already_done(self, courses: Set[Course]):
         with database.connect(self.personal_database_path) as connection:
@@ -719,6 +722,8 @@ class Database:
     def load_courses_already_done(self, language: Language) -> Set[Course]:
         parent_courses_numbers = None
         courses = None
+        if not self.personal_database_path.exists():
+            return set()
         with database.connect(self.personal_database_path) as connection:
             cursor = connection.cursor()
             try:

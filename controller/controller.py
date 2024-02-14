@@ -1,4 +1,3 @@
-import os
 import sys
 import shutil
 import subprocess
@@ -6,6 +5,7 @@ import time
 from collections import defaultdict
 from operator import itemgetter
 from typing import List, Dict, Literal, Optional, Any, Set
+from pathlib import Path
 import pwinput
 
 import utils
@@ -221,7 +221,7 @@ class Controller:
             self.logger.info("User clicked exit button")
 
         except Exception as error:
-            message = "The system encountered an error, please contanct the engeniers."
+            message = "The system encountered an error, please contact the engineers."
             self.logger.error("The system encountered an error: %s", str(error))
             gui.open_notification_window(_(message), MessageType.ERROR)
 
@@ -249,7 +249,7 @@ class Controller:
                 if self.database.get_language() != language:
                     self.database.save_language(language)
 
-    def _save_schedule(self, all_schedules: List[Schedule], settings: Settings, results_path: str):
+    def _save_schedule(self, all_schedules: List[Schedule], settings: Settings, results_path: Path):
         # Save the most spread days and least spread days
         most_spread_days = defaultdict(list)
         least_spread_days = defaultdict(list)
@@ -279,10 +279,10 @@ class Controller:
         else:
             schedules_by_standby_time = None
 
-        all_schedules_path = os.path.join(results_path, _("all_schedules"))
-        most_spread_days_path = os.path.join(results_path, _("most_spread_days"))
-        least_spread_days_path = os.path.join(results_path, _("least_spread_days"))
-        least_standby_time_path = os.path.join(results_path, _("least_standby_time"))
+        all_schedules_path = results_path / _("all_schedules")
+        most_spread_days_path = results_path / _("most_spread_days")
+        least_spread_days_path = results_path / _("least_spread_days")
+        least_standby_time_path = results_path / _("least_standby_time")
 
         shutil.rmtree(results_path, ignore_errors=True)
 
@@ -312,7 +312,7 @@ class Controller:
                 self.database.save_language(language)
             self.database.save_current_versions(new_software_version, new_database_version)
 
-    def _open_results_folder(self, results_path: str):
+    def _open_results_folder(self, results_path: Path):
         subprocess.call(f"explorer {results_path}", shell=True)
 
     def _validate_database(self, output_type: Literal['gui', 'console']):
@@ -400,12 +400,12 @@ class Controller:
             try:
                 self._save_schedule(schedules, settings, results_path)
                 print(_("Done successfully !"))
-                print(_("The schedules were saved in the directory: ") + results_path)
+                print(_("The schedules were saved in the directory:"), results_path)
                 self._open_results_folder(results_path)
                 break
             except FileExistsError:
                 print(_("ERROR: can't save the schedules, maybe the file is open? failed to save in: ") + results_path)
-                results_path = utils.get_results_path() + f"_{try_number}"
+                results_path = utils.get_results_path() / f"_{try_number}"
                 print(_("Try to save in directory:"), results_path)
 
     def _console_ask_favorite_lecturers(self, course_name: str, lecture_type: str, lectures_list: List[Lecture]):

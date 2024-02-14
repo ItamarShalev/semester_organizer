@@ -1,4 +1,3 @@
-import os
 import shutil
 
 import pytest
@@ -26,7 +25,7 @@ class TestConvertor:
     def test_convert_type(self, file_type: OutputFormat):
 
         convertor = Convertor()
-        path = os.path.join(utils.get_results_path(), "test_results")
+        path = utils.get_results_test_path()
         extension = file_type.value
         schedules = []
         shutil.rmtree(path, ignore_errors=True)
@@ -41,13 +40,13 @@ class TestConvertor:
         convertor.convert_activities(schedules, path, [file_type])
         for i in range(1, 11):
             file_name = f"option_{i}.{extension}"
-            file_path = os.path.join(path, file_name)
-            assert os.path.isfile(f"{file_path}"), f"{file_name} is not exist"
-            assert os.path.getsize(f"{file_path}") > 0, f"{file_name} is empty"
+            file_path = path / file_name
+            assert file_path.is_file(), f"{file_name} is not exist"
+            assert file_path.stat().st_size > 0, f"{file_name} is empty"
 
     def test_convert_all_types(self):
         convertor = Convertor()
-        path = os.path.join(utils.get_results_path(), "test_results")
+        path = utils.get_results_test_path()
         schedules = []
         shutil.rmtree(path, ignore_errors=True)
 
@@ -61,9 +60,9 @@ class TestConvertor:
 
         for file_type in OutputFormat:
             extension = file_type.value
-            folder_type_path = os.path.join(path, file_type.name.lower())
+            folder_type_path = path / file_type.name.lower()
             for i in range(1, 11):
                 file_name = f"option_{i}.{extension}"
-                file_path = os.path.join(folder_type_path, file_name)
-                assert os.path.isfile(f"{file_path}"), f"{file_name} is not exist"
-                assert os.path.getsize(f"{file_path}") > 0, f"{file_name} is empty"
+                file_path = folder_type_path / file_name
+                assert file_path.is_file(), f"{file_name} is not exist"
+                assert file_path.stat().st_size > 0, f"{file_name} is empty"

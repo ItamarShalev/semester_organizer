@@ -3,6 +3,7 @@ exclude_lines =
     raise AssertionError
     raise NotImplementedError
     raise RuntimeError
+    except OperationalError:
     def _create_schedule
     if not was_exists:
     except Timeout as error

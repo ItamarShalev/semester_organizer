@@ -261,6 +261,7 @@ class TestData:
         assert utils.count_files_and_directory(test_folder) == (1, 0)
         shutil.rmtree(test_folder, ignore_errors=True)
         assert utils.get_last_modified_by_days(test_folder) == 0
+        assert utils.get_results_path()
 
     def test_degree(self):
         degrees = set()

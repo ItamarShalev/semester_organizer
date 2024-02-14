@@ -7,6 +7,7 @@ import logging
 import os
 import platform
 import subprocess
+from pathlib import Path
 from enum import Enum
 from typing import Optional
 
@@ -50,10 +51,9 @@ def get_os_type() -> Optional[OS]:
 
 
 def build(os_build_type: OS):
-
-    customtkinter_path = os.path.abspath(os.path.dirname(customtkinter.__file__))
+    customtkinter_path = Path(customtkinter.__file__).parent.resolve()
     database_file_path = Database().shared_database_path
-    main_path = os.path.abspath(os.path.join(utils.ROOT_PATH, "__main__.py"))
+    main_path = utils.ROOT_PATH / "__main__.py"
     separator = ';'
     if os_build_type in [OS.UBUNTU, OS.MAC]:
         separator = ':'
