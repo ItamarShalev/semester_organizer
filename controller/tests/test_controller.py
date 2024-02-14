@@ -110,9 +110,8 @@ class TestController:
     def database_mock(self):
         class DatabaseMock(Database):
 
-            PERSONAL_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_personal_database.db")
-
             def __init__(self):
+                super().__init__("test_database")
                 self.settings = Settings()
                 self.settings.campus_name = utils.get_campus_name_test()
                 super().__init__()

@@ -26,6 +26,8 @@ from data.output_format import OutputFormat
 
 class TestDatabase:
 
+    TEST_DATABASE_FOLDER = "test_database"
+
     def test_not_empty(self, database_mock):
         assert database_mock.are_shared_tables_exists()
 
@@ -65,13 +67,14 @@ class TestDatabase:
         database_mock.clear_shared_database()
         database_mock.init_database_tables()
         assert not database_mock.load_degrees()
-        new_database_path = os.path.join(utils.get_database_path(), "new_database.db")
-        old_database_path = database_mock.SHARED_DATABASE_PATH
-        database_mock.SHARED_DATABASE_PATH = new_database_path
+        database_path = os.path.join(utils.get_database_path(), TestDatabase.TEST_DATABASE_FOLDER)
+        new_database_path = os.path.join(database_path, "new_database.db")
+        old_database_path = database_mock.shared_database_path
+        database_mock.shared_database_path = new_database_path
         database_mock.init_database_tables()
         database_mock.save_degrees(list(Degree))
         assert database_mock.load_degrees()
-        database_mock.SHARED_DATABASE_PATH = old_database_path
+        database_mock.shared_database_path = old_database_path
         assert not database_mock.load_degrees()
         database_mock.update_database(pathlib.Path(new_database_path))
         assert database_mock.load_degrees()
@@ -193,7 +196,7 @@ class TestDatabase:
         loaded_user = database_mock.load_user_data()
         assert user == loaded_user
 
-        os.remove(database_mock.USER_NAME_FILE_PATH)
+        os.remove(database_mock.user_name_file_path)
         assert database_mock.load_user_data() is None
 
     def test_settings(self, database_mock):
@@ -257,25 +260,20 @@ class TestDatabase:
     def test_clear_all(self, database_mock):
         database_mock.clear_all_data()
         with suppress(Exception):
-            os.remove(database_mock.SHARED_DATABASE_PATH)
+            os.remove(database_mock.shared_database_path)
         with suppress(Exception):
-            os.remove(database_mock.PERSONAL_DATABASE_PATH)
+            os.remove(database_mock.personal_database_path)
 
     @fixture
     def database_mock(self):
         class DatabaseMock(Database):
-            USER_NAME_FILE_PATH = os.path.join(utils.get_database_path(), "test_user_data.txt")
-            YEARS_FILE_PATH = os.path.join(utils.get_database_path(), "test_years_data.txt")
-            VERSIONS_PATH = os.path.join(utils.get_database_path(), "test_versions.txt")
-            SETTINGS_FILE_PATH = os.path.join(utils.get_database_path(), "test_settings_data.json")
-            SHARED_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_database.db")
-            COURSES_CHOOSE_PATH = os.path.join(utils.get_database_path(), "test_course_choose_user_input.txt")
-            PERSONAL_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_personal_database.db")
 
             def __init__(self):
-                super().__init__()
+                super().__init__(TestDatabase.TEST_DATABASE_FOLDER)
+                database_path = os.path.join(utils.get_database_path(), TestDatabase.TEST_DATABASE_FOLDER)
+                self.shared_database_path = os.path.join(database_path, "database.db")
                 with suppress(Exception):
-                    os.remove(DatabaseMock.USER_NAME_FILE_PATH)
+                    os.remove(self.user_name_file_path)
 
         database = DatabaseMock()
         database.clear_all_data()

@@ -1,4 +1,3 @@
-import os
 import warnings
 
 from pytest import fixture
@@ -81,7 +80,8 @@ class TestConstraintCourses:
         translation.config_language_text(Language.HEBREW)
 
         class DatabaseMock(Database):
-            PERSONAL_DATABASE_PATH = os.path.join(utils.get_database_path(), "test_personal_database.db")
+            def __init__(self):
+                super().__init__("test_database")
 
         class ConstraintCoursesMock(ConstraintCourses):
             _ALL_COURSES_FILE_NAME = "all_courses_blocked_and_blocks_info.json"
