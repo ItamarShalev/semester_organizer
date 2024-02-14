@@ -14,182 +14,218 @@
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 22,
                     "course_number": 153007,
-                    "name": "מיני פרויקט במערכות חלונות"
+                    "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 30,
                     "course_number": 151055,
-                    "name": "מיני פרויקט במבוא להנדסת תוכנה"
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 32,
                     "course_number": 156353,
-                    "name": "מערכות להרצת קוד בסביבה בטוחה"
+                    "name": "מערכות להרצת קוד בסביבה בטוחה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 34,
                     "course_number": 153105,
-                    "name": "תכנות פונקציונלית ולוגית"
+                    "name": "תכנות פונקציונלית ולוגית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 35,
                     "course_number": 151123,
-                    "name": "UNIX מערכות"
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 43,
                     "course_number": 153004,
-                    "name": "הנדסת מערכות חלונות"
+                    "name": "הנדסת מערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 44,
                     "course_number": 151060,
-                    "name": "הנדסת תכנה"
+                    "name": "הנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 47,
                     "course_number": 151131,
-                    "name": "קומפיילרים ומתרגמים"
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 49,
                     "course_number": 157200,
-                    "name": "אקסלנטים"
+                    "name": "אקסלנטים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 51,
                     "course_number": 156363,
-                    "name": "יסודות באבטחת תוכנה"
+                    "name": "יסודות באבטחת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 54,
                     "course_number": 150060,
-                    "name": "עקרונות שפות תכנה"
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 58,
                     "course_number": 157121,
-                    "name": "סדנא מתקדמת בC"
+                    "name": "סדנא מתקדמת בC",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 59,
                     "course_number": 157102,
-                    "name": "בינה מלאכותית וישומה"
+                    "name": "בינה מלאכותית וישומה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 60,
                     "course_number": 157123,
-                    "name": "כריית מידע - למדהמ"
+                    "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 64,
                     "course_number": 157113,
-                    "name": "מבנה שפות תכנה"
+                    "name": "מבנה שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 66,
                     "course_number": 157125,
-                    "name": "איחזור מידע"
+                    "name": "איחזור מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 68,
                     "course_number": 157111,
-                    "name": "מערכות זמן אמת ותכנות מקבילי"
+                    "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 72,
                     "course_number": 150019,
-                    "name": "סדנא ב-java"
+                    "name": "סדנא ב-java",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 73,
                     "course_number": 150024,
-                    "name": "תכנות מתקדם"
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 75,
                     "course_number": 157107,
-                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה"
+                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -206,232 +242,278 @@
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 7,
                     "course_number": 120221,
-                    "name": "אלגברה לינארית ב"
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 8,
                     "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2"
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 9,
                     "course_number": 156200,
-                    "name": "מבוא לתקשרת מחשבים"
+                    "name": "מבוא לתקשרת מחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 17,
                     "course_number": 120701,
-                    "name": "הסתברות"
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 18,
                     "course_number": 120304,
-                    "name": "לוגיקה מתמטית"
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 22,
                     "course_number": 153007,
-                    "name": "מיני פרויקט במערכות חלונות"
+                    "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 23,
                     "course_number": 120302,
-                    "name": "מתמטיקה בדידה"
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 24,
                     "course_number": 120711,
-                    "name": "סטטיסטיקה למהנדסים"
+                    "name": "סטטיסטיקה למהנדסים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 30,
                     "course_number": 151055,
-                    "name": "מיני פרויקט במבוא להנדסת תוכנה"
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 32,
                     "course_number": 156353,
-                    "name": "מערכות להרצת קוד בסביבה בטוחה"
+                    "name": "מערכות להרצת קוד בסביבה בטוחה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 33,
                     "course_number": 120501,
-                    "name": "משוואות דפרנציאליות"
+                    "name": "משוואות דפרנציאליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 34,
                     "course_number": 153105,
-                    "name": "תכנות פונקציונלית ולוגית"
+                    "name": "תכנות פונקציונלית ולוגית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 35,
                     "course_number": 151123,
-                    "name": "UNIX מערכות"
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 43,
                     "course_number": 153004,
-                    "name": "הנדסת מערכות חלונות"
+                    "name": "הנדסת מערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 44,
                     "course_number": 151060,
-                    "name": "הנדסת תכנה"
+                    "name": "הנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 47,
                     "course_number": 151131,
-                    "name": "קומפיילרים ומתרגמים"
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 49,
                     "course_number": 157200,
-                    "name": "אקסלנטים"
+                    "name": "אקסלנטים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 51,
                     "course_number": 156363,
-                    "name": "יסודות באבטחת תוכנה"
+                    "name": "יסודות באבטחת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 54,
                     "course_number": 150060,
-                    "name": "עקרונות שפות תכנה"
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 58,
                     "course_number": 157121,
-                    "name": "סדנא מתקדמת בC"
+                    "name": "סדנא מתקדמת בC",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 59,
                     "course_number": 157102,
-                    "name": "בינה מלאכותית וישומה"
+                    "name": "בינה מלאכותית וישומה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 60,
                     "course_number": 157123,
-                    "name": "כריית מידע - למדהמ"
+                    "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 64,
                     "course_number": 157113,
-                    "name": "מבנה שפות תכנה"
+                    "name": "מבנה שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 66,
                     "course_number": 157125,
-                    "name": "איחזור מידע"
+                    "name": "איחזור מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 68,
                     "course_number": 157111,
-                    "name": "מערכות זמן אמת ותכנות מקבילי"
+                    "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 72,
                     "course_number": 150019,
-                    "name": "סדנא ב-java"
+                    "name": "סדנא ב-java",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 73,
                     "course_number": 150024,
-                    "name": "תכנות מתקדם"
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 75,
                     "course_number": 157107,
-                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה"
+                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 76,
                     "course_number": 156336,
-                    "name": "רשתות מחשבים מתקדמות"
+                    "name": "רשתות מחשבים מתקדמות",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -448,69 +530,82 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 7,
                     "course_number": 120221,
-                    "name": "אלגברה לינארית ב"
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 30,
                     "course_number": 151055,
-                    "name": "מיני פרויקט במבוא להנדסת תוכנה"
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 33,
                     "course_number": 120501,
-                    "name": "משוואות דפרנציאליות"
+                    "name": "משוואות דפרנציאליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 44,
                     "course_number": 151060,
-                    "name": "הנדסת תכנה"
+                    "name": "הנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 75,
                     "course_number": 157107,
-                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה"
+                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -538,214 +633,256 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 8,
                     "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2"
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 9,
                     "course_number": 156200,
-                    "name": "מבוא לתקשרת מחשבים"
+                    "name": "מבוא לתקשרת מחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 17,
                     "course_number": 120701,
-                    "name": "הסתברות"
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 22,
                     "course_number": 153007,
-                    "name": "מיני פרויקט במערכות חלונות"
+                    "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 24,
                     "course_number": 120711,
-                    "name": "סטטיסטיקה למהנדסים"
+                    "name": "סטטיסטיקה למהנדסים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 30,
                     "course_number": 151055,
-                    "name": "מיני פרויקט במבוא להנדסת תוכנה"
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 32,
                     "course_number": 156353,
-                    "name": "מערכות להרצת קוד בסביבה בטוחה"
+                    "name": "מערכות להרצת קוד בסביבה בטוחה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 33,
                     "course_number": 120501,
-                    "name": "משוואות דפרנציאליות"
+                    "name": "משוואות דפרנציאליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 34,
                     "course_number": 153105,
-                    "name": "תכנות פונקציונלית ולוגית"
+                    "name": "תכנות פונקציונלית ולוגית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 35,
                     "course_number": 151123,
-                    "name": "UNIX מערכות"
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 43,
                     "course_number": 153004,
-                    "name": "הנדסת מערכות חלונות"
+                    "name": "הנדסת מערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 44,
                     "course_number": 151060,
-                    "name": "הנדסת תכנה"
+                    "name": "הנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 47,
                     "course_number": 151131,
-                    "name": "קומפיילרים ומתרגמים"
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 49,
                     "course_number": 157200,
-                    "name": "אקסלנטים"
+                    "name": "אקסלנטים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 51,
                     "course_number": 156363,
-                    "name": "יסודות באבטחת תוכנה"
+                    "name": "יסודות באבטחת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 54,
                     "course_number": 150060,
-                    "name": "עקרונות שפות תכנה"
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 58,
                     "course_number": 157121,
-                    "name": "סדנא מתקדמת בC"
+                    "name": "סדנא מתקדמת בC",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 59,
                     "course_number": 157102,
-                    "name": "בינה מלאכותית וישומה"
+                    "name": "בינה מלאכותית וישומה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 60,
                     "course_number": 157123,
-                    "name": "כריית מידע - למדהמ"
+                    "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 64,
                     "course_number": 157113,
-                    "name": "מבנה שפות תכנה"
+                    "name": "מבנה שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 66,
                     "course_number": 157125,
-                    "name": "איחזור מידע"
+                    "name": "איחזור מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 68,
                     "course_number": 157111,
-                    "name": "מערכות זמן אמת ותכנות מקבילי"
+                    "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 72,
                     "course_number": 150019,
-                    "name": "סדנא ב-java"
+                    "name": "סדנא ב-java",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 73,
                     "course_number": 150024,
-                    "name": "תכנות מתקדם"
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 75,
                     "course_number": 157107,
-                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה"
+                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 76,
                     "course_number": 156336,
-                    "name": "רשתות מחשבים מתקדמות"
+                    "name": "רשתות מחשבים מתקדמות",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -762,184 +899,220 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 22,
                     "course_number": 153007,
-                    "name": "מיני פרויקט במערכות חלונות"
+                    "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 30,
                     "course_number": 151055,
-                    "name": "מיני פרויקט במבוא להנדסת תוכנה"
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 32,
                     "course_number": 156353,
-                    "name": "מערכות להרצת קוד בסביבה בטוחה"
+                    "name": "מערכות להרצת קוד בסביבה בטוחה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 34,
                     "course_number": 153105,
-                    "name": "תכנות פונקציונלית ולוגית"
+                    "name": "תכנות פונקציונלית ולוגית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 35,
                     "course_number": 151123,
-                    "name": "UNIX מערכות"
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 43,
                     "course_number": 153004,
-                    "name": "הנדסת מערכות חלונות"
+                    "name": "הנדסת מערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 44,
                     "course_number": 151060,
-                    "name": "הנדסת תכנה"
+                    "name": "הנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 47,
                     "course_number": 151131,
-                    "name": "קומפיילרים ומתרגמים"
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 49,
                     "course_number": 157200,
-                    "name": "אקסלנטים"
+                    "name": "אקסלנטים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 51,
                     "course_number": 156363,
-                    "name": "יסודות באבטחת תוכנה"
+                    "name": "יסודות באבטחת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 54,
                     "course_number": 150060,
-                    "name": "עקרונות שפות תכנה"
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 58,
                     "course_number": 157121,
-                    "name": "סדנא מתקדמת בC"
+                    "name": "סדנא מתקדמת בC",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 59,
                     "course_number": 157102,
-                    "name": "בינה מלאכותית וישומה"
+                    "name": "בינה מלאכותית וישומה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 60,
                     "course_number": 157123,
-                    "name": "כריית מידע - למדהמ"
+                    "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 64,
                     "course_number": 157113,
-                    "name": "מבנה שפות תכנה"
+                    "name": "מבנה שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 66,
                     "course_number": 157125,
-                    "name": "איחזור מידע"
+                    "name": "איחזור מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 68,
                     "course_number": 157111,
-                    "name": "מערכות זמן אמת ותכנות מקבילי"
+                    "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 72,
                     "course_number": 150019,
-                    "name": "סדנא ב-java"
+                    "name": "סדנא ב-java",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 73,
                     "course_number": 150024,
-                    "name": "תכנות מתקדם"
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 75,
                     "course_number": 157107,
-                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה"
+                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -956,39 +1129,46 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1005,49 +1185,58 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 17,
                     "course_number": 120701,
-                    "name": "הסתברות"
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 24,
                     "course_number": 120711,
-                    "name": "סטטיסטיקה למהנדסים"
+                    "name": "סטטיסטיקה למהנדסים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1065,24 +1254,28 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 76,
                     "course_number": 156336,
-                    "name": "רשתות מחשבים מתקדמות"
+                    "name": "רשתות מחשבים מתקדמות",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1099,52 +1292,62 @@
                 {
                     "id": 11,
                     "course_number": 151101,
-                    "name": "מבנה המחשב"
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 15,
                     "course_number": 151103,
-                    "name": "מעבדה במבנה המחשב"
+                    "name": "מעבדה במבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 32,
                     "course_number": 156353,
-                    "name": "מערכות להרצת קוד בסביבה בטוחה"
+                    "name": "מערכות להרצת קוד בסביבה בטוחה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 35,
                     "course_number": 151123,
-                    "name": "UNIX מערכות"
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 51,
                     "course_number": 156363,
-                    "name": "יסודות באבטחת תוכנה"
+                    "name": "יסודות באבטחת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 58,
                     "course_number": 157121,
-                    "name": "סדנא מתקדמת בC"
+                    "name": "סדנא מתקדמת בC",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 68,
                     "course_number": 157111,
-                    "name": "מערכות זמן אמת ותכנות מקבילי"
+                    "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1159,49 +1362,58 @@
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 32,
                     "course_number": 156353,
-                    "name": "מערכות להרצת קוד בסביבה בטוחה"
+                    "name": "מערכות להרצת קוד בסביבה בטוחה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 35,
                     "course_number": 151123,
-                    "name": "UNIX מערכות"
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 51,
                     "course_number": 156363,
-                    "name": "יסודות באבטחת תוכנה"
+                    "name": "יסודות באבטחת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 58,
                     "course_number": 157121,
-                    "name": "סדנא מתקדמת בC"
+                    "name": "סדנא מתקדמת בC",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 68,
                     "course_number": 157111,
-                    "name": "מערכות זמן אמת ותכנות מקבילי"
+                    "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1219,12 +1431,14 @@
                 {
                     "id": 13,
                     "course_number": 141001,
-                    "name": "פיזיקה להנדסת מחשבים"
+                    "name": "פיזיקה להנדסת מחשבים",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 25,
                     "course_number": 141037,
-                    "name": "פיזיקה ב להנדסת מחשבים"
+                    "name": "פיזיקה ב להנדסת מחשבים",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1243,14 +1457,16 @@
                 {
                     "id": 12,
                     "course_number": 140004,
-                    "name": "מכינה בפיזיקה למחשבים"
+                    "name": "מכינה בפיזיקה למחשבים",
+                    "can_be_taken_in_parallel": true
                 }
             ],
             "blocks": [
                 {
                     "id": 25,
                     "course_number": 141037,
-                    "name": "פיזיקה ב להנדסת מחשבים"
+                    "name": "פיזיקה ב להנדסת מחשבים",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1268,194 +1484,232 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 22,
                     "course_number": 153007,
-                    "name": "מיני פרויקט במערכות חלונות"
+                    "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 30,
                     "course_number": 151055,
-                    "name": "מיני פרויקט במבוא להנדסת תוכנה"
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 32,
                     "course_number": 156353,
-                    "name": "מערכות להרצת קוד בסביבה בטוחה"
+                    "name": "מערכות להרצת קוד בסביבה בטוחה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 34,
                     "course_number": 153105,
-                    "name": "תכנות פונקציונלית ולוגית"
+                    "name": "תכנות פונקציונלית ולוגית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 35,
                     "course_number": 151123,
-                    "name": "UNIX מערכות"
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 43,
                     "course_number": 153004,
-                    "name": "הנדסת מערכות חלונות"
+                    "name": "הנדסת מערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 44,
                     "course_number": 151060,
-                    "name": "הנדסת תכנה"
+                    "name": "הנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 47,
                     "course_number": 151131,
-                    "name": "קומפיילרים ומתרגמים"
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 49,
                     "course_number": 157200,
-                    "name": "אקסלנטים"
+                    "name": "אקסלנטים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 51,
                     "course_number": 156363,
-                    "name": "יסודות באבטחת תוכנה"
+                    "name": "יסודות באבטחת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 54,
                     "course_number": 150060,
-                    "name": "עקרונות שפות תכנה"
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 58,
                     "course_number": 157121,
-                    "name": "סדנא מתקדמת בC"
+                    "name": "סדנא מתקדמת בC",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 59,
                     "course_number": 157102,
-                    "name": "בינה מלאכותית וישומה"
+                    "name": "בינה מלאכותית וישומה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 60,
                     "course_number": 157123,
-                    "name": "כריית מידע - למדהמ"
+                    "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 64,
                     "course_number": 157113,
-                    "name": "מבנה שפות תכנה"
+                    "name": "מבנה שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 66,
                     "course_number": 157125,
-                    "name": "איחזור מידע"
+                    "name": "איחזור מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 68,
                     "course_number": 157111,
-                    "name": "מערכות זמן אמת ותכנות מקבילי"
+                    "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 72,
                     "course_number": 150019,
-                    "name": "סדנא ב-java"
+                    "name": "סדנא ב-java",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 73,
                     "course_number": 150024,
-                    "name": "תכנות מתקדם"
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 75,
                     "course_number": 157107,
-                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה"
+                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1470,7 +1724,8 @@
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -1488,109 +1743,130 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": true
                 }
             ],
             "blocks": [
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 22,
                     "course_number": 153007,
-                    "name": "מיני פרויקט במערכות חלונות"
+                    "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 30,
                     "course_number": 151055,
-                    "name": "מיני פרויקט במבוא להנדסת תוכנה"
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 32,
                     "course_number": 156353,
-                    "name": "מערכות להרצת קוד בסביבה בטוחה"
+                    "name": "מערכות להרצת קוד בסביבה בטוחה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 43,
                     "course_number": 153004,
-                    "name": "הנדסת מערכות חלונות"
+                    "name": "הנדסת מערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 44,
                     "course_number": 151060,
-                    "name": "הנדסת תכנה"
+                    "name": "הנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 51,
                     "course_number": 156363,
-                    "name": "יסודות באבטחת תוכנה"
+                    "name": "יסודות באבטחת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 54,
                     "course_number": 150060,
-                    "name": "עקרונות שפות תכנה"
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 58,
                     "course_number": 157121,
-                    "name": "סדנא מתקדמת בC"
+                    "name": "סדנא מתקדמת בC",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 64,
                     "course_number": 157113,
-                    "name": "מבנה שפות תכנה"
+                    "name": "מבנה שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 68,
                     "course_number": 157111,
-                    "name": "מערכות זמן אמת ותכנות מקבילי"
+                    "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 72,
                     "course_number": 150019,
-                    "name": "סדנא ב-java"
+                    "name": "סדנא ב-java",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 75,
                     "course_number": 157107,
-                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה"
+                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1605,24 +1881,28 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 8,
                     "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2"
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": true
                 }
             ],
             "blocks": [
                 {
                     "id": 24,
                     "course_number": 120711,
-                    "name": "סטטיסטיקה למהנדסים"
+                    "name": "סטטיסטיקה למהנדסים",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1638,49 +1918,58 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 34,
                     "course_number": 153105,
-                    "name": "תכנות פונקציונלית ולוגית"
+                    "name": "תכנות פונקציונלית ולוגית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 47,
                     "course_number": 151131,
-                    "name": "קומפיילרים ומתרגמים"
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 54,
                     "course_number": 150060,
-                    "name": "עקרונות שפות תכנה"
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1696,59 +1985,70 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 30,
                     "course_number": 151055,
-                    "name": "מיני פרויקט במבוא להנדסת תוכנה"
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 44,
                     "course_number": 151060,
-                    "name": "הנדסת תכנה"
+                    "name": "הנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 75,
                     "course_number": 157107,
-                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה"
+                    "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1766,84 +2066,100 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 49,
                     "course_number": 157200,
-                    "name": "אקסלנטים"
+                    "name": "אקסלנטים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 59,
                     "course_number": 157102,
-                    "name": "בינה מלאכותית וישומה"
+                    "name": "בינה מלאכותית וישומה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 60,
                     "course_number": 157123,
-                    "name": "כריית מידע - למדהמ"
+                    "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 66,
                     "course_number": 157125,
-                    "name": "איחזור מידע"
+                    "name": "איחזור מידע",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1861,39 +2177,46 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 43,
                     "course_number": 153004,
-                    "name": "הנדסת מערכות חלונות"
+                    "name": "הנדסת מערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1909,39 +2232,46 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 47,
                     "course_number": 151131,
-                    "name": "קומפיילרים ומתרגמים"
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1957,22 +2287,26 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 8,
                     "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2"
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 17,
                     "course_number": 120701,
-                    "name": "הסתברות"
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -1992,12 +2326,14 @@
                 {
                     "id": 12,
                     "course_number": 140004,
-                    "name": "מכינה בפיזיקה למחשבים"
+                    "name": "מכינה בפיזיקה למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 13,
                     "course_number": 141001,
-                    "name": "פיזיקה להנדסת מחשבים"
+                    "name": "פיזיקה להנדסת מחשבים",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -2014,64 +2350,76 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 18,
                     "course_number": 120304,
-                    "name": "לוגיקה מתמטית"
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 23,
                     "course_number": 120302,
-                    "name": "מתמטיקה בדידה"
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 47,
                     "course_number": 151131,
-                    "name": "קומפיילרים ומתרגמים"
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2086,59 +2434,70 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 11,
                     "course_number": 151101,
-                    "name": "מבנה המחשב"
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 32,
                     "course_number": 156353,
-                    "name": "מערכות להרצת קוד בסביבה בטוחה"
+                    "name": "מערכות להרצת קוד בסביבה בטוחה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 45,
                     "course_number": 156364,
-                    "name": "יסודות לאבטחת רשתות"
+                    "name": "יסודות לאבטחת רשתות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 51,
                     "course_number": 156363,
-                    "name": "יסודות באבטחת תוכנה"
+                    "name": "יסודות באבטחת תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2155,54 +2514,64 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 59,
                     "course_number": 157102,
-                    "name": "בינה מלאכותית וישומה"
+                    "name": "בינה מלאכותית וישומה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 60,
                     "course_number": 157123,
-                    "name": "כריית מידע - למדהמ"
+                    "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 66,
                     "course_number": 157125,
-                    "name": "איחזור מידע"
+                    "name": "איחזור מידע",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2230,49 +2599,58 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": true
                 }
             ],
             "blocks": [
                 {
                     "id": 53,
                     "course_number": 157109,
-                    "name": "עיצוב ותכנות מונחי עצמים להנדסה"
+                    "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2287,54 +2665,64 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 11,
                     "course_number": 151101,
-                    "name": "מבנה המחשב"
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 35,
                     "course_number": 151123,
-                    "name": "UNIX מערכות"
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 58,
                     "course_number": 157121,
-                    "name": "סדנא מתקדמת בC"
+                    "name": "סדנא מתקדמת בC",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 68,
                     "course_number": 157111,
-                    "name": "מערכות זמן אמת ותכנות מקבילי"
+                    "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2349,47 +2737,56 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 11,
                     "course_number": 151101,
-                    "name": "מבנה המחשב"
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -2407,17 +2804,20 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -2434,39 +2834,46 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 18,
                     "course_number": 120304,
-                    "name": "לוגיקה מתמטית"
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 54,
                     "course_number": 150060,
-                    "name": "עקרונות שפות תכנה"
+                    "name": "עקרונות שפות תכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2484,42 +2891,50 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 11,
                     "course_number": 151101,
-                    "name": "מבנה המחשב"
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -2536,22 +2951,26 @@
                 {
                     "id": 38,
                     "course_number": 179163,
-                    "name": "אנגלית בסיסי"
+                    "name": "אנגלית בסיסי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 39,
                     "course_number": 179164,
-                    "name": "אנגלית מתקדמים א"
+                    "name": "אנגלית מתקדמים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 40,
                     "course_number": 179165,
-                    "name": "אנגלית מתקדמים ב"
+                    "name": "אנגלית מתקדמים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 41,
                     "course_number": 150790,
-                    "name": "אנגלית למדעי המחשב"
+                    "name": "אנגלית למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2567,22 +2986,26 @@
                 {
                     "id": 38,
                     "course_number": 179163,
-                    "name": "אנגלית בסיסי"
+                    "name": "אנגלית בסיסי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 39,
                     "course_number": 179164,
-                    "name": "אנגלית מתקדמים א"
+                    "name": "אנגלית מתקדמים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 40,
                     "course_number": 179165,
-                    "name": "אנגלית מתקדמים ב"
+                    "name": "אנגלית מתקדמים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 41,
                     "course_number": 150790,
-                    "name": "אנגלית למדעי המחשב"
+                    "name": "אנגלית למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2598,29 +3021,34 @@
                 {
                     "id": 36,
                     "course_number": 179161,
-                    "name": "אנגלית טרום בסיסי א"
+                    "name": "אנגלית טרום בסיסי א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 37,
                     "course_number": 179162,
-                    "name": "אנגלית טרום בסיסי ב"
+                    "name": "אנגלית טרום בסיסי ב",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 39,
                     "course_number": 179164,
-                    "name": "אנגלית מתקדמים א"
+                    "name": "אנגלית מתקדמים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 40,
                     "course_number": 179165,
-                    "name": "אנגלית מתקדמים ב"
+                    "name": "אנגלית מתקדמים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 41,
                     "course_number": 150790,
-                    "name": "אנגלית למדעי המחשב"
+                    "name": "אנגלית למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2636,29 +3064,34 @@
                 {
                     "id": 36,
                     "course_number": 179161,
-                    "name": "אנגלית טרום בסיסי א"
+                    "name": "אנגלית טרום בסיסי א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 37,
                     "course_number": 179162,
-                    "name": "אנגלית טרום בסיסי ב"
+                    "name": "אנגלית טרום בסיסי ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 38,
                     "course_number": 179163,
-                    "name": "אנגלית בסיסי"
+                    "name": "אנגלית בסיסי",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 40,
                     "course_number": 179165,
-                    "name": "אנגלית מתקדמים ב"
+                    "name": "אנגלית מתקדמים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 41,
                     "course_number": 150790,
-                    "name": "אנגלית למדעי המחשב"
+                    "name": "אנגלית למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2674,29 +3107,34 @@
                 {
                     "id": 36,
                     "course_number": 179161,
-                    "name": "אנגלית טרום בסיסי א"
+                    "name": "אנגלית טרום בסיסי א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 37,
                     "course_number": 179162,
-                    "name": "אנגלית טרום בסיסי ב"
+                    "name": "אנגלית טרום בסיסי ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 38,
                     "course_number": 179163,
-                    "name": "אנגלית בסיסי"
+                    "name": "אנגלית בסיסי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 39,
                     "course_number": 179164,
-                    "name": "אנגלית מתקדמים א"
+                    "name": "אנגלית מתקדמים א",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 41,
                     "course_number": 150790,
-                    "name": "אנגלית למדעי המחשב"
+                    "name": "אנגלית למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2714,27 +3152,32 @@
                 {
                     "id": 36,
                     "course_number": 179161,
-                    "name": "אנגלית טרום בסיסי א"
+                    "name": "אנגלית טרום בסיסי א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 37,
                     "course_number": 179162,
-                    "name": "אנגלית טרום בסיסי ב"
+                    "name": "אנגלית טרום בסיסי ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 38,
                     "course_number": 179163,
-                    "name": "אנגלית בסיסי"
+                    "name": "אנגלית בסיסי",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 39,
                     "course_number": 179164,
-                    "name": "אנגלית מתקדמים א"
+                    "name": "אנגלית מתקדמים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 40,
                     "course_number": 179165,
-                    "name": "אנגלית מתקדמים ב"
+                    "name": "אנגלית מתקדמים ב",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -2752,12 +3195,14 @@
                 {
                     "id": 52,
                     "course_number": 150225,
-                    "name": "מיני פרויקט בבסיסי נתונים"
+                    "name": "מיני פרויקט בבסיסי נתונים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2772,37 +3217,44 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 22,
                     "course_number": 153007,
-                    "name": "מיני פרויקט במערכות חלונות"
+                    "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -2819,42 +3271,50 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -2870,52 +3330,62 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 9,
                     "course_number": 156200,
-                    "name": "מבוא לתקשרת מחשבים"
+                    "name": "מבוא לתקשרת מחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 11,
                     "course_number": 151101,
-                    "name": "מבנה המחשב"
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -2934,79 +3404,94 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 7,
                     "course_number": 120221,
-                    "name": "אלגברה לינארית ב"
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 8,
                     "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2"
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 18,
                     "course_number": 120304,
-                    "name": "לוגיקה מתמטית"
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 23,
                     "course_number": 120302,
-                    "name": "מתמטיקה בדידה"
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 50,
                     "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים"
+                    "name": "חישוביות ומורכבות החישובים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,
                     "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית"
+                    "name": "אלגוריתמיקה מקבילית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 70,
                     "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה"
+                    "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -3023,42 +3508,50 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 18,
                     "course_number": 120304,
-                    "name": "לוגיקה מתמטית"
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 23,
                     "course_number": 120302,
-                    "name": "מתמטיקה בדידה"
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3074,32 +3567,38 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3116,67 +3615,80 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 7,
                     "course_number": 120221,
-                    "name": "אלגברה לינארית ב"
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 8,
                     "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2"
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 18,
                     "course_number": 120304,
-                    "name": "לוגיקה מתמטית"
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 23,
                     "course_number": 120302,
-                    "name": "מתמטיקה בדידה"
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3193,47 +3705,56 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 11,
                     "course_number": 151101,
-                    "name": "מבנה המחשב"
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 27,
                     "course_number": 156360,
-                    "name": "מבוא לאבטחת מידע"
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3253,7 +3774,8 @@
                 {
                     "id": 42,
                     "course_number": 150221,
-                    "name": "בסיסי נתונים"
+                    "name": "בסיסי נתונים",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3271,52 +3793,62 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 30,
                     "course_number": 151055,
-                    "name": "מיני פרויקט במבוא להנדסת תוכנה"
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3334,42 +3866,50 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 18,
                     "course_number": 120304,
-                    "name": "לוגיקה מתמטית"
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 34,
                     "course_number": 153105,
-                    "name": "תכנות פונקציונלית ולוגית"
+                    "name": "תכנות פונקציונלית ולוגית",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3418,47 +3958,56 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 11,
                     "course_number": 151101,
-                    "name": "מבנה המחשב"
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3476,37 +4025,44 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3524,44 +4080,52 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": [
                 {
                     "id": 62,
                     "course_number": 157117,
-                    "name": "רשתות נוירונים ולמידה עמוקה"
+                    "name": "רשתות נוירונים ולמידה עמוקה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -3591,57 +4155,68 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 7,
                     "course_number": 120221,
-                    "name": "אלגברה לינארית ב"
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 8,
                     "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2"
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 60,
                     "course_number": 157123,
-                    "name": "כריית מידע - למדהמ"
+                    "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3659,7 +4234,8 @@
                 {
                     "id": 71,
                     "course_number": 150901,
-                    "name": "פרויקט גמר בהנדסת מחשבים"
+                    "name": "פרויקט גמר בהנדסת מחשבים",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -3676,32 +4252,38 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3729,37 +4311,44 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 28,
                     "course_number": 157100,
-                    "name": "מבוא לבינה מלאכותית ומדע הנתונים"
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3775,67 +4364,80 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 7,
                     "course_number": 120221,
-                    "name": "אלגברה לינארית ב"
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 8,
                     "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2"
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 18,
                     "course_number": 120304,
-                    "name": "לוגיקה מתמטית"
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 23,
                     "course_number": 120302,
-                    "name": "מתמטיקה בדידה"
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3852,47 +4454,56 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 10,
                     "course_number": 150301,
-                    "name": "מערכות ספרתיות"
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 11,
                     "course_number": 151101,
-                    "name": "מבנה המחשב"
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 31,
                     "course_number": 151111,
-                    "name": "מערכות הפעלה"
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3909,72 +4520,86 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 7,
                     "course_number": 120221,
-                    "name": "אלגברה לינארית ב"
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 8,
                     "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2"
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 18,
                     "course_number": 120304,
-                    "name": "לוגיקה מתמטית"
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 21,
                     "course_number": 150090,
-                    "name": "מבנה נתונים ב"
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 23,
                     "course_number": 120302,
-                    "name": "מתמטיקה בדידה"
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
                     "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות"
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 42,
                     "course_number": 150221,
-                    "name": "בסיסי נתונים"
+                    "name": "בסיסי נתונים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 46,
                     "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות"
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -3991,7 +4616,8 @@
                 {
                     "id": 63,
                     "course_number": 150900,
-                    "name": "תכנון - פרויקט גמר בהנדסת מחשבים"
+                    "name": "תכנון - פרויקט גמר בהנדסת מחשבים",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -4013,32 +4639,38 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -4054,27 +4686,32 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -4105,42 +4742,50 @@
                 {
                     "id": 1,
                     "course_number": 150000,
-                    "name": "מבוא למחשבים"
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 3,
                     "course_number": 120201,
-                    "name": "אלגברה לינארית א"
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 6,
                     "course_number": 150005,
-                    "name": "מבוא למדעי המחשב"
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 14,
                     "course_number": 150015,
-                    "name": "מבנה נתונים א"
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 16,
                     "course_number": 150018,
-                    "name": "סדנא בC++"
+                    "name": "סדנא בC++",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 20,
                     "course_number": 151050,
-                    "name": "מבוא להנדסת תוכנה"
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
@@ -4156,17 +4801,20 @@
                 {
                     "id": 2,
                     "course_number": 120000,
-                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 5,
                     "course_number": 120131,
-                    "name": "חשבון אינפני' להנדסה 1"
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 9,
                     "course_number": 156200,
-                    "name": "מבוא לתקשרת מחשבים"
+                    "name": "מבוא לתקשרת מחשבים",
+                    "can_be_taken_in_parallel": false
                 }
             ],
             "blocks": []
