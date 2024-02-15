@@ -118,10 +118,34 @@ class PublicNetworkHttp:
         assert user or self._user, "No user was provided"
         if not user:
             user = self._user
-        url = "https://levnet.jct.ac.il/api/home/login.ashx?action=TryLogin"
-        data = {"username": user.username, "password": user.password}
+        url = "https://levnet.jct.ac.il/api/home/login.ashx?action=TryLogin&ReturnUrl=%2fStudent%2fDefault.asp"
+        data = {"username": user.username, "password": user.password, "defaultLanguage": None}
+
+        headers = {
+            'host': 'levnet.jct.ac.il',
+            'connection': 'keep-alive',
+            'content-length': '71',
+            'sec-ch-ua': '"Not A(Brand";v="99", "Microsoft Edge";v="121", "Chromium";v="121"',
+            'accept': 'application/json, text/plain, */*',
+            'content-type': 'application/json;charset=UTF-8',
+            'dnt': '1',
+            'sec-ch-ua-mobile': '?0',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0',
+            'sec-ch-ua-platform': '"Windows"',
+            'origin': 'https://levnet.jct.ac.il',
+            'sec-fetch-site': 'same-origin',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-dest': 'empty',
+            'referer': 'https://levnet.jct.ac.il/Login/Login.aspx?ReturnUrl=%2fStudent%2fDefault.aspx',
+            'accept-encoding': 'gzip, deflate, br',
+            'accept-language': 'en-US,en;q=0.9,he;q=0.8',
+            'x-postman-captr': '8839776'
+        }
+
         try:
-            response = self.session.post(url, data=json.dumps(data), timeout=self.TIMEOUT, verify=False)
+            data = json.dumps(data)
+            response = self.session.post(url, headers=headers, data=data, timeout=self.TIMEOUT, verify=True)
         except Timeout as error:
             self.logger.debug("FAIL: request url = %s", url)
             self.logger.error("Connection error: %s", str(error))
