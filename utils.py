@@ -72,8 +72,8 @@ def install_auto_complete_cli():
 
 
 def init_project():
-    if sys.version_info < (3, 7):
-        raise RuntimeError("To run this program you should have Python 3.7 or a more recent version.")
+    if sys.version_info < (3, 8):
+        raise RuntimeError("To run this program you should have Python 3.8 or a more recent version.")
     with suppress(AttributeError):
         if os.name == "nt":
             sys.stdout.reconfigure(encoding="utf-8")
