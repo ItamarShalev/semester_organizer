@@ -128,6 +128,7 @@ class TestDatabase:
         course1 = Course("course1", 1234, 2, set(Semester), set(Degree))
         course2 = Course("course2", 1235, 3, set(Semester), set(Degree))
         database_mock.save_courses([course1, course2], Language.ENGLISH)
+        assert database_mock.load_courses(Language.ENGLISH) == [course1, course2]
         database_mock.save_courses_already_done({course1})
         assert database_mock.load_courses_already_done(Language.ENGLISH) == {course1}
         database_mock.clear_courses_already_done()
