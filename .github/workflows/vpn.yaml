@@ -1,0 +1,31 @@
+name: Generate constraint json data
+
+on:
+  push:
+    branches:
+      - vpn
+  workflow_dispatch:
+jobs:
+  connect-open-vpn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: Prepare openVPN file
+        run: |
+          file_name=".github/vpn/config.ovpn"
+          mkdir -p "$(dirname "$file_name")"
+          echo "${{ secrets.OPEN_VPN_FILE_CONTENT }}" > $file_name
+          cat $file_name
+      - name: Install Open VPN
+        run: sudo apt-get install openvpn
+      - name: Connect VPN
+        uses: golfzaptw/action-connect-ovpn@master
+        id: connect_vpn
+        with:
+          PING_URL: '127.0.0.1'
+          FILE_OVPN: '.github/vpn/config.ovpn'
+      - name: Check Connect VPN
+        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+      - name: Kill vpn
+        if: always()
+        run: sudo killall openvpn
