@@ -11,7 +11,7 @@ import pwinput
 import utils
 from algorithms.csp import CSP, Status
 from algorithms.constraint_courses import ConstraintCourses
-from collector.network.public_network import PublicNetworkHttp
+from collector.network.public_network import PublicNetworkHttp, InvalidSemesterTimeRequestException
 from collector.db.db import Database
 from convertor.convertor import Convertor
 from data import translation
@@ -838,6 +838,10 @@ class Controller:
                                 self.network.extract_all_activities_ids_can_enroll_in(settings,
                                                                                       parent_courses_already_done)
                             print(_("Extract all activities can enroll successfully."))
+                            break
+                        except InvalidSemesterTimeRequestException:
+                            print(_("Registration isn't available, it's not the registration period."))
+                            activities_ids_groups = {}
                             break
                         except Exception as error:
                             print(_(message).format(number_try, max_tries))

@@ -2,8 +2,8 @@ import pytest
 from pytest import fixture
 
 from collector.db.db import Database
-from collector.network.public_network import PublicNetworkHttp, WeakNetworkConnectionException, \
-    InvalidServerRequestException
+from collector.network.public_network import PublicNetworkHttp, WeakNetworkConnectionException
+from collector.network.public_network import InvalidSemesterTimeRequestException
 from data.language import Language
 from data.settings import Settings
 from data.user import User
@@ -51,9 +51,8 @@ class TestPublicNetworkHttp(BaseTestNetworkHttp):
 
         try:
             activities_ids_can_enroll_in = network.extract_all_activities_ids_can_enroll_in(settings, [])
-        except InvalidServerRequestException as error:
-            if error.has_json() and "לא ניתן לבנות מערכת עבור הסמסטר והשנה שנבחרו" in error.json_data["error"]:
-                return
+        except InvalidSemesterTimeRequestException:
+            return
         assert "120131.04.5783.01" in activities_ids_can_enroll_in, "Can't extract activities ids can enroll in."
 
     def test_check_setup(self, user):

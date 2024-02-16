@@ -36,6 +36,10 @@ class InvalidServerRequestException(Exception):
         return bool(self.json_data)
 
 
+class InvalidSemesterTimeRequestException(InvalidServerRequestException):
+    pass
+
+
 class PublicNetworkHttp:
     """
     :raises: InvalidServerRequestException if the server request is invalid.
@@ -146,7 +150,13 @@ class PublicNetworkHttp:
     def extract_all_activities_ids_can_enroll_in(self, settings: Settings,
                                                  parent_courses_already_did: List[int] = None) -> Dict[str, Set[int]]:
         self._config_for_build_schedule_start()
-        self._config_year_and_semester(settings.year, settings.semester)
+        try:
+            self._config_year_and_semester(settings.year, settings.semester)
+        except InvalidServerRequestException as error:
+            if error.has_json():
+                # Can't register yet.
+                args = error.url_request, error.data_request, error.response, error.json_data
+                raise InvalidSemesterTimeRequestException(*args) from None
         tracks = self._get_tracks(settings.year, settings.semester)
         activities_ids = defaultdict(set)
         parent_courses_already_did = parent_courses_already_did or []

@@ -259,6 +259,7 @@ data = TextCaseInsensitiveDict({
     "Show only courses with complete prequistities": "הראה רק קורסים ללא קורסים חוסמים",
     "Update settings": "עדכון הגדרות",
     "Please choose a current degree:": "אנא בחר את התואר הנוכחי אותו אתה לומד",
+    "Registration isn't available, it's not the registration period.": "ההרשמה לא זמינה, המערכת עוד לא נפתחה."
 })
 
 
