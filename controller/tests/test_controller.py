@@ -147,7 +147,7 @@ class TestController:
     @fixture
     def controller_mock(self, database_mock, convertor_mock, network_mock):
         # pylint: disable=protected-access
-        controller = Controller()
+        controller = Controller(verbose=True)
         controller.max_output = 1
         controller.convertor = convertor_mock
         controller.database = database_mock

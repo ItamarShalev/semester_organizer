@@ -45,10 +45,10 @@ def main():
         database.save_user_data(User(args.username, args.password))
 
     if args.flow is Flow.CONSOLE:
-        Controller().run_console_flow()
+        Controller(verbose=args.verbose).run_console_flow()
 
     elif args.flow is Flow.GUI:
-        Controller().run_main_gui_flow()
+        Controller(verbose=args.verbose).run_main_gui_flow()
 
     elif args.flow is Flow.UPDATE_DATABASE:
         message = _("Database path is not a file or doesn't exists, the path given is: ")
