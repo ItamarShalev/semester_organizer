@@ -54,6 +54,7 @@ class Controller:
         settings = self.database.load_settings() or Settings()
         language = language or settings.language
         settings.language = language
+        settings.year = utils.convert_year(settings.year, language)
         translation.config_language_text(language)
         activities_ids_groups = {}
 

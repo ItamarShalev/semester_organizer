@@ -15,6 +15,7 @@ from urllib3.exceptions import InsecureRequestWarning
 from data.course import Course
 from data.degree import Degree
 from data.semester import Semester
+from data.language import Language
 from data.translation import _
 
 ENCODING = "utf-8-sig"
@@ -85,8 +86,20 @@ def init_project():
 
 
 def get_current_hebrew_year():
+    return convert_year(datetime.now().year, Language.HEBREW)
+
+
+def convert_year(year: int, language: Language) -> int:
+    """
+    Change year by the language.
+    """
+    result = year
     diff_hebrew_year = 3761
-    return diff_hebrew_year + datetime.now().year - 1
+    if language is Language.HEBREW and year < diff_hebrew_year:
+        result = year + diff_hebrew_year - 1
+    elif language is Language.ENGLISH and year > diff_hebrew_year:
+        result = year - diff_hebrew_year + 1
+    return result
 
 
 def get_current_hebrew_name():
