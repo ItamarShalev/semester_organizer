@@ -119,7 +119,7 @@ class PublicNetworkHttp:
         if not user:
             user = self._user
         url = "https://levnet.jct.ac.il/api/home/login.ashx?action=TryLogin"
-        data = {"username": user.username, "password": user.password}
+        data = {"username": user.username, "password": user.password, "defaultLanguage": None}
         try:
             response = self.session.post(url, data=json.dumps(data), timeout=self.TIMEOUT, verify=False)
         except Timeout as error:
