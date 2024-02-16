@@ -129,7 +129,7 @@ def get_last_modified_by_days(file_path: str) -> int:
 
 def get_current_semester():
     current_month = datetime.now().month
-    fall_months = [8, 9, 10, 11, 12, 1]
+    fall_months = [8, 9, 10, 11, 12, 1, 2]
     return Semester.FALL if current_month in fall_months else Semester.SPRING
 
 
