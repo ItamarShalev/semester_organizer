@@ -5,9 +5,9 @@ dataclasses_json>=0.5.7
 # Gui package use tkinter, Must have tkinter with the python, can't install via pip.
 customtkinter>=5.0.2
 # Network requests.
-requests>=2.31
+requests==2.31
 # For network, avoid printing warnings for each request.
-urllib3>=1.26.13
+urllib3==2.2.1
 # Automatic bash complete commands.
 argcomplete>=2.0.0
 # Work with dataframe to export in csv, excel and image output formats.
@@ -20,5 +20,5 @@ dataframe_image>=0.1.5
 aenum>=3.1.11
 # Password input, hide the password while typing.
 pwinput>=1.0.2
-# dataframe_image module requirment.
+# dataframe_image module requirement.
 matplotlib>=3.7.2

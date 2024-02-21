@@ -1,13 +1,15 @@
 import json
+import ssl
 from collections import defaultdict
 from contextlib import suppress
 from typing import Optional, List, Set, Tuple, Dict
 
 from json import JSONDecodeError
 
-from requests import Response
+from requests import Response, Session
 from requests.exceptions import Timeout
-import requests
+from requests.adapters import HTTPAdapter
+from urllib3.poolmanager import PoolManager
 import urllib3
 
 import utils
@@ -40,6 +42,28 @@ class InvalidSemesterTimeRequestException(InvalidServerRequestException):
     pass
 
 
+class TLSAdapter(HTTPAdapter):
+    def __init__(self, ssl_version=None, **kwargs):
+        self.ssl_version = ssl_version
+        super().__init__(**kwargs)
+
+    @staticmethod
+    def session(ssl_version=ssl.PROTOCOL_TLSv1_2) -> Session:
+        adapter = TLSAdapter(ssl_version)
+        session = Session()
+        session.mount(prefix='https://', adapter=adapter)
+        return session
+
+    def init_poolmanager(self, connections: int, maxsize: int, block: bool = False, **pool_kwargs):
+        self.poolmanager = PoolManager(
+            num_pools=connections,
+            maxsize=maxsize,
+            block=block,
+            ssl_version=self.ssl_version,
+            **pool_kwargs
+        )
+
+
 class PublicNetworkHttp:
     """
     :raises: InvalidServerRequestException if the server request is invalid.
@@ -69,7 +93,7 @@ class PublicNetworkHttp:
     @property
     def session(self):
         if self._session is None:
-            self._session = requests.Session()
+            self._session = TLSAdapter.session()
             headers = {
                 'sec-ch-ua': '"Microsoft Edge";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
                 'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json;charset=UTF-8',
