@@ -9,7 +9,8 @@ class Course:
 
     def __init__(self, name: str, course_number: int, parent_course_number: int,
                  semesters: Union[Semester, Set[Semester], None] = None,
-                 degrees: Union[Degree, Set[Degree], None] = None):
+                 degrees: Union[Degree, Set[Degree], None] = None,
+                 mandatory_degrees: Union[Degree, Set[Degree], None] = None):
         self.name = name
         self.course_number = course_number
         self.parent_course_number = parent_course_number
@@ -22,7 +23,11 @@ class Course:
         if isinstance(degrees, Degree):
             degrees = {degrees}
 
+        if isinstance(mandatory_degrees, Degree):
+            mandatory_degrees = {mandatory_degrees}
+
         self.degrees = degrees or set()
+        self.mandatory_degrees = mandatory_degrees or set()
 
     def add_semesters(self, semesters: Union[Semester, Set[Semester]]):
         if isinstance(semesters, Semester):
@@ -33,6 +38,15 @@ class Course:
         if isinstance(degrees, Degree):
             degrees = {degrees}
         self.degrees.update(degrees)
+
+    def add_mandatory(self, degrees: Union[Degree, Set[Degree]]):
+        if isinstance(degrees, Degree):
+            degrees = {degrees}
+        self.mandatory_degrees.update(degrees)
+
+    @property
+    def optional_degrees(self) -> Set[Degree]:
+        return self.degrees - self.mandatory_degrees
 
     def __eq__(self, other):
         is_equals = self.name == other.name

@@ -47,6 +47,7 @@ class Database:
         self._shared_sql_tables = [
             "degrees",
             "campuses",
+            "mandatory_courses",
             "degrees_courses",
             "lecturers",
             "courses_lecturers",
@@ -143,6 +144,11 @@ class Database:
                            "(name TEXT PRIMARY KEY, department INTEGER);")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS degrees_courses "
+                           "(degree_name TEXT, parent_course_number INTEGER, "
+                           "FOREIGN KEY(degree_name) REFERENCES degrees(name), "
+                           "PRIMARY KEY(degree_name, parent_course_number));")
+
+            cursor.execute("CREATE TABLE IF NOT EXISTS mandatory_courses "
                            "(degree_name TEXT, parent_course_number INTEGER, "
                            "FOREIGN KEY(degree_name) REFERENCES degrees(name), "
                            "PRIMARY KEY(degree_name, parent_course_number));")
@@ -322,6 +328,9 @@ class Database:
                 for degree in course.degrees:
                     cursor.execute("INSERT OR IGNORE INTO degrees_courses VALUES (?, ?);",
                                    (degree.name, course.parent_course_number))
+                for degree in course.mandatory_degrees:
+                    cursor.execute("INSERT OR IGNORE INTO mandatory_courses VALUES (?, ?);",
+                                   (degree.name, course.parent_course_number))
 
     def load_courses(self, language: Language, degrees: Optional[Set[Degree]] = None) -> List[Course]:
         if not self.shared_database_path.exists():
@@ -341,7 +350,17 @@ class Database:
                                "WHERE semesters_courses.course_id = ?"
                                f"AND degrees_courses.degree_name in {degrees_text};",
                                (course.parent_course_number, *[degree.name for degree in degrees]))
-                course.semesters = [Semester[semester_name.upper()] for (semester_name,) in cursor.fetchall()]
+                course.semesters = {Semester[semester_name.upper()] for (semester_name,) in cursor.fetchall()}
+            for course in courses:
+                cursor.execute("SELECT degree_name FROM degrees_courses "
+                               "WHERE parent_course_number = ?;",
+                               (course.parent_course_number,))
+                course.degrees = {Degree[degree_name.upper()] for (degree_name,) in cursor.fetchall()}
+            for course in courses:
+                cursor.execute("SELECT degree_name FROM mandatory_courses "
+                               "WHERE parent_course_number = ?;",
+                               (course.parent_course_number,))
+                course.mandatory_degrees = {Degree[degree_name.upper()] for (degree_name,) in cursor.fetchall()}
             return courses
 
     def load_active_courses(self, campus_name: str, language: Language,

@@ -1,9 +1,15 @@
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 from collections import OrderedDict
 from copy import deepcopy
+
+from collector.db.db import Database
+from data.course import Course
+from data.degree import Degree
+from data.language import Language
+from data import translation
 
 
 @dataclass(order=True)
@@ -38,6 +44,7 @@ class ConstraintCourseData:
     aliases: List[str] = field(default_factory=list)
     blocked_by: List[PrerequisiteCourse] = field(default_factory=list)
     blocks: List[PrerequisiteCourse] = field(default_factory=list)
+    course_info: Optional[Course] = None
 
     def to_json(self, include_blocked_by: bool, include_blocks: bool, include_can_be_taken_in_parallel: bool) -> Dict:
         result = {
@@ -46,6 +53,10 @@ class ConstraintCourseData:
             "course_number": self.course_number,
             "aliases": self.aliases
         }
+        mandatory_degrees = list(self.course_info.mandatory_degrees) if self.course_info else []
+        result["mandatory_for_degrees"] = sorted([translation.hebrew(degree.name) for degree in mandatory_degrees])
+        optional_degrees = list(self.course_info.optional_degrees) if self.course_info else []
+        result["optional_for_degrees"] = sorted([translation.hebrew(degree.name) for degree in optional_degrees])
         if include_blocked_by:
             result["blocked_by"] = [course.to_json(include_can_be_taken_in_parallel) for course in self.blocked_by]
         if include_blocks:
@@ -85,6 +96,9 @@ class CourseConstraint:
         all_courses_ids = set()
         all_ids = set()
         courses = OrderedDict()
+        db = Database()
+        all_courses_objects = db.load_courses(Language.HEBREW, set(Degree))
+        all_courses_objects = {course.course_number: course for course in all_courses_objects}
 
         def get_pre_request_courses_list(json_object: Dict, key: str) -> List[PrerequisiteCourse]:
             prerequisite_courses = []
@@ -119,6 +133,7 @@ class CourseConstraint:
                 aliases=course_data["aliases"] + [course_data["name"]],
                 blocked_by=get_pre_request_courses_list(course_data, "blocked_by"),
                 blocks=get_pre_request_courses_list(course_data, "blocks"),
+                course_info=all_courses_objects.get(course_number, None)
             )
             assert object_id not in all_ids, f"ERROR: Found multiple id {object_id}, should remove it."
             assert course_number not in all_courses_ids, \

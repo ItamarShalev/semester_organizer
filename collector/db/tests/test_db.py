@@ -178,6 +178,15 @@ class TestDatabase:
         assert loaded_activities_ids["12.1.1"] == {103}
         assert loaded_activities_ids["10.10.1"] == {103, 104}
 
+    def test_mandatory_degrees(self, database_mock):
+        course = Course("course", 10, 20, Semester.FALL,
+                        {Degree.SOFTWARE_ENGINEERING, Degree.COMPUTER_SCIENCE}, Degree.COMPUTER_SCIENCE)
+        database_mock.save_courses([course], Language.ENGLISH)
+        courses = database_mock.load_courses(Language.ENGLISH, {Degree.SOFTWARE_ENGINEERING})
+        assert len(courses) == 1, "ERROR: Entered one course."
+        assert courses[0].mandatory_degrees == {Degree.COMPUTER_SCIENCE}
+        assert courses[0].optional_degrees == {Degree.SOFTWARE_ENGINEERING}
+
     def test_course_choices(self, database_mock, campuses):
         campus_name = "A"
         courses = [Course(f"Course {i}", i, i + 1000, set(Semester), set(Degree)) for i in range(10)]

@@ -81,6 +81,9 @@ class TestData:
         course.add_semesters(Semester.ANNUAL)
         assert course.semesters == {Semester.SUMMER, Semester.ANNUAL, Semester.SPRING, Semester.FALL}
 
+        course.add_mandatory(Degree.COMPUTER_SCIENCE)
+        assert course.mandatory_degrees == {Degree.COMPUTER_SCIENCE}
+
     def test_activity(self):
         activity = Activity("", Type.LAB, False)
         activity.add_slot(Meeting(Day.MONDAY, "09:00", "11:00"))
