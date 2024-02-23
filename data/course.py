@@ -10,7 +10,8 @@ class Course:
     def __init__(self, name: str, course_number: int, parent_course_number: int,
                  semesters: Union[Semester, Set[Semester], None] = None,
                  degrees: Union[Degree, Set[Degree], None] = None,
-                 mandatory_degrees: Union[Degree, Set[Degree], None] = None):
+                 mandatory_degrees: Union[Degree, Set[Degree], None] = None,
+                 is_active: bool = False, credits_count: float = 0):
         self.name = name
         self.course_number = course_number
         self.parent_course_number = parent_course_number
@@ -28,6 +29,8 @@ class Course:
 
         self.degrees = degrees or set()
         self.mandatory_degrees = mandatory_degrees or set()
+        self.is_active = is_active
+        self.credits_count = credits_count
 
     def add_semesters(self, semesters: Union[Semester, Set[Semester]]):
         if isinstance(semesters, Semester):
