@@ -134,6 +134,15 @@ class TestDatabase:
         database_mock.clear_courses_already_done()
         assert not database_mock.load_courses_already_done(Language.ENGLISH)
 
+    def test_is_active_credits_courses(self, database_mock):
+        course = Course("name", 10, 20, is_active=True, credits_count=2.3)
+        course.degrees = set(Degree)
+        database_mock.save_courses([course], Language.ENGLISH)
+        courses = database_mock.load_courses(Language.ENGLISH, set(Degree))
+        assert len(courses) == 1
+        assert courses[0].is_active is True
+        assert courses[0].credits_count == 2.3
+
     def test_courses(self, database_mock):
         hebrew_courses = [Course(f"קורס {i}", i, i + 1000, set(Semester), set(Degree)) for i in range(10)]
         database_mock.save_courses(hebrew_courses, Language.HEBREW)

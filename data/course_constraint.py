@@ -47,16 +47,21 @@ class ConstraintCourseData:
     course_info: Optional[Course] = None
 
     def to_json(self, include_blocked_by: bool, include_blocks: bool, include_can_be_taken_in_parallel: bool) -> Dict:
+        mandatory_degrees = list(self.course_info.mandatory_degrees) if self.course_info else []
+        mandatory_degrees = sorted([translation.hebrew(degree.name) for degree in mandatory_degrees])
+        optional_degrees = list(self.course_info.optional_degrees) if self.course_info else []
+        optional_degrees = sorted([translation.hebrew(degree.name) for degree in optional_degrees])
+
         result = {
             "id": self.id,
             "name": self.name,
             "course_number": self.course_number,
-            "aliases": self.aliases
+            "is_active": self.course_info.is_active if self.course_info else False,
+            "credits": self.course_info.credits_count if self.course_info else 0.0,
+            "aliases": self.aliases,
+            "mandatory_for_degrees": mandatory_degrees,
+            "optional_for_degrees": optional_degrees,
         }
-        mandatory_degrees = list(self.course_info.mandatory_degrees) if self.course_info else []
-        result["mandatory_for_degrees"] = sorted([translation.hebrew(degree.name) for degree in mandatory_degrees])
-        optional_degrees = list(self.course_info.optional_degrees) if self.course_info else []
-        result["optional_for_degrees"] = sorted([translation.hebrew(degree.name) for degree in optional_degrees])
         if include_blocked_by:
             result["blocked_by"] = [course.to_json(include_can_be_taken_in_parallel) for course in self.blocked_by]
         if include_blocks:

@@ -21,7 +21,7 @@ class TestConstraintCourses:
         courses, *_ = ConstraintCourses().prepare_data()
         degrees = {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
         all_courses = Database().load_courses(Language.HEBREW, degrees)
-        all_courses_id_name = {course.course_number: course.name for course in all_courses}
+        all_courses_id_name = {course.course_number: course.name for course in all_courses if course.is_active}
         courses_doesnt_exist = set(all_courses_id_name.keys()) - {course.course_number for course in courses.values()}
         list_doesnt_exist = {course_number: all_courses_id_name[course_number]
                              for course_number in courses_doesnt_exist}

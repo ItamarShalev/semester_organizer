@@ -96,6 +96,8 @@ class ConstraintCourses:
         courses_already_done_numbers = {course.course_number for course in courses_already_done}
         result = set()
         for course in all_courses:
+            if not course.is_active:
+                continue
             all_needed_courses = {constraint_course.course_number
                                   for constraint_course in are_blocked_by_result[course.course_number].blocked_by}
             left_courses = all_needed_courses - courses_already_done_numbers

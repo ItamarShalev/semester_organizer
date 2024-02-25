@@ -110,7 +110,8 @@ class Database:
 
             cursor.execute("CREATE TABLE IF NOT EXISTS courses "
                            "(name TEXT, course_number INTEGER, "
-                           "parent_course_number INTEGER, language_value CHARACTER(2),"
+                           "parent_course_number INTEGER, language_value CHARACTER(2), "
+                           "is_active BOOLEAN, credits REAL, "
                            "PRIMARY KEY(parent_course_number, language_value));")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS meetings "
@@ -321,7 +322,8 @@ class Database:
     def save_courses(self, courses: List[Course], language: Language):
         with self.connect(self.shared_database_path) as (unused_connection, cursor):
             for course in courses:
-                cursor.execute("INSERT INTO courses VALUES (?, ?, ?, ?);", (*course, language.short_name()))
+                cursor.execute("INSERT INTO courses VALUES (?, ?, ?, ?, ?, ?);",
+                               (*course, language.short_name(), course.is_active, course.credits_count))
                 for semester in course.semesters:
                     cursor.execute("INSERT INTO semesters_courses VALUES (?, ?);",
                                    (semester.value, course.parent_course_number))
@@ -340,7 +342,10 @@ class Database:
             degrees_text = f"({', '.join(['?'] * len(degrees))})"
             cursor.execute("SELECT * FROM courses "
                            "WHERE language_value = ?;", (language.short_name(),))
-            courses = [Course(*data_line) for data_line in cursor.fetchall()]
+            courses = [Course(name, course_number, parent_course_number,
+                              is_active=bool(is_active), credits_count=credits_count)
+                       for name, course_number, parent_course_number, unused_langauge, is_active, credits_count
+                       in cursor.fetchall()]
             for course in courses:
                 cursor.execute("SELECT name FROM semesters "
                                "INNER JOIN semesters_courses "
