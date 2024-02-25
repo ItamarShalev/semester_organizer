@@ -927,7 +927,7 @@ class Controller:
             for index, course in enumerate(courses, 1):
                 self._print(f"{str(index).rjust(2)}.", _("Course:"), course.name)
 
-            courses_indexes_input = input(_("Enter the courses indexes separated by comma (example: 1,2,20): "))
+            courses_indexes_input = input(_("Enter the courses you did indexes separated by comma (example: 1,2,20): "))
             self.logger.debug("Selected courses indexes: %s which they are: ", courses_indexes_input)
             courses_indexes = [int(index) for index in courses_indexes_input.strip().split(",")]
             self._validate_is_numbers_in_range(courses_indexes, len(courses), 1)
