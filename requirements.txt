@@ -18,7 +18,5 @@ xlsxwriter==3.1.9
 dataframe_image>=0.1.5
 # Support enum with duplicate values.
 aenum>=3.1.11
-# Password input, hide the password while typing.
-pwinput>=1.0.2
 # dataframe_image module requirement.
 matplotlib>=3.7.2
