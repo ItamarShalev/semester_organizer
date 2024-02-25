@@ -1,3 +1,5 @@
+import pytest
+
 from algorithms.csp import CSP, Status
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
@@ -11,6 +13,48 @@ from data.type import Type
 
 
 class TestCsp:
+
+    def test_is_consist_itself_option(self):
+        activities = []
+        csp = CSP()
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a", "1")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
+        activities.append(academic_activity)
+
+        academic_activity = AcademicActivity("a", Type.LAB, True, "a", 1, 1, "a", "2")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:20", "11:00"))
+        activities.append(academic_activity)
+
+        activities_ids_groups = {
+            "1": {1},
+            "2": {2}
+        }
+
+        for schedules in [csp.extract_schedules(activities),
+                          csp.extract_schedules_minimal_consists(activities, activities_ids_groups)]:
+            assert len(schedules) == 0
+
+    def test_zero_from_one_option(self):
+        activities = []
+        csp = CSP()
+        academic_activity = AcademicActivity("a", Type.LECTURE, True, "a", 1, 1, "a", "1")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:00", "11:00"))
+        with pytest.raises(RuntimeError):
+            academic_activity.add_slot(Meeting(Day.SUNDAY, "10:20", "10:40"))
+        activities.append(academic_activity)
+
+        academic_activity = AcademicActivity("b", Type.LECTURE, True, "b", 1, 1, "b", "2")
+        academic_activity.add_slot(Meeting(Day.SUNDAY, "10:30", "14:30"))
+        activities.append(academic_activity)
+
+        activities_ids_groups = {
+            "1": {1},
+            "2": {1},
+        }
+
+        for schedules in [csp.extract_schedules(activities),
+                          csp.extract_schedules_minimal_consists(activities, activities_ids_groups)]:
+            assert len(schedules) == 0
 
     def test_one_from_one_option(self):
         activities = []
