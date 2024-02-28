@@ -233,6 +233,12 @@
                     "course_number": 157107,
                     "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -528,6 +534,12 @@
                     "course_number": 156336,
                     "name": "רשתות מחשבים מתקדמות",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -626,6 +638,12 @@
                     "id": 75,
                     "course_number": 157107,
                     "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -920,6 +938,12 @@
                     "course_number": 156336,
                     "name": "רשתות מחשבים מתקדמות",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1156,6 +1180,12 @@
                     "course_number": 157107,
                     "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1218,6 +1248,12 @@
                     "id": 70,
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1295,6 +1331,12 @@
                     "id": 70,
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1811,6 +1853,12 @@
                     "course_number": 157107,
                     "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2022,6 +2070,12 @@
                     "course_number": 120711,
                     "name": "סטטיסטיקה למהנדסים",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2095,6 +2149,12 @@
                     "id": 70,
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2301,6 +2361,12 @@
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2434,6 +2500,12 @@
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2478,7 +2550,14 @@
                     "can_be_taken_in_parallel": false
                 }
             ],
-            "blocks": []
+            "blocks": [
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         },
         {
             "id": 25,
@@ -2609,6 +2688,12 @@
                     "id": 70,
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -3822,6 +3907,12 @@
                     "id": 70,
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -5343,6 +5434,111 @@
                     "id": 9,
                     "course_number": 156200,
                     "name": "מבוא לתקשרת מחשבים",
+                    "can_be_taken_in_parallel": false
+                }
+            ],
+            "blocks": []
+        },
+        {
+            "id": 77,
+            "name": "עקרונות שיטות הצפנה",
+            "course_number": 156361,
+            "is_active": false,
+            "credits": 0.0,
+            "aliases": [
+                "עקרונות שיטות הצפנה"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 7,
+                    "course_number": 120221,
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 8,
+                    "course_number": 120132,
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 17,
+                    "course_number": 120701,
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 18,
+                    "course_number": 120304,
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 24,
+                    "course_number": 120711,
+                    "name": "סטטיסטיקה למהנדסים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 26,
+                    "course_number": 150101,
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 46,
+                    "course_number": 150134,
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
                     "can_be_taken_in_parallel": false
                 }
             ],

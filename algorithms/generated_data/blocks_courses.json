@@ -232,6 +232,12 @@
                     "course_number": 157107,
                     "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -526,6 +532,12 @@
                     "course_number": 156336,
                     "name": "רשתות מחשבים מתקדמות",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -616,6 +628,12 @@
                     "id": 75,
                     "course_number": 157107,
                     "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -901,6 +919,12 @@
                     "course_number": 156336,
                     "name": "רשתות מחשבים מתקדמות",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1129,6 +1153,12 @@
                     "course_number": 157107,
                     "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1177,6 +1207,12 @@
                     "id": 70,
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1240,6 +1276,12 @@
                     "id": 70,
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1698,6 +1740,12 @@
                     "course_number": 157107,
                     "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1849,6 +1897,12 @@
                     "course_number": 120711,
                     "name": "סטטיסטיקה למהנדסים",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1914,6 +1968,12 @@
                     "id": 70,
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2044,6 +2104,12 @@
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2131,6 +2197,12 @@
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2149,7 +2221,14 @@
                 "מדעי המחשב"
             ],
             "optional_for_degrees": [],
-            "blocks": []
+            "blocks": [
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         },
         {
             "id": 25,
@@ -2222,6 +2301,12 @@
                     "id": 70,
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2764,6 +2849,12 @@
                     "course_number": 157119,
                     "name": "סמינר להנדסת תכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 77,
+                    "course_number": 156361,
+                    "name": "עקרונות שיטות הצפנה",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -3254,6 +3345,19 @@
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
+            "blocks": []
+        },
+        {
+            "id": 77,
+            "name": "עקרונות שיטות הצפנה",
+            "course_number": 156361,
+            "is_active": false,
+            "credits": 0.0,
+            "aliases": [
+                "עקרונות שיטות הצפנה"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [],
             "blocks": []
         }
     ]
