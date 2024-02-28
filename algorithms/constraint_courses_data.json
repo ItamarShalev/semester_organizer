@@ -709,23 +709,11 @@
             ],
             "blocked_by": [
                 {
-                    "id": 7,
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 8,
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 21,
                     "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 23,
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 26,
                     "can_be_taken_in_parallel": false
                 }
             ]
