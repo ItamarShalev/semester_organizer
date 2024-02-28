@@ -595,18 +595,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 46,
-                    "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 50,
-                    "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 53,
                     "course_number": 157109,
                     "name": "עיצוב ותכנות מונחי עצמים להנדסה",
@@ -622,12 +610,6 @@
                     "id": 67,
                     "course_number": 151281,
                     "name": "אלגוריתמיקה מקבילית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 70,
-                    "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -1192,18 +1174,6 @@
             "optional_for_degrees": [],
             "blocks": [
                 {
-                    "id": 46,
-                    "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 50,
-                    "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 62,
                     "course_number": 157117,
                     "name": "רשתות נוירונים ולמידה עמוקה",
@@ -1213,12 +1183,6 @@
                     "id": 67,
                     "course_number": 151281,
                     "name": "אלגוריתמיקה מקבילית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 70,
-                    "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -1261,18 +1225,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 46,
-                    "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 50,
-                    "course_number": 151285,
-                    "name": "חישוביות ומורכבות החישובים",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 62,
                     "course_number": 157117,
                     "name": "רשתות נוירונים ולמידה עמוקה",
@@ -1282,12 +1234,6 @@
                     "id": 67,
                     "course_number": 151281,
                     "name": "אלגוריתמיקה מקבילית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 70,
-                    "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -1959,12 +1905,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 46,
-                    "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 47,
                     "course_number": 151131,
                     "name": "קומפיילרים ומתרגמים",
@@ -1980,24 +1920,6 @@
                     "id": 54,
                     "course_number": 150060,
                     "name": "עקרונות שפות תכנה",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 67,
-                    "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 70,
-                    "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 77,
-                    "course_number": 156361,
-                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2292,12 +2214,6 @@
             "optional_for_degrees": [],
             "blocks": [
                 {
-                    "id": 46,
-                    "course_number": 150134,
-                    "name": "ניתוח אלגוריתמים וסיבוכיות",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 47,
                     "course_number": 151131,
                     "name": "קומפיילרים ומתרגמים",
@@ -2314,24 +2230,6 @@
                     "course_number": 150060,
                     "name": "עקרונות שפות תכנה",
                     "can_be_taken_in_parallel": true
-                },
-                {
-                    "id": 67,
-                    "course_number": 151281,
-                    "name": "אלגוריתמיקה מקבילית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 70,
-                    "course_number": 157119,
-                    "name": "סמינר להנדסת תכנה",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 77,
-                    "course_number": 156361,
-                    "name": "עקרונות שיטות הצפנה",
-                    "can_be_taken_in_parallel": false
                 }
             ]
         },

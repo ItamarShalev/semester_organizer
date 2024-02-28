@@ -1743,12 +1743,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 3,
-                    "course_number": 120201,
-                    "name": "אלגברה לינארית א",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 5,
                     "course_number": 120131,
                     "name": "חשבון אינפני' להנדסה 1",
@@ -1761,27 +1755,9 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 7,
-                    "course_number": 120221,
-                    "name": "אלגברה לינארית ב",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 8,
-                    "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 14,
                     "course_number": 150015,
                     "name": "מבנה נתונים א",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 18,
-                    "course_number": 120304,
-                    "name": "לוגיקה מתמטית",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -1794,12 +1770,6 @@
                     "id": 23,
                     "course_number": 120302,
                     "name": "מתמטיקה בדידה",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 26,
-                    "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1950,12 +1920,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 3,
-                    "course_number": 120201,
-                    "name": "אלגברה לינארית א",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 5,
                     "course_number": 120131,
                     "name": "חשבון אינפני' להנדסה 1",
@@ -1965,18 +1929,6 @@
                     "id": 6,
                     "course_number": 150005,
                     "name": "מבוא למדעי המחשב",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 7,
-                    "course_number": 120221,
-                    "name": "אלגברה לינארית ב",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 8,
-                    "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -2827,12 +2779,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 18,
-                    "course_number": 120304,
-                    "name": "לוגיקה מתמטית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 21,
                     "course_number": 150090,
                     "name": "מבנה נתונים ב",
@@ -2842,12 +2788,6 @@
                     "id": 23,
                     "course_number": 120302,
                     "name": "מתמטיקה בדידה",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 26,
-                    "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -2957,12 +2897,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 3,
-                    "course_number": 120201,
-                    "name": "אלגברה לינארית א",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 5,
                     "course_number": 120131,
                     "name": "חשבון אינפני' להנדסה 1",
@@ -2975,27 +2909,9 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 7,
-                    "course_number": 120221,
-                    "name": "אלגברה לינארית ב",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 8,
-                    "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 14,
                     "course_number": 150015,
                     "name": "מבנה נתונים א",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 18,
-                    "course_number": 120304,
-                    "name": "לוגיקה מתמטית",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -3008,12 +2924,6 @@
                     "id": 23,
                     "course_number": 120302,
                     "name": "מתמטיקה בדידה",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 26,
-                    "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -3344,12 +3254,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 18,
-                    "course_number": 120304,
-                    "name": "לוגיקה מתמטית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 21,
                     "course_number": 150090,
                     "name": "מבנה נתונים ב",
@@ -3365,12 +3269,6 @@
                     "id": 24,
                     "course_number": 120711,
                     "name": "סטטיסטיקה למהנדסים",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 26,
-                    "course_number": 150101,
-                    "name": "אוטומטים ושפות פורמליות",
                     "can_be_taken_in_parallel": false
                 },
                 {
