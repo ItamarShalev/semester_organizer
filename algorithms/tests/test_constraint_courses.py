@@ -48,7 +48,7 @@ class TestConstraintCourses:
         if list_doesnt_exist:
             warnings.simplefilter("always")
             warning_message = f"WARNING: There can be more deprecated courses.\n" \
-                              f"Check if it's because it's exist this semester or really deprecated." \
+                              f"Check if it's because it's exist this semester or really deprecated.\n" \
                               f"Please remove them if needed or add 'deprecated' = true in the json data file.\n" \
                               f"Courses:\n{str_courses_names}."
             print(warning_message)

@@ -8,9 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.1.1
-      with:
-        submodules: 'true'
-        token: ${{ secrets.SPEICAL_TOKEN }}
     - name: Set up Python 3.12
       uses: actions/setup-python@v5.0.0
       with:

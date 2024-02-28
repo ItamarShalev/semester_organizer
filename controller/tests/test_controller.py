@@ -9,7 +9,7 @@ from pytest import fixture
 import utils
 from collector.db.db import Database
 from collector.gui.gui import MessageType, Gui
-from collector.network.public_network import PublicNetworkHttp
+from collector.network.network import NetworkHttp
 from controller.controller import Controller
 from convertor.convertor import Convertor
 from data import translation
@@ -137,7 +137,7 @@ class TestController:
 
     @fixture
     def network_mock(self):
-        class NetworkMock(PublicNetworkHttp):
+        class NetworkMock(NetworkHttp):
             def extract_all_activities_ids_can_enroll_in(self, *_unused_args) -> Dict[str, Set[int]]:
                 self.logger.info("extract_all_activities_ids_can_enroll_in was called")
                 return {}

@@ -1,8 +1,9 @@
 import json
+import re
 import ssl
 from collections import defaultdict
 from contextlib import suppress
-from typing import Optional, List, Set, Tuple, Dict
+from typing import Optional, List, Set, Tuple, Dict, Union
 
 from json import JSONDecodeError
 
@@ -14,9 +15,16 @@ import urllib3
 
 import utils
 from data import translation
+from data.academic_activity import AcademicActivity
+from data.course import Course
+from data.day import Day
+from data.degree import Degree
 from data.language import Language
+from data.meeting import Meeting
 from data.semester import Semester
 from data.settings import Settings
+from data.translation import _
+from data.type import Type
 from data.user import User
 
 
@@ -64,7 +72,7 @@ class TLSAdapter(HTTPAdapter):
         )
 
 
-class PublicNetworkHttp:
+class NetworkHttp:
     """
     :raises: InvalidServerRequestException if the server request is invalid.
              WeakNetworkConnection if the network is weak
@@ -234,6 +242,211 @@ class PublicNetworkHttp:
                     continue
                 course_number = item["actualCourseFullNumber"].split(".")[0]
                 courses.add((item["courseName"], int(course_number)))
+        return courses
+
+    def extract_campuses(self):
+        if not self._campuses:
+            self.extract_campus_names()
+        return {campus_id: campus_name for campus_name, campus_id in self._campuses.items()}
+
+    def extract_campus_names(self) -> List[str]:
+        url = "https://levnet.jct.ac.il/api/common/parentCourses.ashx?action=LoadParentCourse&ParentCourseID=318"
+        json_data = self.request(url)
+        self._campuses = {campus["name"]: campus["id"] for campus in json_data["extensions"]}
+        return list(self._campuses.keys())
+
+    def extract_years(self) -> Dict[int, str]:
+        url = "https://levnet.jct.ac.il/api/common/parentCourses.ashx?action=LoadParentCourse&ParentCourseID=318"
+        json_data = self.request(url)
+        all_years = json_data["academicYears"]
+        min_index, max_index = 0, len(all_years)
+        year_hebrew_number = utils.get_current_hebrew_year()
+        for index, year_data in enumerate(all_years):
+            if year_hebrew_number == year_data["id"]:
+                min_index, max_index = max(0, index - 3), min(len(all_years), index + 3)
+                break
+
+        years = {campus["id"]: campus["name"] for campus in all_years[min_index: max_index]}
+        return years
+
+    @property
+    def campuses(self):
+        if self._campuses is None:
+            self.extract_campus_names()
+        return self._campuses
+
+    def _extract_academic_activity_course(self, campus_name: str, course: Course) -> List[AcademicActivity]:
+        """
+        The function will extract all the academic activities from the given campus and parent course number
+        :param campus_name: The name of the campus
+        :param course: The course to extract the academic activities from
+        :return: A list of AcademicActivity
+        """
+
+        url = f"https://levnet.jct.ac.il/api/common/parentCourses.ashx?" \
+              f"action=LoadActualCourses&ParentCourseID={course.parent_course_number}"
+
+        semester_value = Semester.ANNUAL.value if Semester.ANNUAL in course.semesters else self.settings.semester.value
+        data = {
+            "selectedAcademicYear": self.settings.year,
+            "selectedSemester": semester_value,
+            "selectedExtension": self.campuses[campus_name],
+            "current": 1
+        }
+
+        type_converter = {
+            _("Lesson"): Type.LECTURE,
+            _("Exercise"): Type.PRACTICE,
+            _("Project in Lab"): Type.LAB,
+            _("Project"): Type.LAB,
+            _("Lab"): Type.LAB,
+            _("Seminar"): Type.SEMINAR,
+        }
+        activities = []
+
+        def convert_day(day_letter):
+            if Language.get_current() is Language.HEBREW:
+                return Day(ord(day_letter) - ord('א') + 1)
+            short_names_days_en = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+            return Day(short_names_days_en.index(day_letter) + 1)
+
+        response_json = self.request(url, data)
+        if not response_json["totalItems"]:
+            return []
+
+        actual_courses = [item["id"] for item in response_json["items"]]
+        for actual_course in actual_courses:
+            url = f"https://levnet.jct.ac.il/api/common/actualCourses.ashx?" \
+                  f"action=LoadActualCourse&ActualCourseID={actual_course}"
+            response_json = self.request(url)
+            details = response_json["details"]
+
+            for course_group in response_json["groups"]:
+                full_course_data = course_group["groupFullNumber"]
+                try:
+                    type_course = type_converter[course_group["groupTypeName"].strip()]
+                except Exception as error:
+                    self.logger.debug("Failed to convert type of course: %s", str(error))
+                    type_course = Type.LAB
+                lecturer = course_group["courseGroupLecturers"].strip()
+                if lecturer == _("reshimat hamtana"):
+                    continue
+                group_meetings = course_group["courseGroupMeetings"].strip()
+                group_comment = course_group["groupComment"]
+                comment = group_comment.strip() if group_comment else ""
+                meetings_list = []
+                location = ""
+                current_capacity, max_capacity = course_group["courseRelativeQuota"].split("/")
+                current_capacity = int(current_capacity)
+                max_capacity = int(max_capacity) if max_capacity != "--" else AcademicActivity.UNLIMITED_CAPACITY
+                if not group_meetings:
+                    continue
+                for meeting in group_meetings.split("\r\n"):
+                    meeting = meeting.strip()
+                    day = re.search(_("day (.+?)[ :]"), meeting).group(1).strip()
+                    start, end = re.search(r'(\d+:\d+)-(\d+:\d+)', meeting).group(1, 2)
+                    location = re.search(",(.+?)$", meeting)
+                    location = location.group(1).strip() if location else ""
+                    meetings_list.append(Meeting(convert_day(day), Meeting.str_to_time(start),
+                                                 Meeting.str_to_time(end)))
+                activity = AcademicActivity(course.name, type_course, True, lecturer, course.course_number,
+                                            course.parent_course_number, location, full_course_data, comment)
+                activity.set_capacity(current_capacity, max_capacity)
+                activity.actual_course_number = details["id"]
+                activity.add_slots(meetings_list)
+                activity.description = course_group["groupComment"]
+                activities.append(activity)
+
+        return activities
+
+    def extract_academic_activities_data(self, campus_name: str, courses: List[Course]) -> \
+            Tuple[List[AcademicActivity], List[str]]:
+        """
+        The function fills the academic activities' data.
+        The function will connect to the server and will extract the data from the server by the parent course number.
+        :param: campus_name: the campus name
+        :param: courses: all parent courses to extract
+        :return: list of all academic activities by the courses, list of all the courses names that missing data
+        """
+        not_found_courses = []
+        academic_activities = []
+
+        for course in courses:
+            activities = self._extract_academic_activity_course(campus_name, course)
+            if not activities:
+                not_found_courses.append(course.name)
+            else:
+                academic_activities.extend(activities)
+        return academic_activities, not_found_courses
+
+    def extract_extra_course_info(self, course: Course) -> Tuple[bool, float]:
+        base_api = "https://levnet.jct.ac.il/api/common/parentCourses.ashx"
+        url = f"{base_api}?action=LoadParentCourse&ParentCourseID={course.parent_course_number}"
+
+        response = self.request(url)
+        details = response["details"]
+        return details["active"], details["credits"]
+
+    def extract_all_courses(self, campus_name: str, degrees: Union[Set[Degree], Degree, None] = None) -> List[Course]:
+
+        if campus_name not in self.campuses.keys():
+            raise RuntimeError(f"ERROR: {campus_name} is not a valid campus name")
+        if degrees is None:
+            degrees = Degree.get_defaults()
+        elif isinstance(degrees, Degree):
+            degrees = {degrees}
+
+        program_output_filter_data = {"filter": {"WithEnglish": True, "WithKodesh": False}}
+        courses = []
+        for degree in degrees:
+            url = "https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?action=" \
+                  "LoadPlannedMultiYearPrograms"
+            payload = {"selectedAcademicYear": self.settings.year,
+                       "selectedExtension": self.campuses[campus_name],
+                       "selectedDepartment": degree.value,
+                       "current": 1}
+            response_json = self.request(url, payload)
+
+            def is_relevant_program(item, class_name):
+                is_relevant = item["credits"] and item["coursesCount"] > 0
+                is_relevant = is_relevant and class_name in item["trackName"]
+                return is_relevant
+
+            relevance_programs = [item for item in response_json["items"] if is_relevant_program(item, _(str(degree)))]
+
+            for program in relevance_programs:
+                program_id = program["id"]
+                url = f"https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?" \
+                      f"action=GetMultiYearPlannedProgramMembersWithFilters&InitialProgramID={program_id}"
+                response_json = self.request(url, program_output_filter_data)
+                semesters = [semester_program["members"] for semester_program in response_json["allMembers"]]
+                for semester in semesters:
+                    for course in semester:
+                        parent_course_name_key = "parentCourseName" if Language.get_current() is Language.HEBREW \
+                            else "parentCourseEnglishName"
+                        parent_name = course[parent_course_name_key]
+                        # In case of new course without English name yet.
+                        name = parent_name.strip() if parent_name else course["parentCourseName"].strip()
+                        parent_course_id = course["parentCourseID"]
+                        course_number = course["parentCourseNumber"]
+                        semester = Semester(course["semesterID"])
+                        course_data = Course(name, course_number, parent_course_id, semesters=semester)
+                        course_data.add_degrees(degree)
+                        is_mandatory = course["mandatory"]
+                        if is_mandatory:
+                            course_data.add_mandatory(degree)
+                        if course_data in courses:
+                            course_data = courses[courses.index(course_data)]
+                            course_data.add_semesters(semester)
+                            course_data.add_degrees(degree)
+                            if is_mandatory:
+                                course_data.add_mandatory(degree)
+                        else:
+                            is_active, credits_count = self.extract_extra_course_info(course_data)
+                            course_data.is_active = is_active
+                            course_data.credits_count = credits_count
+                            courses.append(course_data)
+
         return courses
 
     def change_language(self, language: Language):

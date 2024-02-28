@@ -11,7 +11,7 @@ import argcomplete
 
 import utils
 from collector.db.db import Database
-from semester_organizer_private.network.network import NetworkHttp
+from collector.network.network import NetworkHttp
 from data.degree import Degree
 from data import translation
 from data.language import Language

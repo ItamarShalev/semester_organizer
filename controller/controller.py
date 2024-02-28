@@ -11,7 +11,7 @@ from pathlib import Path
 import utils
 from algorithms.csp import CSP, Status
 from algorithms.constraint_courses import ConstraintCourses
-from collector.network.public_network import PublicNetworkHttp, InvalidSemesterTimeRequestException
+from collector.network.network import NetworkHttp, InvalidSemesterTimeRequestException
 from collector.db.db import Database
 from convertor.convertor import Convertor
 from data import translation
@@ -36,7 +36,7 @@ class Controller:
         self.database = Database()
         self.convertor = Convertor()
         self.csp = CSP()
-        self.network = PublicNetworkHttp()
+        self.network = NetworkHttp()
         self.logger = utils.get_logging()
         self.delay_time = 0.12
         self.max_output = 20

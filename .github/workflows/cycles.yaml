@@ -9,9 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.1.1
-      with:
-        submodules: 'true'
-        token: ${{ secrets.SPEICAL_TOKEN }}
     - name: Set up Python 3.12
       uses: actions/setup-python@v5.0.0
       with:
@@ -96,4 +93,4 @@ jobs:
           coverage run --rcfile=".coveragerc_ci_cd" -m pytest $(git ls-files 'test_*.py') -s -v -m "not network"
       - name: Run coverage
         run: |
-          coverage report --rcfile=".coveragerc_ci_cd" -m --omit="./semester_organizer_private/network/network.py,./collector/network/public_network.py" --fail-under=100
+          coverage report --rcfile=".coveragerc_ci_cd" -m --omit="./collector/network/network.py" --fail-under=100

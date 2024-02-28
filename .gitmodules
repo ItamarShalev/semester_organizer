@@ -1,4 +1,0 @@
-[submodule "semester_organizer_private"]
-	path = semester_organizer_private
-	url = git@github.com:ItamarShalev/semester_organizer_private.git
-	branch = main

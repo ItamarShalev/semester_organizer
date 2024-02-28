@@ -111,7 +111,7 @@ def _build_coverage_command(arguments):
         coverage_cmd = "coverage report -m --fail-under=95"
     else:
         coveragerc_ci_cd = os.path.join(utils.ROOT_PATH, ".coveragerc_ci_cd")
-        public_network_path = os.path.join(utils.ROOT_PATH, "collector", "network", "public_network.py")
+        public_network_path = os.path.join(utils.ROOT_PATH, "collector", "network", "network.py")
         private_network_path = os.path.join(utils.ROOT_PATH, "semester_organizer_private", "network", "network.py")
         coverage_cmd = f"coverage report --rcfile={coveragerc_ci_cd} -m " \
                        f"--omit='{public_network_path},{private_network_path}' --fail-under=100"
