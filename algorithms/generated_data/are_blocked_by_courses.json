@@ -3380,6 +3380,45 @@
                     "can_be_taken_in_parallel": false
                 }
             ]
+        },
+        {
+            "id": 78,
+            "name": "מערכות משובצות",
+            "course_number": 157110,
+            "is_active": false,
+            "credits": 0.0,
+            "aliases": [
+                "אמבדד",
+                "מערכות משובצות"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         }
     ]
 }
