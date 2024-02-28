@@ -1222,6 +1222,24 @@
                     "can_be_taken_in_parallel": false
                 }
             ]
+        },
+        {
+            "id": 78,
+            "course_number": 157110,
+            "name": "מערכות משובצות",
+            "aliases": [
+                "אמבדד"
+            ],
+            "blocked_by": [
+                {
+                    "id": 6,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         }
     ]
 }
