@@ -1190,6 +1190,38 @@
                     "can_be_taken_in_parallel": false
                 }
             ]
+        },
+        {
+            "id": 77,
+            "course_number": 156361,
+            "name": "עקרונות שיטות הצפנה",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 3,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 7,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 17,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 24,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 46,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         }
     ]
 }
