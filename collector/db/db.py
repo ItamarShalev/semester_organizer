@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 import shutil
 import contextlib
@@ -74,6 +75,7 @@ class Database:
         self.settings_file_path = personal_path / "settings_data.json"
         self.personal_database_path = personal_path / "personal_database.db"
         self.courses_choose_path = personal_path / "course_choose_user_input.txt"
+        self.english_groups = ["10", "20"]
 
     def init_personal_database_tables(self):
         self.personal_database_path.parent.mkdir(parents=True, exist_ok=True)
@@ -258,51 +260,34 @@ class Database:
         activities_ids = activities_ids or []
         assert extract_unrelated_degrees is bool(settings)
         assert degrees
-        with self.connect(self.shared_database_path) as (unused_connection, cursor):
-            campus_id = self.load_campus_id(campus_name)
-            courses = courses or self.load_active_courses(campus_name, language)
-            courses_choices_data = defaultdict(lambda: (set(), set()))
-            courses_choices = {}
-            lecture_index = 0
-            practice_index = 1
-            degrees_text = f"({', '.join(['?'] * len(degrees))})"
-            activities_ids_text = f"activities.activity_id IN ({', '.join(['?'] * len(activities_ids))})" \
-                if activities_ids else "1"
+        groups = self.english_groups if settings and not settings.show_english_speaker_courses else [".*"]
+        regex_filter_group = re.compile(rf"^\d+\.({'|'.join(groups)})\..*$")
+        courses = courses or self.load_active_courses(campus_name, language)
+        courses_choices_data = defaultdict(lambda: (set(), set()))
+        courses_choices = {}
+        lecture_index = 0
+        practice_index = 1
+        parent_ids = {}
 
-            for course in courses:
-                cursor.execute("SELECT degree_name FROM degrees_courses "
-                               "WHERE parent_course_number = ?;", (course.parent_course_number,))
-                courses_degrees = {Degree[degree_name] for (degree_name,) in cursor.fetchall()}
+        activities = self.load_academic_activities(campus_name, language, courses, activities_ids)
 
-                unrelated_degrees_text = "0"
-                if extract_unrelated_degrees:
-                    if degrees - courses_degrees and not {settings.degree} & courses_degrees:
-                        unrelated_degrees_text = "1"
+        for activity in activities:
+            if settings and not settings.show_english_speaker_courses:
+                if regex_filter_group.search(activity.activity_id):
+                    continue
+            index = lecture_index if activity.type.is_lecture() else practice_index
+            courses_choices_data[activity.name][index].add(activity.lecturer_name)
+            parent_ids[activity.name] = activity.parent_course_number
 
-                cursor.execute("SELECT courses_lecturers.lecturer_name, courses_lecturers.is_lecture_rule "
-                               "FROM courses_lecturers "
-                               "INNER JOIN degrees_courses "
-                               "INNER JOIN activities "
-                               "ON courses_lecturers.parent_course_number = degrees_courses.parent_course_number "
-                               "AND courses_lecturers.parent_course_number = activities.parent_course_number "
-                               "WHERE courses_lecturers.course_number = ? "
-                               "AND courses_lecturers.parent_course_number = ? "
-                               "AND courses_lecturers.campus_id = ? "
-                               "AND courses_lecturers.language_value = ? "
-                               f"AND degrees_courses.degree_name IN {degrees_text} "
-                               f"AND (({activities_ids_text}) "
-                               f"OR ({unrelated_degrees_text}));",
-                               (course.course_number, course.parent_course_number, campus_id, language.short_name(),
-                                *[degree.name for degree in degrees], *activities_ids))
-
-                for lecturer_name, is_lecture_rule in cursor.fetchall():
-                    index = lecture_index if is_lecture_rule else practice_index
-                    courses_choices_data[course.name][index].add(lecturer_name)
-
-                if course.name in courses_choices_data.keys():
-                    courses_choices[course.name] = CourseChoice(course.name, course.parent_course_number,
-                                                                *courses_choices_data[course.name])
-            return courses_choices
+        for activity_name, (lectures, practices) in courses_choices_data.items():
+            course_choice = CourseChoice(
+                activity_name,
+                parent_ids[activity_name],
+                lectures,
+                practices
+            )
+            courses_choices[activity_name] = course_choice
+        return courses_choices
 
     def load_personal_activities(self) -> List[Activity]:
         if not self.personal_database_path.exists():
@@ -391,7 +376,8 @@ class Database:
 
     def load_activities_by_parent_courses_numbers(self, parent_courses_numbers: Set[int],
                                                   campus_name: str, language: Language,
-                                                  degrees: Collection[Degree] = None) -> List[AcademicActivity]:
+                                                  degrees: Collection[Degree] = None,
+                                                  settings: Settings = None) -> List[AcademicActivity]:
         if not self.shared_database_path.exists():
             return []
         with self.connect(self.shared_database_path) as (unused_connection, cursor):
@@ -408,6 +394,11 @@ class Database:
                            (campus_id, language.short_name(), *[degree.name for degree in degrees],
                             *parent_courses_numbers))
             activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language_value in cursor.fetchall()]
+
+            if settings and not settings.show_english_speaker_courses:
+                regex = re.compile(rf"^\d+\.({'|'.join(self.english_groups)})\..*$")
+                activities = list(filter(lambda activity_obj: not regex.search(activity_obj.activity_id), activities))
+
             for activity in activities:
                 cursor.execute("SELECT * FROM meetings "
                                "WHERE activity_id = ? AND "
@@ -486,7 +477,7 @@ class Database:
             return []
         with self.connect(self.shared_database_path) as (unused_connection, cursor):
             activities_ids = activities_ids or []
-            activities_ids_text = f"activities.activity.id IN ({', '.join(['?'] * len(activities_ids))})" \
+            activities_ids_text = f"activities.activity_id IN ({', '.join(['?'] * len(activities_ids))})" \
                 if activities_ids else "1"
             campus_id = self.load_campus_id(campus_name)
             courses_parent_numbers = [str(course.parent_course_number) for course in courses]
@@ -494,7 +485,7 @@ class Database:
                            "WHERE campus_id = ? AND language_value = ? AND "
                            f"parent_course_number IN ({','.join(courses_parent_numbers)}) "
                            f"AND {activities_ids_text} ;",
-                           (campus_id, language.short_name()))
+                           (campus_id, language.short_name(), *activities_ids))
 
             activities = [AcademicActivity(*data_line) for *data_line, _campus_id, _language in cursor.fetchall()]
 

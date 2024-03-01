@@ -62,7 +62,7 @@ class Controller:
         and without database nor GUI.
         """
         self.logger.info("Starting console flow")
-
+        self._clear_screen()
         self.database.init_personal_database_tables()
         language = Language.get_current()
         settings = self.database.load_settings() or Settings()
@@ -70,7 +70,6 @@ class Controller:
         settings.language = language
         settings.year = utils.convert_year(settings.year, language)
         translation.config_language_text(language)
-        activities_ids_groups = {}
 
         if settings.campus_name:
             campus_name = self.database.translate_campus_name(settings.campus_name)
@@ -112,6 +111,7 @@ class Controller:
             self._print(_("No courses were found, please try again with different settings."))
             return
 
+        self._clear_screen()
         is_yes = self._console_ask_yes_or_no("Do you want to select favorite lecturers?")
 
         if is_yes:
@@ -353,7 +353,7 @@ class Controller:
         return campus_name
 
     def _console_ask_courses_choices(self, campus_name: str, settings: Settings,
-                                     activities_ids_can_enroll: Dict[str, Set[int]]):
+                                     activities_ids_can_enroll: Dict[str, Set[int]]) -> Dict[str, CourseChoice]:
         courses_choices = self._get_courses_choices_to_ask(campus_name, settings, activities_ids_can_enroll)
         self._print(_("Select the courses by enter their index:"))
         time.sleep(self.delay_time)
@@ -425,7 +425,6 @@ class Controller:
 
     def _console_ask_favorite_lecturers(self, course_name: str, lecture_type: str, lectures_list: List[Lecture]):
         selected_teachers = []
-        self._clear_screen()
         if len(lectures_list) == 0:
             selected_teachers = []
         elif len(lectures_list) == 1:
@@ -434,8 +433,6 @@ class Controller:
             self._print(text)
             selected_teachers = lectures_list
         else:
-            self._print("\n\n")
-            self._clear_screen()
             self._print(_(f"Select the favorite teachers for {lecture_type} for the course: ") + f"'{course_name}'")
             for index, teacher in enumerate(lectures_list, 1):
                 time.sleep(self.delay_time)
@@ -457,14 +454,17 @@ class Controller:
 
         return selected_teachers
 
-    def _console_ask_for_favorite_lecturers_all_courses(self, courses_choices: Dict[str, List[CourseChoice]]):
+    def _console_ask_for_favorite_lecturers_all_courses(self, courses_choices: Dict[str, CourseChoice]) \
+            -> Dict[str, CourseChoice]:
         selected_courses_choices = {}
-        self._clear_screen()
         for course_name, course_choice in courses_choices.items():
+            self._clear_screen()
             lectures_lists = [course_choice.available_teachers_for_lecture,
                               course_choice.available_teachers_for_practice]
             lectures_lists = [sorted(lectures_list) for lectures_list in lectures_lists]
             for lecture_type, lectures_list in zip(["lecture", "lab / exercise"], lectures_lists):
+                if lecture_type == "lab / exercise":
+                    self._print("\n\n")
                 selected = self._console_ask_favorite_lecturers(course_name, lecture_type, lectures_list)
                 if lecture_type == "lecture":
                     course_choice.available_teachers_for_lecture = selected
@@ -533,6 +533,9 @@ class Controller:
 
         self._print(_("Show hertzog and yeshiva:"), self._yes_no(settings.show_hertzog_and_yeshiva))
         self._print(_("Explain: Show or don't show the courses for hertzog and yeshiva."), end=end_line)
+
+        self._print(_("Show english courses of ESP:"), self._yes_no(settings.show_english_speaker_courses))
+        self._print(_("Explain: Show or don't show the courses for English Speaker Program."), end=end_line)
 
         self._print(_("Show only courses with free places:"), self._yes_no(settings.show_only_courses_with_free_places))
         self._print(_("Explain: Show or don't show the courses that have free places to register."), end=end_line)
@@ -719,6 +722,16 @@ class Controller:
         self._print("\n\n")
         self._clear_screen()
 
+        self._print(_("Show English speaker courses:"))
+        self._print(_("Select 0 to use the default settings."))
+        self._print(_("Default value:"), self._yes_no(settings.show_english_speaker_courses))
+        default_yes_no = self._console_ask_default_yes_no()
+        if default_yes_no is not None:
+            settings.show_english_speaker_courses = default_yes_no
+
+        self._print("\n\n")
+        self._clear_screen()
+
         self._print(_("Show only courses with free places:"))
         self._print(_("Select 0 to use the default settings."))
         self._print(_("Default value:"), self._yes_no(settings.show_only_courses_with_free_places))
@@ -783,7 +796,8 @@ class Controller:
 
         return settings
 
-    def _console_ask_for_attendance_required_all_courses(self, courses_choices: Dict[str, List[CourseChoice]]):
+    def _console_ask_for_attendance_required_all_courses(self, courses_choices: Dict[str, CourseChoice]) \
+            -> Dict[str, CourseChoice]:
         selected_courses_choices = {}
         self._clear_screen()
         message = "Would you like to be present and consider the {} of course with mandatory attendance?"
@@ -954,7 +968,8 @@ class Controller:
                 settings.dont_show_courses_already_done = False
                 self.database.save_settings(settings)
 
-    def _get_courses_choices_to_ask(self, campus_name: str, settings: Settings, activities_ids: Dict[str, Set[int]]):
+    def _get_courses_choices_to_ask(self, campus_name: str, settings: Settings,
+                                    activities_ids: Dict[str, Set[int]]) -> Dict[str, CourseChoice]:
         language = Language.get_current()
         courses_already_done = self.database.load_courses_already_done(language)
         degrees = settings.degrees
