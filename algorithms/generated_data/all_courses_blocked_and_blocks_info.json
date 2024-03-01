@@ -1860,8 +1860,8 @@
             "id": 16,
             "name": "סדנא בC++",
             "course_number": 150018,
-            "is_active": false,
-            "credits": 0.0,
+            "is_active": null,
+            "credits": null,
             "aliases": [
                 "סדנא בCPP",
                 "סדנה בCPP",
@@ -5275,8 +5275,8 @@
             "id": 77,
             "name": "עקרונות שיטות הצפנה",
             "course_number": 156361,
-            "is_active": false,
-            "credits": 0.0,
+            "is_active": null,
+            "credits": null,
             "aliases": [
                 "עקרונות שיטות הצפנה"
             ],
@@ -5368,8 +5368,8 @@
             "id": 78,
             "name": "מערכות משובצות",
             "course_number": 157110,
-            "is_active": false,
-            "credits": 0.0,
+            "is_active": null,
+            "credits": null,
             "aliases": [
                 "אמבדד",
                 "מערכות משובצות"
