@@ -12,6 +12,7 @@
                 "מבוא למחשבים"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -244,6 +245,12 @@
                     "course_number": 157110,
                     "name": "מערכות משובצות",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 82,
+                    "course_number": 156367,
+                    "name": "מיחשוב ענן",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -258,6 +265,7 @@
                 "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -544,6 +552,12 @@
                     "course_number": 156361,
                     "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 82,
+                    "course_number": 156367,
+                    "name": "מיחשוב ענן",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -559,6 +573,7 @@
                 "אלגברה לינארית א"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -637,6 +652,7 @@
                 "הכרת משאבי הספריה להנדסה ומדעי המחשב"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -657,6 +673,7 @@
                 "חשבון אינפני' להנדסה 1"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -913,6 +930,12 @@
                     "course_number": 156361,
                     "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 82,
+                    "course_number": 156367,
+                    "name": "מיחשוב ענן",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -927,6 +950,7 @@
                 "מבוא למדעי המחשב"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -1153,6 +1177,12 @@
                     "course_number": 157110,
                     "name": "מערכות משובצות",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 82,
+                    "course_number": 156367,
+                    "name": "מיחשוב ענן",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1168,6 +1198,7 @@
                 "אלגברה לינארית ב"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -1207,6 +1238,7 @@
                 "חשבון אינפיני' להנדסה 2"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -1357,6 +1389,18 @@
                     "course_number": 157110,
                     "name": "מערכות משובצות",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 80,
+                    "course_number": 130502,
+                    "name": "מבוא להנדסת חשמל א - למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 81,
+                    "course_number": 130562,
+                    "name": "מעבדה בהנדסת חשמל א",
+                    "can_be_taken_in_parallel": true
                 }
             ]
         },
@@ -1428,6 +1472,18 @@
                     "course_number": 157110,
                     "name": "מערכות משובצות",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 80,
+                    "course_number": 130502,
+                    "name": "מבוא להנדסת חשמל א - למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 81,
+                    "course_number": 130562,
+                    "name": "מעבדה בהנדסת חשמל א",
+                    "can_be_taken_in_parallel": true
                 }
             ]
         },
@@ -1502,6 +1558,7 @@
                 "מבנה נתונים א"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -1716,6 +1773,12 @@
                     "course_number": 156361,
                     "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 82,
+                    "course_number": 156367,
+                    "name": "מיחשוב ענן",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1843,6 +1906,12 @@
                     "id": 75,
                     "course_number": 157107,
                     "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 82,
+                    "course_number": 156367,
+                    "name": "מיחשוב ענן",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1980,6 +2049,7 @@
                 "מבנה נתונים ב"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -2072,16 +2142,23 @@
                 "מיני פרויקט במערכות חלונות"
             ],
             "mandatory_for_degrees": [
-                "הנדסת תוכנה"
+                "הנדסת תוכנה",
+                "מדעי המחשב"
             ],
             "optional_for_degrees": [
-                "מדעי המחשב"
+                "ביואינפורמטיקה"
             ],
             "blocks": [
                 {
                     "id": 43,
                     "course_number": 153004,
                     "name": "הנדסת מערכות חלונות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 82,
+                    "course_number": 156367,
+                    "name": "מיחשוב ענן",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2280,6 +2357,7 @@
                 "מבוא לבינה מלאכותית ומדע הנתונים"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "מדעי המחשב"
             ],
             "optional_for_degrees": [
@@ -2418,6 +2496,7 @@
                 "משוואות דפרנציאליות"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -2476,6 +2555,7 @@
                 "אנגלית טרום בסיסי א"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -2517,6 +2597,7 @@
                 "אנגלית טרום בסיסי ב"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -2559,6 +2640,7 @@
                 "אנגלית בסיסי"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -2595,6 +2677,7 @@
                 "אנגלית מתקדמים א"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -2625,6 +2708,7 @@
                 "אנגלית מתקדמים ב"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -2749,6 +2833,7 @@
                 "ניתוח אלגוריתמים וסיבוכיות"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -2815,6 +2900,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
             "blocks": []
@@ -2983,6 +3069,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה"
             ],
             "blocks": []
@@ -3000,6 +3087,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה"
             ],
             "blocks": [
@@ -3025,6 +3113,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה"
             ],
             "blocks": []
@@ -3042,6 +3131,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה"
             ],
             "blocks": []
@@ -3112,10 +3202,10 @@
                 "אחזור מידע",
                 "איחזור מידע"
             ],
-            "mandatory_for_degrees": [],
-            "optional_for_degrees": [
+            "mandatory_for_degrees": [
                 "הנדסת תוכנה"
             ],
+            "optional_for_degrees": [],
             "blocks": []
         },
         {
@@ -3212,6 +3302,7 @@
                 "תכנות מתקדם"
             ],
             "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
@@ -3233,7 +3324,9 @@
             "mandatory_for_degrees": [
                 "הנדסת תוכנה"
             ],
-            "optional_for_degrees": [],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
             "blocks": []
         },
         {
@@ -3294,6 +3387,79 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [],
+            "blocks": []
+        },
+        {
+            "id": 79,
+            "name": "מערכות הפעלה בגישה מחקרית",
+            "course_number": 157128,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "מערכות הפעלה בגישה מחקרית"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocks": []
+        },
+        {
+            "id": 80,
+            "name": "מבוא להנדסת חשמל א - למחשבים",
+            "course_number": 130502,
+            "is_active": true,
+            "credits": 2.0,
+            "aliases": [
+                "מבוא להנדסת חשמל א - למחשבים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocks": [
+                {
+                    "id": 81,
+                    "course_number": 130562,
+                    "name": "מעבדה בהנדסת חשמל א",
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 81,
+            "name": "מעבדה בהנדסת חשמל א",
+            "course_number": 130562,
+            "is_active": true,
+            "credits": 1.0,
+            "aliases": [
+                "מעבדה בהנדסת חשמל א"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocks": []
+        },
+        {
+            "id": 82,
+            "name": "מיחשוב ענן",
+            "course_number": 156367,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "מחשוב ענן",
+                "מיחשוב ענן"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
             "blocks": []
         }
     ]
