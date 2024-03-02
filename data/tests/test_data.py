@@ -272,7 +272,7 @@ class TestData:
         degrees.add(Degree.SOFTWARE_ENGINEERING)
         assert repr(Degree.COMPUTER_SCIENCE) == "Computer Science"
         assert len(Degree.get_defaults()) == 2
-        assert set(Degree) == {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
+        assert set(Degree) == {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING, Degree.BIOINFORMATICS}
         assert ["COMPUTER_SCIENCE", 20] == [*Degree.COMPUTER_SCIENCE]
         assert Degree.COMPUTER_SCIENCE == Degree["COMPUTER_SCIENCE"]
 

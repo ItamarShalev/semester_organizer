@@ -1228,6 +1228,55 @@
                     "can_be_taken_in_parallel": false
                 }
             ]
+        },
+        {
+            "id": 79,
+            "course_number": 157128,
+            "name": "מערכות הפעלה בגישה מחקרית",
+            "aliases": [],
+            "blocked_by": []
+        },
+        {
+            "id": 80,
+            "course_number": 130502,
+            "name": "מבוא להנדסת חשמל א - למחשבים",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 11,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 81,
+            "course_number": 130562,
+            "name": "מעבדה בהנדסת חשמל א",
+            "aliases": [],
+            "blocked_by": [
+                {
+                    "id": 80,
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 82,
+            "course_number": 156367,
+            "name": "מיחשוב ענן",
+            "aliases": [
+                "מחשוב ענן"
+            ],
+            "blocked_by": [
+                {
+                    "id": 16,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 22,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         }
     ]
 }

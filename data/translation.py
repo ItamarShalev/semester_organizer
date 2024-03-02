@@ -91,6 +91,8 @@ data = TextCaseInsensitiveDict({
     "Mavchar- Men": """מבח"ר בנים""",
     "Mahar-Tal": """מח"ר-טל תבונה""",
     "Computer Science": "מדעי המחשב",
+    "BIOINFORMATICS": "ביואינפורמטיקה",
+    "Bioinformatics": "ביואינפורמטיקה",
     "Software Engineering": "הנדסת תוכנה",
     "Infinitesimal Calculus 1": "חשבון אינפני' להנדסה 1",
     "day (.+?)[ :]": "יום (.+?):",

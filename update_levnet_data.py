@@ -73,31 +73,31 @@ def run_update_levnet_data_flow():
         translation.config_language_text(language)
         network.change_language(language)
         logger.debug("The language was changed to %s", language)
-
         all_degrees = set(Degree)
+        for degree in all_degrees:
 
-        courses = network.extract_all_courses(utils.get_campus_name_test(), all_degrees)
+            common_campuses_names = database.get_common_campuses_names()
+            campuses = [args.campus] if args.campus else common_campuses_names
 
-        logger.debug("The courses were extracted successfully")
-        logger.debug("The courses are: %s", ", ".join([course.name for course in courses]))
+            for campus_name in campuses:
 
-        database.save_courses(courses, language)
+                courses = network.extract_all_courses(campus_name, degree)
 
-        common_campuses_names = database.get_common_campuses_names()
-        campuses = [args.campus] if args.campus else common_campuses_names
+                logger.debug("The courses were extracted successfully")
+                logger.debug("The courses are: %s", ", ".join([course.name for course in courses]))
 
-        for campus_name in campuses:
+                database.save_courses(courses, language)
 
-            logger.debug("Extracting data for campus: %s in language %s", campus_name, language.name)
-            logger.debug("Start extracting the academic activities data for the campus: %s", campus_name)
-            activities, missings = network.extract_academic_activities_data(campus_name, courses)
-            if activities and not missings:
-                logger.debug("The academic activities data were extracted successfully")
-            else:
-                logger.debug("The academic activities data were extracted with errors")
-                logger.debug("The missing courses are: %s", ', '.join(missings))
+                logger.debug("Extracting data for campus: %s in language %s", campus_name, language.name)
+                logger.debug("Start extracting the academic activities data for the campus: %s", campus_name)
+                activities, missings = network.extract_academic_activities_data(campus_name, courses)
+                if activities and not missings:
+                    logger.debug("The academic activities data were extracted successfully")
+                else:
+                    logger.debug("The academic activities data were extracted with errors")
+                    logger.debug("The missing courses are: %s", ', '.join(missings))
 
-            database.save_academic_activities(activities, campus_name, language)
+                database.save_academic_activities(activities, campus_name, language)
     end = timer()
     logger.debug("The levnet data was updated successfully in %s time", str(timedelta(seconds=end - start)))
 

@@ -7,6 +7,7 @@ class Degree(Enum):
 
     COMPUTER_SCIENCE = 20
     SOFTWARE_ENGINEERING = 20
+    BIOINFORMATICS = 11
 
     def __str__(self):
         # For example COMPUTER_SCIENCE -> Computer Science

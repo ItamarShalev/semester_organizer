@@ -307,10 +307,10 @@ class Database:
     def save_courses(self, courses: List[Course], language: Language):
         with self.connect(self.shared_database_path) as (unused_connection, cursor):
             for course in courses:
-                cursor.execute("INSERT INTO courses VALUES (?, ?, ?, ?, ?, ?);",
+                cursor.execute("INSERT OR IGNORE INTO courses VALUES (?, ?, ?, ?, ?, ?);",
                                (*course, language.short_name(), course.is_active, course.credits_count))
                 for semester in course.semesters:
-                    cursor.execute("INSERT INTO semesters_courses VALUES (?, ?);",
+                    cursor.execute("INSERT OR IGNORE INTO semesters_courses VALUES (?, ?);",
                                    (semester.value, course.parent_course_number))
                 for degree in course.degrees:
                     cursor.execute("INSERT OR IGNORE INTO degrees_courses VALUES (?, ?);",
@@ -325,12 +325,17 @@ class Database:
         with self.connect(self.shared_database_path) as (unused_connection, cursor):
             degrees = degrees or Degree.get_defaults()
             degrees_text = f"({', '.join(['?'] * len(degrees))})"
-            cursor.execute("SELECT * FROM courses "
-                           "WHERE language_value = ?;", (language.short_name(),))
-            courses = [Course(name, course_number, parent_course_number,
+            cursor.execute("SELECT courses.* "
+                           "FROM courses "
+                           "INNER JOIN degrees_courses "
+                           "ON courses.parent_course_number = degrees_courses.parent_course_number "
+                           "WHERE courses.language_value = ? "
+                           f"AND degrees_courses.degree_name in {degrees_text};",
+                           (language.short_name(), *[degree.name for degree in degrees]))
+            courses = {Course(name, course_number, parent_course_number,
                               is_active=bool(is_active), credits_count=credits_count)
                        for name, course_number, parent_course_number, unused_langauge, is_active, credits_count
-                       in cursor.fetchall()]
+                       in cursor.fetchall()}
             for course in courses:
                 cursor.execute("SELECT name FROM semesters "
                                "INNER JOIN semesters_courses "
@@ -351,7 +356,7 @@ class Database:
                                "WHERE parent_course_number = ?;",
                                (course.parent_course_number,))
                 course.mandatory_degrees = {Degree[degree_name.upper()] for (degree_name,) in cursor.fetchall()}
-            return courses
+            return list(courses)
 
     def load_active_courses(self, campus_name: str, language: Language,
                             degrees: Collection[Degree] = None) -> List[Course]:
@@ -462,7 +467,7 @@ class Database:
             campus_id = self.load_campus_id(campus_name)
             for activity in activities:
                 cursor.execute("INSERT OR IGNORE INTO lecturers VALUES (?);", (activity.lecturer_name,))
-                cursor.execute("INSERT INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                cursor.execute("INSERT OR IGNORE INTO activities VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
                                (*activity, campus_id, language.short_name()))
                 cursor.execute("INSERT OR IGNORE INTO courses_lecturers VALUES (?, ?, ?, ?, ?, ?);",
                                (activity.course_number, activity.parent_course_number, activity.lecturer_name,
