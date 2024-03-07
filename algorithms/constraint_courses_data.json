@@ -233,10 +233,6 @@
                 {
                     "id": 5,
                     "can_be_taken_in_parallel": true
-                },
-                {
-                    "id": 8,
-                    "can_be_taken_in_parallel": true
                 }
             ]
         },
