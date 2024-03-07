@@ -1300,18 +1300,6 @@
             ],
             "blocks": [
                 {
-                    "id": 17,
-                    "course_number": 120701,
-                    "name": "הסתברות",
-                    "can_be_taken_in_parallel": true
-                },
-                {
-                    "id": 24,
-                    "course_number": 120711,
-                    "name": "סטטיסטיקה למהנדסים",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 62,
                     "course_number": 157117,
                     "name": "רשתות נוירונים ולמידה עמוקה",
@@ -1321,12 +1309,6 @@
                     "id": 67,
                     "course_number": 151281,
                     "name": "אלגוריתמיקה מקבילית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 77,
-                    "course_number": 156361,
-                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2095,12 +2077,6 @@
                     "course_number": 120131,
                     "name": "חשבון אינפני' להנדסה 1",
                     "can_be_taken_in_parallel": true
-                },
-                {
-                    "id": 8,
-                    "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2",
-                    "can_be_taken_in_parallel": true
                 }
             ],
             "blocks": [
@@ -2558,12 +2534,6 @@
                     "id": 5,
                     "course_number": 120131,
                     "name": "חשבון אינפני' להנדסה 1",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 8,
-                    "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -5410,12 +5380,6 @@
                     "id": 7,
                     "course_number": 120221,
                     "name": "אלגברה לינארית ב",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 8,
-                    "course_number": 120132,
-                    "name": "חשבון אינפיני' להנדסה 2",
                     "can_be_taken_in_parallel": false
                 },
                 {

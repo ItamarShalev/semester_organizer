@@ -1245,18 +1245,6 @@
             "optional_for_degrees": [],
             "blocks": [
                 {
-                    "id": 17,
-                    "course_number": 120701,
-                    "name": "הסתברות",
-                    "can_be_taken_in_parallel": true
-                },
-                {
-                    "id": 24,
-                    "course_number": 120711,
-                    "name": "סטטיסטיקה למהנדסים",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 62,
                     "course_number": 157117,
                     "name": "רשתות נוירונים ולמידה עמוקה",
@@ -1266,12 +1254,6 @@
                     "id": 67,
                     "course_number": 151281,
                     "name": "אלגוריתמיקה מקבילית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
-                    "id": 77,
-                    "course_number": 156361,
-                    "name": "עקרונות שיטות הצפנה",
                     "can_be_taken_in_parallel": false
                 }
             ]
