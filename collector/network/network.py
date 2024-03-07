@@ -334,6 +334,8 @@ class NetworkHttp:
                 group_meetings = course_group["courseGroupMeetings"].strip()
                 group_comment = course_group["groupComment"]
                 comment = group_comment.strip() if group_comment else ""
+                if "בהמתנה" in comment:
+                    continue
                 meetings_list = []
                 location = ""
                 current_capacity, max_capacity = course_group["courseRelativeQuota"].split("/")
