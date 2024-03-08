@@ -130,6 +130,14 @@ class CourseConstraint:
             course_number = course_data["course_number"]
             assert object_id > 0, "ERROR: Object id must be positive non zero, edit the 'id' key in the file."
             assert course_number > 0, "ERROR: Course id must be positive, edit the 'course_number' key in the file."
+            default_course_data = Course("", course_number, 0)
+            has_course_info = course_number in all_courses_objects
+            course_info = all_courses_objects.get(course_number, default_course_data)
+            default_is_active = course_info.is_active if has_course_info else None
+            default_credits_count = course_info.credits_count if has_course_info else None
+
+            course_info.is_active = course_data.get("is_active", default_is_active)
+            course_info.credits_count = course_data.get("credits", default_credits_count)
 
             object_data = ConstraintCourseData(
                 id=object_id,
@@ -138,8 +146,9 @@ class CourseConstraint:
                 aliases=course_data["aliases"] + [course_data["name"]],
                 blocked_by=get_pre_request_courses_list(course_data, "blocked_by"),
                 blocks=get_pre_request_courses_list(course_data, "blocks"),
-                course_info=all_courses_objects.get(course_number, None)
+                course_info=course_info
             )
+
             assert object_id not in all_ids, f"ERROR: Found multiple id {object_id}, should remove it."
             assert course_number not in all_courses_ids, \
                 f"ERROR: Found multiple course id {course_number}, should remove it."
