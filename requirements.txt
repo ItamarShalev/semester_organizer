@@ -16,7 +16,5 @@ pandas>=1.5.2
 xlsxwriter==3.1.9
 # Image output.
 dataframe_image>=0.1.5
-# Support enum with duplicate values.
-aenum>=3.1.11
 # dataframe_image module requirement.
 matplotlib>=3.7.2

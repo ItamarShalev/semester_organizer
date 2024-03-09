@@ -405,7 +405,7 @@ class NetworkHttp:
                   "LoadPlannedMultiYearPrograms"
             payload = {"selectedAcademicYear": self.settings.year,
                        "selectedExtension": self.campuses[campus_name],
-                       "selectedDepartment": degree.value,
+                       "selectedDepartment": degree.value.department,
                        "current": 1}
             response_json = self.request(url, payload)
 

@@ -221,7 +221,7 @@ class Database:
             degrees = set()
             for name, department in degrees_values:
                 degree = Degree[name]
-                if degree.value != department:
+                if degree.value.department != department:
                     raise ValueError("Degree department in database is different from the one in the code")
                 degrees.add(degree)
         return list(degrees)
