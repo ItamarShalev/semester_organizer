@@ -409,13 +409,18 @@ class NetworkHttp:
                            "current": 1}
                 response_json = self.request(url, payload)
 
-                def is_relevant_program(item, class_name):
-                    is_relevant = item["credits"] and item["coursesCount"] > 0
-                    is_relevant = is_relevant and class_name in item["trackName"]
+                def is_relevant_program(item, degree_data):
+                    has_credits = bool(item["credits"] and item["coursesCount"] > 0)
+                    class_name = _(degree_data.name)
+                    server_track_name = item["trackName"].strip()
+                    relevant_track_name = class_name.strip() == server_track_name
+                    found_name = any(track_name.strip() == item["trackName"] for track_name in degree_data.track_names)
+                    relevant_track_name = relevant_track_name or found_name
+                    is_relevant = has_credits and relevant_track_name
                     return is_relevant
 
                 relevance_programs = [item for item in response_json["items"] if
-                                      is_relevant_program(item, _(str(degree)))]
+                                      is_relevant_program(item, degree.value)]
 
                 for program in relevance_programs:
                     program_id = program["id"]

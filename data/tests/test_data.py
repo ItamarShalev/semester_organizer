@@ -275,6 +275,7 @@ class TestData:
         assert set(Degree) == {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING, Degree.BIOINFORMATICS}
         assert ["COMPUTER_SCIENCE", 20] == [*Degree.COMPUTER_SCIENCE]
         assert Degree.COMPUTER_SCIENCE == Degree["COMPUTER_SCIENCE"]
+        assert Degree.SOFTWARE_ENGINEERING.value.track_names
 
     def test_flow_enum(self):
         flow = Flow.GUI
