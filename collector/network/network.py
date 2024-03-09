@@ -392,6 +392,12 @@ class NetworkHttp:
     def extract_all_courses(self, campus_name: str, degrees: Union[Set[Degree], Degree, None] = None) -> List[Course]:
         assert campus_name in self.campuses.keys(), f"ERROR: {campus_name} is not a valid campus name"
 
+        # Course number, Remove from degrees.
+        skip_courses = {
+            # Preliminary Course in Physics I.
+            140002: {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
+        }
+
         if degrees is None:
             degrees = Degree.get_defaults()
         elif isinstance(degrees, Degree):
@@ -438,7 +444,8 @@ class NetworkHttp:
                             parent_course_id = course["parentCourseID"]
                             course_number = course["parentCourseNumber"]
                             is_current_year = index_year == 0
-                            if not is_current_year and course_number in courses:
+                            should_skip = course_number in skip_courses and degree in skip_courses[course_number]
+                            if (not is_current_year and course_number in courses) or should_skip:
                                 continue
                             semester = Semester(course["semesterID"])
                             course_data = Course(name, course_number, parent_course_id, semesters=semester)
