@@ -153,6 +153,16 @@ class TestDatabase:
         database_mock.clear_courses_already_done()
         assert not database_mock.load_courses_already_done(Language.ENGLISH)
 
+    def test_load_courses_active_numbers(self, database_mock, campuses):
+        course1 = Course("course1", 1234, 2, set(Semester), set(Degree), is_active=False)
+        course2 = Course("course2", 1235, 3, set(Semester), set(Degree))
+        activity = AcademicActivity("course1", course_number=1234)
+        database_mock.save_courses([course1, course2], Language.ENGLISH)
+        database_mock.save_academic_activities([activity], "A", Language.ENGLISH)
+        assert database_mock.load_courses_active_numbers() == {1234}
+        database_mock.shared_database_path.unlink()
+        assert not database_mock.load_courses_active_numbers()
+
     def test_is_active_credits_courses(self, database_mock):
         course = Course("name", 10, 20, is_active=True, credits_count=2.3)
         course.degrees = set(Degree)

@@ -319,9 +319,17 @@ class Database:
                     cursor.execute("INSERT OR IGNORE INTO mandatory_courses VALUES (?, ?);",
                                    (degree.name, course.parent_course_number))
 
+    def load_courses_active_numbers(self) -> Set[str]:
+        if not self.shared_database_path.exists():
+            return set()
+        with self.connect(self.shared_database_path) as (unused_connection, cursor):
+            cursor.execute("SELECT DISTINCT course_number from activities;")
+            return {course_number for course_number, *rest in cursor.fetchall()}
+
     def load_courses(self, language: Language, degrees: Optional[Set[Degree]] = None) -> List[Course]:
         if not self.shared_database_path.exists():
             return []
+        courses_numbers_active = self.load_courses_active_numbers()
         with self.connect(self.shared_database_path) as (unused_connection, cursor):
             degrees = degrees or Degree.get_defaults()
             degrees_text = f"({', '.join(['?'] * len(degrees))})"
@@ -356,6 +364,8 @@ class Database:
                                "WHERE parent_course_number = ?;",
                                (course.parent_course_number,))
                 course.mandatory_degrees = {Degree[degree_name.upper()] for (degree_name,) in cursor.fetchall()}
+            for course in courses:
+                course.is_active = course.course_number in courses_numbers_active or course.is_active
             return list(courses)
 
     def load_active_courses(self, campus_name: str, language: Language,
