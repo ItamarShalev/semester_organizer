@@ -1,4 +1,7 @@
 [report]
+omit =
+    collector/network/network.py
+    **/test_*.py
 exclude_lines =
     raise AssertionError
     raise NotImplementedError

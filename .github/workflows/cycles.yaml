@@ -93,4 +93,4 @@ jobs:
           coverage run --rcfile=".coveragerc_ci_cd" -m pytest $(git ls-files 'test_*.py') -s -v -m "not network"
       - name: Run coverage
         run: |
-          coverage report --rcfile=".coveragerc_ci_cd" -m --omit="./collector/network/network.py" --fail-under=100
+          coverage report --rcfile=".coveragerc_ci_cd" -m --fail-under=100

@@ -1,4 +1,6 @@
 [report]
+omit =
+    **/test_*.py
 exclude_lines =
     raise AssertionError
     raise NotImplementedError
