@@ -2875,7 +2875,7 @@
             "id": 49,
             "name": "אקסלנטים",
             "course_number": 157200,
-            "is_active": false,
+            "is_active": true,
             "credits": 3.0,
             "aliases": [
                 "אקסלנטים"
@@ -3332,7 +3332,7 @@
             "id": 76,
             "name": "רשתות מחשבים מתקדמות",
             "course_number": 156336,
-            "is_active": false,
+            "is_active": true,
             "credits": 3.0,
             "aliases": [
                 "רשתות מחשבים מתקדמות"
