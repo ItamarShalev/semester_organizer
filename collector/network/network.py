@@ -390,66 +390,70 @@ class NetworkHttp:
         return details["active"], details["credits"]
 
     def extract_all_courses(self, campus_name: str, degrees: Union[Set[Degree], Degree, None] = None) -> List[Course]:
+        assert campus_name in self.campuses.keys(), f"ERROR: {campus_name} is not a valid campus name"
 
-        if campus_name not in self.campuses.keys():
-            raise RuntimeError(f"ERROR: {campus_name} is not a valid campus name")
         if degrees is None:
             degrees = Degree.get_defaults()
         elif isinstance(degrees, Degree):
             degrees = {degrees}
 
         program_output_filter_data = {"filter": {"WithEnglish": True, "WithKodesh": False}}
-        courses = []
+        courses = {}
         for degree in degrees:
-            url = "https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?action=" \
-                  "LoadPlannedMultiYearPrograms"
-            payload = {"selectedAcademicYear": self.settings.year,
-                       "selectedExtension": self.campuses[campus_name],
-                       "selectedDepartment": degree.value.department,
-                       "current": 1}
-            response_json = self.request(url, payload)
+            for index_year in range(degree.value.years):
+                url = "https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?action=" \
+                      "LoadPlannedMultiYearPrograms"
+                payload = {"selectedAcademicYear": self.settings.year - index_year,
+                           "selectedExtension": self.campuses[campus_name],
+                           "selectedDepartment": degree.value.department,
+                           "current": 1}
+                response_json = self.request(url, payload)
 
-            def is_relevant_program(item, class_name):
-                is_relevant = item["credits"] and item["coursesCount"] > 0
-                is_relevant = is_relevant and class_name in item["trackName"]
-                return is_relevant
+                def is_relevant_program(item, class_name):
+                    is_relevant = item["credits"] and item["coursesCount"] > 0
+                    is_relevant = is_relevant and class_name in item["trackName"]
+                    return is_relevant
 
-            relevance_programs = [item for item in response_json["items"] if is_relevant_program(item, _(str(degree)))]
+                relevance_programs = [item for item in response_json["items"] if
+                                      is_relevant_program(item, _(str(degree)))]
 
-            for program in relevance_programs:
-                program_id = program["id"]
-                url = f"https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?" \
-                      f"action=GetMultiYearPlannedProgramMembersWithFilters&InitialProgramID={program_id}"
-                response_json = self.request(url, program_output_filter_data)
-                semesters = [semester_program["members"] for semester_program in response_json["allMembers"]]
-                for semester in semesters:
-                    for course in semester:
-                        parent_course_name_key = "parentCourseName" if Language.get_current() is Language.HEBREW \
-                            else "parentCourseEnglishName"
-                        parent_name = course[parent_course_name_key]
-                        # In case of new course without English name yet.
-                        name = parent_name.strip() if parent_name else course["parentCourseName"].strip()
-                        parent_course_id = course["parentCourseID"]
-                        course_number = course["parentCourseNumber"]
-                        semester = Semester(course["semesterID"])
-                        course_data = Course(name, course_number, parent_course_id, semesters=semester)
-                        course_data.add_degrees(degree)
-                        is_mandatory = course["mandatory"]
-                        if is_mandatory:
-                            course_data.add_mandatory(degree)
-                        if course_data in courses:
-                            course_data = courses[courses.index(course_data)]
-                            course_data.add_semesters(semester)
+                for program in relevance_programs:
+                    program_id = program["id"]
+                    url = f"https://levnet.jct.ac.il/api/common/plannedMultiYearPrograms.ashx?" \
+                          f"action=GetMultiYearPlannedProgramMembersWithFilters&InitialProgramID={program_id}"
+                    response_json = self.request(url, program_output_filter_data)
+                    semesters = [semester_program["members"] for semester_program in response_json["allMembers"]]
+                    for semester in semesters:
+                        for course in semester:
+                            parent_course_name_key = "parentCourseName" if Language.get_current() is Language.HEBREW \
+                                else "parentCourseEnglishName"
+                            parent_name = course[parent_course_name_key]
+                            # In case of new course without English name yet.
+                            name = parent_name.strip() if parent_name else course["parentCourseName"].strip()
+                            parent_course_id = course["parentCourseID"]
+                            course_number = course["parentCourseNumber"]
+                            is_current_year = index_year == 0
+                            if not is_current_year and course_number in courses:
+                                continue
+                            semester = Semester(course["semesterID"])
+                            course_data = Course(name, course_number, parent_course_id, semesters=semester)
                             course_data.add_degrees(degree)
+                            is_mandatory = course["mandatory"]
                             if is_mandatory:
                                 course_data.add_mandatory(degree)
-                        else:
-                            is_active, credits_count = self.extract_extra_course_info(course_data)
-                            course_data.is_active = is_active
-                            course_data.credits_count = credits_count
-                            courses.append(course_data)
+                            if course_data in courses:
+                                course_data = courses[course_number]
+                                course_data.add_semesters(semester)
+                                course_data.add_degrees(degree)
+                                if is_mandatory:
+                                    course_data.add_mandatory(degree)
+                            else:
+                                is_active, credits_count = self.extract_extra_course_info(course_data)
+                                course_data.is_active = is_active
+                                course_data.credits_count = credits_count
+                                courses[course_number] = course_data
 
-        return courses
+        return list(courses.values())
 
     def change_language(self, language: Language):
         if not self._user:
