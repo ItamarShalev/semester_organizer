@@ -937,7 +937,20 @@
                 "ביג דאטה",
                 "נתוני עתק"
             ],
-            "blocked_by": []
+            "blocked_by": [
+                {
+                    "id": 3,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 24,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 42,
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         },
         {
             "id": 62,
