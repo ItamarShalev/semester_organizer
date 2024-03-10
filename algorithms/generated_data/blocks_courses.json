@@ -1785,7 +1785,7 @@
             "name": "סדנא בC++",
             "course_number": 150018,
             "is_active": false,
-            "credits": 2,
+            "credits": 2.0,
             "aliases": [
                 "סדנא בCPP",
                 "סדנה בCPP",
@@ -3372,7 +3372,7 @@
             "name": "מערכות משובצות",
             "course_number": 157110,
             "is_active": true,
-            "credits": 3,
+            "credits": 3.0,
             "aliases": [
                 "אמבדד",
                 "מערכות משובצות"
