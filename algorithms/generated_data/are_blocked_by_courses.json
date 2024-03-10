@@ -2504,7 +2504,44 @@
                 "ביואינפורמטיקה",
                 "הנדסת תוכנה"
             ],
-            "blocked_by": []
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 17,
+                    "course_number": 120701,
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 24,
+                    "course_number": 120711,
+                    "name": "סטטיסטיקה למהנדסים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 42,
+                    "course_number": 150221,
+                    "name": "בסיסי נתונים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         },
         {
             "id": 62,

@@ -490,6 +490,12 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
+                    "id": 61,
+                    "course_number": 157115,
+                    "name": "BIG DATA - נתוני עתק",
+                    "can_be_taken_in_parallel": false
+                },
+                {
                     "id": 62,
                     "course_number": 157117,
                     "name": "רשתות נוירונים ולמידה עמוקה",
@@ -623,6 +629,12 @@
                     "id": 53,
                     "course_number": 157109,
                     "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 61,
+                    "course_number": 157115,
+                    "name": "BIG DATA - נתוני עתק",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -882,6 +894,12 @@
                     "id": 60,
                     "course_number": 157123,
                     "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 61,
+                    "course_number": 157115,
+                    "name": "BIG DATA - נתוני עתק",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -2091,6 +2109,12 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
+                    "id": 61,
+                    "course_number": 157115,
+                    "name": "BIG DATA - נתוני עתק",
+                    "can_be_taken_in_parallel": false
+                },
+                {
                     "id": 77,
                     "course_number": 156361,
                     "name": "עקרונות שיטות הצפנה",
@@ -2548,6 +2572,12 @@
                 }
             ],
             "blocks": [
+                {
+                    "id": 61,
+                    "course_number": 157115,
+                    "name": "BIG DATA - נתוני עתק",
+                    "can_be_taken_in_parallel": false
+                },
                 {
                     "id": 77,
                     "course_number": 156361,
@@ -3564,6 +3594,12 @@
                     "id": 52,
                     "course_number": 150225,
                     "name": "מיני פרויקט בבסיסי נתונים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 61,
+                    "course_number": 157115,
+                    "name": "BIG DATA - נתוני עתק",
                     "can_be_taken_in_parallel": false
                 },
                 {
@@ -4614,7 +4650,44 @@
                 "ביואינפורמטיקה",
                 "הנדסת תוכנה"
             ],
-            "blocked_by": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 17,
+                    "course_number": 120701,
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 24,
+                    "course_number": 120711,
+                    "name": "סטטיסטיקה למהנדסים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 42,
+                    "course_number": 150221,
+                    "name": "בסיסי נתונים",
+                    "can_be_taken_in_parallel": false
+                }
+            ],
             "blocks": []
         },
         {
