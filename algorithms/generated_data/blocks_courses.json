@@ -1791,7 +1791,11 @@
                 "סדנה בCPP",
                 "סדנא בC++"
             ],
-            "mandatory_for_degrees": [],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
             "optional_for_degrees": [],
             "blocks": [
                 {
@@ -2339,11 +2343,11 @@
                 "מבוא לבינה מלאכותית ומדע הנתונים"
             ],
             "mandatory_for_degrees": [
-                "ביואינפורמטיקה",
-                "מדעי המחשב"
+                "ביואינפורמטיקה"
             ],
             "optional_for_degrees": [
-                "הנדסת תוכנה"
+                "הנדסת תוכנה",
+                "מדעי המחשב"
             ],
             "blocks": [
                 {
@@ -2798,6 +2802,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
             "blocks": []
@@ -2900,7 +2905,9 @@
             "mandatory_for_degrees": [
                 "מדעי המחשב"
             ],
-            "optional_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
             "blocks": []
         },
         {
@@ -2915,6 +2922,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
             "blocks": []
@@ -3354,7 +3362,9 @@
                 "עקרונות שיטות הצפנה"
             ],
             "mandatory_for_degrees": [],
-            "optional_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
             "blocks": []
         },
         {
@@ -3368,7 +3378,9 @@
                 "מערכות משובצות"
             ],
             "mandatory_for_degrees": [],
-            "optional_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
             "blocks": []
         },
         {

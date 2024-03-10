@@ -396,7 +396,11 @@
                 "סדנה בCPP",
                 "סדנא בC++"
             ],
-            "mandatory_for_degrees": [],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
             "optional_for_degrees": [],
             "blocked_by": [
                 {
@@ -885,11 +889,11 @@
                 "מבוא לבינה מלאכותית ומדע הנתונים"
             ],
             "mandatory_for_degrees": [
-                "ביואינפורמטיקה",
-                "מדעי המחשב"
+                "ביואינפורמטיקה"
             ],
             "optional_for_degrees": [
-                "הנדסת תוכנה"
+                "הנדסת תוכנה",
+                "מדעי המחשב"
             ],
             "blocked_by": [
                 {
@@ -1653,6 +1657,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
             "blocked_by": [
@@ -1913,7 +1918,9 @@
             "mandatory_for_degrees": [
                 "מדעי המחשב"
             ],
-            "optional_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
             "blocked_by": [
                 {
                     "id": 1,
@@ -1989,6 +1996,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
             "blocked_by": [
@@ -3212,7 +3220,9 @@
                 "עקרונות שיטות הצפנה"
             ],
             "mandatory_for_degrees": [],
-            "optional_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
             "blocked_by": [
                 {
                     "id": 1,
@@ -3299,7 +3309,9 @@
                 "מערכות משובצות"
             ],
             "mandatory_for_degrees": [],
-            "optional_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
             "blocked_by": [
                 {
                     "id": 1,
