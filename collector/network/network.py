@@ -453,7 +453,7 @@ class NetworkHttp:
                             is_mandatory = course["mandatory"]
                             if is_mandatory:
                                 course_data.add_mandatory(degree)
-                            if course_data in courses:
+                            if course_number in courses:
                                 course_data = courses[course_number]
                                 course_data.add_semesters(semester)
                                 course_data.add_degrees(degree)
