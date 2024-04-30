@@ -542,9 +542,9 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -651,9 +651,9 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -870,9 +870,9 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1005,16 +1005,16 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 20,
                     "course_number": 151050,
                     "name": "מבוא להנדסת תוכנה",
                     "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1135,15 +1135,15 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 27,
                     "course_number": 156360,
                     "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1567,15 +1567,15 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 22,
                     "course_number": 153007,
                     "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1633,15 +1633,15 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 20,
                     "course_number": 151050,
                     "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -1710,15 +1710,15 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 27,
                     "course_number": 156360,
                     "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2043,15 +2043,15 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 27,
                     "course_number": 156360,
                     "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2137,12 +2137,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 20,
                     "course_number": 151050,
                     "name": "מבוא להנדסת תוכנה",
@@ -2158,6 +2152,12 @@
                     "id": 30,
                     "course_number": 151055,
                     "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2209,12 +2209,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 18,
                     "course_number": 120304,
                     "name": "לוגיקה מתמטית",
@@ -2243,6 +2237,12 @@
                     "course_number": 151131,
                     "name": "קומפיילרים ומתרגמים",
                     "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2352,15 +2352,15 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 31,
                     "course_number": 151111,
                     "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2691,9 +2691,9 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2913,15 +2913,15 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 31,
                     "course_number": 151111,
                     "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -3071,9 +3071,9 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -3199,15 +3199,15 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 20,
                     "course_number": 151050,
                     "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -3504,15 +3504,15 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 16,
-                    "course_number": 150018,
-                    "name": "סדנא בC++",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 22,
                     "course_number": 153007,
                     "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
                     "can_be_taken_in_parallel": false
                 }
             ]
