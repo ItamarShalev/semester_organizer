@@ -110,8 +110,7 @@ class CourseConstraint:
             for prerequisite_json_object in json_object.get(key, []):
                 pre_object_id = prerequisite_json_object["id"]
                 if pre_object_id not in courses:
-                    raise RuntimeError(f"ERROR: The object course id {pre_object_id} "
-                                       f"should be above than course id: {json_object['id']}")
+                    raise RuntimeError(f"ERROR: The object course id {pre_object_id} didn't find.")
                 pre_course_number = courses[pre_object_id].course_number
                 name = courses[pre_object_id].name
                 can_be_taken_in_parallel = prerequisite_json_object.get("can_be_taken_in_parallel", False)
@@ -144,8 +143,6 @@ class CourseConstraint:
                 course_number=course_number,
                 name=course_data["name"],
                 aliases=course_data["aliases"] + [course_data["name"]],
-                blocked_by=get_pre_request_courses_list(course_data, "blocked_by"),
-                blocks=get_pre_request_courses_list(course_data, "blocks"),
                 course_info=course_info
             )
 
@@ -155,6 +152,15 @@ class CourseConstraint:
             all_ids.add(object_id)
             all_courses_ids.add(course_number)
             courses[object_id] = object_data
+
+        for course_data in json_data["courses"]:
+            if course_data.get("deprecated", False):
+                continue
+            course_id = course_data["id"]
+            course = courses[course_id]
+            course.blocked_by = get_pre_request_courses_list(course_data, "blocked_by")
+            course.blocks = get_pre_request_courses_list(course_data, "blocks")
+
         return courses
 
     def get_extended_blocked_by_courses(self, all_courses: Dict[int, ConstraintCourseData]) \
