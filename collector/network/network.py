@@ -497,5 +497,7 @@ class NetworkHttp:
         return tracks
 
     def _config_for_build_schedule_start(self):
+        url = "https://levnet.jct.ac.il/api/student/RegistrationStatementsInLevnet.ashx?action=IsStudentMakeAStatement"
+        self.request(url)
         url = "https://levnet.jct.ac.il/api/student/buildSchedule.ashx?action=LoadDataForBuildScheduleStart"
         self.request(url)

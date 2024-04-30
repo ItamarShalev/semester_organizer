@@ -3,11 +3,14 @@ import os
 import shutil
 import sys
 import time
+import json
+from argparse import ArgumentParser, RawTextHelpFormatter, Namespace
 from pathlib import Path
 from contextlib import suppress
 from datetime import datetime
 from operator import itemgetter
-from typing import Tuple, Dict, Any
+from typing import Tuple, Dict, Any, List, Type, Optional
+from abc import ABC, abstractmethod
 
 import urllib3
 from urllib3.exceptions import InsecureRequestWarning
@@ -23,6 +26,114 @@ ROOT_PATH = Path(__file__).parent.resolve()
 LOG_FILE_HANDLER = logging.FileHandler(filename=ROOT_PATH / "log.txt", encoding=ENCODING, mode='w')
 DATA_SOFTWARE_VERSION = "1.0"
 SOFTWARE_VERSION = "1.0"
+
+
+class ConsoleApi(ABC):
+
+    def write_result_file(self, file_path: Path, result: Optional[Any] = None, status: bool = True,
+                          message_error: Optional[str] = None) -> None:
+        file_path.unlink(missing_ok=True)
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        json_data = {
+            "status": status,
+            "message_error": message_error,
+            "result": result,
+        }
+        with open(file_path, 'w', encoding='utf-8') as json_file:
+            json.dump(json_data, json_file, sort_keys=False, indent=4, ensure_ascii=False)
+
+    @staticmethod
+    def run(obj_commands: List[Type['ConsoleApi']], description: Optional[str] = None):
+        args = sys.argv[1:] or ['--help']
+        parser = ArgumentParser(formatter_class=RawTextHelpFormatter, description=description)
+        commands_parser = parser.add_subparsers(
+            metavar="command",
+            help="Choose command from the list (Try <command> --help for more details)"
+        )
+
+        for obj_command in obj_commands:
+            command = obj_command()
+
+            sub_parser = commands_parser.add_parser(
+                name=command.snake_case_name(),
+                formatter_class=RawTextHelpFormatter,
+                description=command.help_full(),
+                help=command.help_short()
+            )
+
+            sub_parser.set_defaults(invoke_func=command.invoke)
+            command.args_parse(sub_parser)
+
+        namespace: Namespace = parser.parse_args(args)
+        namespace.invoke_func(namespace)
+
+    def __init__(self):
+        self.logger = logging.getLogger(__package__)
+
+    @property
+    def name(self) -> str:
+        return self.__class__.__name__
+
+    def snake_case_name(self):
+        result = ""
+        for char in self.name:
+            if char.isupper() and result:
+                result += "_" + char.lower()
+            else:
+                result += char.lower()
+        return result
+
+    def args_parse(self, parser: ArgumentParser):
+        self._args_parse(parser)
+
+    def initialize_and_validate(self, args: Optional[Namespace] = None):
+        config_logging_level(level=logging.INFO, class_name=self.name)
+        self._initialize_and_validate(args)
+
+    def invoke(self, args: Optional[Namespace] = None) -> Any:
+        self.initialize_and_validate(args)
+        return self._invoke(args)
+
+    def help_full(self) -> str:
+        example_lines = []
+        for example in self.help_examples():
+            if example.startswith('#'):
+                example_lines.append(example)
+            else:
+                file_name = Path(sys.modules[self.__module__].__file__).name
+                example_lines.append(f"python {file_name} {self} {example}")
+        help_full = self.help_long() + "\n\nExamples usage:\n\t" + "\n\t".join(example_lines)
+        return help_full
+
+    @abstractmethod
+    def _args_parse(self, parser: ArgumentParser):
+        pass
+
+    @abstractmethod
+    def _initialize_and_validate(self, args: Optional[Namespace] = None):
+        pass
+
+    @abstractmethod
+    def _invoke(self, args: Optional[Namespace] = None) -> Any:
+        pass
+
+    @abstractmethod
+    def help_examples(self) -> List[str]:
+        pass
+
+    @abstractmethod
+    def help_long(self) -> str:
+        pass
+
+    @abstractmethod
+    def help_short(self) -> str:
+        pass
+
+    def __repr__(self) -> str:
+        return self.snake_case_name()
+
+    def __str__(self) -> str:
+        return self.snake_case_name()
 
 
 def sort_dict_by_key(dictionary: Dict[Any, Any]) -> Dict[Any, Any]:
@@ -146,8 +257,8 @@ def get_current_semester():
     return Semester.FALL if current_month in fall_months else Semester.SPRING
 
 
-def config_logging_level(level=logging.DEBUG):
-    format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
+def config_logging_level(level=logging.DEBUG, class_name: str = "%(name)s"):
+    format_logging = f"%(asctime)s {class_name}.%(funcName)s +%(lineno)s: %(message)s"
     handlers = [logging.StreamHandler()]
     if level == logging.DEBUG:
         handlers.append(LOG_FILE_HANDLER)
