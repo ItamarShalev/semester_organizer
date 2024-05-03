@@ -1875,12 +1875,6 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 34,
-                    "course_number": 153105,
-                    "name": "תכנות פונקציונלית ולוגית",
-                    "can_be_taken_in_parallel": false
-                },
-                {
                     "id": 47,
                     "course_number": 151131,
                     "name": "קומפיילרים ומתרגמים",
@@ -1896,7 +1890,7 @@
                     "id": 54,
                     "course_number": 150060,
                     "name": "עקרונות שפות תכנה",
-                    "can_be_taken_in_parallel": false
+                    "can_be_taken_in_parallel": true
                 }
             ]
         },
@@ -2093,6 +2087,12 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
+                    "id": 34,
+                    "course_number": 153105,
+                    "name": "תכנות פונקציונלית ולוגית",
+                    "can_be_taken_in_parallel": true
+                },
+                {
                     "id": 46,
                     "course_number": 150134,
                     "name": "ניתוח אלגוריתמים וסיבוכיות",
@@ -2114,7 +2114,7 @@
                     "id": 54,
                     "course_number": 150060,
                     "name": "עקרונות שפות תכנה",
-                    "can_be_taken_in_parallel": true
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 67,

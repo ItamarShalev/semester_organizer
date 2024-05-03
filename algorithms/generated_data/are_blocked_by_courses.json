@@ -1234,10 +1234,10 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 18,
-                    "course_number": 120304,
-                    "name": "לוגיקה מתמטית",
-                    "can_be_taken_in_parallel": false
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": true
                 }
             ]
         },
@@ -2212,13 +2212,13 @@
                     "id": 18,
                     "course_number": 120304,
                     "name": "לוגיקה מתמטית",
-                    "can_be_taken_in_parallel": false
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 23,
                     "course_number": 120302,
                     "name": "מתמטיקה בדידה",
-                    "can_be_taken_in_parallel": true
+                    "can_be_taken_in_parallel": false
                 },
                 {
                     "id": 26,
