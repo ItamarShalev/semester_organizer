@@ -534,8 +534,8 @@
                     "can_be_taken_in_parallel": false
                 },
                 {
-                    "id": 18,
-                    "can_be_taken_in_parallel": false
+                    "id": 23,
+                    "can_be_taken_in_parallel": true
                 }
             ]
         },
