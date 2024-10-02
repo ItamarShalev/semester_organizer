@@ -1088,7 +1088,6 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
-                "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
             "blocked_by": [
@@ -1856,7 +1855,7 @@
             "id": 49,
             "name": "אקסלנטים",
             "course_number": 157200,
-            "is_active": true,
+            "is_active": false,
             "credits": 3.0,
             "aliases": [
                 "אקסלנטים"
@@ -2305,7 +2304,6 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
-                "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
             "blocked_by": [
@@ -2439,7 +2437,6 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
-                "ביואינפורמטיקה",
                 "הנדסת תוכנה"
             ],
             "blocked_by": [
@@ -2501,7 +2498,6 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
-                "ביואינפורמטיקה",
                 "הנדסת תוכנה"
             ],
             "blocked_by": [
@@ -2556,7 +2552,6 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
-                "ביואינפורמטיקה",
                 "הנדסת תוכנה"
             ],
             "blocked_by": [
@@ -3024,8 +3019,8 @@
             "id": 72,
             "name": "סדנא ב-java",
             "course_number": 150019,
-            "is_active": true,
-            "credits": 2.0,
+            "is_active": null,
+            "credits": null,
             "aliases": [
                 "סדנא בJAVA",
                 "סדנה בJAVA",
@@ -3036,9 +3031,7 @@
                 "סדנא ב-java"
             ],
             "mandatory_for_degrees": [],
-            "optional_for_degrees": [
-                "מדעי המחשב"
-            ],
+            "optional_for_degrees": [],
             "blocked_by": [
                 {
                     "id": 1,
@@ -3082,7 +3075,7 @@
             "id": 73,
             "name": "תכנות מתקדם",
             "course_number": 150024,
-            "is_active": true,
+            "is_active": false,
             "credits": 3.0,
             "aliases": [
                 "תכנות מתקדם"
