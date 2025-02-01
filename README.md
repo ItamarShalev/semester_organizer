@@ -8,6 +8,26 @@ With the semester organizer, you can create a time system according to your conv
 ### Save your time and effort, and get the best schedule suit for you!
 
 
+## Table of Contents
+
+- [Preview](#preview)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [How to use](#how-to-use)
+- [How to update courses](#how-to-update-courses)
+- [FAQ](#faq)
+- [License](#license)
+- [Feedback](#feedback)
+
+## Preview
+
+The semester organizer helps you create a personalized schedule quickly and efficiently. Below are some example outputs:
+
+![Alt text](readme_data/example_image_output_hebrew.png?raw=true "Example hebrew output")
+
+![Alt text](readme_data/example_image_output_english.png?raw=true "Example english output")
+
+
 
 
 ## Features
@@ -36,16 +56,6 @@ With the semester organizer, you can create a time system according to your conv
 - CSV
 - Excel
 - Image
-
-### Example output:
-
-
-![Alt text](readme_data/example_image_output_hebrew.png?raw=true "Example hebrew output")
-
-
-
-![Alt text](readme_data/example_image_output_english.png?raw=true "Example english output")
-
 
 ## Prerequisites
 
@@ -125,6 +135,20 @@ python main.py
 git fetch --all && git reset --hard origin/main
 ```
 
+## How to update courses
+
+Semester organizer works offline for efficient uses.
+
+In order to update the courses information hours and etc
+You should run the update script.
+
+(Notice, the flags should be only on the first update)
+```bash
+python update_levnet_data.py --user <YOUR_LEVNET_USERNAME> --password <YOUR_LEVNET_PASSWORD>
+```
+
+Don't worry, the user information saved locally only.
+
 ## FAQ
 
 #### I got a message saying "You don't have a tkinter", what should I do?
@@ -144,7 +168,6 @@ You can clean your data and get the new one from the server.
 ```bash
 git clean -fdx && git fetch --all && git reset --hard origin/main
 ```
-
 
 ## License
 
