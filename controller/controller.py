@@ -225,7 +225,7 @@ class Controller:
                 gui.open_notification_window(_("No schedule were found"))
             else:
                 results_path = utils.get_results_path()
-                self._save_schedule(schedules, settings, results_path)
+                Controller.save_schedules(schedules, settings, results_path, self.max_output, self.convertor)
                 self._open_results_folder(results_path)
                 message = _("The schedules were saved in the directory: ") + results_path
                 gui.open_notification_window(message)
@@ -262,7 +262,9 @@ class Controller:
                 if self.database.get_language() != language:
                     self.database.save_language(language)
 
-    def _save_schedule(self, all_schedules: List[Schedule], settings: Settings, results_path: Path):
+    @staticmethod
+    def save_schedules(all_schedules: List[Schedule], settings: Settings, results_path: Path, max_output: int = 20,
+                       convertor: Convertor = Convertor()):
         # Save the most spread days and least spread days
         most_spread_days = defaultdict(list)
         least_spread_days = defaultdict(list)
@@ -299,20 +301,20 @@ class Controller:
 
         shutil.rmtree(results_path, ignore_errors=True)
 
-        if len(all_schedules) > self.max_output:
-            all_schedules = all_schedules[:self.max_output]
-        self.convertor.convert_activities(all_schedules, all_schedules_path, output_formats)
+        if len(all_schedules) > max_output:
+            all_schedules = all_schedules[:max_output]
+        convertor.convert_activities(all_schedules, all_schedules_path, output_formats)
         if most_spread_days and least_spread_days:
-            if len(most_spread_days) > self.max_output:
-                most_spread_days = most_spread_days[:self.max_output]
-            if len(least_spread_days) > self.max_output:
-                least_spread_days = least_spread_days[:self.max_output]
-            self.convertor.convert_activities(most_spread_days, most_spread_days_path, output_formats)
-            self.convertor.convert_activities(least_spread_days, least_spread_days_path, output_formats)
+            if len(most_spread_days) > max_output:
+                most_spread_days = most_spread_days[:max_output]
+            if len(least_spread_days) > max_output:
+                least_spread_days = least_spread_days[:max_output]
+            convertor.convert_activities(most_spread_days, most_spread_days_path, output_formats)
+            convertor.convert_activities(least_spread_days, least_spread_days_path, output_formats)
         if schedules_by_standby_time:
-            if len(schedules_by_standby_time) > self.max_output:
-                schedules_by_standby_time = schedules_by_standby_time[:self.max_output]
-            self.convertor.convert_activities(schedules_by_standby_time, least_standby_time_path, output_formats)
+            if len(schedules_by_standby_time) > max_output:
+                schedules_by_standby_time = schedules_by_standby_time[:max_output]
+            convertor.convert_activities(schedules_by_standby_time, least_standby_time_path, output_formats)
 
     def _delete_data_if_new_version(self):
         language = self.database.get_language()
@@ -411,7 +413,7 @@ class Controller:
         results_path = utils.get_results_path()
         for try_number in range(1, 4):
             try:
-                self._save_schedule(schedules, settings, results_path)
+                Controller.save_schedules(schedules, settings, results_path, self.max_output, self.convertor)
                 self._print(_("Done successfully !"))
                 self._print(_("The schedules were saved in the directory:"), results_path)
                 self._open_results_folder(results_path)
