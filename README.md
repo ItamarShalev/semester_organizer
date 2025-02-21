@@ -59,7 +59,7 @@ The semester organizer helps you create a personalized schedule quickly and effi
 
 ## Prerequisites
 
-- Python version 3.8 and above
+- Python version 3.8 and above, Preferred version >= 3.13 for efficient and fast use.
 - Chrome browser installed.
 - For GUI flow - Tkinter
 - Git bash or any terminal support your language (pycharm doesn't support Hebrew by default)

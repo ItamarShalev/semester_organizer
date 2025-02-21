@@ -15,6 +15,8 @@ pandas>=1.5.2
 # Excel output.
 xlsxwriter==3.1.9
 # Image output.
-dataframe_image>=0.1.5
+dataframe_image==0.2.7
+# dataframe_image module requirement.
+playwright==1.50.0
 # dataframe_image module requirement.
 matplotlib>=3.7.2

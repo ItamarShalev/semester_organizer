@@ -5,6 +5,8 @@ from pathlib import Path
 from collections import namedtuple
 from typing import List, cast
 import warnings
+from concurrent.futures import ThreadPoolExecutor
+
 import pandas as pd
 import dataframe_image as dfi
 
@@ -175,10 +177,17 @@ class Convertor:
         shutil.rmtree(folder_location, ignore_errors=True)
         folder_location.mkdir(parents=True)
         self._init_activities_color_indexes(schedules[0].activities)
-        for schedule in schedules:
+
+        def process_schedule(schedule: Schedule):
             df = self._create_schedule_table(schedule)
-            file_location = folder_location / f"{schedule.file_name}.{OutputFormat.IMAGE.value}"
-            dfi.export(df, str(file_location))
+            full_file_path = folder_location / f"{schedule.file_name}.{OutputFormat.IMAGE.value}"
+            dfi.export(df, str(full_file_path), table_conversion="playwright")
+
+        with ThreadPoolExecutor() as executor:
+            futures = [executor.submit(process_schedule, schedule) for schedule in schedules]
+            for future in futures:
+                # Wait for all tasks to complete
+                future.result()
 
     def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: Path):
         shutil.rmtree(folder_location, ignore_errors=True)
