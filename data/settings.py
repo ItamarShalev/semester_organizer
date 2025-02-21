@@ -25,7 +25,7 @@ class Settings:
     show_only_courses_with_the_same_actual_number: bool = True
     dont_show_courses_already_done: bool = True
     show_only_classes_in_days: List[Day] = field(default_factory=lambda: list(Day))
-    output_formats: List[OutputFormat] = field(default_factory=lambda: list(OutputFormat))
+    output_formats: List[OutputFormat] = field(default_factory=lambda: [OutputFormat.IMAGE])
     show_only_classes_can_enroll: bool = True
     show_only_courses_with_prerequisite_done: bool = False
     language: Language = Language.HEBREW
