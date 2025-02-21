@@ -66,6 +66,9 @@ class Course:
         elif course_type.is_exercise():
             self.attendance_required_for_practice = required
 
+    def __lt__(self, other):
+        return self.name < other.name
+
     def __str__(self):
         return self.name
 
