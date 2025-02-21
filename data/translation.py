@@ -300,4 +300,4 @@ def config_language_text(language: Optional[Language] = None):
     Language.set_current(language)
 
 
-_TRANSLATION_METHOD = english
+_TRANSLATION_METHOD = hebrew if Language.get_current() is Language.HEBREW else english

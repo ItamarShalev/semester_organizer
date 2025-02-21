@@ -28,7 +28,7 @@ class Settings:
     output_formats: List[OutputFormat] = field(default_factory=lambda: [OutputFormat.IMAGE])
     show_only_classes_can_enroll: bool = True
     show_only_courses_with_prerequisite_done: bool = False
-    language: Language = Language.HEBREW
+    language: Language = Language.get_current()
     force_update_data: bool = True
     show_english_speaker_courses: bool = False
 
