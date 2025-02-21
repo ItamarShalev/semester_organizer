@@ -219,6 +219,23 @@ class TestData:
         with pytest.raises(ValueError):
             Language.from_str("France")
 
+        Language.set_current(Language.ENGLISH)
+        assert Language.get_current() == Language.ENGLISH
+        Language.set_current(Language.HEBREW)
+        assert Language.get_current() == Language.HEBREW
+        assert Language.contains("Hebrew")
+        assert Language.get_default() == Language.HEBREW
+        assert not Language.contains("France")
+        assert "English" in language
+        with pytest.raises(ValueError):
+            Language.from_str(20)
+        with pytest.raises(ValueError):
+            Language.from_str("fr")
+        with pytest.raises(TypeError):
+            Language.from_str(None)
+        with pytest.raises(TypeError):
+            Language.set_current("France")
+
     def test_case_insensitive_dict(self):
         case_insensitive_dict = CaseInsensitiveDict()
         case_insensitive_dict["A"] = 1
@@ -269,6 +286,8 @@ class TestData:
         shutil.rmtree(test_folder, ignore_errors=True)
         assert utils.get_last_modified_by_days(test_folder) == 0
         assert utils.get_results_path()
+        assert utils.convert_year(2021, Language.HEBREW) == 5781
+        assert utils.convert_year(5781, Language.ENGLISH) == 2021
 
     def test_degree(self):
         degrees = set()
@@ -290,6 +309,10 @@ class TestData:
         assert flow.from_str(1) is Flow.GUI
         with pytest.raises(ValueError):
             flow.from_str("18")
+        with pytest.raises(ValueError):
+            flow.from_str("NonExist")
+        assert str(Flow.CONSOLE) == "console"
+        assert repr(Flow.CONSOLE) == "console"
 
     def test_settings(self):
         # pylint: disable=no-member

@@ -56,6 +56,13 @@ class TestDatabase:
         assert not database_mock.load_campuses()
         assert not database_mock.are_shared_tables_exists()
 
+    def test_translate_campus_name(self, database_mock):
+        database_mock.save_campuses({1: ("A", "א")})
+        Language.set_current(Language.ENGLISH)
+        assert database_mock.translate_campus_name("A") == "A"
+        Language.set_current(Language.HEBREW)
+        assert database_mock.translate_campus_name("A") == "א"
+
     def test_campuses(self, database_mock):
 
         campuses = {
