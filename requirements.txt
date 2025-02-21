@@ -1,5 +1,5 @@
 # Csp package, the main algorithm.
-python_constraint>=1.4.0
+python-constraint2==2.1.0
 # Save and load dataclass as json format.
 dataclasses_json>=0.5.7
 # Gui package use tkinter, Must have tkinter with the python, can't install via pip.

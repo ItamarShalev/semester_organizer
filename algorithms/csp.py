@@ -1,8 +1,8 @@
 from enum import Enum, auto
 from typing import List, Optional, Dict, Set
 
-from constraint import Problem
-from constraint import AllEqualConstraint
+from constraint.problem import Problem
+from constraint.constraints import AllEqualConstraint
 
 from data.activity import Activity
 from data.course_choice import CourseChoice
