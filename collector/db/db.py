@@ -224,7 +224,7 @@ class Database:
                 if degree.value.department != department:
                     raise ValueError("Degree department in database is different from the one in the code")
                 degrees.add(degree)
-        return list(degrees)
+        return list(sorted(degrees, reverse=True))
 
     def load_semesters(self) -> List[Semester]:
         if not self.shared_database_path.exists():
