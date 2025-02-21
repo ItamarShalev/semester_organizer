@@ -5,9 +5,9 @@ dataclasses_json>=0.5.7
 # Gui package use tkinter, Must have tkinter with the python, can't install via pip.
 customtkinter>=5.0.2
 # Network requests.
-requests==2.31
+requests==2.32.3
 # For network, avoid printing warnings for each request.
-urllib3==2.2.1
+urllib3==2.3.0
 # Automatic bash complete commands.
 argcomplete>=2.0.0
 # Work with dataframe to export in csv, excel and image output formats.
