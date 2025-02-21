@@ -41,3 +41,6 @@ class Degree(Enum):
     @staticmethod
     def get_defaults():
         return {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
+
+    def __lt__(self, other):
+        return self.value.name < other.value.name
