@@ -21,7 +21,6 @@ from data.degree import Degree
 from data.language import Language
 from data.schedule import Schedule
 from data.settings import Settings
-from data.message_type import MessageType
 from data.day import Day
 from data.semester import Semester
 from data.output_format import OutputFormat
@@ -146,98 +145,6 @@ class Controller:
 
         self._console_save_schedules(settings, schedules)
 
-    def run_main_gui_flow(self):
-        # Support users who don't have tkinter.
-        # pylint: disable=import-outside-toplevel
-        translation.config_language_text(Language.ENGLISH)
-        from collector.gui.gui import Gui, UserClickExitException
-        gui = Gui()
-        try:
-
-            self.logger.info("Start the main gui flow")
-
-            self._validate_database('gui')
-
-            # Initialize the language for first time.
-            # Currently, only English supported.
-            # self._initial_language_if_first_time(gui)
-
-            # user = self.gui.open_login_window(self.network.check_connection)
-            # self.network.set_user(user)
-
-            settings = self.database.load_settings() or Settings()
-
-            # Override the settings with the default settings.
-            settings.language = Language.ENGLISH
-
-            campus_names = self.database.load_campus_names(settings.language)
-
-            # years = self.database.load_years()
-
-            settings = gui.open_settings_window(settings, campus_names, {utils.get_current_hebrew_year(): "2013"})
-
-            # language = self.database.get_language()
-
-            # if language and language != settings.language:
-            #    translation.config_language_text(settings.language)
-
-            self.database.save_settings(settings)
-
-            language = settings.language
-
-            campus_name = settings.campus_name
-
-            ask_attendance = not settings.attendance_required_all_courses
-
-            self.logger.info("Loading courses data...")
-
-            courses = self.database.load_active_courses(campus_name, language)
-
-            if not courses:
-                message = _("There are no courses in the system, "
-                            "please try again with another campus update your database from the server.")
-                gui.open_notification_window(message, MessageType.ERROR)
-                return
-
-            courses_choices = self.database.load_courses_choices(campus_name, language, settings.degrees, courses)
-
-            courses_choices = gui.open_academic_activities_window(ask_attendance, courses_choices)
-
-            user_courses = []
-
-            for course in courses:
-                if course.name in courses_choices:
-                    course_choice = courses_choices[course.name]
-                    if ask_attendance:
-                        course.attendance_required_for_lecture = course_choice.attendance_required_for_lecture
-                        course.attendance_required_for_exercise = course_choice.attendance_required_for_practice
-                    user_courses.append(course)
-
-            activities = self.database.load_activities_by_courses_choices(courses_choices, campus_name, language)
-
-            AcademicActivity.union_courses(activities, user_courses)
-
-            activities += gui.open_personal_activities_window()
-
-            schedules = self.csp.extract_schedules(activities, courses_choices, settings)
-
-            if not schedules:
-                gui.open_notification_window(_("No schedule were found"))
-            else:
-                results_path = utils.get_results_path()
-                Controller.save_schedules(schedules, settings, results_path, self.max_output, self.convertor)
-                self._open_results_folder(results_path)
-                message = _("The schedules were saved in the directory: ") + results_path
-                gui.open_notification_window(message)
-
-        except UserClickExitException:
-            self.logger.info("User clicked exit button")
-
-        except Exception as error:
-            message = "The system encountered an error, please contact the engineers."
-            self.logger.error("The system encountered an error: %s", str(error))
-            gui.open_notification_window(_(message), MessageType.ERROR)
-
     def _console_print_status_results(self, status: Status):
         if status is Status.FAILED:
             self._print(_("No schedules were found"))
@@ -249,18 +156,6 @@ class Controller:
             self._print(_("No schedules were found with all favorite lecturers, but found with some of them"))
         elif status is Status.SUCCESS_WITHOUT_FAVORITE_LECTURERS:
             self._print(_("No schedules were found with favorite lecturers"))
-
-    def _initial_language_if_first_time(self, gui):
-        settings = self.database.load_settings()
-        if not settings:
-            message = _("Welcome to the semester organizer!\nPlease choose a language\nThe current language is: ")
-            message += _(str(Language.get_current()))
-            language = gui.open_notification_window(message, MessageType.INFO, list(map(str, Language)))
-            if language and Language.contains(language):
-                language = Language[language.upper()]
-                translation.config_language_text(language)
-                if self.database.get_language() != language:
-                    self.database.save_language(language)
 
     @staticmethod
     def save_schedules(all_schedules: List[Schedule], settings: Settings, results_path: Path, max_output: int = 20,
@@ -336,11 +231,7 @@ class Controller:
             msg = _("Missing database, can't continue, please download the database file from the github server "
                     "and import the database by running :")
             msg += "'python __main__.py -- database_path {path_to_database.db}'"
-            if output_type == 'gui':
-                pass
-                # self.gui.open_notification_window(msg, MessageType.ERROR)
-            elif output_type == 'console':
-                self._print(msg)
+            self._print(msg)
             sys.exit(0)
 
     def _console_ask_campus_name(self):

@@ -7,12 +7,10 @@ import logging
 import os
 import platform
 import subprocess
-from pathlib import Path
 from enum import Enum
 from typing import Optional
 
 import argcomplete
-import customtkinter
 import utils
 from collector.db.db import Database
 
@@ -51,7 +49,6 @@ def get_os_type() -> Optional[OS]:
 
 
 def build(os_build_type: OS):
-    customtkinter_path = Path(customtkinter.__file__).parent.resolve()
     database_file_path = Database().shared_database_path
     main_path = utils.ROOT_PATH / "__main__.py"
     separator = ';'
@@ -60,9 +57,8 @@ def build(os_build_type: OS):
 
     print(f"Building executable file for {os_build_type} OS")
     print(f"Main script path: {main_path}")
-    print(f"customtkinter package path: {customtkinter_path}")
 
-    pyinstaller_cmd = f"pyinstaller --onefile --add-data {customtkinter_path}{separator}customtkinter " \
+    pyinstaller_cmd = f"pyinstaller --onefile " \
                       f"--add-binary {database_file_path}{separator}database " \
                       f"--name SemesterOrganizer{os_build_type.value} __main__.py"
 

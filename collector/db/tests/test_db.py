@@ -112,15 +112,23 @@ class TestDatabase:
         campus_name = campuses[1][0]
         activity = AcademicActivity("course", Type.LECTURE, True, "lecturer_", 1221, 2, "", "1.10.3", "")
         activity1 = AcademicActivity("course", Type.LECTURE, True, "lecturer_", 1221, 2, "", "1.0.4", "")
+        activity2 = AcademicActivity("course", Type.LAB, True, "lecturer_", 1221, 2, "", "1.0.5", "")
+
         activity.add_slot(Meeting(Day.MONDAY, "10:00", "12:00"))
         activity1.add_slot(Meeting(Day.SUNDAY, "10:00", "12:00"))
+        activity2.add_slot(Meeting(Day.WEDNESDAY, "10:00", "12:00"))
+
         database_mock.save_courses([Course("course", 1221, 2, set(Semester), set(Degree))], Language.ENGLISH)
-        database_mock.save_academic_activities([activity], campus_name, Language.ENGLISH)
-        database_mock.save_academic_activities([activity1], campus_name, Language.HEBREW)
+
+        database_mock.save_academic_activities([activity, activity2], campus_name, Language.ENGLISH)
+        database_mock.save_academic_activities([activity1, activity2], campus_name, Language.HEBREW)
+
         activities_loaded = database_mock.load_activities_by_parent_courses_numbers({2}, campus_name, Language.ENGLISH)
-        assert activities_loaded == [activity]
+
+        assert set(activities_loaded) == {activity, activity2}
         assert database_mock.load_activities_by_parent_courses_numbers({1}, campus_name, Language.ENGLISH) == []
-        database_mock.save_academic_activities([activity1], campus_name, Language.ENGLISH)
+
+        database_mock.save_academic_activities([activity1, activity2], campus_name, Language.ENGLISH)
         settings.show_english_speaker_courses = False
         activities = database_mock.load_activities_by_parent_courses_numbers(
             parent_courses_numbers={2},
@@ -128,7 +136,7 @@ class TestDatabase:
             language=Language.ENGLISH,
             degrees={Degree.COMPUTER_SCIENCE},
             settings=settings)
-        assert set(activities) == {activity1}
+        assert set(activities) == {activity1, activity2}
         settings.show_english_speaker_courses = True
         activities = database_mock.load_activities_by_parent_courses_numbers(
             parent_courses_numbers={2},
@@ -136,7 +144,7 @@ class TestDatabase:
             language=Language.ENGLISH,
             degrees={Degree.COMPUTER_SCIENCE},
             settings=settings)
-        assert set(activities) == {activity, activity1}
+        assert set(activities) == {activity, activity1, activity2}
 
     def test_degrees(self, database_mock):
         degrees = [Degree.SOFTWARE_ENGINEERING]
@@ -261,6 +269,31 @@ class TestDatabase:
         database_mock.save_academic_activities(activities, campus_name, language)
         loaded_choices = database_mock.load_activities_by_courses_choices(courses_choices, campus_name, language)
         assert loaded_choices == [create_activity(5)]
+
+    def test_load_activities_with_practice_by_courses_choices(self, database_mock, campuses):
+        campus_name = "A"
+        language = Language.ENGLISH
+        courses = [Course(f"Cor {i}", i, i + 10, set(Semester), set(Degree)) for i in range(10)]
+        database_mock.save_courses(courses, language)
+
+        def create_activities(i):
+            result = {
+                AcademicActivity(f"Cor {i}", Type.LECTURE, True, f"meir{i}", i, i + 10, "", f"12.23{i}",
+                                 "", 0, 1, 0),
+                AcademicActivity(f"Cor {i}", Type.PRACTICE, True, f"meir{i}", i, i + 10,
+                                 "", f"12.23{(i + 1) * 100}", "", 0, 1, 0),
+            }
+            return result
+
+        activities = [activity for i in range(10) for activity in create_activities(i)]
+
+        courses_choices_excepted = {"Cor 5": CourseChoice("Cor 5", 5, {"meir5"}, {"meir5"})}
+        courses_choices = {"Cor 1": CourseChoice("Cor 1", 1, {"meir0"}, {"meir0"})}
+        courses_choices.update(courses_choices_excepted)
+
+        database_mock.save_academic_activities(activities, campus_name, language)
+        loaded_choices = database_mock.load_activities_by_courses_choices(courses_choices, campus_name, language)
+        assert set(loaded_choices) == create_activities(5)
 
     def test_user_data(self, database_mock):
         user = User("username", "password")

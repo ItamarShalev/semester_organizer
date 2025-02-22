@@ -47,9 +47,6 @@ def main():
     if args.flow is Flow.CONSOLE:
         Controller(verbose=args.verbose).run_console_flow()
 
-    elif args.flow is Flow.GUI:
-        Controller(verbose=args.verbose).run_main_gui_flow()
-
     elif args.flow is Flow.UPDATE_DATABASE:
         message = _("Database path is not a file or doesn't exists, the path given is: ")
         assert args.database_path.is_file(), message + str(args.database_path)

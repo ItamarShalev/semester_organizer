@@ -181,7 +181,7 @@ class Convertor:
         def process_schedule(schedule: Schedule):
             df = self._create_schedule_table(schedule)
             full_file_path = folder_location / f"{schedule.file_name}.{OutputFormat.IMAGE.value}"
-            dfi.export(df, str(full_file_path), table_conversion="playwright")
+            dfi.export(df, str(full_file_path), table_conversion="chrome")
 
         with ThreadPoolExecutor() as executor:
             futures = [executor.submit(process_schedule, schedule) for schedule in schedules]

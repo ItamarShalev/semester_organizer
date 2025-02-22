@@ -2,8 +2,6 @@
 python-constraint2==2.1.0
 # Save and load dataclass as json format.
 dataclasses_json>=0.5.7
-# Gui package use tkinter, Must have tkinter with the python, can't install via pip.
-customtkinter>=5.0.2
 # Network requests.
 requests==2.32.3
 # For network, avoid printing warnings for each request.
@@ -20,3 +18,6 @@ dataframe_image==0.2.7
 playwright==1.50.0
 # dataframe_image module requirement.
 matplotlib>=3.7.2
+# Flask for the website.
+flask==3.1.0
+uvicorn==0.34.0

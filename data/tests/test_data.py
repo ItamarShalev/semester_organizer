@@ -5,8 +5,6 @@ from copy import copy
 import pytest
 
 import utils
-from collector.gui.gui import UserClickExitException
-from collector.gui.gui import MessageType
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.case_insensitive_dict import CaseInsensitiveDict, TextCaseInsensitiveDict
@@ -17,6 +15,7 @@ from data.language import Language
 from data.meeting import Meeting
 from data.course import Course
 from data.day import Day
+from data.output_format import OutputFormat
 from data.schedule import Schedule
 from data.semester import Semester
 from data.settings import Settings
@@ -301,12 +300,12 @@ class TestData:
         assert Degree.SOFTWARE_ENGINEERING.value.track_names
 
     def test_flow_enum(self):
-        flow = Flow.GUI
-        assert flow is Flow.GUI
-        assert str(flow) == "gui"
-        assert flow.from_str("guI") is Flow.GUI
-        assert flow.from_str("1") is Flow.GUI
-        assert flow.from_str(1) is Flow.GUI
+        flow = Flow.CONSOLE
+        assert flow is Flow.CONSOLE
+        assert str(flow) == "console"
+        assert flow.from_str("COnsole") is Flow.CONSOLE
+        assert flow.from_str("1") is Flow.CONSOLE
+        assert flow.from_str(1) is Flow.CONSOLE
         with pytest.raises(ValueError):
             flow.from_str("18")
         with pytest.raises(ValueError):
@@ -340,12 +339,11 @@ class TestData:
         assert hash(object_data)
         assert object_data == other_object_data, "ERROR: Compare doesn't compare the id alone."
 
-    def test_others(self):
-        message = MessageType.ERROR
-        assert repr(message) == "Error"
-        with pytest.raises(UserClickExitException):
-            raise UserClickExitException()
-
     def test_year(self):
         assert utils.get_current_hebrew_year() > 5700
         assert "תשפ" in utils.get_current_hebrew_name()
+
+    def test_output_format(self):
+        assert repr(OutputFormat.IMAGE) == "image"
+        assert OutputFormat.IMAGE == OutputFormat["IMAGE"]
+        assert OutputFormat.IMAGE.value == "png"

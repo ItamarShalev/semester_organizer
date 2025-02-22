@@ -23,9 +23,9 @@ With the semester organizer, you can create a time system according to your conv
 
 The semester organizer helps you create a personalized schedule quickly and efficiently. Below are some example outputs:
 
-![Alt text](readme_data/example_image_output_hebrew.png?raw=true "Example hebrew output")
+![Example Hebrew output](./readme_data/example_image_output_hebrew.png)
 
-![Alt text](readme_data/example_image_output_english.png?raw=true "Example english output")
+![Example English output](./readme_data/example_image_output_english.png)
 
 
 
@@ -36,7 +36,7 @@ The semester organizer helps you create a personalized schedule quickly and effi
 - If we consider only the courses that can be enrolled in for the server (username and password for the Levant site are required).
 - Consider which days to study.
 - Cross platform.
-- Support both Hebrew and English (console flow, GUI support only English).
+- Support both Hebrew and English.
 
 #### Make your choices easy!
 
@@ -51,7 +51,7 @@ The semester organizer helps you create a personalized schedule quickly and effi
 
 - Just run python main.py and select your courses.
 
-#### Several output foramts !
+#### Several output formats !
 
 - CSV
 - Excel
@@ -61,19 +61,14 @@ The semester organizer helps you create a personalized schedule quickly and effi
 
 - Python version 3.8 and above, Preferred version >= 3.13 for efficient and fast use.
 - Chrome browser installed.
-- For GUI flow - Tkinter
 - Git bash or any terminal support your language (pycharm doesn't support Hebrew by default)
-
-
-Tkinter come with python installation, if you didn't install it right,
-please install A new python and configure it correctly.
-
 
 ### Config git bash to support Hebrew
 
 - Change the settings (right-click on the screen of git bash)
 - Options -> Text -> Font -> Select font "Miriam Fixed"
 - Options -> Text -> Character set: Change to utf-8
+
 ## How to use
 
 - Open terminal (Git bash recommended and must for Hebrew)
@@ -150,15 +145,6 @@ python update_levnet_data.py --user <YOUR_LEVNET_USERNAME> --password <YOUR_LEVN
 Don't worry, the user information saved locally only.
 
 ## FAQ
-
-#### I got a message saying "You don't have a tkinter", what should I do?
-
-You must install new python with tkinter, tkinter is a package builtin with python to show UI, no need for the console flow.
-
-If you install python with the default options, you will get a tkinter too.
-#### UI only in English even if I asked for hebrew, what can I do ?
-Right, the GUI flow doesn't support it hebrew yet.
-You can use the console flow to work with Hebrew.
 
 #### I have issues with my data and don't get all, or some tables aren't there.
 
