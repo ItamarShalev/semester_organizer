@@ -11,7 +11,7 @@ import argcomplete
 
 import utils
 from collector.db.db import Database
-from collector.network.network import NetworkHttp
+from collector.network.network import Network
 from data.degree import Degree
 from data import translation
 from data.language import Language
@@ -32,7 +32,7 @@ def get_args():
 
 def run_update_levnet_data_flow():
     start = timer()
-    network = NetworkHttp()
+    network = Network()
     database = Database()
     logger = utils.get_logging()
 

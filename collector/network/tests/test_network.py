@@ -6,7 +6,7 @@ from pytest import fixture
 
 import utils
 from collector.db.db import Database
-from collector.network.network import NetworkHttp, WeakNetworkConnectionException, InvalidServerRequestException
+from collector.network.network import Network, WeakNetworkConnectionException, InvalidServerRequestException
 from collector.network.network import InvalidSemesterTimeRequestException, TLSAdapter
 from data import translation
 from data.course import Course
@@ -17,8 +17,7 @@ from data.user import User
 
 
 @pytest.mark.network
-@pytest.mark.network_http
-class TestPublicNetworkHttp:
+class TestPublicNetwork:
 
     already_fail_once = False
 
@@ -28,27 +27,27 @@ class TestPublicNetworkHttp:
         try:
             user_data = Database().load_user_data()
             assert user_data, "Can't load user data."
-            network = NetworkHttp(user_data)
+            network = Network(user_data)
             assert network.check_connection(), "Can't connect to the server."
         except Exception as error:
-            if not TestPublicNetworkHttp.already_fail_once:
-                TestPublicNetworkHttp.already_fail_once = True
+            if not TestPublicNetwork.already_fail_once:
+                TestPublicNetwork.already_fail_once = True
                 raise error
             pytest.skip(str(error))
         return user_data
 
     def test_fail_connection(self):
-        network = NetworkHttp(User("123456789", "123456789"))
+        network = Network(User("123456789", "123456789"))
         with pytest.raises(RuntimeError):
             network.connect()
 
     def test_connect_disconnect(self, user):
-        network = NetworkHttp(user)
+        network = Network(user)
         network.connect()
         network.disconnect()
 
     def test_extract_all_activities_ids_can_enroll_in(self, user):
-        network = NetworkHttp(user)
+        network = Network(user)
         settings = Settings()
         activities_ids_can_enroll_in = []
 
@@ -59,18 +58,18 @@ class TestPublicNetworkHttp:
         assert "120131.04.5783.01" in activities_ids_can_enroll_in, "Can't extract activities ids can enroll in."
 
     def test_check_setup(self, user):
-        network = NetworkHttp()
+        network = Network()
         network.set_user(user)
         assert network.check_connection(), "Can't connect to the server."
 
     def test_extract_courses_already_did(self, user):
-        network = NetworkHttp(user)
+        network = Network(user)
         courses = network.extract_courses_already_did()
         assert courses, "Can't extract courses already did."
         assert any(course for course in courses if course[1] == 120701)
 
     def test_for_coverage(self):
-        network = NetworkHttp()
+        network = Network()
         network.set_settings(Settings())
         network.change_language(Language.ENGLISH)
         with pytest.raises(WeakNetworkConnectionException):
@@ -80,7 +79,7 @@ class TestPublicNetworkHttp:
     def test_extract_campus_names(self, user, language: Language):
         translation.config_language_text(language)
         database = Database()
-        network = NetworkHttp(user)
+        network = Network(user)
         network.change_language(language)
         campus_names = network.extract_campus_names()
         assert campus_names, "Can't extract campus names from the server."
@@ -88,13 +87,13 @@ class TestPublicNetworkHttp:
         assert all_campuses_found, "Some campuses names are missing."
 
     def test_extract_extra_course_info(self, user):
-        network = NetworkHttp(user)
+        network = Network(user)
         result = network.extract_extra_course_info(utils.get_course_data_test())
         assert result
 
     @pytest.mark.parametrize("language", list(Language))
     def test_extract_years(self, user, language: Language):
-        network = NetworkHttp(user)
+        network = Network(user)
         network.change_language(language)
         years = network.extract_years()
         current_year = datetime.now().year
@@ -107,7 +106,7 @@ class TestPublicNetworkHttp:
 
     @pytest.mark.parametrize("language", list(Language))
     def test_extract_all_courses(self, user, language: Language):
-        network = NetworkHttp(user)
+        network = Network(user)
         network.change_language(language)
         campus_name = utils.get_campus_name_test()
 
@@ -118,7 +117,7 @@ class TestPublicNetworkHttp:
 
     @pytest.mark.parametrize("language", list(Language))
     def test_extract_academic_activities_data(self, user, language: Language):
-        network = NetworkHttp(user)
+        network = Network(user)
         network.change_language(language)
         course = utils.get_course_data_test()
         campus_name = utils.get_campus_name_test()
@@ -138,7 +137,7 @@ class TestPublicNetworkHttp:
 
     @pytest.mark.parametrize("language", list(Language))
     def test_change_language_campuses(self, user, language: Language):
-        network = NetworkHttp(user)
+        network = Network(user)
         network.change_language(language)
         campuses = network.extract_campuses()
         # Campus ID of Machon lev is 1

@@ -72,7 +72,7 @@ class TLSAdapter(HTTPAdapter):
         )
 
 
-class NetworkHttp:
+class Network:
     """
     :raises: InvalidServerRequestException if the server request is invalid.
              WeakNetworkConnection if the network is weak

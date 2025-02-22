@@ -33,7 +33,6 @@ def disable_logger_third_party_warnings():
     urllib3.disable_warnings(InsecureRequestWarning)
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("requests").setLevel(logging.WARNING)
-    logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
     logging.getLogger("charset_normalizer").setLevel(logging.WARNING)
     logging.getLogger("WDM").setLevel(logging.WARNING)
     logging.getLogger("PIL").setLevel(logging.WARNING)

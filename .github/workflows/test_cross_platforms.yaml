@@ -40,4 +40,4 @@ jobs:
           echo ${{ secrets.PASSWORD_LEVNET }} >> database/user_data.txt
       - name: Run pytest
         run: |
-          pytest $(git ls-files 'test_*.py') -v -m "not network_driver" --reruns 2 --reruns-delay 5
+          pytest $(git ls-files 'test_*.py') -v --reruns 2 --reruns-delay 5

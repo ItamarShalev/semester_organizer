@@ -51,7 +51,7 @@ def get_args():
     parser.add_argument("-p", "--password", help="The password user in the server", default=None)
     parser.add_argument("-i", "--install", help="Install all the needed packages", default=False, action="store_true")
     parser.add_argument("-c", "--coverage", help="Run coverage", default=False, action="store_true")
-    parser.add_argument("-n", "--network", help="Run network_http pytest mark", default=False, action="store_true")
+    parser.add_argument("-n", "--network", help="Run network pytest mark", default=False, action="store_true")
     parser.add_argument("-a", "--all", help="Run all tests", default=False, action="store_true")
     parser.add_argument("-v", "--verbose", help="Print more debug logs", default=False, action="store_true")
     argcomplete.autocomplete(parser)
@@ -99,7 +99,7 @@ def _build_pytest_command(arguments):
     if arguments.all:
         pytest_arguments = ['--reruns', '2', '--reruns-delay', '5']
     elif arguments.network:
-        pytest_arguments = ['-m', 'not network_driver', '--reruns', '2', '--reruns-delay', '5']
+        pytest_arguments = ['--reruns', '2', '--reruns-delay', '5']
     if arguments.verbose:
         pytest_arguments += ['-v']
 
