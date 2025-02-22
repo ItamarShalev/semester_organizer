@@ -29,7 +29,7 @@ def get_args():
     parser.add_argument("-v", "--verbose", help="Print more debug logs", default=False, action="store_true")
     parser.add_argument("--database_path", default="", type=pathlib.Path,
                         help="Path to database file (.db) Update database by given .db file, "
-                             "that can be downaloaded from the server (currently the gitub)")
+                             "that can be downloaded from the server (currently the github)")
     argcomplete.autocomplete(parser)
     return parser.parse_args()
 
