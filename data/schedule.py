@@ -23,6 +23,9 @@ class Schedule:
         is_equals = len(self.activities) == len(other.activities)
         return is_equals and all(activity in other.activities for activity in self.activities)
 
+    def __hash__(self):
+        return hash(self.file_name)
+
     def __contains__(self, activity):
         return activity in self.activities
 

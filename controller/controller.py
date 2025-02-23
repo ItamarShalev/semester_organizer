@@ -4,7 +4,6 @@ import shutil
 import subprocess
 import time
 from collections import defaultdict
-from operator import itemgetter
 from typing import List, Dict, Literal, Optional, Any, Set
 from pathlib import Path
 
@@ -159,34 +158,42 @@ class Controller:
     @staticmethod
     def save_schedules(all_schedules: List[Schedule], settings: Settings, results_path: Path, max_output: int = 20,
                        convertor: Convertor = Convertor()):
-        # Save the most spread days and least spread days
-        most_spread_days = defaultdict(list)
-        least_spread_days = defaultdict(list)
+        def filter_and_convert(schedules, path, converted_set):
+            already_converted = []
+            if len(schedules) > max_output:
+                schedules = schedules[:max_output]
+                already_converted = set(schedules) & all_schedules
+                schedules = list(set(schedules) - already_converted)
+            convertor.convert_activities(schedules, path, output_formats)
+            return already_converted
+
+        def copy_converted_files(converted_schedules, source_path, dest_path):
+            for schedule in converted_schedules:
+                shutil.copyfile(source_path / f"{schedule.file_name}.png", dest_path / f"{schedule.file_name}.png")
+
+        output_formats = settings.output_formats
         schedules_by_learning_days = defaultdict(list)
         schedules_by_standby_time = defaultdict(list)
-        output_formats = settings.output_formats
 
         for schedule in all_schedules:
             standby_in_minutes = schedule.get_standby_in_minutes()
             learning_days = schedule.get_learning_days()
-            schedule.file_name = \
-                f"{schedule.file_name}_" + \
-                _("with_{}_learning_days_and_{}_minutes_study_time").format(len(learning_days), standby_in_minutes)
+            file_name_template = _("with_{}_learning_days_and_{}_minutes_study_time")
+            schedule.file_name += file_name_template.format(len(learning_days), standby_in_minutes)
             schedules_by_learning_days[len(learning_days)].append(schedule)
             schedules_by_standby_time[standby_in_minutes].append(schedule)
 
-        schedules_by_learning_days = dict(sorted(schedules_by_learning_days.items(), key=itemgetter(0)))
-        schedules_by_standby_time = dict(sorted(schedules_by_standby_time.items(), key=itemgetter(0)))
+        schedules_by_learning_days = dict(sorted(schedules_by_learning_days.items()))
+        schedules_by_standby_time = dict(sorted(schedules_by_standby_time.items()))
 
-        if len(schedules_by_learning_days.keys()) > 1:
-            most_spread_days = schedules_by_learning_days[max(schedules_by_learning_days.keys())]
-            least_spread_days = schedules_by_learning_days[min(schedules_by_learning_days.keys())]
+        most_spread_days = schedules_by_learning_days[max(schedules_by_learning_days.keys())] \
+            if len(schedules_by_learning_days) > 1 else []
 
-        # Get the lowest standby time
-        if len(schedules_by_standby_time.keys()) > 1:
-            schedules_by_standby_time = schedules_by_standby_time[min(schedules_by_standby_time.keys())]
-        else:
-            schedules_by_standby_time = None
+        least_spread_days = schedules_by_learning_days[min(schedules_by_learning_days.keys())] \
+            if len(schedules_by_learning_days) > 1 else []
+
+        schedules_by_standby_time = schedules_by_standby_time[min(schedules_by_standby_time.keys())] \
+            if len(schedules_by_standby_time) > 1 else []
 
         all_schedules_path = results_path / _("all_schedules")
         most_spread_days_path = results_path / _("most_spread_days")
@@ -195,20 +202,20 @@ class Controller:
 
         shutil.rmtree(results_path, ignore_errors=True)
 
-        if len(all_schedules) > max_output:
-            all_schedules = all_schedules[:max_output]
+        all_schedules = all_schedules[:max_output] if len(all_schedules) > max_output else all_schedules
         convertor.convert_activities(all_schedules, all_schedules_path, output_formats)
+        all_schedules = set(all_schedules)
+
         if most_spread_days and least_spread_days:
-            if len(most_spread_days) > max_output:
-                most_spread_days = most_spread_days[:max_output]
-            if len(least_spread_days) > max_output:
-                least_spread_days = least_spread_days[:max_output]
-            convertor.convert_activities(most_spread_days, most_spread_days_path, output_formats)
-            convertor.convert_activities(least_spread_days, least_spread_days_path, output_formats)
+            already_converted = filter_and_convert(most_spread_days, most_spread_days_path, all_schedules)
+            copy_converted_files(already_converted, all_schedules_path, most_spread_days_path)
+
+            already_converted = filter_and_convert(least_spread_days, least_spread_days_path, all_schedules)
+            copy_converted_files(already_converted, all_schedules_path, least_spread_days_path)
+
         if schedules_by_standby_time:
-            if len(schedules_by_standby_time) > max_output:
-                schedules_by_standby_time = schedules_by_standby_time[:max_output]
-            convertor.convert_activities(schedules_by_standby_time, least_standby_time_path, output_formats)
+            already_converted = filter_and_convert(schedules_by_standby_time, least_standby_time_path, all_schedules)
+            copy_converted_files(already_converted, all_schedules_path, least_standby_time_path)
 
     def _delete_data_if_new_version(self):
         language = self.database.get_language()

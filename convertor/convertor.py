@@ -276,6 +276,8 @@ class Convertor:
         :param formats: the formats
         :return:
         """
+        if not schedules:
+            return
 
         if OutputFormat.CSV in formats:
             if len(formats) == 1:

@@ -181,6 +181,7 @@ class TestData:
 
         copied_schedule = copy(schedule)
         assert copied_schedule == schedule
+        assert hash(copied_schedule) == hash(schedule)
 
     def test_sort_meeting(self):
         meeting = Meeting(Day.MONDAY, "09:00", "11:00")

@@ -41,6 +41,8 @@ class TestConvertor:
         activity.add_slot(Meeting(Day.FRIDAY, "10:00", "12:00"))
         schedules.append(Schedule("שם", f"option_{5}", "", [activity]))
         os.environ["multiprocessing"] = str(use_multiprocessing)
+        # Just for coverage
+        convertor.convert_activities([], path, [file_type])
         convertor.convert_activities(schedules, path, [file_type])
         for i in range(1, 5):
             file_name = f"option_{i}.{extension}"
