@@ -20,4 +20,3 @@ playwright==1.50.0
 matplotlib>=3.7.2
 # Flask for the website.
 flask==3.1.0
-uvicorn==0.34.0

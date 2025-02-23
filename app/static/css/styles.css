@@ -1,0 +1,213 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1a1a1a; /* Dark background */
+    color: #ffffff; /* White text */
+    direction: rtl; /* RTL for Hebrew */
+}
+
+/* Container Styles */
+#container {
+    max-width: 450px; /* Smaller width */
+    width: 100%;
+    margin: 0 auto;
+    padding: 15px; /* Reduced padding */
+    background-color: #2d2d2d; /* Dark container background */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Dividers */
+.section-divider {
+    border-bottom: 1px solid #4a4a4a; /* Thin divider */
+    margin: 15px 0; /* Reduced margin */
+    padding-bottom: 15px; /* Reduced padding */
+}
+
+/* Degrees List */
+#degrees-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Smaller gap */
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.degree-item {
+    padding: 8px 12px; /* Reduced padding */
+    background-color: #3a3a3a; /* Dark gray background */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px; /* Smaller font */
+}
+
+.degree-item:hover {
+    background-color: #4a4a4a; /* Lighter gray on hover */
+}
+
+.degree-item.selected {
+    background-color: #6d28d9; /* Purple for selected degrees */
+}
+
+/* Campuses Dropdown */
+#campuses {
+    width: 100%;
+    padding: 8px; /* Reduced padding */
+    background-color: #3a3a3a; /* Dark gray background */
+    border: 1px solid #4a4a4a;
+    border-radius: 5px;
+    color: #ffffff;
+    margin-bottom: 15px; /* Reduced margin */
+    font-size: 14px; /* Smaller font */
+}
+
+/* Courses List */
+#courses-list {
+    max-height: 250px; /* Smaller height */
+    overflow-y: auto;
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.course-item {
+    padding: 8px; /* Reduced padding */
+    background-color: #3a3a3a; /* Dark gray background */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 8px; /* Reduced margin */
+    font-size: 14px; /* Smaller font */
+}
+
+.course-item:hover {
+    background-color: #4a4a4a; /* Lighter gray on hover */
+}
+
+.course-item.selected {
+    background-color: #6d28d9; /* Purple for selected courses */
+}
+
+/* Selected Courses Chips */
+#selected-courses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Smaller gap */
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    background-color: #6d28d9; /* Purple background */
+    color: white;
+    padding: 4px 8px; /* Reduced padding */
+    border-radius: 9999px; /* Fully rounded */
+    font-size: 14px; /* Smaller font */
+}
+
+.chip .close {
+    cursor: pointer;
+    margin-left: 8px; /* Reduced margin */
+    color: #d1d5db; /* Light gray */
+    transition: color 0.2s;
+}
+
+.chip .close:hover {
+    color: white; /* White on hover */
+}
+
+/* Title Styles */
+.section-title {
+    font-size: 18px; /* Slightly smaller */
+    font-weight: bold;
+    text-align: right; /* Align text to right */
+    background: linear-gradient(to right, #2d0076, #3b82f6); /* Gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* Transparent fill */
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Button Text */
+#generate-btn {
+    font-size: 16px; /* Slightly smaller than before */
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(to right, #6d28d9, #3b82f6);
+    border-radius: 8px;
+    padding: 10px 0;
+}
+
+#generate-btn:hover {
+    opacity: 0.9;
+}
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px; /* Thinner scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #374151; /* Dark scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #6d28d9; /* Purple scrollbar thumb */
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed; /* Lighter purple on hover */
+}
+
+/* Search Input */
+#search-box {
+    width: 100%;
+    padding: 6px; /* Reduced padding */
+    background-color: #3a3a3a; /* Dark gray background */
+    border: 1px solid #4a4a4a; /* Light gray border */
+    border-radius: 4px; /* Slightly rounded corners */
+    color: #ffffff; /* White text */
+    font-size: 13px; /* Smaller font */
+    margin-bottom: 8px; /* Space below the input */
+}
+
+#search-box::placeholder {
+    color: #a0a0a0; /* Light gray placeholder */
+}
+
+#search-box:focus {
+    outline: none;
+    border-color: #6d28d9; /* Purple border on focus */
+}
+
+#loading-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 40px; /* Creates space below the main content */
+    position: relative;
+    bottom: 0;
+}
+
+.spinner {
+    border: 5px solid rgba(255, 255, 255, 0.2);
+    border-top: 5px solid #6d28d9;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading-text {
+    display: block;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester Organizer</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
+    <div id="container">
+        <h1 class="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+            בחירת קורסים
+        </h1>
+
+        <!-- Degrees Section -->
+        <div class="section-divider">
+            <label class="section-title">
+                בחר תואר
+            </label>
+            <div id="degrees-list" class="flex flex-wrap gap-2">
+                {% for degree in degrees %}
+                    <div class="degree-item" data-degree="{{ degree }}">
+                        {{ degree }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Campuses Section -->
+        <div class="section-divider">
+            <label class="section-title">
+                בחר קמפוס
+            </label>
+            <select id="campuses" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md">
+                <option value="">-- בחר תואר ולאחר מכן קמפוס --</option>
+            </select>
+        </div>
+
+
+        <!-- Courses Section -->
+        <div class="section-divider">
+            <label class="section-title">
+                קורסים זמינים
+            </label>
+            
+            <!-- Search Input -->
+            <input type="text" id="search-box" placeholder="חפש קורסים..." 
+                class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 mb-2">
+            
+            <!-- Courses List -->
+            <div id="courses-list" class="space-y-1"></div>
+        </div>
+
+
+        <!-- Selected Courses Section -->
+        <div class="section-divider">
+            <label class="section-title">
+                קורסים נבחרים
+            </label>
+            <div id="selected-courses" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Generate Button -->
+        <button id="generate-btn" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-md hover:from-purple-700 hover:to-blue-700 transition-all">
+            צור מערכת שעות
+        </button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

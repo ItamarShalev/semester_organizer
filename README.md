@@ -14,6 +14,8 @@ With the semester organizer, you can create a time system according to your conv
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [How to use](#how-to-use)
+  - [WebUI (Web User Interface - One click) - NEW !](#webui-web-user-interface---one-click---new-)
+  - [CLI (Command Line Interface)](#cli-command-line-interface)
 - [How to update courses](#how-to-update-courses)
 - [FAQ](#faq)
 - [License](#license)
@@ -69,7 +71,20 @@ The semester organizer helps you create a personalized schedule quickly and effi
 - Options -> Text -> Font -> Select font "Miriam Fixed"
 - Options -> Text -> Character set: Change to utf-8
 
-## How to use
+## WebUI (Web User Interface - One click) - NEW !
+- Download the project, 3 options:
+    1. via github download link: https://github.com/ItamarShalev/semester_organizer/archive/refs/heads/main.zip
+    2. via git https clone:
+        ```bash
+        git clone https://github.com/ItamarShalev/semester_organizer.git
+        ```
+    3. via ssh git clone:
+        ```bash
+        git clone git@github.com:ItamarShalev/semester_organizer.git
+        ```
+- Run the web server by running the file `SemesterOrganizer.bat`
+
+## CLI (Command Line Interface)
 
 - Open terminal (Git bash recommended and must for Hebrew)
 - Clone the project
