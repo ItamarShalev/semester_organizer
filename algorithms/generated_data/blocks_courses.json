@@ -2453,6 +2453,7 @@
             ],
             "mandatory_for_degrees": [],
             "optional_for_degrees": [
+                "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
             "blocks": []
@@ -3418,15 +3419,13 @@
             "id": 79,
             "name": "מערכות הפעלה בגישה מחקרית",
             "course_number": 157128,
-            "is_active": true,
-            "credits": 3.5,
+            "is_active": null,
+            "credits": null,
             "aliases": [
                 "מערכות הפעלה בגישה מחקרית"
             ],
             "mandatory_for_degrees": [],
-            "optional_for_degrees": [
-                "מדעי המחשב"
-            ],
+            "optional_for_degrees": [],
             "blocks": []
         },
         {
