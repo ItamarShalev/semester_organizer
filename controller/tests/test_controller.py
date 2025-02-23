@@ -10,7 +10,6 @@ from collector.db.db import Database
 from collector.network.network import Network
 from controller.controller import Controller
 from convertor.convertor import Convertor
-from data import translation
 from data.course_choice import CourseChoice
 from data.language import Language
 from data.settings import Settings
@@ -22,7 +21,7 @@ class TestController:
 
     @pytest.mark.parametrize("language", list(Language))
     def test_flow_console(self, _time_sleep_mock, results_path_mock, controller_mock, language):
-        translation.config_language_text(language)
+        Language.set_current(language)
         controller_mock.database.save_language(language)
         inputs = []
         # show settings menu

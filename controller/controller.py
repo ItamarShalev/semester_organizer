@@ -14,7 +14,6 @@ from algorithms.constraint_courses import ConstraintCourses
 from collector.network.network import Network, InvalidSemesterTimeRequestException
 from collector.db.db import Database
 from convertor.convertor import Convertor
-from data import translation
 from data.academic_activity import AcademicActivity
 from data.course_choice import CourseChoice
 from data.degree import Degree
@@ -68,7 +67,7 @@ class Controller:
         language = language or settings.language
         settings.language = language
         settings.year = utils.convert_year(settings.year, language)
-        translation.config_language_text(language)
+        Language.set_current(language)
 
         if settings.campus_name:
             campus_name = self.database.translate_campus_name(settings.campus_name)

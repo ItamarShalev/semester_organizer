@@ -11,7 +11,6 @@ import utils
 from collector.db.db import Database
 from controller.controller import Controller
 from algorithms.constraint_courses import ConstraintCourses
-from data import translation
 from data.language import Language
 from data.user import User
 from data.flow import Flow
@@ -38,7 +37,7 @@ def main():
     utils.init_project()
     args = get_args()
     utils.config_logging_level(logging.DEBUG if args.verbose else logging.ERROR)
-    translation.config_language_text(args.language)
+    Language.set_current(args.language)
     database = Database()
 
     if args.username and args.password:

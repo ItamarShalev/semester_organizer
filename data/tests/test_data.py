@@ -197,16 +197,13 @@ class TestData:
         assert repr(language) == "english"
         assert language.short_name() == "en"
 
-        translation.config_language_text(Language.ENGLISH)
+        Language.set_current(Language.ENGLISH)
         assert _("Test") == "Test"
 
-        translation.config_language_text(Language.HEBREW)
+        Language.set_current(Language.HEBREW)
         assert _("Test") == "בדיקה"
 
         assert translation.translate("Test") == translation._("Test")
-
-        translation.config_language_text(None)
-        assert Language.get_current() == Language.HEBREW
 
         assert repr(Language.ENGLISH) == "english"
         assert Language.contains("EnglISh")

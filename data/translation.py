@@ -1,5 +1,3 @@
-from typing import Optional
-
 from data.case_insensitive_dict import TextCaseInsensitiveDict
 from data.language import Language
 
@@ -270,11 +268,12 @@ data = TextCaseInsensitiveDict({
 
 
 def _(text: str):
-    return _TRANSLATION_METHOD(text)
+    return translate(text)
 
 
 def translate(text: str):
-    return _TRANSLATION_METHOD(text)
+    func = hebrew if Language.get_current() is Language.HEBREW else english
+    return func(text)
 
 
 def english(text: str):
@@ -285,19 +284,3 @@ def english(text: str):
 def hebrew(text: str):
     # Should fail if the text is not in the dictionary
     return data[text]
-
-
-def config_language_text(language: Optional[Language] = None):
-    if language is None:
-        return
-        # pylint: disable=global-statement
-    global _TRANSLATION_METHOD
-    if language is Language.ENGLISH:
-        _TRANSLATION_METHOD = english
-    elif language is Language.HEBREW:
-        _TRANSLATION_METHOD = hebrew
-
-    Language.set_current(language)
-
-
-_TRANSLATION_METHOD = hebrew if Language.get_current() is Language.HEBREW else english

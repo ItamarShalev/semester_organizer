@@ -8,7 +8,6 @@ import utils
 from collector.db.db import Database
 from collector.network.network import Network, WeakNetworkConnectionException, InvalidServerRequestException
 from collector.network.network import InvalidSemesterTimeRequestException, TLSAdapter
-from data import translation
 from data.course import Course
 from data.language import Language
 from data.settings import Settings
@@ -77,7 +76,7 @@ class TestPublicNetwork:
 
     @pytest.mark.parametrize("language", list(Language))
     def test_extract_campus_names(self, user, language: Language):
-        translation.config_language_text(language)
+        Language.set_current(language)
         database = Database()
         network = Network(user)
         network.change_language(language)

@@ -14,7 +14,6 @@ from urllib3.poolmanager import PoolManager
 import urllib3
 
 import utils
-from data import translation
 from data.academic_activity import AcademicActivity
 from data.course import Course
 from data.day import Day
@@ -474,7 +473,7 @@ class Network:
         data = {"language": language.name.capitalize()}
         self.request(url, data)
         self._campuses = None
-        translation.config_language_text(language)
+        Language.set_current(language)
 
     def disconnect(self):
         if self._session:

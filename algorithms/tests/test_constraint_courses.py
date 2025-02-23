@@ -5,7 +5,6 @@ from pytest import fixture
 import utils
 from algorithms.constraint_courses import ConstraintCourses
 from collector.db.db import Database
-from data import translation
 from data.degree import Degree
 from data.language import Language
 
@@ -13,11 +12,11 @@ from data.language import Language
 class TestConstraintCourses:
 
     def test_export_generated_json_data(self):
-        translation.config_language_text(Language.HEBREW)
+        Language.set_current(Language.HEBREW)
         ConstraintCourses().export_generated_json_data()
 
     def test_new_course_exist_in_levnet_but_not_in_constraint(self):
-        translation.config_language_text(Language.HEBREW)
+        Language.set_current(Language.HEBREW)
         courses, *_ = ConstraintCourses().prepare_data()
         degrees = {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
         all_courses = Database().load_courses(Language.HEBREW, degrees)
@@ -32,8 +31,7 @@ class TestConstraintCourses:
                                          f"Courses:\n{str_courses_names}."
 
     def test_deprecated_course_exist_in_constraint_but_not_in_levnet(self):
-
-        translation.config_language_text(Language.HEBREW)
+        Language.set_current(Language.HEBREW)
         courses, *_ = ConstraintCourses().prepare_data()
         degrees = {Degree.COMPUTER_SCIENCE, Degree.SOFTWARE_ENGINEERING}
         all_courses = Database().load_courses(Language.HEBREW, degrees)
@@ -77,7 +75,7 @@ class TestConstraintCourses:
 
     @fixture
     def constraint_courses_mock(self):
-        translation.config_language_text(Language.HEBREW)
+        Language.set_current(Language.HEBREW)
 
         class DatabaseMock(Database):
             def __init__(self):

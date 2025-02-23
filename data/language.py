@@ -4,8 +4,11 @@ from typing import Union
 
 
 class Language(Enum):
+    _ignore_ = ['__current_language']
     ENGLISH = auto()
     HEBREW = auto()
+
+    __current_language: Language = None
 
     def short_name(self) -> str:
         """Return the short name of the language, e.g., ENGLISH -> 'en'."""
@@ -17,7 +20,7 @@ class Language(Enum):
     @classmethod
     def contains(cls, key: str) -> bool:
         """Check if the given key (string) is a valid Language enum member."""
-        return any(key.upper() == item.name for item in Language)
+        return any(key.upper() == item.name for item in cls)
 
     @classmethod
     def from_str(cls, name: Union[int, str]) -> Language:
@@ -56,29 +59,22 @@ class Language(Enum):
     @classmethod
     def get_default(cls) -> Language:
         """Return the default language."""
-        return _current_language
+        return Language.HEBREW
 
     @classmethod
     def get_current(cls) -> Language:
         """Return the currently set language."""
-        return _current_language
+        return cls.__current_language or cls.get_default()
 
     @classmethod
     def set_current(cls, language: Language) -> None:
         """Set the current language."""
-        # pylint: disable=global-statement
-        global _current_language
         if not isinstance(language, cls):
             raise TypeError(f"Expected instance of {cls}, got {type(language)}")
-        _current_language = language
+        cls.__current_language = language
 
     def __str__(self):
         return self.name.lower()
 
     def __repr__(self):
         return str(self)
-
-
-# Internal class attributes (not part of the enum members)
-_DEFAULT_LANGUAGE: Language = Language.HEBREW
-_current_language: Language = _DEFAULT_LANGUAGE

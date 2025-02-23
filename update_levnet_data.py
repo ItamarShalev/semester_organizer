@@ -13,7 +13,6 @@ import utils
 from collector.db.db import Database
 from collector.network.network import Network
 from data.degree import Degree
-from data import translation
 from data.language import Language
 from data.user import User
 
@@ -70,7 +69,7 @@ def run_update_levnet_data_flow():
     languages = [Language[args.language.upper()]] if args.language else list(Language)
 
     for language in languages:
-        translation.config_language_text(language)
+        Language.set_current(language)
         network.change_language(language)
         logger.debug("The language was changed to %s", language)
         all_degrees = set(Degree)
@@ -103,7 +102,7 @@ def run_update_levnet_data_flow():
 
 
 def main():
-    translation.config_language_text(Language.ENGLISH)
+    Language.set_current(Language.ENGLISH)
     utils.init_project()
     utils.config_logging_level(logging.DEBUG)
     run_update_levnet_data_flow()
