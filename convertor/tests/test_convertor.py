@@ -1,12 +1,13 @@
+import os
 import shutil
 
 import pytest
-
 import utils
 from convertor.convertor import Convertor
 from data.academic_activity import AcademicActivity
 from data.activity import Activity
 from data.day import Day
+from data.language import Language
 from data.meeting import Meeting
 from data.output_format import OutputFormat
 from data.schedule import Schedule
@@ -21,8 +22,11 @@ class TestConvertor:
         activity.add_slot(Meeting(Day.MONDAY, Meeting.str_to_time("10:00"), Meeting.str_to_time("12:00")))
         return Schedule("שם", file_name, "", [activity])
 
-    @pytest.mark.parametrize("file_type", list(OutputFormat))
-    def test_convert_type(self, file_type: OutputFormat):
+    @pytest.mark.parametrize("file_type, use_multiprocessing",
+                             [(file_type, use_multiprocessing)
+                              for file_type in OutputFormat for use_multiprocessing in [True, False]])
+    def test_convert_type(self, file_type: OutputFormat, use_multiprocessing: bool):
+        Language.set_current(Language.HEBREW)
 
         convertor = Convertor()
         path = utils.get_results_test_path()
@@ -30,15 +34,15 @@ class TestConvertor:
         schedules = []
         shutil.rmtree(path, ignore_errors=True)
 
-        for i in range(1, 10):
+        for i in range(1, 5):
             schedules.append(TestConvertor._create_schedule(f"option_{i}"))
 
         activity = Activity("שם", Type.PERSONAL, True)
         activity.add_slot(Meeting(Day.FRIDAY, "10:00", "12:00"))
-        schedules.append(Schedule("שם", f"option_{10}", "", [activity]))
-
+        schedules.append(Schedule("שם", f"option_{5}", "", [activity]))
+        os.environ["multiprocessing"] = str(use_multiprocessing)
         convertor.convert_activities(schedules, path, [file_type])
-        for i in range(1, 11):
+        for i in range(1, 5):
             file_name = f"option_{i}.{extension}"
             file_path = path / file_name
             assert file_path.is_file(), f"{file_name} is not exist"

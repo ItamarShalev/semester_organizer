@@ -1,11 +1,14 @@
 import csv
 import functools
+import os
 import shutil
+import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from collections import namedtuple
 from typing import List, cast
 import warnings
-from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool
+from dataclasses import dataclass
 
 import pandas as pd
 import dataframe_image as dfi
@@ -52,12 +55,16 @@ class MeetingClass:
         return self.meeting < other.meeting
 
 
+@dataclass
+class Color:
+    strong: str
+    weak: str
+
+
 class Convertor:
 
     # https://www.w3schools.com/colors/colors_picker.asp will help to choose the right color
     # Every tuple contains the strong and weak variety of color
-
-    Color = namedtuple('Color', ['strong', 'weak'])
 
     # Gray
     PERSONAL_COLOR = "#bdc3c7"
@@ -88,6 +95,7 @@ class Convertor:
     def __init__(self):
         warnings.simplefilter(action='ignore', category=FutureWarning)
         self._activities_colors = {}
+        self._loger = utils.get_logging()
 
     def _init_activities_color_indexes(self, activities: List[Activity]):
         all_names = {activity.name for activity in activities if not activity.type.is_personal()}
@@ -144,7 +152,7 @@ class Convertor:
         df.fillna('', inplace=True)
 
         df_styled = df.style
-        df_styled.applymap(self._coloring)
+        df_styled.map(self._coloring)
         df_styled.set_properties(**{'border': '1px black solid',
                                     'text-align': 'center',
                                     'white-space': 'pre-wrap'})
@@ -173,21 +181,30 @@ class Convertor:
 
             writer.close()
 
-    def convert_activities_to_png(self, schedules: List[Schedule], folder_location: Path):
-        shutil.rmtree(folder_location, ignore_errors=True)
-        folder_location.mkdir(parents=True)
+    def convert_activities_to_png(self, schedules: List[Schedule], folder_path: Path):
+        shutil.rmtree(folder_path, ignore_errors=True)
+        folder_path.mkdir(parents=True)
         self._init_activities_color_indexes(schedules[0].activities)
+        use_multiprocessing = sys.version_info <= (3, 12) or os.environ.get("multiprocessing", "F").lower() == "true"
+        self._loger.info(f"Use multiprocessing: {use_multiprocessing}")
 
-        def process_schedule(schedule: Schedule):
-            df = self._create_schedule_table(schedule)
-            full_file_path = folder_location / f"{schedule.file_name}.{OutputFormat.IMAGE.value}"
-            dfi.export(df, str(full_file_path), table_conversion="chrome")
+        if use_multiprocessing:
+            with Pool() as pool:
+                pool.starmap(self.process_schedule, [(schedule, folder_path, self) for schedule in schedules])
+        else:
+            with ThreadPoolExecutor() as executor:
+                path = folder_path
+                futures = [executor.submit(self.process_schedule, schedule, path, self) for schedule in schedules]
+                for future in futures:
+                    # Wait for all tasks to complete
+                    future.result()
 
-        with ThreadPoolExecutor() as executor:
-            futures = [executor.submit(process_schedule, schedule) for schedule in schedules]
-            for future in futures:
-                # Wait for all tasks to complete
-                future.result()
+    @staticmethod
+    def process_schedule(schedule, folder_location, convertor):
+        # pylint: disable=protected-access
+        df = convertor._create_schedule_table(schedule)
+        full_file_path = folder_location / f"{schedule.file_name}.{OutputFormat.IMAGE.value}"
+        dfi.export(df, str(full_file_path), table_conversion="chrome")
 
     def convert_activities_to_csv(self, schedules: List[Schedule], folder_location: Path):
         shutil.rmtree(folder_location, ignore_errors=True)
