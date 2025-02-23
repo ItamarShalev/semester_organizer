@@ -145,15 +145,17 @@ def get_current_semester():
     return Semester.FALL if current_month in fall_months else Semester.SPRING
 
 
-def config_logging_level(level=logging.DEBUG):
+def config_logging_level(level=logging.DEBUG) -> logging.Logger:
+    disable_logger_third_party_warnings()
     format_logging = "%(asctime)s %(name)s.%(funcName)s +%(lineno)s: %(message)s"
     handlers = [logging.StreamHandler()]
     if level == logging.DEBUG:
         handlers.append(LOG_FILE_HANDLER)
     logging.basicConfig(handlers=handlers, datefmt="%H:%M:%S", level=level, format=format_logging)
+    return get_logging()
 
 
-def get_logging():
+def get_logging() -> logging.Logger:
     return logging.getLogger(get_custom_software_name())
 
 
