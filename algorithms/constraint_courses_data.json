@@ -1287,6 +1287,588 @@
                     "can_be_taken_in_parallel": false
                 }
             ]
+        },
+        {
+          "id": 83,
+          "course_number": 160001,
+          "name": "קורס הכנה בכימיה",
+          "aliases": [
+            "קדם בכימיה"
+          ],
+          "blocked_by": []
+        },
+        {
+          "id": 84,
+          "course_number": 160825,
+          "name": "גנטיקה",
+          "aliases": [
+            "גנטיקה קלאסית"
+          ],
+          "blocked_by": []
+        },
+        {
+          "id": 85,
+          "course_number": 160101,
+          "name": "כימיה כללית",
+          "aliases": [
+            "כימיה"
+          ],
+          "blocked_by": [
+            {
+              "id": 83,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 86,
+          "course_number": 160120,
+          "name": "כימיה אורגנית א",
+          "aliases": [],
+          "blocked_by": [
+            {
+              "id": 85,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 87,
+          "course_number": 160190,
+          "name": "מבוא לביולוגיה",
+          "aliases": [
+            "ביולוגיה"
+          ],
+          "blocked_by": []
+        },
+        {
+          "id": 88,
+          "course_number": 140002,
+          "name": "קורס קדם בפיזיקה - שלב א",
+          "aliases": [
+            "קדם בפיזיקה לביואינפורמטיקה"
+          ],
+          "blocked_by": []
+        },
+        {
+          "id": 89,
+          "course_number": 160202,
+          "name": "ביוכמיה כללית",
+          "aliases": [
+            "ביוכימיה"
+          ],
+          "blocked_by": [
+            {
+              "id": 86,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 90,
+          "course_number": 160022,
+          "name": "ביוסטטיסטיקה",
+          "aliases": [],
+          "blocked_by": [
+            {
+              "id": 5,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 91,
+          "course_number": 160121,
+          "name": "כימיה אורגנית ב",
+          "aliases": [
+            "אורגנית ב"
+          ],
+          "blocked_by": [
+            {
+              "id": 86,
+              "can_ be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 92,
+          "course_number": 160870,
+          "name": "מבוא לביואינפורמטיקה",
+          "aliases": [
+            "מבוא לביו"
+          ],
+          "blocked_by": [
+            {
+              "id": 6,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 84,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 87,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 93,
+          "course_number": 160244,
+          "name": "מעבדה בביוכימיה וביולוגיה מולקולרית",
+          "alises": [
+            "מעבדה בביוכימיה"
+          ],
+          "blocked_by": [
+            {
+              "id": 86,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 87,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 89,
+              "can_be_take_in_parallel": true
+            }
+          ]
+        },
+        {
+          "id": 94,
+          "course_number": 141032,
+          "name": "פיזיקה לביואינפורמטיקה א",
+          "alises": [],
+          "blocked_by": [
+            {
+              "id": 5,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 8,
+              "can_be_take_in_parallel": false
+            },
+  
+            {
+              "id": 88,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 95,
+          "course_number": 160210,
+          "name": "ביולוגיה מולקולרית א",
+          "alises": [
+            "מולקולרית א"
+          ],
+          "blocked_by": [
+            {
+              "id": 89,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 87,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 96,
+          "course_number": 160200,
+          "name": "ביולוגיה של התא",
+          "alises": [],
+          "blocked_by": [
+            {
+              "id": 85,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 87,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 97,
+          "course_number": 160125,
+          "name": "כימיה פיזיקלית",
+          "alises": [],
+          "blocked_by": [
+            {
+              "id": 85,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 94,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 98,
+          "course_number": 160709,
+          "name": "מודלים סטטיסטיים בביואינפורמטיקה",
+          "alises": [
+            "מודלים"
+          ],
+          "blocked_by": [
+            {
+              "id": 90,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 6,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 3,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 92,
+              "can_be_take_in_parallel": true
+            }
+          ]
+        },
+        {
+          "id": 99,
+          "course_number": 141033,
+          "name": "פיזיקה לביואינפורמטיקה ב",
+          "alises": [],
+          "blocked_by": [
+            {
+              "id": 5,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 8,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 94,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 88,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 100,
+          "course_number": 160310,
+          "name": "אנליזת נתוני ריצוף",
+          "alises": [],
+          "blocked_by": [
+            {
+              "id": 98,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 90,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 101,
+          "course_number": 160872,
+          "name": "בסיסי נתונים בביואינפורמטיקה",
+          "alises": [
+            "בסיסי נתונים לביואינפורמטיקה",
+            "בסנת לביואינפורמטיקה"
+          ],
+          "blocked_by": []
+        },
+        {
+          "id": 102,
+          "course_number": 160506,
+          "name": "כרייה ואנליזה של נתונים ביואינפורמטיים",
+          "alises": [
+            "כרייה ואנליזה",
+            "כריה ואנליזה"
+          ],
+          "bloked_by": [
+            {
+              "id": 90,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 95,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 103,
+          "course_number": 160500,
+          "name": "כתיבה מדעית",
+          "alises": [],
+          "blocked_by": []
+        },
+        {
+          "id": 104,
+          "course_number": 160508,
+          "name": "למידת מכונה ולמידה עמוקה בדיאגנוסטיקה קלינית",
+          "alises": [
+            "למידת מכונה"
+          ],
+          "blocked_by": [
+            {
+              "id": 28,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 95,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 90,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 105,
+          "course_number": 160110,
+          "name": "מבוא לקשר הכימי",
+          "alise": [
+            "מבוא לקשר כימי"
+          ],
+          "blocked_by": [
+            {
+              "id": 85,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 99,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 106,
+          "course_number": 160502,
+          "name": "נתוני עתק לביואינפורמטיקה",
+          "alises": [
+            "ביג דאטא",
+            "big data"
+          ],
+          "blocked_by": [
+            {
+              "id": 101,
+              "can_be_take_in_parallel": false
+  
+            },
+            {
+              "id": 90,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 7,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 107,
+          "course_number": 160871,
+          "name": "ביואינפורמטיקה מבנית",
+          "alises": [
+            "מבנית"
+          ],
+          "blocked_by": [
+            {
+              "id": 92,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 108,
+          "course_number": 160211,
+          "name": "ביולוגיה מולקולרית ב",
+          "alises": [
+            "מולקולרית ב"
+          ],
+          "blocked_by": [
+            {
+              "id": 92,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 95,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 96,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 109,
+          "course_number": 160182,
+          "name": "ביולוגיה מערכתית",
+          "alises": [
+            "מערכתית"
+          ],
+          "blocked_by": [
+            {
+              "id": 92,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 95,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 109,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 110,
+          "course_number": 160505,
+          "name": "סמינר אקדמיה ותעשיה",
+          "alises": [
+            "סמינר לביואינפורמטיקה",
+            "סמינר"
+          ],
+          "blocked_by": []
+        },
+        {
+          "id": 111,
+          "course_number": 160503,
+          "name": "רשתות נוירונים לביואינפורמטיקה",
+          "alises": [],
+          "blocked_by": [
+            {
+              "id": 6,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 102,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 7,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 8,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 21,
+              "can_be_take_in_parallel": false
+            },
+            {
+              "id": 28,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 112,
+          "course_number": 160420,
+          "name": "קדם רפואה - פסיכולוגיה א",
+          "is_pre_medical": true,
+          "alises": [
+            "פסיכולוגיה א"
+          ],
+          "blocked_by": []
+        },
+        {
+          "id": 113,
+          "course_number": 160215,
+          "name": "מיקרוביולוגיה",
+          "is_pre_medical": true,
+          "alises": [
+            "מיקרוביולוגיה א"
+          ],
+          "blocked_by": [
+            {
+              "id": 87,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 114,
+          "course_number": 160410,
+          "name": "קדם רפואה - סוציולוגיה",
+          "is_pre_medical": true,
+          "alises": [],
+          "blocked_by": []
+        },
+        {
+          "id": 115,
+          "course_number": 160421,
+          "name": "קדם רפואה - פסיכולוגיה ב",
+          "is_pre_medical": true,
+          "alises": [
+            "פסיכולוגיה ב"
+          ],
+          "blocked_by": [
+            {
+              "id": 112,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 116,
+          "course_number": 160901,
+          "name": "קדם רפואה - פרויקט גמר בביואינפורמטיקה",
+          "is_pre_medical": true,
+          "alises": [
+            "פרויקט גמר בביואינפורמטיקה"
+          ],
+          "blocked_by": []
+        },
+        {
+          "id": 117,
+          "course_number": 160231,
+          "name": "פיזיולוגיה של מערכות בגוף האדם",
+          "is_pre_medical": true,
+          "alises": [
+            "פיזיולוגיה"
+          ],
+          "blocked_by": [
+            {
+              "id": 96,
+              "can_be_take_in_parallel": false
+            }
+          ]
+        },
+        {
+          "id": 118,
+          "course_number": 160415,
+          "name": "קדם רפואה - מבוא לאנתרופולוגיה",
+          "is_pre_medical": true,
+          "alises": [
+            "מבוא לאנתרופולוגיה",
+            "אנתרופולוגיה",
+            "מבוא לאנרפולוגיה",
+            "אנתרפלוגיה"
+          ],
+          "blocked_by": []
+        },
+        {
+          "id": 119,
+          "course_number": 160216,
+          "name": "מיקרוביולוגיה ב",
+          "is_pre_medical": true,
+          "alises": [],
+          "blocked_by": [
+            {
+              "id": 113,
+              "can_be_take_in_parallel": false
+            }
+          ]
         }
-    ]
-}
+      ]
+    }
