@@ -1,0 +1,6 @@
+# Apply LF line endings to all text files
+* text=auto eol=lf
+
+# Explicitly mark .db and .png files as binary to exclude them from line ending normalization
+*.db binary
+*.png binary
