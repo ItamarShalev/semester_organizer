@@ -1,0 +1,3611 @@
+{
+    "version": 1.1,
+    "_comment": "Output which degrees must take the course (mandatory) and which degrees have builtin option to take.",
+    "courses": [
+        {
+            "id": 1,
+            "name": "מבוא למחשבים",
+            "course_number": 150000,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "מבוא למחשבים"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 2,
+            "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+            "course_number": 120000,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "קדם מתמטיקה",
+                "קורס קדם במתמטיקה להנדסה וטכנולוגיה"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 3,
+            "name": "אלגברה לינארית א",
+            "course_number": 120201,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "לינארית א",
+                "לינארית 1",
+                "אלגברה לינארית א"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "הכרת משאבי הספריה להנדסה ומדעי המחשב",
+            "course_number": 900011,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "משאבי הספריה",
+                "הכרת משאבי הספריה להנדסה ומדעי המחשב"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 5,
+            "name": "חשבון אינפני' להנדסה 1",
+            "course_number": 120131,
+            "is_active": true,
+            "credits": 5.0,
+            "aliases": [
+                "אינפי א",
+                "אינפי 1",
+                "אינפוש א",
+                "אינפוש 1",
+                "חשבון אינפני' להנדסה 1"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "מבוא למדעי המחשב",
+            "course_number": 150005,
+            "is_active": true,
+            "credits": 4.0,
+            "aliases": [
+                "מבוא למדמח",
+                "מבוא למדעי המחשב"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "אלגברה לינארית ב",
+            "course_number": 120221,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "לינארית ב",
+                "לינארית 2",
+                "אלגברה לינארית ב"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "name": "חשבון אינפיני' להנדסה 2",
+            "course_number": 120132,
+            "is_active": true,
+            "credits": 5.0,
+            "aliases": [
+                "אינפי 2",
+                "אינפי ב",
+                "אינפוש 2",
+                "אינפוש ב",
+                "חשבון אינפיני' להנדסה 2"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "name": "מבוא לתקשרת מחשבים",
+            "course_number": 156200,
+            "is_active": true,
+            "credits": 4.0,
+            "aliases": [
+                "מבוא לתקשורת מחשבים",
+                "תקשורת מחשבים",
+                "תקשורת",
+                "מבוא לתקשרת מחשבים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "name": "מערכות ספרתיות",
+            "course_number": 150301,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "ספרתיות",
+                "מערכות ספרתיות"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 11,
+            "name": "מבנה המחשב",
+            "course_number": 151101,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "מבנה המחשב"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "name": "מכינה בפיזיקה למחשבים",
+            "course_number": 140004,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "מכינה לפיזיקה",
+                "מכינה בפיזיקה",
+                "מכינה בפיזיקה למחשבים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 13,
+            "name": "פיזיקה להנדסת מחשבים",
+            "course_number": 141001,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "פיזיקה א",
+                "פיזיקה 1",
+                "פיסיקה 1",
+                "פיסיקה א",
+                "פיזיקה להנדסת מחשבים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 12,
+                    "course_number": 140004,
+                    "name": "מכינה בפיזיקה למחשבים",
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "name": "מבנה נתונים א",
+            "course_number": 150015,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "מבנה נתונים 1",
+                "מבנת א",
+                "מבנת 1",
+                "מבנה נתונים א"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 15,
+            "name": "מעבדה במבנה המחשב",
+            "course_number": 151103,
+            "is_active": true,
+            "credits": 1.0,
+            "aliases": [
+                "מעבדה במבנה המחשב"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 16,
+            "name": "סדנא בC++",
+            "course_number": 150018,
+            "is_active": false,
+            "credits": 2.0,
+            "aliases": [
+                "סדנא בCPP",
+                "סדנה בCPP",
+                "סדנא בC++"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 17,
+            "name": "הסתברות",
+            "course_number": 120701,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "הסתברות"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 18,
+            "name": "לוגיקה מתמטית",
+            "course_number": 120304,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "לוגיקה",
+                "לוגיקה מתמטית"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 20,
+            "name": "מבוא להנדסת תוכנה",
+            "course_number": 151050,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "מבוא להנדסת תכנה",
+                "מלת",
+                "מבוא להנדסת תוכנה"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 21,
+            "name": "מבנה נתונים ב",
+            "course_number": 150090,
+            "is_active": true,
+            "credits": 4.0,
+            "aliases": [
+                "מבנה נתונים 2",
+                "מבנת ב",
+                "מבנת 2",
+                "מבנה נתונים ב"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 22,
+            "name": "מיני פרויקט במערכות חלונות",
+            "course_number": 153007,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "מיניפ בחלונות",
+                "מיניפ חלונות",
+                "מיני פרויקט בחלונות",
+                "מיני פרויקט במערכות חלונות"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [
+                "ביואינפורמטיקה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 23,
+            "name": "מתמטיקה בדידה",
+            "course_number": 120302,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "בדידה",
+                "מתמטיקה בדידה"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 24,
+            "name": "סטטיסטיקה למהנדסים",
+            "course_number": 120711,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "סטטיסטיקה",
+                "סטטיסטיקה למהנדסים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 17,
+                    "course_number": 120701,
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 25,
+            "name": "פיזיקה ב להנדסת מחשבים",
+            "course_number": 141037,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "פיזיקה ב",
+                "פיזיקה 2",
+                "פיסיקה ב",
+                "פיסיקה 2",
+                "פיזיקה ב להנדסת מחשבים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 12,
+                    "course_number": 140004,
+                    "name": "מכינה בפיזיקה למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 13,
+                    "course_number": 141001,
+                    "name": "פיזיקה להנדסת מחשבים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 26,
+            "name": "אוטומטים ושפות פורמליות",
+            "course_number": 150101,
+            "is_active": true,
+            "credits": 4.0,
+            "aliases": [
+                "אוטומטים",
+                "אוטומטים ושפות פורמליות"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 18,
+                    "course_number": 120304,
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 27,
+            "name": "מבוא לאבטחת מידע",
+            "course_number": 156360,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "מבוא לאבטחת מידע"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 28,
+            "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+            "course_number": 157100,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "מבוא לבינה מלאכותית",
+                "בינה מלאכותית",
+                "מבוא לבינה מלאכותית ומדע הנתונים"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה"
+            ],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 29,
+            "name": "מבוא לרברסינג",
+            "course_number": 157130,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "רברסינג",
+                "מבוא לרברסינג"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 30,
+            "name": "מיני פרויקט במבוא להנדסת תוכנה",
+            "course_number": 151055,
+            "is_active": true,
+            "credits": 1.5,
+            "aliases": [
+                "מיניפ במבוא להנדסת תוכנה",
+                "מיניפ במבוא להנדסה תוכנה",
+                "מיני פרויקט במבוא להנדסת תוכנה"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 20,
+                    "course_number": 151050,
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 31,
+            "name": "מערכות הפעלה",
+            "course_number": 151111,
+            "is_active": true,
+            "credits": 4.0,
+            "aliases": [
+                "מערכות הפעלה"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 32,
+            "name": "מערכות להרצת קוד בסביבה בטוחה",
+            "course_number": 156353,
+            "is_active": false,
+            "credits": 2.0,
+            "aliases": [
+                "מערכות להרצת קוד בסביבה בטוחה"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 27,
+                    "course_number": 156360,
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 33,
+            "name": "משוואות דפרנציאליות",
+            "course_number": 120501,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "מישדיף",
+                "מישדיפ",
+                "משדיפ",
+                "משוואות דפרנציאליות"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 34,
+            "name": "תכנות פונקציונלית ולוגית",
+            "course_number": 153105,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "תכפול",
+                "פרולוג",
+                "תכנות פונקציונלית ולוגית"
+            ],
+            "mandatory_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 35,
+            "name": "UNIX מערכות",
+            "course_number": 151123,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "UNIX",
+                "יוניקס",
+                "מערכות יוניקס",
+                "UNIX מערכות"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 31,
+                    "course_number": 151111,
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 36,
+            "name": "אנגלית טרום בסיסי א",
+            "course_number": 179161,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "אנגלית טרום בסיסי א"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 37,
+            "name": "אנגלית טרום בסיסי ב",
+            "course_number": 179162,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "אנגלית טרום בסיסי ב"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 38,
+            "name": "אנגלית בסיסי",
+            "course_number": 179163,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "בסיסי",
+                "אנגלית בסיסי"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 36,
+                    "course_number": 179161,
+                    "name": "אנגלית טרום בסיסי א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 37,
+                    "course_number": 179162,
+                    "name": "אנגלית טרום בסיסי ב",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 39,
+            "name": "אנגלית מתקדמים א",
+            "course_number": 179164,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "מתקדמים א",
+                "אנגלית מתקדמים א"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 36,
+                    "course_number": 179161,
+                    "name": "אנגלית טרום בסיסי א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 37,
+                    "course_number": 179162,
+                    "name": "אנגלית טרום בסיסי ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 38,
+                    "course_number": 179163,
+                    "name": "אנגלית בסיסי",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 40,
+            "name": "אנגלית מתקדמים ב",
+            "course_number": 179165,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "מתקדמים ב",
+                "אנגלית מתקדמים ב"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 36,
+                    "course_number": 179161,
+                    "name": "אנגלית טרום בסיסי א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 37,
+                    "course_number": 179162,
+                    "name": "אנגלית טרום בסיסי ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 38,
+                    "course_number": 179163,
+                    "name": "אנגלית בסיסי",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 39,
+                    "course_number": 179164,
+                    "name": "אנגלית מתקדמים א",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 41,
+            "name": "אנגלית למדעי המחשב",
+            "course_number": 150790,
+            "is_active": true,
+            "credits": 2.0,
+            "aliases": [
+                "אנגלית למדמח",
+                "אנגלית מקצועית",
+                "אנגלית למחשבים",
+                "אנגלית למדעי המחשב"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 36,
+                    "course_number": 179161,
+                    "name": "אנגלית טרום בסיסי א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 37,
+                    "course_number": 179162,
+                    "name": "אנגלית טרום בסיסי ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 38,
+                    "course_number": 179163,
+                    "name": "אנגלית בסיסי",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 39,
+                    "course_number": 179164,
+                    "name": "אנגלית מתקדמים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 40,
+                    "course_number": 179165,
+                    "name": "אנגלית מתקדמים ב",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 42,
+            "name": "בסיסי נתונים",
+            "course_number": 150221,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "בסנת",
+                "בסיסי נתונים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 43,
+            "name": "הנדסת מערכות חלונות",
+            "course_number": 153004,
+            "is_active": true,
+            "credits": 2.0,
+            "aliases": [
+                "הנדסת מערכות חלונות"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 22,
+                    "course_number": 153007,
+                    "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 44,
+            "name": "הנדסת תכנה",
+            "course_number": 151060,
+            "is_active": true,
+            "credits": 4.0,
+            "aliases": [
+                "הנדסת תוכנה",
+                "הנדסת תכנה"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 20,
+                    "course_number": 151050,
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 45,
+            "name": "יסודות לאבטחת רשתות",
+            "course_number": 156364,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "יסודות לאבטחת רשתות"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 9,
+                    "course_number": 156200,
+                    "name": "מבוא לתקשרת מחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 27,
+                    "course_number": 156360,
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 46,
+            "name": "ניתוח אלגוריתמים וסיבוכיות",
+            "course_number": 150134,
+            "is_active": true,
+            "credits": 5.0,
+            "aliases": [
+                "ניתוח",
+                "ניתוח אלגוריתמים",
+                "אלגוריתמים",
+                "ניתוח אלגוריתמים וסיבוכיות"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 47,
+            "name": "קומפיילרים ומתרגמים",
+            "course_number": 151131,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "קומפיילרים",
+                "קומפילרים",
+                "קומפיילרים ומתרגמים"
+            ],
+            "mandatory_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 18,
+                    "course_number": 120304,
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 26,
+                    "course_number": 150101,
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 49,
+            "name": "אקסלנטים",
+            "course_number": 157200,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "אקסלנטים"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 50,
+            "name": "חישוביות ומורכבות החישובים",
+            "course_number": 151285,
+            "is_active": true,
+            "credits": 4.0,
+            "aliases": [
+                "חישוביות",
+                "חישוביות ומורכבות החישובים"
+            ],
+            "mandatory_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 18,
+                    "course_number": 120304,
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 26,
+                    "course_number": 150101,
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 46,
+                    "course_number": 150134,
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 51,
+            "name": "יסודות באבטחת תוכנה",
+            "course_number": 156363,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "יסודות",
+                "יסודות באבטחת תוכנה"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 27,
+                    "course_number": 156360,
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 52,
+            "name": "מיני פרויקט בבסיסי נתונים",
+            "course_number": 150225,
+            "is_active": true,
+            "credits": 1.5,
+            "aliases": [
+                "מיניפ בסיסי נתונים",
+                "מיניפ בבסיסי נתונים",
+                "מיניפ בסנת",
+                "מיניפ בבסנת",
+                "מיני פרויקט בבסיסי נתונים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 42,
+                    "course_number": 150221,
+                    "name": "בסיסי נתונים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 53,
+            "name": "עיצוב ותכנות מונחי עצמים להנדסה",
+            "course_number": 157109,
+            "is_active": true,
+            "credits": 5.0,
+            "aliases": [
+                "עיצוב ותכנות",
+                "עיצוב ותכנות מונחי עצמים",
+                "עיצוב ותכנות מונחי עצמים להנדסה"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 20,
+                    "course_number": 151050,
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 30,
+                    "course_number": 151055,
+                    "name": "מיני פרויקט במבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 54,
+            "name": "עקרונות שפות תכנה",
+            "course_number": 150060,
+            "is_active": true,
+            "credits": 3.5,
+            "aliases": [
+                "עקרונות",
+                "עקרונות שפות תוכנה",
+                "עקרונות שפות תכנה"
+            ],
+            "mandatory_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 18,
+                    "course_number": 120304,
+                    "name": "לוגיקה מתמטית",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 26,
+                    "course_number": 150101,
+                    "name": "אוטומטים ושפות פורמליות",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 34,
+                    "course_number": 153105,
+                    "name": "תכנות פונקציונלית ולוגית",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 47,
+                    "course_number": 151131,
+                    "name": "קומפיילרים ומתרגמים",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 55,
+            "name": "מהשכלה לתעסוקה - מיומניות וכישורים",
+            "course_number": 153300,
+            "is_active": true,
+            "credits": 2.0,
+            "aliases": [
+                "מהשכלה לתעסוקה",
+                "מהשכלה לתעסוקה - מיומניות וכישורים"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 56,
+            "name": "סמינריון למדעי המחשב",
+            "course_number": 150858,
+            "is_active": true,
+            "credits": 1.0,
+            "aliases": [
+                "סמינריון למדמח",
+                "סמינריון למדעי המחשב"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 57,
+            "name": "ניתוח ותיכון ממשקי תוכנה",
+            "course_number": 157103,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "ניתוח ותיכון ממשקי תוכנה"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 58,
+            "name": "סדנא מתקדמת בC",
+            "course_number": 157121,
+            "is_active": true,
+            "credits": 1.5,
+            "aliases": [
+                "סדנא בC",
+                "סדנא מתקדמת בC"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 31,
+                    "course_number": 151111,
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 59,
+            "name": "בינה מלאכותית וישומה",
+            "course_number": 157102,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "פרויקט בבינה מלאכותית",
+                "פרויקט בבינה מלאכותית וישומה",
+                "בינה מלאכותית וישומה"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 28,
+                    "course_number": 157100,
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 60,
+            "name": "כריית מידע - למדהמ",
+            "course_number": 157123,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "כריית מידע",
+                "כריית מידע למדעי המחשב",
+                "כריית מידע - למדהמ"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 28,
+                    "course_number": 157100,
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 61,
+            "name": "BIG DATA - נתוני עתק",
+            "course_number": 157115,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "BIG DATA",
+                "ביג דאטה",
+                "נתוני עתק",
+                "BIG DATA - נתוני עתק"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 17,
+                    "course_number": 120701,
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 24,
+                    "course_number": 120711,
+                    "name": "סטטיסטיקה למהנדסים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 42,
+                    "course_number": 150221,
+                    "name": "בסיסי נתונים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 62,
+            "name": "רשתות נוירונים ולמידה עמוקה",
+            "course_number": 157117,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "רשתות נוירונים",
+                "נוירונים",
+                "רשתות נוירונים ולמידה עמוקה"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 7,
+                    "course_number": 120221,
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 8,
+                    "course_number": 120132,
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 28,
+                    "course_number": 157100,
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 60,
+                    "course_number": 157123,
+                    "name": "כריית מידע - למדהמ",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 63,
+            "name": "תכנון - פרויקט גמר בהנדסת מחשבים",
+            "course_number": 150900,
+            "is_active": true,
+            "credits": 0.0,
+            "aliases": [
+                "פרויקט גמר בהנדסת מחשבים",
+                "תכנון - פרויקט גמר בהנדסת מחשבים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 64,
+            "name": "מבנה שפות תכנה",
+            "course_number": 157113,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "מבנה שפות תוכנה",
+                "שפות תוכנה",
+                "מבנה שפות תכנה"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 65,
+            "name": "ניהול פרויקטים ובקרת איכות",
+            "course_number": 151035,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "ניהול פרויקטים",
+                "ניהול פרויקטים ובקרת איכות"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 66,
+            "name": "איחזור מידע",
+            "course_number": 157125,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "אחזור מידע",
+                "איחזור מידע"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 28,
+                    "course_number": 157100,
+                    "name": "מבוא לבינה מלאכותית ומדע הנתונים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 67,
+            "name": "אלגוריתמיקה מקבילית",
+            "course_number": 151281,
+            "is_active": true,
+            "credits": 4.0,
+            "aliases": [
+                "אלגוריתמיקה מקבילית"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 7,
+                    "course_number": 120221,
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 8,
+                    "course_number": 120132,
+                    "name": "חשבון אינפיני' להנדסה 2",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 46,
+                    "course_number": 150134,
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 68,
+            "name": "מערכות זמן אמת ותכנות מקבילי",
+            "course_number": 157111,
+            "is_active": true,
+            "credits": 4.0,
+            "aliases": [
+                "מערכות זמן אמת",
+                "מערכות זמן אמת ותכנות מקבילי"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 31,
+                    "course_number": 151111,
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 70,
+            "name": "סמינר להנדסת תכנה",
+            "course_number": 157119,
+            "is_active": true,
+            "credits": 2.0,
+            "aliases": [
+                "סמינר להנדסת תוכנה",
+                "סמינר להנדסת תכנה"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 42,
+                    "course_number": 150221,
+                    "name": "בסיסי נתונים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 46,
+                    "course_number": 150134,
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 71,
+            "name": "פרויקט גמר בהנדסת מחשבים",
+            "course_number": 150901,
+            "is_active": true,
+            "credits": 10.0,
+            "aliases": [
+                "פרויקט גמר",
+                "פרויקט גמר בהנדסת מחשבים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 63,
+                    "course_number": 150900,
+                    "name": "תכנון - פרויקט גמר בהנדסת מחשבים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 72,
+            "name": "סדנא ב-java",
+            "course_number": 150019,
+            "is_active": null,
+            "credits": null,
+            "aliases": [
+                "סדנא בJAVA",
+                "סדנה בJAVA",
+                "סדנא בגאבה",
+                "סדנה בגאבה",
+                "פיתוח אנדראויד",
+                "פיתוח ANDROID",
+                "סדנא ב-java"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 73,
+            "name": "תכנות מתקדם",
+            "course_number": 150024,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "תכנות מתקדם"
+            ],
+            "mandatory_for_degrees": [
+                "ביואינפורמטיקה",
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 74,
+            "name": "Full-Stack Web Development",
+            "course_number": 151030,
+            "is_active": false,
+            "credits": 4.0,
+            "aliases": [
+                "פול סטאק",
+                "פולסטאק",
+                "פולסטק",
+                "Full-Stack Web Development"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": []
+        },
+        {
+            "id": 75,
+            "name": "אבטחת איכות תוכנה ובדיקות תוכנה",
+            "course_number": 157107,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "אבטחת איכות",
+                "בדיקות תוכנה",
+                "אבטחת איכות תוכנה ובדיקות תוכנה"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 20,
+                    "course_number": 151050,
+                    "name": "מבוא להנדסת תוכנה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 76,
+            "name": "רשתות מחשבים מתקדמות",
+            "course_number": 156336,
+            "is_active": false,
+            "credits": 3.0,
+            "aliases": [
+                "רשתות מחשבים מתקדמות"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 9,
+                    "course_number": 156200,
+                    "name": "מבוא לתקשרת מחשבים",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 77,
+            "name": "עקרונות שיטות הצפנה",
+            "course_number": 156361,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "עקרונות שיטות הצפנה"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 3,
+                    "course_number": 120201,
+                    "name": "אלגברה לינארית א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 7,
+                    "course_number": 120221,
+                    "name": "אלגברה לינארית ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 17,
+                    "course_number": 120701,
+                    "name": "הסתברות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 21,
+                    "course_number": 150090,
+                    "name": "מבנה נתונים ב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 23,
+                    "course_number": 120302,
+                    "name": "מתמטיקה בדידה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 24,
+                    "course_number": 120711,
+                    "name": "סטטיסטיקה למהנדסים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 46,
+                    "course_number": 150134,
+                    "name": "ניתוח אלגוריתמים וסיבוכיות",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 78,
+            "name": "מערכות משובצות",
+            "course_number": 157110,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "אמבדד",
+                "מערכות משובצות"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 79,
+            "name": "מערכות הפעלה בגישה מחקרית",
+            "course_number": 157128,
+            "is_active": null,
+            "credits": null,
+            "aliases": [
+                "מערכות הפעלה בגישה מחקרית"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [],
+            "blocked_by": []
+        },
+        {
+            "id": 80,
+            "name": "מבוא להנדסת חשמל א - למחשבים",
+            "course_number": 130502,
+            "is_active": true,
+            "credits": 2.0,
+            "aliases": [
+                "מבוא להנדסת חשמל א - למחשבים"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 81,
+            "name": "מעבדה בהנדסת חשמל א",
+            "course_number": 130562,
+            "is_active": true,
+            "credits": 1.0,
+            "aliases": [
+                "מעבדה בהנדסת חשמל א"
+            ],
+            "mandatory_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "optional_for_degrees": [
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 80,
+                    "course_number": 130502,
+                    "name": "מבוא להנדסת חשמל א - למחשבים",
+                    "can_be_taken_in_parallel": true
+                }
+            ]
+        },
+        {
+            "id": 82,
+            "name": "מיחשוב ענן",
+            "course_number": 156367,
+            "is_active": true,
+            "credits": 2.5,
+            "aliases": [
+                "מחשוב ענן",
+                "מיחשוב ענן"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה",
+                "מדעי המחשב"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 22,
+                    "course_number": 153007,
+                    "name": "מיני פרויקט במערכות חלונות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        },
+        {
+            "id": 83,
+            "name": "פורנזיקה דיגיטלית",
+            "course_number": 156320,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "פורנזיקה",
+                "דיגיטלית",
+                "פורנזיקה דיגיטלית"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 9,
+                    "course_number": 156200,
+                    "name": "מבוא לתקשרת מחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 27,
+                    "course_number": 156360,
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 29,
+                    "course_number": 157130,
+                    "name": "מבוא לרברסינג",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 31,
+                    "course_number": 151111,
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 35,
+                    "course_number": 151123,
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
+        }
+    ]
+}
