@@ -1287,6 +1287,41 @@
                     "can_be_taken_in_parallel": false
                 }
             ]
+        },
+        {
+            "id": 83,
+            "course_number": 156320,
+            "name": "פורנזיקה דיגיטלית",
+            "aliases": [
+                "פורנזיקה",
+                "דיגיטלית"
+            ],
+            "blocked_by": [
+                {
+                    "id": 9,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 29,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 31,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 73,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 27,
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 35,
+                    "can_be_taken_in_parallel": true
+                }
+            ]
         }
     ]
 }
