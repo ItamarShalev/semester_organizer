@@ -652,8 +652,6 @@
             "id": 43,
             "course_number": 153004,
             "name": "הנדסת מערכות חלונות",
-            "aliases": [
-            ],
             "blocked_by": [
                 {
                     "id": 73,
