@@ -54,7 +54,7 @@ def install_auto_complete_cli():
     # copy file to home directory
     shutil.copyfile(local_argcomplete_path, argcomplete_path)
     bashrc_path = os.path.abspath(os.path.join(os.path.expanduser("~"), ".bashrc"))
-    files = ["__main__.py", "release.py", "run_linter.py", "update_levnet_data.py"]
+    files = ["main.py", "release.py", "run_linter.py", "update_levnet_data.py"]
     text_to_copy = "\n\n# This part it is for the auto-complete of the semester_organizer project\n"
     text_to_copy += "export ARGCOMPLETE_USE_TEMPFILES=1\n"
     text_to_copy += f"source {windows_path_to_unix(argcomplete_path)}\n"

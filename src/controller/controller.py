@@ -239,7 +239,7 @@ class Controller:
             self.logger.error("ERROR: Missing database, can't continue.")
             msg = _("Missing database, can't continue, please download the database file from the github server "
                     "and import the database by running :")
-            msg += "'python __main__.py -- database_path {path_to_database.db}'"
+            msg += "'python main.py -- database_path {path_to_database.db}'"
             self._print(msg)
             sys.exit(0)
 

@@ -50,7 +50,7 @@ def get_os_type() -> Optional[OS]:
 
 def build(os_build_type: OS):
     database_file_path = Database().shared_database_path
-    main_path = utils.ROOT_PATH / "__main__.py"
+    main_path = utils.ROOT_PATH / "main.py"
     separator = ';'
     if os_build_type in [OS.UBUNTU, OS.MAC]:
         separator = ':'
@@ -60,7 +60,7 @@ def build(os_build_type: OS):
 
     pyinstaller_cmd = f"pyinstaller --onefile " \
                       f"--add-binary {database_file_path}{separator}database " \
-                      f"--name SemesterOrganizer{os_build_type.value} __main__.py"
+                      f"--name SemesterOrganizer{os_build_type.value} main.py"
 
     print("Running pyinstaller command: ", pyinstaller_cmd)
     return_code = subprocess.call(pyinstaller_cmd.split(" "))
