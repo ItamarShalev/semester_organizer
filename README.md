@@ -82,7 +82,7 @@ The semester organizer helps you create a personalized schedule quickly and effi
         ```bash
         git clone git@github.com:ItamarShalev/semester_organizer.git
         ```
-- Run the web server by running the file `SemesterOrganizer.bat` in `scripts` folder.
+- Run the web server by running the file `SemesterOrganizer.bat`.
 
 ## CLI (Command Line Interface)
 

@@ -1,7 +1,6 @@
 import logging
 import os
 import shutil
-from pathlib import Path
 from typing import List
 
 from flask import Flask, render_template, jsonify, request, send_file, session
@@ -18,12 +17,12 @@ from src.data.settings import Settings
 from src.data.output_format import OutputFormat
 from src.data.translation import _
 
-app_resources = Path(__file__).parent / 'app'
+app_resources = utils.SRC_PATH / 'app'
 
 app = Flask(
     __name__,
     template_folder=app_resources / 'templates',
-    static_folder=app_resources / 'static'
+    static_folder=app_resources / 'static',
 )
 app.secret_key = os.urandom(24)
 db = Database()
