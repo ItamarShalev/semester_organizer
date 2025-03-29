@@ -3,7 +3,7 @@ source = src
 
 [report]
 omit =
-    src/collector/network/network.py
+    src/collector/network.py
     **/test_*.py
 exclude_lines =
     raise AssertionError

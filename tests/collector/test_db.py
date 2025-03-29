@@ -5,7 +5,7 @@ import pytest
 from pytest import fixture
 
 from src import utils
-from src.collector.db.db import Database
+from src.collector.db import Database
 from src.data.academic_activity import AcademicActivity
 from src.data.activity import Activity
 from src.data.course import Course

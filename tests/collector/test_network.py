@@ -5,9 +5,9 @@ import pytest
 from pytest import fixture
 
 from src import utils
-from src.collector.db.db import Database
-from src.collector.network.network import Network, WeakNetworkConnectionException, InvalidServerRequestException
-from src.collector.network.network import InvalidSemesterTimeRequestException, TLSAdapter
+from src.collector.db import Database
+from src.collector.network import Network, WeakNetworkConnectionException, InvalidServerRequestException
+from src.collector.network import InvalidSemesterTimeRequestException, TLSAdapter
 from src.data.course import Course
 from src.data.language import Language
 from src.data.settings import Settings

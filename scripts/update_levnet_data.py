@@ -10,8 +10,8 @@ from timeit import default_timer as timer
 import argcomplete
 
 from src import utils
-from src.collector.db.db import Database
-from src.collector.network.network import Network
+from src.collector.db import Database
+from src.collector.network import Network
 from src.data.degree import Degree
 from src.data.language import Language
 from src.data.user import User

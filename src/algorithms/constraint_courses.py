@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Set, Dict, Tuple
 
 from functools import lru_cache
-from src.collector.db.db import Database
+from src.collector.db import Database
 from src.data.course_constraint import CourseConstraint
 from src.data.degree import Degree
 from src.data.language import Language

@@ -4,7 +4,7 @@ from pytest import fixture
 
 from src import utils
 from src.algorithms.constraint_courses import ConstraintCourses
-from src.collector.db.db import Database
+from src.collector.db import Database
 from src.data.degree import Degree
 from src.data.language import Language
 

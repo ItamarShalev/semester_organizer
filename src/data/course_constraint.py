@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 from collections import OrderedDict
 from copy import deepcopy
 
-from src.collector.db.db import Database
+from src.collector.db import Database
 from src.data.course import Course
 from src.data.degree import Degree
 from src.data.language import Language

@@ -76,7 +76,7 @@ def get_user_data(argument_args):
     # pylint: disable=import-outside-toplevel
     # in case the user still not installed the requirements
     # it will import everything only after installing the requirements
-    from src.collector.db.db import Database
+    from src.collector.db import Database
     if not argument_args.username or not argument_args.password:
         user_data = Database().load_user_data()
     else:
@@ -115,7 +115,7 @@ def _build_coverage_command(arguments):
         coverage_cmd = "coverage report -m --fail-under=95"
     else:
         coveragerc_ci_cd = os.path.join(utils.CONFIG_PATH, ".coveragerc_ci_cd")
-        public_network_path = os.path.join(utils.SRC_PATH, "collector", "network", "network.py")
+        public_network_path = os.path.join(utils.SRC_PATH, "collector", "network.py")
         coverage_cmd = f"coverage report --rcfile={coveragerc_ci_cd} -m " \
                        f"--omit='{public_network_path}' --fail-under=100"
 

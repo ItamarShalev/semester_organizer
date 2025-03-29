@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 import argcomplete
 
 from src import utils
-from src.collector.db.db import Database
+from src.collector.db import Database
 from src.controller.controller import Controller
 from src.algorithms.constraint_courses import ConstraintCourses
 from src.data.language import Language

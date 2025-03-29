@@ -12,7 +12,7 @@ from typing import Optional
 
 import argcomplete
 from src import utils
-from src.collector.db.db import Database
+from src.collector.db import Database
 
 
 class OS(Enum):

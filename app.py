@@ -9,7 +9,7 @@ from flask import Flask, render_template, jsonify, request, send_file, session
 from src import utils
 from src.algorithms.csp import CSP, Status
 from src.controller.controller import Controller
-from src.collector.db.db import Database
+from src.collector.db import Database
 from src.data.degree import Degree
 from src.data.course import Course
 from src.data.language import Language

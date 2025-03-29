@@ -6,8 +6,8 @@ import pytest
 from pytest import fixture
 
 from src import utils
-from src.collector.db.db import Database
-from src.collector.network.network import Network
+from src.collector.db import Database
+from src.collector.network import Network
 from src.controller.controller import Controller
 from src.convertor.convertor import Convertor
 from src.data.course_choice import CourseChoice

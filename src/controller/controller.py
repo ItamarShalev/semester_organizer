@@ -11,8 +11,8 @@ from pathlib import Path
 from src import utils
 from src.algorithms.csp import CSP, Status
 from src.algorithms.constraint_courses import ConstraintCourses
-from src.collector.network.network import Network, InvalidSemesterTimeRequestException
-from src.collector.db.db import Database
+from src.collector.network import Network, InvalidSemesterTimeRequestException
+from src.collector.db import Database
 from src.convertor.convertor import Convertor
 from src.data.academic_activity import AcademicActivity
 from src.data.course_choice import CourseChoice
