@@ -21,6 +21,8 @@ from src.data.translation import _
 ENCODING = "utf-8-sig"
 ROOT_PATH = Path(__file__).parent.parent.resolve()
 SRC_PATH = ROOT_PATH / "src"
+CONFIG_PATH = ROOT_PATH / "config"
+SCRIPTS_PATH = ROOT_PATH / "scripts"
 LOG_FILE_HANDLER = logging.FileHandler(filename=ROOT_PATH / "log.txt", encoding=ENCODING, mode='w')
 DATA_SOFTWARE_VERSION = "1.0"
 SOFTWARE_VERSION = "1.0"
@@ -50,7 +52,7 @@ def install_auto_complete_cli():
     argcomplete_path = os.path.abspath(os.path.join(os.path.expanduser("~"), "argcomplete_semester_organizer.sh"))
     if os.path.exists(argcomplete_path):
         return
-    local_argcomplete_path = os.path.join(ROOT_PATH, "argcomplete_semester_organizer.sh")
+    local_argcomplete_path = os.path.join(SCRIPTS_PATH, "argcomplete_semester_organizer.sh")
     # copy file to home directory
     shutil.copyfile(local_argcomplete_path, argcomplete_path)
     bashrc_path = os.path.abspath(os.path.join(os.path.expanduser("~"), ".bashrc"))

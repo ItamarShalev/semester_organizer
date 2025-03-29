@@ -29,7 +29,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install -r development_requirements.txt
+          pip install -r config/development_requirements.txt
       - name: Extract secrets
         shell: bash
         run: |
@@ -40,4 +40,4 @@ jobs:
           echo ${{ secrets.PASSWORD_LEVNET }} >> src/database/user_data.txt
       - name: Run pytest
         run: |
-          pytest $(git ls-files 'test_*.py') -v --reruns 2 --reruns-delay 5
+          pytest $(git ls-files 'test_*.py') -c config/pytest.ini -v --reruns 2 --reruns-delay 5

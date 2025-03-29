@@ -69,7 +69,7 @@ def install_requirements():
 
 
 def install_development_requirements():
-    pip_install("-r", "development_requirements.txt")
+    pip_install("-r", str(utils.CONFIG_PATH / "development_requirements.txt"))
 
 
 def get_user_data(argument_args):
@@ -87,7 +87,9 @@ def get_user_data(argument_args):
 
 
 def _build_pytest_command(arguments):
-    coveragerc_ci_cd = os.path.join(utils.ROOT_PATH, ".coveragerc_ci_cd")
+    coveragerc_ci_cd = os.path.join(utils.CONFIG_PATH, ".coveragerc_ci_cd")
+    pytest_config = str(utils.CONFIG_PATH / "pytest.ini")
+
     if arguments.coverage:
         if arguments.network:
             pytest_cmd = "coverage run -m pytest".split(" ")
@@ -103,6 +105,7 @@ def _build_pytest_command(arguments):
         pytest_arguments = ['--reruns', '2', '--reruns-delay', '5']
     if arguments.verbose:
         pytest_arguments += ['-v']
+    pytest_arguments += ['-c', pytest_config]
 
     return pytest_cmd, pytest_arguments
 
@@ -111,7 +114,7 @@ def _build_coverage_command(arguments):
     if arguments.network:
         coverage_cmd = "coverage report -m --fail-under=95"
     else:
-        coveragerc_ci_cd = os.path.join(utils.ROOT_PATH, ".coveragerc_ci_cd")
+        coveragerc_ci_cd = os.path.join(utils.CONFIG_PATH, ".coveragerc_ci_cd")
         public_network_path = os.path.join(utils.SRC_PATH, "collector", "network", "network.py")
         coverage_cmd = f"coverage report --rcfile={coveragerc_ci_cd} -m " \
                        f"--omit='{public_network_path}' --fail-under=100"
@@ -121,10 +124,12 @@ def _build_coverage_command(arguments):
 
 def run_linter_and_tests(arguments):
     pytest_cmd, pytest_arguments = _build_pytest_command(arguments)
+    pylintrc_path = str(utils.CONFIG_PATH / ".pylintrc")
+    pycodestyle_config_path = str(utils.CONFIG_PATH / "setup.cfg")
 
-    return_code = subprocess.call(["pycodestyle", *get_all_python_files()])
+    return_code = subprocess.call(["pycodestyle", "--config", pycodestyle_config_path, *get_all_python_files()])
 
-    return_code += subprocess.call(["pylint", *get_all_python_files()])
+    return_code += subprocess.call(["pylint", "--rcfile", pylintrc_path, *get_all_python_files()])
 
     return_code += subprocess.call([*pytest_cmd, *get_all_python_files(test_files=True), *pytest_arguments])
 
