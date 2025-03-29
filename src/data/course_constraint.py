@@ -143,7 +143,7 @@ class CourseConstraint:
                 id=object_id,
                 course_number=course_number,
                 name=course_data["name"],
-                aliases=course_data["aliases"] + [course_data["name"]],
+                aliases=course_data.get("aliases", []) + [course_data["name"]],
                 course_info=course_info
             )
 
