@@ -34,11 +34,11 @@ jobs:
     - name: Extract secrets
       shell: bash
       run: |
-        mkdir -p database
-        rm -rf database/user_data.txt
-        touch database/user_data.txt
-        echo ${{ secrets.USERNAME_LEVNET }} >> database/user_data.txt
-        echo ${{ secrets.PASSWORD_LEVNET }} >> database/user_data.txt
+        mkdir -p src/database
+        rm -rf src/database/user_data.txt
+        touch src/database/user_data.txt
+        echo ${{ secrets.USERNAME_LEVNET }} >> src/database/user_data.txt
+        echo ${{ secrets.PASSWORD_LEVNET }} >> src/database/user_data.txt
     - name: Run python update script flow
       run: |
         python main.py --flow update_generated_json_data
@@ -47,7 +47,7 @@ jobs:
       run: |
         git config --local user.email "itamar1111111@gmail.com"
         git config --local user.name "Itamar Shalev"
-        find algorithms/generated_data -type f | grep -v "personal" | xargs git add --force
+        find src/algorithms/generated_data -type f | grep -v "personal" | xargs git add --force
         if git diff --quiet && git diff --staged --quiet; then
             echo "No changes to commit."
             echo "should_push=false" >> $GITHUB_OUTPUT

@@ -31,11 +31,11 @@ jobs:
     - name: Extract secrets
       shell: bash
       run: |
-        mkdir -p database
-        rm -rf database/user_data.txt
-        touch database/user_data.txt
-        echo ${{ secrets.USERNAME_LEVNET }} >> database/user_data.txt
-        echo ${{ secrets.PASSWORD_LEVNET }} >> database/user_data.txt
+        mkdir -p src/database
+        rm -rf src/database/user_data.txt
+        touch src/database/user_data.txt
+        echo ${{ secrets.USERNAME_LEVNET }} >> src/database/user_data.txt
+        echo ${{ secrets.PASSWORD_LEVNET }} >> src/database/user_data.txt
     - name: Run python update script flow
       run: |
         python update_levnet_data.py
@@ -43,7 +43,7 @@ jobs:
       run: |
         git config --local user.email "itamar1111111@gmail.com"
         git config --local user.name "Itamar Shalev"
-        git add database/database.db --force
+        git add src/database/database.db --force
         git commit -sm "[AUTO] database: Update levnet courses data."
     - name: Push to main
       uses: CasperWA/push-protected@v2

@@ -1,6 +1,6 @@
 [report]
 omit =
-    collector/network/network.py
+    src/collector/network/network.py
     **/test_*.py
 exclude_lines =
     raise AssertionError

@@ -9,12 +9,12 @@ from timeit import default_timer as timer
 
 import argcomplete
 
-import utils
-from collector.db.db import Database
-from collector.network.network import Network
-from data.degree import Degree
-from data.language import Language
-from data.user import User
+from src import utils
+from src.collector.db.db import Database
+from src.collector.network.network import Network
+from src.data.degree import Degree
+from src.data.language import Language
+from src.data.user import User
 
 
 def get_args():

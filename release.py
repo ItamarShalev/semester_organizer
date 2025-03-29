@@ -11,8 +11,8 @@ from enum import Enum
 from typing import Optional
 
 import argcomplete
-import utils
-from collector.db.db import Database
+from src import utils
+from src.collector.db.db import Database
 
 
 class OS(Enum):

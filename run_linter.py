@@ -12,13 +12,14 @@ from contextlib import suppress
 
 import argcomplete
 
-import utils
-from data.user import User
+from src import utils
+from src.data.user import User
 
 
 def get_all_python_files(test_files=False):
     files_result = []
-    blocked_dirs = ["venv", ".idea", "results", "database", "logs", ".github", ".pytest_cache", "__pycache__", ".git"]
+    blocked_dirs = [".idea", "results", "database", "logs", ".github", ".pytest_cache", "__pycache__", ".git"]
+    blocked_dirs += [".venv", "venv"]
     for root, dirs, files in os.walk(utils.ROOT_PATH):
         dirs[:] = [d for d in dirs if d not in blocked_dirs]
         for file in files:
@@ -75,7 +76,7 @@ def get_user_data(argument_args):
     # pylint: disable=import-outside-toplevel
     # in case the user still not installed the requirements
     # it will import everything only after installing the requirements
-    from collector.db.db import Database
+    from src.collector.db.db import Database
     if not argument_args.username or not argument_args.password:
         user_data = Database().load_user_data()
     else:
@@ -111,10 +112,9 @@ def _build_coverage_command(arguments):
         coverage_cmd = "coverage report -m --fail-under=95"
     else:
         coveragerc_ci_cd = os.path.join(utils.ROOT_PATH, ".coveragerc_ci_cd")
-        public_network_path = os.path.join(utils.ROOT_PATH, "collector", "network", "network.py")
-        private_network_path = os.path.join(utils.ROOT_PATH, "semester_organizer_private", "network", "network.py")
+        public_network_path = os.path.join(utils.SRC_PATH, "collector", "network", "network.py")
         coverage_cmd = f"coverage report --rcfile={coveragerc_ci_cd} -m " \
-                       f"--omit='{public_network_path},{private_network_path}' --fail-under=100"
+                       f"--omit='{public_network_path}' --fail-under=100"
 
     return coverage_cmd.split(" ")
 

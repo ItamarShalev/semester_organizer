@@ -1,5 +1,5 @@
 import logging
-import utils
+from src import utils
 
 
 def pytest_configure(config):

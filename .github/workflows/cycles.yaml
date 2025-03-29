@@ -82,11 +82,11 @@ jobs:
           pip install -r development_requirements.txt
       - name: Extract secrets
         run: |
-          mkdir -p database
-          rm -rf database/user_data.txt
-          touch database/user_data.txt
-          echo ${{ secrets.USERNAME_LEVNET }} >> database/user_data.txt
-          echo ${{ secrets.PASSWORD_LEVNET }} >> database/user_data.txt
+          mkdir -p src/database
+          rm -rf src/database/user_data.txt
+          touch src/database/user_data.txt
+          echo ${{ secrets.USERNAME_LEVNET }} >> src/database/user_data.txt
+          echo ${{ secrets.PASSWORD_LEVNET }} >> src/database/user_data.txt
       - name: Run pytest
         run: |
           export JUPYTER_PLATFORM_DIRS=1

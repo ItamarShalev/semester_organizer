@@ -7,14 +7,14 @@ from argparse import ArgumentParser
 
 import argcomplete
 
-import utils
-from collector.db.db import Database
-from controller.controller import Controller
-from algorithms.constraint_courses import ConstraintCourses
-from data.language import Language
-from data.user import User
-from data.flow import Flow
-from data.translation import _
+from src import utils
+from src.collector.db.db import Database
+from src.controller.controller import Controller
+from src.algorithms.constraint_courses import ConstraintCourses
+from src.data.language import Language
+from src.data.user import User
+from src.data.flow import Flow
+from src.data.translation import _
 
 
 def get_args():

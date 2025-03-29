@@ -6,17 +6,17 @@ from typing import List
 
 from flask import Flask, render_template, jsonify, request, send_file, session
 
-import utils
-from algorithms.csp import CSP, Status
-from controller.controller import Controller
-from collector.db.db import Database
-from data.degree import Degree
-from data.course import Course
-from data.language import Language
-from data.schedule import Schedule
-from data.settings import Settings
-from data.output_format import OutputFormat
-from data.translation import _
+from src import utils
+from src.algorithms.csp import CSP, Status
+from src.controller.controller import Controller
+from src.collector.db.db import Database
+from src.data.degree import Degree
+from src.data.course import Course
+from src.data.language import Language
+from src.data.schedule import Schedule
+from src.data.settings import Settings
+from src.data.output_format import OutputFormat
+from src.data.translation import _
 
 app_resources = Path(__file__).parent / 'app'
 

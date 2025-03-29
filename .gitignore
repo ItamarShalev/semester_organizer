@@ -1,10 +1,11 @@
 # Custom
+personal_*
 user_data*
-database/
+src/database/
 log.txt
 results/
 dev.py
-algorithms/generated_data/*
+src/algorithms/generated_data/*
 .env
 
 .vscode
