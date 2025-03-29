@@ -251,6 +251,12 @@
                     "course_number": 156367,
                     "name": "מיחשוב ענן",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -563,6 +569,12 @@
                     "id": 82,
                     "course_number": 156367,
                     "name": "מיחשוב ענן",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -954,6 +966,12 @@
                     "course_number": 156367,
                     "name": "מיחשוב ענן",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1201,6 +1219,12 @@
                     "course_number": 156367,
                     "name": "מיחשוב ענן",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1305,6 +1329,12 @@
                     "course_number": 156336,
                     "name": "רשתות מחשבים מתקדמות",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1401,6 +1431,12 @@
                     "course_number": 130562,
                     "name": "מעבדה בהנדסת חשמל א",
                     "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1484,6 +1520,12 @@
                     "course_number": 130562,
                     "name": "מעבדה בהנדסת חשמל א",
                     "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -1778,6 +1820,12 @@
                     "id": 82,
                     "course_number": 156367,
                     "name": "מיחשוב ענן",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2255,6 +2303,12 @@
                     "course_number": 156363,
                     "name": "יסודות באבטחת תוכנה",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -2318,7 +2372,14 @@
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
-            "blocks": []
+            "blocks": [
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         },
         {
             "id": 30,
@@ -2376,6 +2437,12 @@
                     "id": 68,
                     "course_number": 157111,
                     "name": "מערכות זמן אמת ותכנות מקבילי",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
                     "can_be_taken_in_parallel": false
                 }
             ]
@@ -2456,7 +2523,14 @@
                 "הנדסת תוכנה",
                 "מדעי המחשב"
             ],
-            "blocks": []
+            "blocks": [
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": true
+                }
+            ]
         },
         {
             "id": 36,
@@ -3328,6 +3402,12 @@
                     "course_number": 156367,
                     "name": "מיחשוב ענן",
                     "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 83,
+                    "course_number": 156320,
+                    "name": "פורנזיקה דיגיטלית",
+                    "can_be_taken_in_parallel": false
                 }
             ]
         },
@@ -3483,6 +3563,23 @@
             "optional_for_degrees": [
                 "הנדסת תוכנה",
                 "מדעי המחשב"
+            ],
+            "blocks": []
+        },
+        {
+            "id": 83,
+            "name": "פורנזיקה דיגיטלית",
+            "course_number": 156320,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "פורנזיקה",
+                "דיגיטלית",
+                "פורנזיקה דיגיטלית"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
             ],
             "blocks": []
         }

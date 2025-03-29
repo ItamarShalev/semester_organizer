@@ -3510,6 +3510,102 @@
                     "can_be_taken_in_parallel": false
                 }
             ]
+        },
+        {
+            "id": 83,
+            "name": "פורנזיקה דיגיטלית",
+            "course_number": 156320,
+            "is_active": true,
+            "credits": 3.0,
+            "aliases": [
+                "פורנזיקה",
+                "דיגיטלית",
+                "פורנזיקה דיגיטלית"
+            ],
+            "mandatory_for_degrees": [],
+            "optional_for_degrees": [
+                "הנדסת תוכנה"
+            ],
+            "blocked_by": [
+                {
+                    "id": 1,
+                    "course_number": 150000,
+                    "name": "מבוא למחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 2,
+                    "course_number": 120000,
+                    "name": "קורס קדם במתמטיקה להנדסה וטכנולוגיה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 5,
+                    "course_number": 120131,
+                    "name": "חשבון אינפני' להנדסה 1",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 6,
+                    "course_number": 150005,
+                    "name": "מבוא למדעי המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 9,
+                    "course_number": 156200,
+                    "name": "מבוא לתקשרת מחשבים",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 10,
+                    "course_number": 150301,
+                    "name": "מערכות ספרתיות",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 11,
+                    "course_number": 151101,
+                    "name": "מבנה המחשב",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 14,
+                    "course_number": 150015,
+                    "name": "מבנה נתונים א",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 27,
+                    "course_number": 156360,
+                    "name": "מבוא לאבטחת מידע",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 29,
+                    "course_number": 157130,
+                    "name": "מבוא לרברסינג",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 31,
+                    "course_number": 151111,
+                    "name": "מערכות הפעלה",
+                    "can_be_taken_in_parallel": false
+                },
+                {
+                    "id": 35,
+                    "course_number": 151123,
+                    "name": "UNIX מערכות",
+                    "can_be_taken_in_parallel": true
+                },
+                {
+                    "id": 73,
+                    "course_number": 150024,
+                    "name": "תכנות מתקדם",
+                    "can_be_taken_in_parallel": false
+                }
+            ]
         }
     ]
 }
