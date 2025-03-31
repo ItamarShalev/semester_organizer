@@ -1301,7 +1301,7 @@
                 },
                 {
                     "id": 29,
-                    "can_be_taken_in_parallel": false
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 31,
