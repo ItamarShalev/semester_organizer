@@ -2695,7 +2695,7 @@
                     "id": 83,
                     "course_number": 156320,
                     "name": "פורנזיקה דיגיטלית",
-                    "can_be_taken_in_parallel": false
+                    "can_be_taken_in_parallel": true
                 }
             ]
         },

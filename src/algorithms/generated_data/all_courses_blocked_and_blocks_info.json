@@ -3159,7 +3159,7 @@
                     "id": 83,
                     "course_number": 156320,
                     "name": "פורנזיקה דיגיטלית",
-                    "can_be_taken_in_parallel": false
+                    "can_be_taken_in_parallel": true
                 }
             ]
         },
@@ -6164,7 +6164,7 @@
                     "id": 29,
                     "course_number": 157130,
                     "name": "מבוא לרברסינג",
-                    "can_be_taken_in_parallel": false
+                    "can_be_taken_in_parallel": true
                 },
                 {
                     "id": 31,
