@@ -7,73 +7,418 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon/favicon.ico') }}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon/favicon.ico') }}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon/favicon-96x96.png') }}" sizes="96x96" type="image/x-icon">
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon/favicon.ico') }}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon/favicon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon/apple-touch-icon.png') }}" sizes="180x180">
     <link rel="manifest" href="{{ url_for('static', filename='images/favicon/site.webmanifest') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
-    <div id="container">
-        <h1 class="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
-            בחירת קורסים
-        </h1>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="navbar-logo">📅</span>
+            <span class="navbar-title">Semester Organizer</span>
+        </div>
+        <div class="navbar-actions">
+            <button id="settings-toggle" class="nav-btn" title="הגדרות">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                הגדרות
+            </button>
+            <button id="login-toggle" class="nav-btn" title="התחברות">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span id="login-btn-text">התחברות</span>
+            </button>
+        </div>
+    </nav>
 
-        <!-- Degrees Section -->
-        <div class="section-divider">
-            <label class="section-title">
-                בחר תואר
-            </label>
-            <div id="degrees-list" class="flex flex-wrap gap-2">
-                {% for degree in degrees %}
-                    <div class="degree-item" data-degree="{{ degree }}">
-                        {{ degree }}
-                    </div>
-                {% endfor %}
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Step Indicator -->
+        <div class="steps-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">תואר וקמפוס</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">בחירת קורסים</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">העדפות מרצים</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">יצירת מערכת</div>
             </div>
         </div>
 
-        <!-- Campuses Section -->
-        <div class="section-divider">
-            <label class="section-title">
-                בחר קמפוס
-            </label>
-            <select id="campuses" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md">
-                <option value="">-- בחר תואר ולאחר מכן קמפוס --</option>
-            </select>
+        <!-- Step 1: Degree & Campus -->
+        <div class="step-content active" id="step-1">
+            <div class="card">
+                <h2 class="card-title">בחר תואר</h2>
+                <p class="card-subtitle">ניתן לבחור מספר תארים</p>
+                <div class="chips-container" id="degrees-list">
+                    {% for degree in degrees %}
+                    <button class="chip-btn" data-degree="{{ degree.name }}" data-display="{{ degree.display }}">
+                        {{ degree.display }}
+                    </button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">בחר קמפוס</h2>
+                <div class="select-wrapper">
+                    <select id="campus-select" class="custom-select">
+                        <option value="">-- בחר קמפוס --</option>
+                        {% for campus in campuses %}
+                        <option value="{{ campus }}">{{ campus }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="step-actions">
+                <button class="btn btn-primary btn-next" data-next="2" disabled>
+                    המשך לבחירת קורסים
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+            </div>
         </div>
 
+        <!-- Step 2: Course Selection -->
+        <div class="step-content" id="step-2">
+            <div class="card">
+                <h2 class="card-title">בחירת קורסים</h2>
+                <div class="search-wrapper">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <input type="text" id="course-search" class="search-input" placeholder="חפש קורסים...">
+                </div>
 
-        <!-- Courses Section -->
-        <div class="section-divider">
-            <label class="section-title">
-                קורסים זמינים
-            </label>
-            
-            <!-- Search Input -->
-            <input type="text" id="search-box" placeholder="חפש קורסים..." 
-                class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 mb-2">
-            
-            <!-- Courses List -->
-            <div id="courses-list" class="space-y-1"></div>
+                <div id="courses-list" class="courses-grid"></div>
+
+                <div class="selected-section" id="selected-courses-section" style="display:none">
+                    <h3 class="selected-title">קורסים נבחרים (<span id="selected-count">0</span>)</h3>
+                    <div id="selected-courses" class="selected-chips"></div>
+                </div>
+            </div>
+
+            <!-- Courses Already Done -->
+            <div class="card collapsible">
+                <div class="card-header" id="courses-done-header">
+                    <h2 class="card-title">קורסים שכבר נעשו</h2>
+                    <svg class="collapse-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <div class="card-body collapsed" id="courses-done-body">
+                    <p class="card-subtitle">סמן קורסים שכבר עשית כדי שלא יופיעו ברשימה</p>
+                    <button id="extract-done-btn" class="btn btn-secondary btn-sm">
+                        חלץ מלבנט אוטומטית
+                    </button>
+                    <div id="courses-done-list" class="courses-done-grid"></div>
+                </div>
+            </div>
+
+            <!-- Personal Activities -->
+            <div class="card collapsible">
+                <div class="card-header" id="personal-header">
+                    <h2 class="card-title">פעילויות אישיות</h2>
+                    <svg class="collapse-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <div class="card-body collapsed" id="personal-body">
+                    <p class="card-subtitle">הוסף פעילויות אישיות (עבודה, חוגים וכו') שייחסמו במערכת</p>
+                    <div id="personal-activities-list"></div>
+                    <div class="add-activity-form">
+                        <input type="text" id="activity-name" class="form-input" placeholder="שם הפעילות">
+                        <div class="activity-meetings" id="activity-meetings">
+                            <div class="meeting-row">
+                                <select class="form-select meeting-day">
+                                    {% for day in days %}
+                                    <option value="{{ day.name }}">{{ day.display }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="time" class="form-input meeting-start" value="08:00">
+                                <span>-</span>
+                                <input type="time" class="form-input meeting-end" value="10:00">
+                                <button class="btn-icon add-meeting-btn" title="הוסף זמן">+</button>
+                            </div>
+                        </div>
+                        <button id="save-activity-btn" class="btn btn-secondary btn-sm">שמור פעילות</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-actions">
+                <button class="btn btn-outline btn-prev" data-prev="1">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    חזור
+                </button>
+                <button class="btn btn-primary btn-next" data-next="3" disabled>
+                    המשך להעדפות מרצים
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+            </div>
         </div>
 
+        <!-- Step 3: Lecturer Preferences -->
+        <div class="step-content" id="step-3">
+            <div class="card">
+                <h2 class="card-title">העדפות מרצים</h2>
+                <p class="card-subtitle">בחר מרצים מועדפים לכל קורס (אופציונלי - אם לא תבחר, כל המרצים ייחשבו)</p>
+                <div id="lecturer-prefs-container"></div>
+            </div>
 
-        <!-- Selected Courses Section -->
-        <div class="section-divider">
-            <label class="section-title">
-                קורסים נבחרים
-            </label>
-            <div id="selected-courses" class="flex flex-wrap gap-2"></div>
+            <div class="card">
+                <h2 class="card-title">חובת נוכחות</h2>
+                <p class="card-subtitle">בחר לכל קורס האם הנוכחות חובה (התנגשויות לא יורשו עם קורסים אלו)</p>
+                <div id="attendance-prefs-container"></div>
+            </div>
+
+            <div class="step-actions">
+                <button class="btn btn-outline btn-prev" data-prev="2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    חזור
+                </button>
+                <button class="btn btn-primary btn-next" data-next="4">
+                    המשך ליצירת מערכת
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+            </div>
         </div>
 
-        <!-- Generate Button -->
-        <button id="generate-btn" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-md hover:from-purple-700 hover:to-blue-700 transition-all">
-            צור מערכת שעות
-        </button>
+        <!-- Step 4: Generate -->
+        <div class="step-content" id="step-4">
+            <div class="card summary-card">
+                <h2 class="card-title">סיכום הבחירות</h2>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <span class="summary-label">תארים:</span>
+                        <span id="summary-degrees" class="summary-value"></span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">קמפוס:</span>
+                        <span id="summary-campus" class="summary-value"></span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">קורסים:</span>
+                        <span id="summary-courses" class="summary-value"></span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">פורמט פלט:</span>
+                        <span id="summary-formats" class="summary-value"></span>
+                    </div>
+                </div>
+            </div>
+
+            <button id="generate-btn" class="btn btn-generate">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                צור מערכת שעות
+            </button>
+
+            <div id="generate-result" class="result-container" style="display:none">
+                <div id="result-loading" class="result-loading" style="display:none">
+                    <div class="loader"></div>
+                    <span>מייצר מערכות שעות, נא להמתין...</span>
+                </div>
+                <div id="result-success" class="result-success" style="display:none">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <h3 id="result-message"></h3>
+                    <p id="result-status-message"></p>
+                    <button id="download-btn" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        הורד מערכות שעות
+                    </button>
+                </div>
+                <div id="result-error" class="result-error" style="display:none">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    <h3 id="error-message"></h3>
+                </div>
+            </div>
+
+            <div class="step-actions">
+                <button class="btn btn-outline btn-prev" data-prev="3">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    חזור
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings Sidebar -->
+    <div id="settings-overlay" class="overlay"></div>
+    <aside id="settings-sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>הגדרות</h2>
+            <button id="settings-close" class="btn-icon">&times;</button>
+        </div>
+        <div class="sidebar-content">
+            <div class="setting-group">
+                <label class="setting-label">סמסטר</label>
+                <select id="setting-semester" class="form-select">
+                    {% for sem in semesters %}
+                    <option value="{{ sem.name }}" {% if settings.semester == sem.name %}selected{% endif %}>{{ sem.display }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label">ימי לימוד</label>
+                <div class="days-grid">
+                    {% for day in days %}
+                    <label class="day-checkbox">
+                        <input type="checkbox" value="{{ day.name }}" {% if day.name in settings.show_only_classes_in_days %}checked{% endif %}>
+                        <span>{{ day.display }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label">פורמט פלט</label>
+                <div class="format-grid">
+                    {% for fmt in output_formats %}
+                    <label class="format-checkbox">
+                        <input type="checkbox" value="{{ fmt.name }}" {% if fmt.name in settings.output_formats %}checked{% endif %}>
+                        <span>{{ fmt.display }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-toggle">
+                    <span>חובת נוכחות בכל הקורסים</span>
+                    <input type="checkbox" id="setting-attendance" {% if settings.attendance_required_all_courses %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
+                <p class="setting-help">להתייחס לכל הקורסים כנוכחות חובה ולמנוע התנגשויות</p>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-toggle">
+                    <span>הצג קורסים של הרצוג וישיבה</span>
+                    <input type="checkbox" id="setting-hertzog" {% if settings.show_hertzog_and_yeshiva %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-toggle">
+                    <span>הצג רק קורסים עם מקומות פנויים</span>
+                    <input type="checkbox" id="setting-free-places" {% if settings.show_only_courses_with_free_places %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-toggle">
+                    <span>הצג רק כיתות פעילות</span>
+                    <input type="checkbox" id="setting-active-classes" {% if settings.show_only_courses_active_classes %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-toggle">
+                    <span>הצג רק קורסים עם אותו מספר סידורי</span>
+                    <input type="checkbox" id="setting-same-number" {% if settings.show_only_courses_with_the_same_actual_number %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-toggle">
+                    <span>אל תציג קורסים שכבר נעשו</span>
+                    <input type="checkbox" id="setting-hide-done" {% if settings.dont_show_courses_already_done %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-toggle">
+                    <span>הצג רק קורסים שאפשר להירשם</span>
+                    <input type="checkbox" id="setting-can-enroll" {% if settings.show_only_classes_can_enroll %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
+                <p class="setting-help">דורש התחברות ללבנט</p>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-toggle">
+                    <span>הצג רק קורסים שקורסי הקדם נעשו</span>
+                    <input type="checkbox" id="setting-prereq" {% if settings.show_only_courses_with_prerequisite_done %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-toggle">
+                    <span>הצג קורסים לדוברי אנגלית</span>
+                    <input type="checkbox" id="setting-english" {% if settings.show_english_speaker_courses %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <button id="save-settings-btn" class="btn btn-primary" style="width:100%;margin-top:16px;">
+                שמור הגדרות
+            </button>
+
+            <div class="setting-group" style="margin-top:24px;border-top:1px solid var(--border);padding-top:16px;">
+                <label class="setting-label">עדכון נתונים מלבנט</label>
+                <p class="setting-help">דורש התחברות ללבנט - מעדכן רשימת קורסים שאפשר להירשם</p>
+                <button id="extract-enroll-btn" class="btn btn-secondary btn-sm">
+                    עדכן רשימת הרשמה
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Login Modal -->
+    <div id="login-overlay" class="overlay"></div>
+    <div id="login-modal" class="modal">
+        <div class="modal-header">
+            <h2>התחברות ללבנט</h2>
+            <button id="login-close" class="btn-icon">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-subtitle">הזן את פרטי הלבנט שלך לחילוץ נתונים אוטומטי</p>
+
+            <div class="login-tabs">
+                <button class="login-tab active" data-tab="standard">התחברות רגילה</button>
+                <button class="login-tab" data-tab="microsoft">התחברות Microsoft</button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">שם משתמש</label>
+                <input type="text" id="login-username" class="form-input" placeholder="שם משתמש בלבנט" dir="ltr">
+            </div>
+            <div class="form-group">
+                <label class="form-label">סיסמה</label>
+                <input type="password" id="login-password" class="form-input" placeholder="סיסמה" dir="ltr">
+            </div>
+            <div id="login-error" class="login-error" style="display:none"></div>
+            <div id="login-success" class="login-success" style="display:none"></div>
+            <button id="login-submit" class="btn btn-primary" style="width:100%;">
+                התחבר
+            </button>
+            <p class="login-note">הפרטים נשמרים רק במחשב שלך ומשמשים רק להתחברות ללבנט</p>
+        </div>
     </div>
 
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Pass server data to JS
+        window.APP_DATA = {
+            settings: {{ settings | tojson }},
+            degrees: {{ degrees | tojson }},
+            campuses: {{ campuses | tojson }},
+        };
+    </script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

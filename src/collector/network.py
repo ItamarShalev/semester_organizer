@@ -86,6 +86,7 @@ class Network:
         self._campuses = None
         self.settings = Settings()
         self.logger = utils.get_logging()
+        self._auth_method = None  # 'direct' or 'microsoft'
         urllib3.disable_warnings()
 
     def __del__(self):
@@ -143,16 +144,8 @@ class Network:
         self.logger.debug("\n\nSUCCESS: request url = %s", url)
         return json_data
 
-    def check_connection(self, user: Optional[User] = None) -> bool:
-        """
-        Check if the user is connected to the server, if no user given, check if the current user is connected
-        :raises: InvalidServerRequestException if the server request is invalid.
-        :param: user: the user to check the connection for
-        :return: True if the user is connected, False otherwise
-        """
-        assert user or self._user, "No user was provided"
-        if not user:
-            user = self._user
+    def _check_connection_direct(self, user: User) -> bool:
+        """Try the direct Levnet login API (legacy method)."""
         url = "https://levnet.jct.ac.il/api/home/login.ashx?action=TryLogin"
         data = {"username": user.username, "password": user.password, "defaultLanguage": None}
         try:
@@ -162,11 +155,183 @@ class Network:
             self.logger.error("Connection error: %s", str(error))
             return False
 
-        connected_succeeded = response.status_code == self.HTTP_OK and response.json()["success"]
-        success_or_fail = "SUCCESS" if connected_succeeded else "FAIL"
-        self.logger.debug("%s: request url = %s,\nStatus code: %s", success_or_fail, url, response.status_code)
+        try:
+            json_response = response.json()
+            connected_succeeded = response.status_code == self.HTTP_OK and json_response.get("success", False)
+        except Exception:
+            connected_succeeded = False
 
+        self.logger.debug("%s: direct login url = %s, Status code: %s",
+                          "SUCCESS" if connected_succeeded else "FAIL", url, response.status_code)
         return connected_succeeded
+
+    def _check_connection_microsoft(self, user: User) -> bool:
+        """
+        Try Microsoft OAuth login using Playwright browser automation.
+        Levnet migrated to Microsoft Entra ID authentication - this method
+        handles the OAuth redirect flow through login.microsoftonline.com.
+        """
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError:
+            self.logger.error("Playwright not installed, cannot use Microsoft auth. "
+                              "Run: pip install playwright && playwright install chromium")
+            return False
+
+        self.logger.info("Attempting Microsoft OAuth login for Levnet...")
+        browser = None
+        try:
+            pw = sync_playwright().start()
+            browser = pw.chromium.launch(headless=True)
+            context = browser.new_context()
+            page = context.new_page()
+
+            # Navigate to Levnet - it should redirect to Microsoft login
+            page.goto("https://levnet.jct.ac.il", timeout=30000)
+            page.wait_for_load_state("networkidle", timeout=20000)
+
+            current_url = page.url
+            is_microsoft_login = ("login.microsoftonline.com" in current_url or
+                                  "login.microsoft.com" in current_url)
+
+            if not is_microsoft_login:
+                # Look for a Microsoft login button on the page
+                ms_selectors = [
+                    'a[href*="microsoft"]', 'a[href*="login.microsoftonline"]',
+                    'button:has-text("Microsoft")', 'a:has-text("Microsoft")',
+                    'a:has-text("כניסה עם Microsoft")', 'a:has-text("Sign in with Microsoft")',
+                    '.ms-login', '[data-provider="microsoft"]',
+                    'a[href*="oauth"]', 'a[href*="authorize"]',
+                ]
+                for selector in ms_selectors:
+                    ms_button = page.query_selector(selector)
+                    if ms_button:
+                        ms_button.click()
+                        page.wait_for_load_state("networkidle", timeout=15000)
+                        current_url = page.url
+                        is_microsoft_login = ("login.microsoftonline.com" in current_url or
+                                              "login.microsoft.com" in current_url)
+                        break
+
+            if not is_microsoft_login:
+                self.logger.warning("Microsoft login page not detected at URL: %s", current_url)
+                browser.close()
+                pw.stop()
+                return False
+
+            # Fill in email/username
+            email_selectors = ['input[type="email"]', 'input[name="loginfmt"]', '#i0116']
+            for selector in email_selectors:
+                email_field = page.query_selector(selector)
+                if email_field:
+                    email_field.fill(user.username)
+                    break
+
+            # Click next
+            submit_selectors = ['input[type="submit"]', '#idSIButton9', 'button[type="submit"]']
+            for selector in submit_selectors:
+                submit_btn = page.query_selector(selector)
+                if submit_btn:
+                    submit_btn.click()
+                    break
+
+            page.wait_for_load_state("networkidle", timeout=15000)
+
+            # Fill in password
+            password_selectors = ['input[type="password"]', 'input[name="passwd"]', '#i0118']
+            for selector in password_selectors:
+                password_field = page.query_selector(selector)
+                if password_field:
+                    password_field.fill(user.password)
+                    break
+
+            # Click sign in
+            for selector in submit_selectors:
+                submit_btn = page.query_selector(selector)
+                if submit_btn:
+                    submit_btn.click()
+                    break
+
+            page.wait_for_load_state("networkidle", timeout=20000)
+
+            # Handle "Stay signed in?" prompt if present
+            try:
+                stay_signed_in = page.query_selector('#idSIButton9, input[type="submit"]')
+                if stay_signed_in and ("login.microsoftonline.com" in page.url or "kmsi" in page.url):
+                    stay_signed_in.click()
+                    page.wait_for_load_state("networkidle", timeout=15000)
+            except Exception:
+                pass
+
+            # Check for error messages on the Microsoft login page
+            error_selectors = ['#usernameError', '#passwordError', '.alert-error', '#errorText']
+            for selector in error_selectors:
+                error_el = page.query_selector(selector)
+                if error_el and error_el.is_visible():
+                    self.logger.error("Microsoft login error: %s", error_el.text_content())
+                    browser.close()
+                    pw.stop()
+                    return False
+
+            # Extract cookies and transfer them to the requests session
+            cookies = context.cookies()
+            levnet_cookies = [c for c in cookies if "jct.ac.il" in c.get("domain", "")]
+
+            if levnet_cookies:
+                # Transfer browser cookies to requests session
+                for cookie in levnet_cookies:
+                    self.session.cookies.set(
+                        cookie["name"],
+                        cookie["value"],
+                        domain=cookie.get("domain", ""),
+                        path=cookie.get("path", "/"),
+                    )
+                self.logger.info("Microsoft OAuth login successful, transferred %d cookies", len(levnet_cookies))
+                browser.close()
+                pw.stop()
+                return True
+
+            self.logger.warning("No Levnet cookies found after Microsoft login")
+            browser.close()
+            pw.stop()
+            return False
+
+        except Exception as error:
+            self.logger.error("Microsoft OAuth login failed: %s", str(error))
+            if browser:
+                browser.close()
+            return False
+
+    def check_connection(self, user: Optional[User] = None) -> bool:
+        """
+        Check if the user is connected to the server, if no user given, check if the current user is connected.
+        First tries the direct Levnet API login. If that fails, falls back to Microsoft OAuth login
+        (Levnet migrated to Microsoft Entra ID authentication).
+        :raises: InvalidServerRequestException if the server request is invalid.
+        :param: user: the user to check the connection for
+        :return: True if the user is connected, False otherwise
+        """
+        assert user or self._user, "No user was provided"
+        if not user:
+            user = self._user
+
+        # Try direct login first
+        if self._check_connection_direct(user):
+            self._auth_method = 'direct'
+            self.logger.info("Connected via direct Levnet login")
+            return True
+
+        # Fallback to Microsoft OAuth
+        self.logger.info("Direct login failed, trying Microsoft OAuth...")
+        # Reset session for Microsoft auth
+        self._session = None
+        if self._check_connection_microsoft(user):
+            self._auth_method = 'microsoft'
+            self.logger.info("Connected via Microsoft OAuth")
+            return True
+
+        self.logger.error("All authentication methods failed")
+        return False
 
     def connect(self):
         try:
@@ -176,7 +341,8 @@ class Network:
             raise RuntimeError("Failed to connect") from error
         if not connected_succeeded:
             raise RuntimeError("Failed to connect")
-        self.change_language(Language.get_current())
+        if self._auth_method == 'direct':
+            self.change_language(Language.get_current())
 
     def extract_all_activities_ids_can_enroll_in(self, settings: Settings,
                                                  parent_courses_already_did: List[int] = None) -> Dict[str, Set[int]]:

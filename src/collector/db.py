@@ -246,6 +246,13 @@ class Database:
                     cursor.execute("INSERT OR IGNORE INTO personal_meetings VALUES (?, ?, ?, ?);",
                                    (activity.activity_id, *meeting, ))
 
+    def delete_personal_activity(self, activity_id: int):
+        if not self.personal_database_path.exists():
+            return
+        with self.connect(self.personal_database_path) as (unused_connection, cursor):
+            cursor.execute("DELETE FROM personal_meetings WHERE activity_id = ?;", (activity_id,))
+            cursor.execute("DELETE FROM personal_activities WHERE id = ?;", (activity_id,))
+
     def load_courses_choices(self, campus_name: str,
                              language: Language,
                              degrees: Set[Degree],
